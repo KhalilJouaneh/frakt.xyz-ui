@@ -9,7 +9,6 @@ import {
   evolve,
   filter,
   reject,
-  __,
   useWith,
   pluck,
   compose,
