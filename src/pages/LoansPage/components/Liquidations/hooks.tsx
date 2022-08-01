@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
-import { compose, join, pluck } from 'ramda';
+import { compose, join, pluck, equals } from 'ramda';
 
 import { Tab } from '../../../../components/Tabs';
 import { ArrowDownSmallIcon } from '../../../../icons';
 import styles from '../LiquidationsList/LiquidationsList.module.scss';
-import { useDebounce } from '../../../../hooks';
+import { useDebounce, usePrevious } from '../../../../hooks';
 import {
   FilterFormFieldsValues,
   LiquidationsListFormNames,
@@ -38,6 +38,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   });
 
   const sort = watch(LiquidationsListFormNames.SORT);
+  const prevCollections = usePrevious(collections);
 
   const fetchItems = (params = {}): void => {
     const query = {
@@ -60,21 +61,29 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   }, 300);
 
   useEffect(() => {
-    const [sortField, sortOrder] = sort.value.split('_');
+    const [newSortBy, newSortOrder] = sort.value.split('_');
+    if (sortOrder === newSortOrder && sortBy === newSortBy) {
+      return;
+    }
 
-    setSortBy(sortField);
-    setSortOrder(sortOrder);
-
-    fetchItems({ sortBy: sortField, sort: sortOrder });
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
+    fetchItems({ sortBy: newSortBy, sort: newSortOrder });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sort]);
+  }, [sort.value]);
 
   useEffect(() => {
+    if (search === stringRef.current) {
+      return;
+    }
     searchDebounced(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   useEffect(() => {
+    if (equals(prevCollections, collections)) {
+      return;
+    }
     fetchItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collections]);

@@ -2,6 +2,8 @@ import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { Socket } from 'socket.io-client';
+import { pickBy, allPass } from 'ramda';
+import { isNotEmpty, isNotNil } from 'ramda-adjunct';
 
 import {
   signAndConfirmTransaction,
@@ -76,7 +78,7 @@ const updateWonRaffleListSaga = function* (action) {
   if (!action.payload) {
     return;
   }
-
+  const params: any = pickBy(allPass([isNotNil, isNotEmpty]), action.payload);
   const socket = yield select(selectSocket);
   const publicKey = yield select(selectWalletPublicKey);
 
@@ -84,7 +86,7 @@ const updateWonRaffleListSaga = function* (action) {
     socket.emit('won-raffles-subscribe', {
       wallet: publicKey,
       limit: 1000,
-      ...action.payload,
+      ...params,
     });
   }
 };
