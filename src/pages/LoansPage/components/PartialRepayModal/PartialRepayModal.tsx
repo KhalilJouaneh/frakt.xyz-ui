@@ -29,7 +29,7 @@ const SLIDER_MARKS = {
 const getRemainingDebt = (paybackAmount: string, totalDebt: number) => {
   const paybackAmountNumber = parseFloat(paybackAmount);
   const remainingDebt = totalDebt - paybackAmountNumber;
-  return remainingDebt <= 0 ? '0' : remainingDebt.toFixed(2);
+  return remainingDebt <= 0 ? '0' : remainingDebt?.toFixed(2);
 };
 
 export const PartialRepayModal: FC<PartialRepayModalProps> = ({
@@ -48,7 +48,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
   const onPartialPercentChange = (nextValue: number) => {
     setPartialPercent(nextValue);
 
-    setPaybackAmount(((loan?.repayValue * nextValue) / 100).toFixed(3));
+    setPaybackAmount(((loan?.repayValue * nextValue) / 100)?.toFixed(3));
   };
 
   const onPaybackAmountChange = (nextValue: string) => {
@@ -98,7 +98,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         setValue={onPaybackAmountChange}
         tokenTicker={SOL_TOKEN.name}
         tokenImage={SOL_TOKEN.logoURI}
-        balance={loan?.repayValue.toFixed(3)}
+        balance={loan?.repayValue?.toFixed(3)}
         customLabel="Debt:"
         className={styles.input}
         error={notEnoughBalanceError}
