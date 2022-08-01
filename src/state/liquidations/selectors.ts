@@ -82,7 +82,7 @@ export const selectLotteryTickets = createSelector(
 
 export const selectTxRaffleTryStatus = createSelector(
   [pathOr('IDLE', ['liquidations', 'txRaffleTry', 'status'])],
-  identity,
+  (v) => v,
 );
 
 export const selectTxLiquidateStatus = createSelector(
