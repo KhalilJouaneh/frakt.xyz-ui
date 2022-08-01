@@ -186,6 +186,7 @@ const LoanCardValues: FC<{
     isPriceBased,
     borrowAPRPercents,
     liquidationPrice,
+    realLiquidationPrice,
   } = loan;
 
   return (
@@ -209,7 +210,7 @@ const LoanCardValues: FC<{
           <div className={styles.valueInfo}>
             <p>
               {isPriceBased
-                ? repayValue && repayValue.toFixed(2)
+                ? liquidationPrice && liquidationPrice.toFixed(2)
                 : liquidationPrice
                 ? liquidationPrice.toFixed(2)
                 : repayValue && repayValue.toFixed(2)}
@@ -239,7 +240,7 @@ const LoanCardValues: FC<{
           <div className={styles.valueWrapper}>
             <p className={styles.valueTitle}>Liquidation price</p>
             <div className={styles.valueInfo}>
-              <p>{liquidationPrice && liquidationPrice.toFixed(2)}</p>
+              <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
               <img
                 className={styles.valueInfoSolImage}
                 src={SOL_TOKEN.logoURI}

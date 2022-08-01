@@ -11,6 +11,7 @@ import {
   concat,
   map,
   assoc,
+  sum,
 } from 'ramda';
 import { isArray } from 'ramda-adjunct';
 
@@ -34,6 +35,28 @@ export const selectUserLoans: (state) => Loan[] = createSelector(
   [selectGraceLots, selectRestLoans],
   (graceLots, restLoans) =>
     concat(map(assoc('isGracePeriod', true), graceLots), restLoans),
+);
+
+export const selectTotalDebt = createSelector(
+  [selectUserLoans],
+  compose(
+    sum,
+    map((item) => {
+      if (item.isGracePeriod) {
+        if (item.isPriceBased) {
+          return item.realLiquidationPrice;
+        } else {
+          return item.liquidationPrice;
+        }
+      } else {
+        if (item.isPriceBased) {
+          return item.liquidationPrice;
+        } else {
+          return item.repayValue;
+        }
+      }
+    }),
+  ),
 );
 
 export const selectUserLoansPending: (state) => boolean = createSelector(

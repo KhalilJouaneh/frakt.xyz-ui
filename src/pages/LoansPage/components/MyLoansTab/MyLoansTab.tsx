@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import { Controller } from 'react-hook-form';
@@ -13,6 +14,7 @@ import {
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
 import styles from './MyLoansTab.module.scss';
+import { selectTotalDebt } from '../../../../state/loans/selectors';
 
 export const MyLoansTab: FC = () => {
   const { connected } = useWallet();
@@ -21,10 +23,11 @@ export const MyLoansTab: FC = () => {
     [],
   );
 
-  const { control, loans, totalBorrowed, totalDebt, sortValueOption } =
-    useLoansFiltering({
-      selectedCollections,
-    });
+  const totalDebt = useSelector(selectTotalDebt);
+
+  const { control, loans, totalBorrowed, sortValueOption } = useLoansFiltering({
+    selectedCollections,
+  });
 
   return (
     <div className={styles.wrapper}>
