@@ -207,7 +207,13 @@ const LoanCardValues: FC<{
         <div className={styles.valueWrapper}>
           <p className={styles.valueTitle}>Debt</p>
           <div className={styles.valueInfo}>
-            <p>{repayValue && repayValue.toFixed(2)}</p>
+            <p>
+              {isPriceBased
+                ? repayValue && repayValue.toFixed(2)
+                : liquidationPrice
+                ? liquidationPrice.toFixed(2)
+                : repayValue && repayValue.toFixed(2)}
+            </p>
             <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
             <p>{SOL_TOKEN.symbol}</p>
           </div>
