@@ -117,7 +117,7 @@ const txRaffleTrySaga = function* (action) {
     params = {
       connection,
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-      admin: new web3.PublicKey(process.env.LOANS_ADMIN_PUBKEY),
+      admin: new web3.PublicKey('11111111111111111111111111111111'),
       user: publicKey,
       liquidationLot: new web3.PublicKey(action.payload.liquidationLotPubkey),
       attemptsNftMint: new web3.PublicKey(lotteryTickets.tickets[0].nftMint),
@@ -135,7 +135,7 @@ const txRaffleTrySaga = function* (action) {
     params = {
       connection,
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-      admin: new web3.PublicKey(process.env.LOANS_ADMIN_PUBKEY),
+      admin: new web3.PublicKey('11111111111111111111111111111111'),
       user: publicKey,
       liquidationLot: new web3.PublicKey(action.payload.liquidationLotPubkey),
       attemptsNftMint: new web3.PublicKey(lotteryTickets.tickets[0].nftMint),
@@ -192,7 +192,7 @@ const txLiquidateSaga = function* (action) {
   const params = {
     connection,
     programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-    admin: new web3.PublicKey(process.env.LOANS_ADMIN_PUBKEY),
+    admin: new web3.PublicKey('11111111111111111111111111111111'),
     user: publicKey,
     liquidityPool: new web3.PublicKey(action.payload.liquidityPool),
     royaltyAddress: new web3.PublicKey(action.payload.royaltyAddress),
