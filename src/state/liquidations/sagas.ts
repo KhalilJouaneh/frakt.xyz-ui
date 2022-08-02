@@ -192,7 +192,7 @@ const txLiquidateSaga = function* (action) {
   const params = {
     connection,
     programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-    admin: new web3.PublicKey('11111111111111111111111111111111'),
+    admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
     user: publicKey,
     liquidityPool: new web3.PublicKey(action.payload.liquidityPool),
     royaltyAddress: new web3.PublicKey(action.payload.royaltyAddress),
