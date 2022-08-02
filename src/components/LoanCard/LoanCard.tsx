@@ -129,14 +129,20 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     onPayback,
   } = usePaybackLoan(loan);
 
-  const { imageUrl, name } = loan;
+  const { imageUrl, name, isGracePeriod } = loan;
 
   return (
     <>
       <div className={styles.cardWrapper}>
-        <div className={styles.card}>
+        <div
+          className={classNames(styles.card, {
+            [styles.isGracePeriodCard]: isGracePeriod,
+          })}
+        >
           <div
-            className={styles.image}
+            className={classNames(styles.image, {
+              [styles.isGracePeriodImage]: isGracePeriod,
+            })}
             style={{
               backgroundImage: `url(${imageUrl})`,
             }}
@@ -180,6 +186,7 @@ const LoanCardValues: FC<{
     isPriceBased,
     borrowAPRPercents,
     liquidationPrice,
+    realLiquidationPrice,
   } = loan;
 
   return (
@@ -192,7 +199,7 @@ const LoanCardValues: FC<{
         <div className={styles.valueWrapper}>
           <p className={styles.valueTitle}>Borrowed</p>
           <div className={styles.valueInfo}>
-            <p>{loanValue.toFixed(2)}</p>
+            <p>{loanValue && loanValue.toFixed(2)}</p>
             <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
             <p>{SOL_TOKEN.symbol}</p>
           </div>
@@ -201,7 +208,13 @@ const LoanCardValues: FC<{
         <div className={styles.valueWrapper}>
           <p className={styles.valueTitle}>Debt</p>
           <div className={styles.valueInfo}>
-            <p>{repayValue.toFixed(2)}</p>
+            <p>
+              {isPriceBased
+                ? liquidationPrice && liquidationPrice.toFixed(2)
+                : liquidationPrice
+                ? liquidationPrice.toFixed(2)
+                : repayValue && repayValue.toFixed(2)}
+            </p>
             <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
             <p>{SOL_TOKEN.symbol}</p>
           </div>
@@ -227,7 +240,7 @@ const LoanCardValues: FC<{
           <div className={styles.valueWrapper}>
             <p className={styles.valueTitle}>Liquidation price</p>
             <div className={styles.valueInfo}>
-              <p>{liquidationPrice.toFixed(2)}</p>
+              <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
               <img
                 className={styles.valueInfoSolImage}
                 src={SOL_TOKEN.logoURI}
