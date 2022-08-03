@@ -16,6 +16,8 @@ import {
   groupBy,
   prop,
   length,
+  sum,
+  always,
 } from 'ramda';
 
 import { LotteryTicket, RaffleListItem } from './types';
@@ -49,8 +51,11 @@ const selectIgnoreLotteryTickets = createSelector(
 
 const gatherNfts = converge(
   (nftMints: number[], _stakedNfts: any) => {
-    const rawNfts = map(applySpec({ nftMint: identity }), nftMints);
-    const stakedNfts = filter((item: any) => item.attemps > 0, _stakedNfts);
+    const rawNfts = map(
+      applySpec({ nftMint: identity, attempts: always(1) }),
+      nftMints,
+    );
+    const stakedNfts = filter((item: any) => item.attempts > 0, _stakedNfts);
     return concat(rawNfts, stakedNfts);
   },
   [pathOr([], ['nftMints']), pathOr([], ['stakedNfts'])],
@@ -70,7 +75,8 @@ export const selectLotteryTickets = createSelector(
     return evolve(
       {
         quantity: compose(
-          length,
+          sum,
+          pluck('attempts'),
           reject((ticket: any) => ignoreNfts.includes(ticket.nftMint)),
         ),
         tickets: reject((ticket: any) => ignoreNfts.includes(ticket.nftMint)),
