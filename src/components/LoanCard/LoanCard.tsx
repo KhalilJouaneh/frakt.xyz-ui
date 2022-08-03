@@ -207,13 +207,13 @@ const TimeToReturn: FC<{
   return (
     <div className={classNames(styles.valueInfo, styles.valueInfoHealth)}>
       <div className={styles.countdown}>
-        <p className={styles.timeItem}>{timeLeft.days}d</p>
+        <p>{timeLeft.days}d</p>
         <span className={styles.timeDelim}>:</span>
-        <p className={styles.timeItem}>{timeLeft.hours}h</p>
+        <p>{timeLeft.hours}h</p>
         <span className={styles.timeDelim}>:</span>
-        <p className={styles.timeItem}>{timeLeft.minutes}m</p>
+        <p>{timeLeft.minutes}m</p>
         <span className={styles.timeDelim}>:</span>
-        <p className={styles.timeItem}>{timeLeft.seconds}s</p>
+        <p>{timeLeft.seconds}s</p>
       </div>
       <LoanHealthProgress healthPercent={progress} />
     </div>
@@ -229,7 +229,7 @@ const Health: FC<{
 
   return (
     <div className={classNames(styles.valueInfo, styles.valueInfoHealth)}>
-      <p className={styles.timeItem}>{health}%</p>
+      <p>{health}%</p>
       <LoanHealthProgress healthPercent={100 - health} />
     </div>
   );

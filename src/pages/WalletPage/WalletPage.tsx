@@ -72,7 +72,7 @@ const WalletPage: FC = () => {
     <AppLayout>
       <Container component="main" className={styles.container}>
         <div className={styles.pageHeader}>
-          <div className={styles.titleContainer}>
+          <div>
             <h2 className={styles.title}>{pageTitle}</h2>
           </div>
         </div>

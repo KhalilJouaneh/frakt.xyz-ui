@@ -83,13 +83,7 @@ export const AppNavigation: FC<AppNavigationProps> = ({
   children,
 }) => {
   return (
-    <ul
-      className={classNames(
-        styles.navigation,
-        styles.navigation_left,
-        className,
-      )}
-    >
+    <ul className={classNames(styles.navigation, className)}>
       {!withoutLinks &&
         NAVIGATION_LINKS.map(({ label, to, event }, idx) => (
           <li

@@ -59,7 +59,6 @@ export const PoolModal: FC<PoolModalProps> = ({
       width={500}
       footer={false}
       closable={false}
-      className={styles.modal}
     >
       <div className={styles.closeModalSection}>
         <div className={styles.closeModalIcon} onClick={onCancel}>

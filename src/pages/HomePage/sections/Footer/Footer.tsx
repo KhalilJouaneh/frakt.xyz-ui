@@ -58,7 +58,7 @@ export const Footer: FC<FooterProps> = ({ navRef }) => {
       </p>
       <div className={styles.navWrapper}>
         <h5 className={styles.navTitle}>Ecosystem</h5>
-        <ul className={styles.navList}>
+        <ul>
           {ECOSYSTEM_LIST.map(({ path, label, to }, idx) => (
             <li key={idx} className={styles.navItem}>
               {path ? (
@@ -74,7 +74,7 @@ export const Footer: FC<FooterProps> = ({ navRef }) => {
       </div>
       <div className={styles.navWrapper}>
         <h5 className={styles.navTitle}>FRAKT</h5>
-        <ul className={styles.navList}>
+        <ul>
           {LANDING_LIST.map(({ to, label }, idx) => (
             <li className={styles.navItem} key={idx}>
               <AnchorLink smooth to={to}>
@@ -87,34 +87,24 @@ export const Footer: FC<FooterProps> = ({ navRef }) => {
       <div className={styles.contacts}>
         <h5 className={styles.navTitle}>Resources</h5>
         <div className={styles.contactsInfo}>
-          <div className={styles.docs}>
+          <div>
             <p className={styles.docsTitle}>documentation</p>
             <ul className={styles.socialNavs}>
               {DOCS_LIST.map(({ to, icon: Icon }, idx) => (
                 <li className={styles.socialItem} key={idx}>
-                  <a
-                    href={to}
-                    className={styles.socialLink}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href={to} target="_blank" rel="noreferrer">
                     <Icon />
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-          <div className={styles.contact}>
+          <div>
             <p className={styles.contactTitle}>Contact us</p>
             <ul className={styles.socialNavs}>
               {SOCIALS_LIST.map(({ to, icon: Icon }, idx) => (
                 <li className={styles.socialItem} key={idx}>
-                  <a
-                    href={to}
-                    className={styles.socialLink}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <a href={to} target="_blank" rel="noreferrer">
                     <Icon />
                   </a>
                 </li>

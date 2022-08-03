@@ -49,6 +49,7 @@
     "svg-url-loader": "^7.1.1",
     "swiper": "^7.4.1",
     "ts-loader": "^9.3.1",
+    "typed-scss-modules": "^6.5.0",
     "typesafe-actions": "^5.1.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.73.0",
@@ -57,7 +58,9 @@
   },
   "scripts": {
     "start": "cross-env webpack serve --config webpack.dev.js",
-    "build": "cross-env GENERATE_SOURCEMAP=false craco build",
+    "bundle": "cross-env webpack build --config webpack.prod.js",
+    "type-scss": "cross-env typed-scss-modules src --exportType default --nameFormat none",
+    "build": "npm run type-scss && npm run bundle",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier-eslint --write $PWD/'**/*.{ts,tsx}'",
     "lint-staged": "lint-staged",

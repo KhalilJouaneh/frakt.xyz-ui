@@ -110,7 +110,7 @@ export const CollectionDropdown: FC<CollectionDropdownProps> = ({
 
   const Option = (props) => {
     return (
-      <span className={classNames(styles.wrapper, wrapperClassName)}>
+      <span className={classNames(wrapperClassName)}>
         <components.Option {...props}>
           <Checkbox
             className={styles.checkbox}
@@ -129,7 +129,7 @@ export const CollectionDropdown: FC<CollectionDropdownProps> = ({
       components={{ Option }}
       onChange={(newValues) => setValues(newValues)}
       placeholder={`Selected collections ${values?.length || ''}`}
-      className={classNames(styles.select, className)}
+      className={classNames(className)}
       styles={colourStyles}
       value={values}
       controlShouldRenderValue={false}

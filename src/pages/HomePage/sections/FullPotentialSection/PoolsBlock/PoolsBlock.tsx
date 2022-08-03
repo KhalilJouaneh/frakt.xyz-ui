@@ -24,7 +24,7 @@ const SLIDER_BREAKPOINTS = {
 
 export const PoolsBlock: FC<PoolsBlockProps> = ({ className }) => {
   return (
-    <div className={classNames(className, styles.block)}>
+    <div className={classNames(className)}>
       <BlockContent
         title={'Pools'}
         icon={<PoolsInfoIcon />}

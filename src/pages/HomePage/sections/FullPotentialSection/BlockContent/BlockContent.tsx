@@ -25,7 +25,7 @@ export const BlockContent: FC<BlockContentProps> = ({
 }) => {
   return (
     <div className={classNames(className, styles.wrapper)}>
-      <div className={styles.iconWrapper}>{icon}</div>
+      <div>{icon}</div>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.text}>{text}</p>
       {soon && (

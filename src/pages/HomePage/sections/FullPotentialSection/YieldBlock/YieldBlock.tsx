@@ -16,7 +16,7 @@ interface YieldBlockProps {
 
 export const YieldBlock: FC<YieldBlockProps> = ({ className }) => {
   return (
-    <div className={classNames(className, styles.block)}>
+    <div className={classNames(className)}>
       <BlockContent
         title={'Earn'}
         icon={<YieldInfoIcon />}

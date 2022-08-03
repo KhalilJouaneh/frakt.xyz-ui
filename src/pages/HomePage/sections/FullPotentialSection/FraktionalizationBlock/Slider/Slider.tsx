@@ -14,7 +14,6 @@ export const Slider: FC = () => {
     <div className={styles.sliderWrapper}>
       <Swiper
         slidesPerView={1.5}
-        className={styles.slider}
         centeredSlides
         pagination={{ clickable: true }}
         navigation={true}

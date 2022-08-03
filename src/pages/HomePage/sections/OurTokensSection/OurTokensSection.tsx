@@ -19,7 +19,7 @@ export const OurTokensSection: FC<OurTokensSectionProps> = ({ navRef }) => {
       <div className={styles.wrapper}>
         <div className={classNames(styles.card, styles.cardBlue)}>
           <h4 className={styles.titleCard}>$FRKX</h4>
-          <div className={styles.infoWrapper}>
+          <div>
             <ul className={styles.infoList}>
               <li className={styles.infoItem}>Protocol utility token</li>
               <li className={styles.infoItem}>Reduced fees</li>
@@ -33,9 +33,9 @@ export const OurTokensSection: FC<OurTokensSectionProps> = ({ navRef }) => {
           </div>
           <TokensBg className={styles.cardBg} fill={'#5D5FEF'} />
         </div>
-        <div className={classNames(styles.card, styles.cardGreen)}>
+        <div className={classNames(styles.card)}>
           <h4 className={styles.titleCard}>$FRKT</h4>
-          <div className={styles.infoWrapper}>
+          <div>
             <ul className={styles.infoList}>
               <li className={styles.infoItem}>Governance on DAO revenue</li>
               <li className={styles.infoItem}>Community activities</li>
