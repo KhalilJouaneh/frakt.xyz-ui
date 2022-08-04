@@ -17,8 +17,8 @@ const GraceCard: FC<{ data }> = ({ data }) => {
       </div>
       <div className={styles.statsValue}>
         <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>floor price</p>
-          <p className={styles.value}>{`${data.loanValue} SOL`}</p>
+          <p className={styles.subtitle}>Floor price</p>
+          <p className={styles.value}>{`${data.valuation} SOL`}</p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>liquidation price</p>
