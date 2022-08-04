@@ -43,7 +43,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
       </div>
       <div className={styles.statsValue}>
         <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>floor price</p>
+          <p className={styles.subtitle}>Floor price</p>
           <p className={styles.value}>{`${data.nftFloorPrice} SOL`}</p>
         </div>
         <div className={styles.totalValue}>
