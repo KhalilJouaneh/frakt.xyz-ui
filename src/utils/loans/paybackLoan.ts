@@ -1,4 +1,7 @@
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
+//TODO: Fix import
+import { paybackLoanWithGrace } from '@frakt-protocol/frakt-sdk/lib/loans/functions/public/paybackLoanWithGrace';
+
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
 import { captureSentryError } from '../sentry';
@@ -24,26 +27,49 @@ export const paybackLoan: PaybackLoan = async ({
   paybackAmount,
 }): Promise<boolean> => {
   try {
-    await loans.paybackLoan({
-      programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-      connection,
-      user: wallet.publicKey,
-      admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
-      loan: new web3.PublicKey(loan.pubkey),
-      nftMint: new web3.PublicKey(loan.mint),
-      liquidityPool: new web3.PublicKey(loan.liquidityPool),
-      collectionInfo: new web3.PublicKey(loan.collectionInfo),
-      royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
-      paybackAmount,
-      sendTxn: async (transaction) => {
-        await signAndConfirmTransaction({
-          transaction,
-          connection,
-          wallet,
-          commitment: 'finalized',
-        });
-      },
-    });
+    if (loan.isGracePeriod) {
+      await paybackLoanWithGrace({
+        programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+        connection,
+        user: wallet.publicKey,
+        admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
+        liquidationLot: new web3.PublicKey(loan.liquidationLot),
+        loan: new web3.PublicKey(loan.pubkey),
+        nftMint: new web3.PublicKey(loan.mint),
+        liquidityPool: new web3.PublicKey(loan.liquidityPool),
+        collectionInfo: new web3.PublicKey(loan.collectionInfo),
+        royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
+        sendTxn: async (transaction) => {
+          await signAndConfirmTransaction({
+            transaction,
+            connection,
+            wallet,
+            commitment: 'confirmed',
+          });
+        },
+      });
+    } else {
+      await loans.paybackLoan({
+        programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+        connection,
+        user: wallet.publicKey,
+        admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
+        loan: new web3.PublicKey(loan.pubkey),
+        nftMint: new web3.PublicKey(loan.mint),
+        liquidityPool: new web3.PublicKey(loan.liquidityPool),
+        collectionInfo: new web3.PublicKey(loan.collectionInfo),
+        royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
+        paybackAmount,
+        sendTxn: async (transaction) => {
+          await signAndConfirmTransaction({
+            transaction,
+            connection,
+            wallet,
+            commitment: 'confirmed',
+          });
+        },
+      });
+    }
 
     notify({
       message: 'Paid back successfully!',
