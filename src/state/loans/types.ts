@@ -64,6 +64,8 @@ export interface Loan {
   expiredAt?: string; //? Date
   isGracePeriod?: boolean;
 
+  liquidationLot?: string; //? For GracePeriod loans only
+
   liquidityPool: string;
   collectionInfo: string;
   royaltyAddress: string;
