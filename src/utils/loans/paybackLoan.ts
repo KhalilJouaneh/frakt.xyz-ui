@@ -1,7 +1,4 @@
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
-//TODO: Fix import
-import { paybackLoanWithGrace } from '@frakt-protocol/frakt-sdk/lib/loans/functions/public/paybackLoanWithGrace';
-
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
 import { captureSentryError } from '../sentry';
@@ -28,7 +25,7 @@ export const paybackLoan: PaybackLoan = async ({
 }): Promise<boolean> => {
   try {
     if (loan.isGracePeriod) {
-      await paybackLoanWithGrace({
+      await loans.paybackLoanWithGrace({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet.publicKey,
