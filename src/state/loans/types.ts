@@ -62,12 +62,16 @@ export interface Loan {
 
   startedAt: string; //? Date
   expiredAt?: string; //? Date
+  isGracePeriod?: boolean;
+
+  liquidationLot?: string; //? For GracePeriod loans only
 
   liquidityPool: string;
   collectionInfo: string;
   royaltyAddress: string;
 
   liquidationPrice?: number; //? 1.23456 (SOL)
+  realLiquidationPrice?: number;
   valuation?: number; //? 1.23456 (SOL)
   health?: number; //? 80(%) 0-100%
   nftOriginalPrice?: number;
