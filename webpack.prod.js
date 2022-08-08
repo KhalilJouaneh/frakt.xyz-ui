@@ -8,7 +8,7 @@ require('dotenv').config({ path: './.env.local' })
 
 module.exports = {
   output: {
-    publicPath: '.',
+    publicPath: 'auto',
     path: path.resolve(__dirname, 'build'),
     filename: '[name]-[contenthash].js'
   },
@@ -61,12 +61,12 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg|gif|ico|env|glb|gltf|stl)$/i,
+        test: /\.(png|jpg|jpeg|gif|ico|webp)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
-              limit: 8192
+              name: "images/[name].[ext]"
             }
           }
         ]
@@ -75,10 +75,7 @@ module.exports = {
         test: /\.svg$/,
         use: [
           {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10000,
-            },
+            loader: 'svg-url-loader'
           },
         ]
       },
