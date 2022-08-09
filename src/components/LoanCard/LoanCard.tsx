@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import classNames from 'classnames';
-import Tooltip from 'rc-tooltip';
+import Tooltip from '../Tooltip';
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
