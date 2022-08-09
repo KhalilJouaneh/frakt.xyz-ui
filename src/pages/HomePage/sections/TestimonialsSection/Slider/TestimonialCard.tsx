@@ -20,7 +20,7 @@ export const TestimonialCard: FC<TestimonialCardProps> = ({
         <div className={styles.photoWrapper}>
           <img src={imageSrc} alt="" className={styles.photo} />
         </div>
-        <div className={styles.info}>
+        <div>
           <p className={styles.name}>{name}</p>
           <p className={styles.organisation}>{organisation}</p>
         </div>

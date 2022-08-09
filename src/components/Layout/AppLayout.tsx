@@ -30,7 +30,7 @@ export const Layout: FC<LayoutProps> = ({
   }, [location]);
 
   return (
-    <div className={classNames(styles.layout, className)}>
+    <div className={classNames(className)}>
       <Header
         className={classNames(styles.header, {
           [styles.headerHide]: isHeaderHidden,

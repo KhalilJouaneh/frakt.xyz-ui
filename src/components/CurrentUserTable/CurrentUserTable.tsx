@@ -51,9 +51,7 @@ const CurrentUserTable = ({
       <div className={styles.userWrapper}>
         <UserIcon className={styles.avatar} url={avatarUrl} />
         <div className={styles.userInfo}>
-          <p className={styles.userKey}>
-            {shortenAddress(`${publicKey || ''}`)}
-          </p>
+          <p>{shortenAddress(`${publicKey || ''}`)}</p>
           <LinkWithArrow
             to={`${PATHS.WALLET}/${publicKey.toString()}`}
             label="My profile"

@@ -48,7 +48,6 @@ const SystemHealth: FC<SystemHealthProps> = ({
       </div>
       <Block className={styles.block}>
         <Doughnut
-          className={styles.chart}
           data={data}
           width={300}
           options={{ maintainAspectRatio: false }}

@@ -44,7 +44,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({
         <p className={styles.detailsTitle}>Loan Type</p>
         <div className={styles.radioWrapper}>
           <Radio
-            className={styles.radio}
             checked={formField === FormFieldTypes.LONG_TERM_FIELD}
             disabled={priceBasedDisabled}
             onClick={() => {
@@ -54,7 +53,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({
             label="Perpetual loan"
           />
           <Radio
-            className={styles.radio}
             checked={formField === FormFieldTypes.SHORT_TERM_FIELD}
             onClick={() => {
               setFormField(FormFieldTypes.SHORT_TERM_FIELD);

@@ -15,6 +15,7 @@ import LiquidationsList from '../LiquidationsList';
 import styles from './Liquidations.module.scss';
 import GraceCard from '../GraceCard/GraceCard';
 import WonRaffleCard from '../WonRaffleCard';
+import NoGraceList from '../NoGraceList';
 import { RaffleNotifications } from '../../../../state/liquidations/types';
 import {
   selectSocket,
@@ -156,9 +157,13 @@ const Liquidations: FC = () => {
             dispatch(liquidationsActions.fetchGraceList(params))
           }
         >
-          {graceList.map((item) => (
-            <GraceCard key={item.nftMint} data={item} />
-          ))}
+          {graceList.length ? (
+            graceList.map((item) => (
+              <GraceCard key={item.nftMint} data={item} />
+            ))
+          ) : (
+            <NoGraceList />
+          )}
         </LiquidationsList>
       )}
       {tabValue === LiquidationsTabsNames.RAFFLES &&

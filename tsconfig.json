@@ -16,7 +16,6 @@
     "moduleResolution": "node",
     "downlevelIteration": true,
     "resolveJsonModule": true,
-    "noEmit": true,
     "typeRoots": [
       "./types"
     ],
