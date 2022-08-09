@@ -7,11 +7,11 @@ import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 export const TestimonialsSection: FC = () => {
   return (
     <Container component="section" className={styles.container}>
-      <div className={styles.infoWrapper}>
+      <div>
         <h2 className={styles.title}>
           NFTs are at the centre of the value creation in the digital revolution
         </h2>
-        <div className={styles.infoText}>
+        <div>
           <p className={styles.textParagraph}>
             NFTs have taken the world by surprise and one thing is for sure —
             they&apos;re here to stay. FRAKT&apos;s vision is to bootstrap

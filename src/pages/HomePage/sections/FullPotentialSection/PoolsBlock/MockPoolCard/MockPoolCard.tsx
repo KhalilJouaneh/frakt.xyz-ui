@@ -37,9 +37,9 @@ export const MockPoolCard: FC<MockPoolCardProps> = ({
         </div>
         <span className={styles.priceLabel}>price</span>
         <div className={styles.priceWrapper}>
-          <span className={styles.poolPrice}>{price}</span>
+          <span>{price}</span>
           <SolanaIcon />
-          <span className={styles.priceCurrency}>SOL</span>
+          <span>SOL</span>
         </div>
       </div>
     </div>

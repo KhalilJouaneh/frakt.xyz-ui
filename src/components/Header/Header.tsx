@@ -24,7 +24,7 @@ const Header: FC<HeaderProps> = ({ className, customHeader }) => {
   const visible = useSelector(selectWalletModalVisible);
 
   return (
-    <header className={classNames(styles.root, styles.header, className)}>
+    <header className={classNames(styles.header, className)}>
       {visible && <WalletContent />}
       <Container component="nav" className={styles.container}>
         <NavLink className={styles.logo} to={PATHS.ROOT}>

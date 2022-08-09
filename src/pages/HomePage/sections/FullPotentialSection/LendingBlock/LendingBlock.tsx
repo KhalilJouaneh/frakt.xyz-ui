@@ -14,17 +14,17 @@ interface LendingBlockProps {
 
 export const LendingBlock: FC<LendingBlockProps> = ({ className }) => {
   return (
-    <div className={classNames(className, styles.block)}>
+    <div className={classNames(className)}>
       <div className={styles.imagesWrapper}>
-        <div className={classNames(styles.image, styles.imageOne)}>
+        <div className={classNames(styles.image)}>
           <img src={imageOne} alt="" />
         </div>
         <div className={classNames(styles.image, styles.imageTwo)}>
           <img src={imageTwo} alt="" />
           <div className={styles.infoWrapper}>
             <div>
-              <p className={styles.infoTitle}>TYR-1281</p>
-              <p className={styles.infoPrice}>
+              <p>TYR-1281</p>
+              <p>
                 100
                 <SolanaIcon />
                 SOL

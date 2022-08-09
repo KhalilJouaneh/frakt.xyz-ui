@@ -22,8 +22,8 @@ const PoolsRaw: FC<PoolsRawProps> = ({ data, title }) => {
         <p className={styles.subtitle}>Name</p>
         <p className={styles.subtitle}>TVL</p>
       </div>
-      <div className={styles.table}>
-        <div className={styles.body}>
+      <div>
+        <div>
           {data.map(({ name, value }, idx) => (
             <div key={idx} className={styles.row}>
               <div className={styles.rowInfo}>

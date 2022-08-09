@@ -49,7 +49,7 @@ const Lending: FC<LendingProps> = ({ lendingPools, lastLoans }) => {
                 ({ nftName, apr, image, tvl, collectionsCount }, idx) => (
                   <div key={idx} className={styles.tableRow}>
                     <div className={styles.tableInfo}>
-                      <p className={styles.rowNumber}>{idx + 1}</p>
+                      <p>{idx + 1}</p>
                       {image?.length > 1 ? (
                         <div
                           className={classNames(styles.poolImage, {
@@ -64,7 +64,7 @@ const Lending: FC<LendingProps> = ({ lendingPools, lastLoans }) => {
                       ) : (
                         <img className={styles.rowImage} src={image} />
                       )}
-                      <p className={styles.rowTitle}>{nftName}</p>
+                      <p>{nftName}</p>
                     </div>
                     <div className={styles.tableStats}>
                       <p>{apr.toFixed(2)} %</p>

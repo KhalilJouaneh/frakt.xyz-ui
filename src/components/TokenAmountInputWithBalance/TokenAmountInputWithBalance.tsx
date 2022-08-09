@@ -24,7 +24,7 @@ export const TokenAmountInputWithBalance: FC<
   const onBalanceClick = () => setValue(balance);
 
   return (
-    <div className={classNames(styles.tokenAmountInputWithBalance, className)}>
+    <div className={classNames(className)}>
       <p className={styles.tokenAmountInputWithBalanceValue}>
         {customLabel || 'Balance:'}{' '}
         <span
