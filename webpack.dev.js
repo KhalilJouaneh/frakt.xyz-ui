@@ -72,14 +72,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|ico|webp)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192
-            }
-          }
-        ]
+        type: 'asset/resource'
       },
       {
         test: /\.svg$/,
