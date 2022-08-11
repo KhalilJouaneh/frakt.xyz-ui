@@ -6,6 +6,8 @@ import {
   HomePage,
   WalletPage,
   StatsPage,
+  LendPage,
+  LiquidationsPage,
   LoansPage,
   BorrowPage,
 } from '../pages';
@@ -17,6 +19,16 @@ interface Route {
 }
 
 export const routes: Route[] = [
+  {
+    exact: true,
+    path: PATHS.LEND,
+    component: LendPage,
+  },
+  {
+    exact: true,
+    path: PATHS.LIQUIDATIONS,
+    component: LiquidationsPage,
+  },
   {
     exact: true,
     path: PATHS.LOANS,
