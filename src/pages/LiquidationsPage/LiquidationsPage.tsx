@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
-import BorrowBanner from '../../components/BorrowBanner';
 import { Container } from '../../components/Layout';
 import Liquidations from './components/Liquidations';
 import styles from './LiquidationsPage.module.scss';
@@ -18,9 +17,10 @@ const LiquidationsPage: FC = () => {
         <div className={styles.header}>
           <div>
             <h1 className={styles.title}>Liquidations</h1>
-            <h2 className={styles.subtitle}>Liquidate loans</h2>
+            <h2 className={styles.subtitle}>
+              Buyout liquidated NFTs on discount
+            </h2>
           </div>
-          <BorrowBanner />
         </div>
         <Liquidations />
       </Container>

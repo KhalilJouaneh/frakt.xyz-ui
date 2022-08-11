@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
-import BorrowBanner from '../../components/BorrowBanner';
 import { Container } from '../../components/Layout';
 import LendingPool from './components/LendingPool';
 import styles from './LendPage.module.scss';
@@ -30,9 +29,10 @@ const LendPage: FC = () => {
         <div className={styles.header}>
           <div>
             <h1 className={styles.title}>Lend</h1>
-            <h2 className={styles.subtitle}>Lend money</h2>
+            <h2 className={styles.subtitle}>
+              Earn instant yield on SOL deposits
+            </h2>
           </div>
-          <BorrowBanner />
         </div>
         <>
           <div className={styles.sortWrapper}>
@@ -49,6 +49,7 @@ const LendPage: FC = () => {
                   render={({ field: { ref, ...field } }) => (
                     <Toggle
                       label="Staked only"
+                      className={styles.toggle}
                       name={InputControlsNames.SHOW_STAKED}
                       {...field}
                     />

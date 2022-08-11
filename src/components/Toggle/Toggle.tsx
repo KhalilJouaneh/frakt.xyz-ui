@@ -20,7 +20,7 @@ const Toggle = ({
   label = null,
 }: ToggleProps): JSX.Element => (
   <div
-    className={classNames(className, styles.filterToggle)}
+    className={classNames(styles.filterToggle, className)}
     onClick={() => onChange(!value)}
   >
     <Switch className={styles.toggle} checked={value} disabled={disabled} />
