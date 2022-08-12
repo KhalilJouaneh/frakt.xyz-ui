@@ -21,7 +21,7 @@ import { HEALTH_TOOLTIP_TEXT } from './constants';
 import {
   PartialRepayModal,
   usePartialRepayModal,
-} from '../../pages/LoansPage/components/PartialRepayModal';
+} from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { loansActions } from '../../state/loans/actions';
 import { commonActions } from '../../state/common/actions';
 

@@ -25,7 +25,7 @@ export const LoansList: FC<LoansListProps> = ({ className, loans }) => {
       isLoading={loading}
       next={next}
       wrapperClassName={classNames(styles.loansList, className)}
-      emptyMessage="Loans not found"
+      emptyMessage="No loans taken"
     >
       {loans.map((loan) => (
         <LoanCard key={loan?.mint} loan={loan} />

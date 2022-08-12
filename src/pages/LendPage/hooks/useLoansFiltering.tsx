@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { uniqBy, prop } from 'ramda';
 import moment from 'moment';
 
-import styles from '../components/MyLoansList/MyLoansList.module.scss';
+import styles from '../components/MyLoansTab/MyLoansTab.module.scss';
 import { selectLoanNfts } from '../../../state/loans/selectors';
 import { caclTimeToRepay } from '../../../utils/loans';
 import { ArrowDownSmallIcon } from '../../../icons';

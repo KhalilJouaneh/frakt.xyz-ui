@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Button from '../../../../components/Button';
-import { PATHS } from '../../../../constants';
-import { sendAmplitudeData } from '../../../../utils/amplitude';
+import Button from '../Button';
+import { PATHS } from '../../constants';
+import { sendAmplitudeData } from '../../utils/amplitude';
 import styles from './BorrowBanner.module.scss';
 
 const BorrowBanner: FC = () => {
