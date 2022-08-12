@@ -13,10 +13,10 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
-import styles from './MyLoansTab.module.scss';
+import styles from './MyLoansList.module.scss';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
 
-export const MyLoansTab: FC = () => {
+export const MyLoansList: FC = () => {
   const { connected } = useWallet();
 
   const [selectedCollections, setSelectedCollections] = useState<LoansValue[]>(

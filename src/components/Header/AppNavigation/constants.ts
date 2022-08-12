@@ -9,8 +9,18 @@ import {
 
 export const NAVIGATION_LINKS = [
   {
+    to: PATHS.LEND,
+    label: 'Lend',
+    event: 'navigation-lend',
+  },
+  {
+    to: PATHS.LIQUIDATIONS,
+    label: 'Liquidations',
+    event: 'navigation-liquidation',
+  },
+  {
     to: PATHS.LOANS,
-    label: 'Loans',
+    label: 'My Loans',
     event: 'navigation-loans',
   },
   {
