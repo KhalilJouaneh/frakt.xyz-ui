@@ -80,9 +80,9 @@ const usePaybackLoan = (loan: Loan) => {
 
   const onPayback = async () => {
     try {
-      const { isPriceBased } = loan;
+      const { isPriceBased, isGracePeriod } = loan;
 
-      if (isPriceBased) {
+      if (isPriceBased && !isGracePeriod) {
         openPartialRepayModal();
         return;
       }
