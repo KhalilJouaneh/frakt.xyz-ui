@@ -101,6 +101,7 @@ export const CollectionDropdown: FC<CollectionDropdownProps> = ({
         ...styles,
         padding: '6px 0',
         opacity: 1,
+        overflowX: 'hidden',
         '&::-webkit-scrollbar': {
           width: 5,
         },
