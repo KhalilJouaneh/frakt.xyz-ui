@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.scss';
+import { FC } from 'react';
 
 interface IButtonRegularProps {
   className?: string;
@@ -10,10 +11,10 @@ interface IButtonRegularProps {
   linkAttrs?: any;
   onClick?: (args: any) => any;
   children: any;
-  type?: 'primary' | 'secondary' | 'tertiary' | 'alternative';
+  type?: 'primary' | 'secondary' | 'tertiary';
 }
 
-const Button = ({
+const Button: FC<IButtonRegularProps> = ({
   className,
   disabled = false,
   isLink = false,
@@ -21,7 +22,7 @@ const Button = ({
   onClick = () => {},
   type = 'primary',
   children,
-}: IButtonRegularProps): JSX.Element => {
+}) => {
   if (isLink) {
     return (
       <Link

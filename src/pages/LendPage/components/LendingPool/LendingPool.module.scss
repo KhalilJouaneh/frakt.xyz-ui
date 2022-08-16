@@ -1,7 +1,6 @@
 .pool {
-  background: var(--color-gray-7);
-  border: 1px solid var(--gray-color-3);
-  border-radius: 10px;
+  background: var(--white-color);
+  border: var(--border-black-1);
   margin-bottom: 30px;
   width: 100%;
 }
@@ -9,7 +8,7 @@
 .poolCard {
   display: flex;
   align-items: center;
-  padding: 20px 25px 20px 20px;
+  padding: 32px;
   justify-content: space-between;
 
   @media screen and (max-width: 767px) {
@@ -19,13 +18,8 @@
 }
 
 .header {
-  display: flex;
-  gap: 20px;
-  justify-content: flex-end;
-  align-items: center;
-  border-bottom: 1px solid var(--gray-color-3);
-  padding: 10px 25px 10px 20px;
-  min-height: 43px;
+  border-bottom: var(--border-black-1);
+  min-height: 58px;
 }
 
 .tokenInfo {
@@ -71,9 +65,8 @@
   }
 }
 .image {
-  border-radius: 40px;
-  width: 40px;
-  height: 40px;
+  width: 58px;
+  height: 58px;
 }
 
 .chevronVisibleIcon {
@@ -96,7 +89,8 @@
 }
 
 .title {
-  font: var(--font-secondary);
+  color: var(--gray-color-6);
+  font: var(--font-text-6);
   text-transform: uppercase;
 }
 
@@ -113,6 +107,7 @@
 
 .statsValue {
   display: flex;
+  align-items: center;
   gap: 30px;
 
   @media screen and (max-width: 767px) {
@@ -170,14 +165,6 @@
 }
 
 .btn {
-  padding: 0;
-  justify-content: center;
-  height: 22px;
-  width: 100px;
-  font: var(--font-text-5);
-  font-weight: 400;
-  display: block;
-
   @media screen and (max-width: 767px) {
     justify-content: center;
     width: 100%;
@@ -212,6 +199,6 @@
   margin-left: 5px;
 
   svg {
-    fill: var(--accent-color-1);
+    fill: var(--blue-color);
   }
 }

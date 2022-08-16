@@ -105,7 +105,7 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
             <div className={styles.btnWrapper}>
               <Button
                 className={styles.btn}
-                type="tertiary"
+                type="primary"
                 onClick={() => openPoolModal(TabsNames.WITHDRAW)}
                 disabled={connected && !userDeposit?.depositAmount}
               >
@@ -113,7 +113,7 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
               </Button>
               <Button
                 className={styles.btn}
-                type="alternative"
+                type="secondary"
                 onClick={() => {
                   openPoolModal(TabsNames.DEPOSIT);
                   sendAmplitudeData('loans-deposit');

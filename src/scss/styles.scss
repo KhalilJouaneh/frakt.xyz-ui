@@ -4,8 +4,8 @@
 @import './abstracts/variables.scss';
 
 body {
-  background: var(--black-color);
-  color: var(--white-color);
+  background: var(--white-color);
+  color: var(--black-color);
   font: var(--font-text-3);
 }
 
@@ -14,7 +14,7 @@ h2,
 h3,
 h4,
 h5 {
-  color: var(--white-color);
+  color: var(--black-color);
 }
 
 :global {
@@ -22,10 +22,10 @@ h5 {
     svg.anticon {
       fill: var(--accent-color-1);
     }
-  
+
     background: var(--black-color) !important;
     border: 1px solid var(--gray-color-3);
-    border-radius: 0 !important;  
+    border-radius: 0 !important;
   }
 
   .ant-notification-notice-message {
@@ -43,14 +43,14 @@ h5 {
   .rc-tooltip {
     opacity: 1 !important;
   }
-  
+
   .rc-tooltip-placement-bottom .rc-tooltip-arrow,
   .rc-tooltip-placement-bottomLeft .rc-tooltip-arrow,
   .rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
     // border-bottom-color: var(--white-color);
     opacity: 0 !important;
   }
-  
+
   .rc-tooltip-inner {
     border-radius: 0 !important;
     border: none !important;
@@ -58,7 +58,7 @@ h5 {
     font-size: 16px !important;
     padding: 8px !important;
   }
-  
+
   .rc-tooltip.custom-animation-appear,
   .rc-tooltip.custom-animation-enter {
     opacity: 0 !important;
@@ -106,7 +106,7 @@ h5 {
       opacity: 0 !important;
     }
   }
-  
+
 }
 
 
