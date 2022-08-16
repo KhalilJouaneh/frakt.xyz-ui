@@ -51,7 +51,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
           <p className={styles.value}>{`${data.liquidationPrice} SOL`}</p>
         </div>
         <Button
-          type="alternative"
+          type="secondary"
           className={styles.btn}
           onClick={handleClick}
           disabled={disabled}

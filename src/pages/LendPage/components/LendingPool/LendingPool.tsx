@@ -50,11 +50,6 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
   return (
     <>
       <div className={styles.pool}>
-        <div className={styles.header}>
-          {connected && !!userDeposit?.depositAmount && (
-            <Rewards liquidityPool={liquidityPool} />
-          )}
-        </div>
         <div className={styles.poolCard}>
           <div className={styles.tokenInfo}>
             <LiquidityPoolImage liquidityPool={liquidityPool} />
@@ -163,48 +158,6 @@ const LiquidityPoolImage: FC<LendingPoolProps> = ({ liquidityPool }) => {
           style={idx !== 0 ? { marginLeft: '-25px' } : null}
         />
       ))}
-    </div>
-  );
-};
-
-const MIN_AVAILABLE_VALUE_FOR_HARVEST = 0.001;
-
-const Rewards: FC<LendingPoolProps> = ({ liquidityPool }) => {
-  const { userDeposit } = liquidityPool;
-
-  const isDisabledBtn =
-    userDeposit?.harvestAmount < MIN_AVAILABLE_VALUE_FOR_HARVEST;
-
-  const { harvestLiquidity } = useLoansPage();
-
-  const tooltipText = 'Harvest is available from 0.001 SOL';
-
-  return (
-    <div className={styles.rewards}>
-      <p className={styles.reward}>
-        Pending Rewards: {userDeposit?.harvestAmount?.toFixed(4)} SOL
-      </p>
-      {isDisabledBtn ? (
-        <Tooltip placement="top" overlay={tooltipText}>
-          <div>
-            <Button
-              className={classNames(styles.btn, styles.btnHarvest)}
-              disabled
-              type="tertiary"
-            >
-              Harvest
-            </Button>
-          </div>
-        </Tooltip>
-      ) : (
-        <Button
-          onClick={() => harvestLiquidity(liquidityPool?.pubkey)}
-          className={classNames(styles.btn, styles.btnHarvest)}
-          type="tertiary"
-        >
-          Harvest
-        </Button>
-      )}
     </div>
   );
 };

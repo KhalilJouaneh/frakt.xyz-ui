@@ -83,7 +83,6 @@ body input.valueInput {
 }
 
 .useMaxBtnContainer {
-  padding: 0 25px;
   display: flex;
   align-items: center;
 
@@ -119,7 +118,7 @@ body input.valueInput {
 }
 
 .tokenLogo {
-  width: 24px;
+  width: 14px;
   height: 24px;
   display: block;
   border-radius: 50%;
@@ -134,8 +133,8 @@ body input.valueInput {
 }
 
 .tokenName {
-  color: var(--white-color);
-  font: var(--font-text-3);
+  color: var(--black-color);
+  font: var(--font-text-4);
   white-space: nowrap;
 
   &_empty {
@@ -146,22 +145,11 @@ body input.valueInput {
 .selectTokenBtn {
   @include resetBtnStyle;
   height: 100%;
-  padding: 0 24px 0 24px;
+  padding: 0 12px 0 20px;
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
-
-  &::before {
-    position: absolute;
-    background: var(--gray-color-3);
-    left: 0;
-    top: 50%;
-    transform: translate(0, -50%);
-    content: '';
-    width: 1px;
-    height: 55%;
-  }
 
   @media screen and (max-width: 440px) {
     padding-left: 2px;

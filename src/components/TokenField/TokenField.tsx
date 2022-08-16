@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 
-import { ChevronDownIcon } from '../../icons';
+import { ChevronDownIcon, SolanaIcon } from '../../icons';
 import NumericInput from '../NumericInput';
 import styles from './styles.module.scss';
 
@@ -100,11 +100,7 @@ const TokenField: FC<TokenFieldProps> = ({
             })}
           >
             {currentToken ? (
-              <img
-                className={styles.tokenLogo}
-                src={currentToken.logoURI}
-                alt={currentToken.symbol}
-              />
+              <SolanaIcon width={16} />
             ) : (
               <div className={styles.noTokenImg} />
             )}

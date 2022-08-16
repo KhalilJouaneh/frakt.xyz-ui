@@ -42,13 +42,9 @@ const Button: FC<IButtonRegularProps> = ({
 
   return (
     <button
+      disabled={disabled}
       type="button"
-      className={classNames([
-        styles.root,
-        { [styles.disabled]: disabled },
-        styles[type],
-        className,
-      ])}
+      className={classNames([styles.root, styles[type], className])}
       onClick={onClick}
     >
       {children}

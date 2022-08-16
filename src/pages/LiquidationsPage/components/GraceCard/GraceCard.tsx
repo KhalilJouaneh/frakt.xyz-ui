@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import styles from './GraceCard.module.scss';
 import moment from 'moment';
-import { Timer } from '../../../../icons';
+import { SolanaIcon, Timer } from '../../../../icons';
 import { useCountdown } from '../../../../hooks';
 
 const GraceCard: FC<{ data }> = ({ data }) => {
@@ -18,11 +18,17 @@ const GraceCard: FC<{ data }> = ({ data }) => {
       <div className={styles.statsValue}>
         <div className={classNames(styles.totalValue, styles.opacity)}>
           <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>{`${data.valuation} SOL`}</p>
+          <p className={styles.value}>
+            {`${data.valuation}`}
+            <SolanaIcon />
+          </p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>{`${data.liquidationPrice} SOL`}</p>
+          <p className={styles.value}>
+            {`${data.liquidationPrice}`}
+            <SolanaIcon />
+          </p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>Grace period</p>

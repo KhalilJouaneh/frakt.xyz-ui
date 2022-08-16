@@ -11,15 +11,10 @@
   padding: 32px;
   justify-content: space-between;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 1180px) {
     flex-wrap: wrap;
     position: relative;
   }
-}
-
-.header {
-  border-bottom: var(--border-black-1);
-  min-height: 58px;
 }
 
 .tokenInfo {
@@ -28,16 +23,10 @@
   gap: 20px;
   flex-grow: 1;
 
-  @media screen and (max-width: 970px) {
+  @media screen and (max-width: 1180px) {
     align-items: start;
     flex-direction: column;
-  }
-
-  @media screen and (max-width: 887px) {
     max-width: 130px;
-  }
-
-  @media screen and (max-width: 767px) {
     flex-direction: row;
     max-width: 100%;
     align-items: center;
@@ -94,12 +83,11 @@
 }
 
 .value {
-  font: var(--font-text-3);
-  margin-top: 10px;
+  font: var(--font-text-8);
+  margin-top: 6px;
 
-  @media screen and (max-width: 767px) {
-    font: var(--font-text-5);
-    font-weight: 400;
+  @media screen and (max-width: 1180px) {
+    font-size: 14px;
     text-align: right;
   }
 }
@@ -109,7 +97,7 @@
   align-items: center;
   gap: 16px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 1180px) {
     order: 1;
     width: 100%;
     flex-direction: column;
@@ -144,7 +132,7 @@
 }
 
 .totalValue {
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 1180px) {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -156,41 +144,27 @@
 .btnWrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 1180px) {
+    width: 100%;
     margin-top: 20px;
   }
 }
 
 .btn {
-  @media screen and (max-width: 767px) {
+  padding: 0;
+  height: 26px;
+  width: 113px;
+
+  @media screen and (max-width: 1180px) {
     justify-content: center;
     width: 100%;
-    font: var(--font-btn-smallest);
   }
-}
 
-.btnHarvest {
-  @media screen and (max-width: 767px) {
-    width: 100px;
+  @media screen and (max-width: 768px) {
+    height: 40px;
   }
-}
-
-.rewards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding-top: 5px;
-  line-height: 1;
-
-  @media screen and (max-width: 767px) {
-    gap: 10px;
-  }
-}
-
-.reward {
-  font: var(--font-text-3);
 }
 
 .questionIcon {
