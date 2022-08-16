@@ -1,5 +1,5 @@
 .wrap {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.64);
   backdrop-filter: blur(6px);
 }
 
@@ -18,7 +18,8 @@
     .ant-modal-content,
     .ant-modal-header,
     .ant-modal-footer {
-      background-color: var(--black-color);
+      background-color: var(--white-color);
+      opacity: 0.87;
     }
 
     .ant-modal-header {

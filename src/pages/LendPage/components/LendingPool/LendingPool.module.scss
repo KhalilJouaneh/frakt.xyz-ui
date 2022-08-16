@@ -51,17 +51,16 @@
 .poolImageWithLabel {
   &::before {
     content: attr(data-collections-amount);
-    background: var(--accent-color-1);
-    color: var(--white-color);
+    background: var(--light-green-color);
+    color: var(--black-color);
     position: absolute;
-    font: var(--font-smallest);
-    padding: 2px 4px 4px 5px;
-    top: -4px;
-    left: 7px;
-    border-radius: 10px;
+    font: var(--font-text-5);
+    padding: 8px;
+    top: -17px;
+    left: 4px;
     transform: translateX(-13px);
-    width: 29px;
-    height: 16px;
+    width: 44px;
+    height: 33px;
   }
 }
 .image {
@@ -108,7 +107,7 @@
 .statsValue {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 16px;
 
   @media screen and (max-width: 767px) {
     order: 1;

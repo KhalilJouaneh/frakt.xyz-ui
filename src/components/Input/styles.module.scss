@@ -3,6 +3,7 @@ body .input {
   border-radius: 0;
   padding: 10px 16px;
   height: 48px;
+  color: var(--black-color);
 
   @media screen and (max-width: 375px) {
     height: 42px;

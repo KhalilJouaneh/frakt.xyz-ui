@@ -5,7 +5,6 @@ import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 import { ChevronDownIcon } from '../../icons';
 import NumericInput from '../NumericInput';
 import styles from './styles.module.scss';
-import { SOL_TOKEN } from '../../utils';
 
 export interface TokenFieldProps {
   tokensList?: TokenInfo[];
@@ -15,19 +14,15 @@ export interface TokenFieldProps {
   onValueChange: (nextValue: string) => void;
   modalTitle?: string;
   label?: string;
-  balance?: string;
-  balances?: {
-    [key: string]: string;
-  };
   style?: React.CSSProperties;
   className?: string;
   onUseMaxButtonClick?: () => void;
   error?: boolean;
-  lpTokenSymbol?: string;
   placeholder?: string;
   amountMaxLength?: number;
   disabled?: boolean;
   labelRight?: boolean;
+  lpBalance?: number;
 }
 
 const TokenField: FC<TokenFieldProps> = ({
@@ -37,16 +32,15 @@ const TokenField: FC<TokenFieldProps> = ({
   value,
   onValueChange,
   label,
-  balance,
   style,
   className,
   onUseMaxButtonClick,
   error,
   amountMaxLength,
-  lpTokenSymbol,
   placeholder = '0.0',
   labelRight,
   disabled = false,
+  lpBalance,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -64,11 +58,10 @@ const TokenField: FC<TokenFieldProps> = ({
           labelRight && styles.labelPositionRight,
         )}
       >
-        {!!label && <div className={styles.label}>{label}</div>}
-        {!!balance && (
-          <span className={styles.label}>
-            BALANCE: {balance} {currentToken?.symbol}
-          </span>
+        {!!label && (
+          <div className={styles.label}>
+            {label} {lpBalance && <span>{lpBalance} SOL</span>}
+          </div>
         )}
       </div>
 
@@ -106,11 +99,6 @@ const TokenField: FC<TokenFieldProps> = ({
               [styles.disabledTokens]: !tokensList || !onTokenChange,
             })}
           >
-            {lpTokenSymbol && (
-              <span className={classNames(styles.tokenName)}>
-                {lpTokenSymbol} / {SOL_TOKEN.symbol}
-              </span>
-            )}
             {currentToken ? (
               <img
                 className={styles.tokenLogo}
@@ -118,17 +106,15 @@ const TokenField: FC<TokenFieldProps> = ({
                 alt={currentToken.symbol}
               />
             ) : (
-              !lpTokenSymbol && <div className={styles.noTokenImg} />
+              <div className={styles.noTokenImg} />
             )}
-            {!lpTokenSymbol && (
-              <span
-                className={classNames(styles.tokenName, {
-                  [styles.tokenName_empty]: !currentToken,
-                })}
-              >
-                {currentToken?.symbol || '---'}
-              </span>
-            )}
+            <span
+              className={classNames(styles.tokenName, {
+                [styles.tokenName_empty]: !currentToken,
+              })}
+            >
+              {currentToken?.symbol || '---'}
+            </span>
             <ChevronDownIcon className={styles.arrowDownIcon} />
           </button>
         </div>

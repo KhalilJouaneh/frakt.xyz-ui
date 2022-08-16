@@ -30,7 +30,7 @@
   // --color-gray-075: #b4b4b4;
   --color-gray-3: #929292;
   --color-gray-4: #4d4d4d;
-  // --color-gray-5: #404040;
+  --color-gray-5: #efeff0;
   --color-gray-6: #1e1e1e;
   --color-gray-7: #191919;
   --color-gray-03: rgba(255, 255, 255, 0.3);
@@ -60,7 +60,7 @@
   --font-btn-mid: 400 24px var(--font-family-oxanium);
 
   --font-subtitle: 400 32px var(--font-family-oxanium);
-  --font-subtitle-2: 400 24px var(--font-family-oxanium);
+  --font-subtitle-2: 700 24px var(--font-family-syne);
 
   // --font-h1: 600 96px var(--font-family-oxanium);
   // --font-h2: 600 64px var(--font-family-oxanium);
@@ -78,9 +78,11 @@
   --font-text-2: 400 24px var(--font-family-oxanium);
   --font-text-3: 400 18px var(--font-family-oxanium);
   --font-text-4: 400 24px var(--font-family-inter);
-  --font-text-5: 700 14px var(--font-family-oxanium);
+  --font-text-5: 700 14px var(--font-family-syne);
   --font-text-6: 700 12px var(--font-family-syne);
   --font-text-7: 700 10px var(--font-family-oxanium);
+  --font-text-8: 400 16px var(--font-family-chakra);
+  --font-text-9: 500 12px var(--font-family-chakra);
 
   @media screen and (max-width: 1023px) {
     --font-title-1: 900 90px var(--font-family-inter);

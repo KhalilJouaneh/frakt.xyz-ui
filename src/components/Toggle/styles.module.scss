@@ -14,35 +14,29 @@ body {
       .ant-switch-handle {
         width: 39px;
         height: 8px;
-        top: -9px;
-        left: -1px;
+        top: 1px;
+        left: 1px;
       }
       .ant-switch-handle::before {
-        width: 24px;
-        height: 24px;
-        background: var(--gray-color-1);
+        width: 18px;
+        height: 18px;
+        background: var(--white-color);
         border-radius: 32px;
       }
 
-      width: 39px;
-      height: 8px;
-      border: 1px solid var(--gray-color-9);
+      width: 37px;
+      height: 20px;
       box-sizing: border-box;
-      background-color: transparent;
-      border-radius: 6px;
+      background-color: var(--gray-color-6);
+      border-radius: 10px;
       margin: 8px;
     }
   }
 
   .toggle:global.ant-switch-checked {
-    background: var(--gray-color-9);
-    border-color: var(--gray-color-9);
+    background: var(--light-green-color);
     .ant-switch-handle {
-      transform: translateX(19px);
-    }
-    .ant-switch-handle::before {
-      background: var(--accent-color-1);
-      box-shadow: 0 0 6px 1px var(--accent-shadow-color);
+      transform: translateX(24px);
     }
   }
 

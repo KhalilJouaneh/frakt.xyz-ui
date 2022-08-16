@@ -78,7 +78,7 @@ export const PoolModal: FC<PoolModalProps> = ({
             value={depositValue}
             onValueChange={onDepositValueChange}
             currentToken={SOL_TOKEN}
-            label={`BALANCE: ${solWalletBalance || 0} SOL`}
+            label={`BALANCE:`}
             lpBalance={Number(solWalletBalance)}
             error={notEnoughBalanceError}
             showMaxButton
@@ -97,12 +97,12 @@ export const PoolModal: FC<PoolModalProps> = ({
           />
           <div className={styles.info}>
             <span className={styles.infoTitle}>Deposit yield</span>
-            <span className={styles.infoValue}>{apr.toFixed(2)}%</span>
+            <span className={styles.infoValue}>{apr.toFixed(2)} %</span>
           </div>
           <div className={styles.info}>
             <span className={styles.infoTitle}>Utilization rate</span>
             <span className={styles.infoValue}>
-              {(utilizationRate || 0).toFixed(2)}%
+              {(utilizationRate || 0).toFixed(2)} %
             </span>
           </div>
           <Button
@@ -111,7 +111,7 @@ export const PoolModal: FC<PoolModalProps> = ({
               sendAmplitudeData('loans-confirm-deposit');
             }}
             className={styles.btn}
-            type="alternative"
+            type="secondary"
             disabled={isDisabledDepositBtn}
           >
             Deposit
@@ -124,7 +124,7 @@ export const PoolModal: FC<PoolModalProps> = ({
             value={withdrawValue}
             onValueChange={onWithdrawValueChange}
             currentToken={SOL_TOKEN}
-            label={`Your deposit: ${depositAmount} SOL`}
+            label={`Your deposit:`}
             lpBalance={depositAmount}
             error={notEnoughDepositError}
             className={styles.input}
@@ -146,7 +146,7 @@ export const PoolModal: FC<PoolModalProps> = ({
           <Button
             onClick={unstakeLiquidity}
             className={styles.btn}
-            type="alternative"
+            type="secondary"
             disabled={isDisabledWithdrawBtn}
           >
             Confirm

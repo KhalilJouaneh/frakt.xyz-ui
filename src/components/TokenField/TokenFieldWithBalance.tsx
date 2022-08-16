@@ -1,14 +1,14 @@
+import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 import TokenField, { TokenFieldProps } from './TokenField';
 
 interface TokenFieldWithBalanceProps extends TokenFieldProps {
   showMaxButton?: boolean;
-  lpTokenSymbol?: string;
   lpBalance?: number;
 }
 
-export const TokenFieldWithBalance = ({
+export const TokenFieldWithBalance: FC<TokenFieldWithBalanceProps> = ({
   tokensList = [],
   onTokenChange,
   currentToken,
@@ -24,8 +24,7 @@ export const TokenFieldWithBalance = ({
   disabled = false,
   lpBalance,
   labelRight,
-  lpTokenSymbol,
-}: TokenFieldWithBalanceProps): JSX.Element => {
+}) => {
   const { connected } = useWallet();
 
   const onUseMaxButtonClick = () => {
@@ -46,7 +45,7 @@ export const TokenFieldWithBalance = ({
       onUseMaxButtonClick={
         connected && showMaxButton ? onUseMaxButtonClick : null
       }
-      lpTokenSymbol={lpTokenSymbol}
+      lpBalance={lpBalance}
       error={error}
       placeholder={placeholder}
       disabled={disabled}

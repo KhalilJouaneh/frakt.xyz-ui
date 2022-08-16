@@ -4,45 +4,54 @@
       margin: 0;
     }
     .ant-slider-dot {
-      background-color: var(--color-gray-4);
-      border-color: var(--color-gray-4);
-      margin-top: -2px;
+      background-color: var(--color-gray-5);
+      border: 0;
+      margin-top: -1px;
       height: 10px;
       width: 10px;
     }
+    .ant-slider-mark {
+      top: 22px !important;
+    }
+    .ant-slider-mark-text-active {
+      color: var(--black-color) !important;
+    }
     .ant-slider-mark-text {
-      font: var(--font-text-5);
+      color: var(--gray-color-6);
+      font: var(--font-text-8);
     }
     .ant-slider-mark-text:first-child {
-      left: 5px !important;
+      left: 7px !important;
     }
     .ant-slider-mark-text:last-child {
-      left: 97.5% !important;
+      left: 96.5% !important;
+      width: 43px;
     }
     .ant-slider-dot-active {
-      background-color: var(--accent-color-1);
-      border-color: var(--accent-color-1);
+      background-color: var(--light-green-color);
+      border: var(--border-black-1);
     }
     .ant-slider-rail {
-      background-color: var(--color-gray-4);
-      height: 2px;
+      background-color: var(--color-gray-5);
+      height: 4px;
     }
     .ant-slider-track {
-      background-color: var(--accent-color-1);
-      height: 2px;
+      background-color: var(--light-green-color);
+      border: var(--border-black-1);
+      height: 4px;
     }
     .ant-slider:hover .ant-slider-rail {
-      background-color: var(--color-gray-4);
+      background-color: var(--color-gray-5);
     }
     .ant-slider:hover .ant-slider-track {
-      background-color: var(--accent-color-1);
+      background-color: var(--light-green-color);
     }
     .ant-slider:hover .ant-slider-handle {
-      border-color: var(--accent-color-1);
+      border: var(--border-black-1);
     }
     .ant-slider-handle {
-      background-color: var(--accent-color-1);
-      border-color: var(--accent-color-1);
+      background-color: var(--light-green-color);
+      border-color: var(--light-green-color);
       position: relative;
       margin-top: -8px;
       height: 18px;
@@ -51,11 +60,11 @@
       &:focus,
       &:hover {
         box-shadow: unset;
-        border-color: var(--accent-color-1);
+        border: var(--border-black-1);
       }
     }
     .ant-slider-handle.ant-tooltip-open {
-      border-color: var(--accent-color-1);
+      border-color: var(--light-green-color);
     }
   }
 }
@@ -63,34 +72,37 @@
 .withTooltip {
   :global {
     .ant-slider-handle {
-      background-color: var(--accent-color-1);
-      border-color: var(--accent-color-1);
+      background-color: var(--light-green-color);
+      border: var(--border-black-1);
       position: relative;
       margin-top: -8px;
       height: 18px;
       width: 18px;
 
       &::before {
-        background-color: var(--color-gray-7);
-        width: 40px;
-        height: 25px;
-        content: attr(aria-valuenow) '%';
+        content: attr(aria-valuenow) ' %';
+        background: rgba(118, 118, 128, 1);
+        border-radius: 4px;
+        width: 43px;
+        height: 22px;
         position: absolute;
-        font: var(--font-text-5);
+        font: var( --font-text-9);
         color: var(--white-color);
         transform: translateX(-13px);
         text-align: center;
         padding: 4px 0;
-        top: -32px;
+        top: -29px;
         left: 0px;
       }
       &::after {
         content: '';
         position: absolute;
         top: -8px;
-        left: -1px;
-        border: 8px solid transparent;
-        border-top: 6px solid var(--color-gray-7);
+        left: 2px;
+        border: 6px solid transparent;
+        border-top: 6px solid rgba(118, 118, 128, 1);
+        width: 12px;
+        height: 6px;
       }
     }
   }

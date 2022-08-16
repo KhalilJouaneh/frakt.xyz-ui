@@ -63,7 +63,7 @@ export const SolanaIcon = ({
 }: React.SVGProps<SVGSVGElement>): JSX.Element => (
   <svg
     className={className || ''}
-    width={width || '16'}
+    width={width || '13'}
     viewBox="0 0 16 15"
     fill="none"
   >

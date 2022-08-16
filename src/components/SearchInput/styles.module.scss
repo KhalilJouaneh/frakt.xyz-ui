@@ -1,20 +1,20 @@
 html body .input {
-  height: 28px;
+  height: 31px;
   padding: 0;
 
   &,
   &:not(.ant-input-affix-wrapper-disabled):hover,
   &:hover {
     border: 0;
-    border-bottom: 1px solid var(--gray-color-3);
+    border-bottom: 1px solid var(--black-color);
   }
 
   &:global(.ant-input-affix-wrapper-focused:hover),
   &:global(.ant-input-affix-wrapper-focused) {
-    border-bottom: 1px solid var(--accent-color-1);
+    border-bottom: 1px solid var(--black-color);
     :local(.search) {
       svg {
-        color: var(--white-color);
+        color: var(--gray-color-6);
       }
     }
   }
@@ -30,7 +30,13 @@ html body .input {
     }
   }
   input {
-    font-size: 18px;
+    color: var(--gray-color-6);
+    font-size: 20px;
+    font-family: var(--font-family-chakra);
+
+    &::placeholder {
+      color: var(--gray-color-6);
+    }
   }
 }
 
@@ -38,7 +44,7 @@ html body .input {
   svg {
     font-size: 15px;
     transition: color var(--transition-1);
-    color: var(--gray-color-3);
+    color: var(--gray-color-6);
     margin-right: 5px;
   }
 }

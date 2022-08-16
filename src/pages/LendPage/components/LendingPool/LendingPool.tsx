@@ -13,6 +13,7 @@ import Tooltip from '../../../../components/Tooltip';
 import { commonActions } from '../../../../state/common/actions';
 import { LiquidityPool } from '../../../../state/loans/types';
 import { sendAmplitudeData } from '../../../../utils/amplitude';
+import { SolanaIcon } from '../../../../icons';
 
 interface LendingPoolProps {
   liquidityPool: LiquidityPool;
@@ -62,7 +63,9 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
           <div className={styles.statsValue}>
             <div className={styles.totalValue}>
               <p className={styles.title}>Total liquidity</p>
-              <p className={styles.value}>{totalLiquidity.toFixed(2)} SOL</p>
+              <p className={styles.value}>
+                {totalLiquidity.toFixed(2)} <SolanaIcon />
+              </p>
             </div>
             <div className={styles.totalValue}>
               <p className={styles.title}>
@@ -90,14 +93,16 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
             </div>
             <div className={styles.totalValue}>
               <p className={styles.title}>Total borrowed</p>
-              <p className={styles.value}>{totalBorrowed.toFixed(2)} SOL</p>
+              <p className={styles.value}>
+                {totalBorrowed.toFixed(2)} <SolanaIcon />
+              </p>
             </div>
             {connected && (
               <>
                 <div className={styles.totalValue}>
                   <p className={styles.title}>Your liquidity</p>
                   <p className={styles.value}>
-                    {userDeposit?.depositAmount.toFixed(2) || 0} SOL
+                    {userDeposit?.depositAmount.toFixed(2) || 0} <SolanaIcon />
                   </p>
                 </div>
               </>
