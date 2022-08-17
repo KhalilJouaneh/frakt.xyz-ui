@@ -15,7 +15,7 @@ import LiquidationsList from '../LiquidationsList';
 import styles from './Liquidations.module.scss';
 import GraceCard from '../GraceCard/GraceCard';
 import WonRaffleCard from '../WonRaffleCard';
-import NoGraceList from '../NoGraceList';
+import EmptyList from '../EmptyList';
 import { RaffleNotifications } from '../../../../state/liquidations/types';
 import {
   selectSocket,
@@ -140,13 +140,17 @@ const Liquidations: FC = () => {
               dispatch(liquidationsActions.fetchRaffleList(params))
             }
           >
-            {raffleList.map((item) => (
-              <LiquidationRaffleCard
-                key={item.nftMint}
-                data={item}
-                disabled={lotteryTickets.quantity < 1}
-              />
-            ))}
+            {raffleList.length ? (
+              raffleList.map((item) => (
+                <LiquidationRaffleCard
+                  key={item.nftMint}
+                  data={item}
+                  disabled={lotteryTickets.quantity < 1}
+                />
+              ))
+            ) : (
+              <EmptyList text="No ongoing raffles at the moment" />
+            )}
           </LiquidationsList>
         ) : (
           <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
@@ -162,7 +166,7 @@ const Liquidations: FC = () => {
               <GraceCard key={item.nftMint} data={item} />
             ))
           ) : (
-            <NoGraceList />
+            <EmptyList text="No loans on grace at the moment" />
           )}
         </LiquidationsList>
       )}

@@ -94,10 +94,20 @@ const updateWonRaffleListSaga = function* (action) {
 const fetchCollectionsListSaga = function* () {
   yield put(liquidationsActions.fetchCollectionsListPending());
   try {
-    const data = yield call(networkRequest, {
-      url: `https://${process.env.BACKEND_DOMAIN}/collection`,
+    const { raffleCollections, graceCollections } = yield all({
+      raffleCollections: call(networkRequest, {
+        url: `https://${process.env.BACKEND_DOMAIN}/liquidation/raffle-collections`,
+      }),
+      graceCollections: call(networkRequest, {
+        url: `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-collections`,
+      }),
     });
-    yield put(liquidationsActions.fetchCollectionsListFulfilled(data));
+    yield put(
+      liquidationsActions.fetchCollectionsListFulfilled({
+        raffleCollections,
+        graceCollections,
+      }),
+    );
   } catch (error) {
     yield put(liquidationsActions.fetchCollectionsListFailed(error));
   }
