@@ -1,0 +1,12 @@
+.sortingBtn {
+  display: flex;
+  gap: 4px;
+}
+
+.filterBtn {
+  display: flex;
+}
+
+.filterBtnActive {
+  background-color: var(--light-green-color);
+}

@@ -15,6 +15,11 @@ type FilterFormFieldsValues = {
   [FilterFormInputsNames.SHOW_STAKED]: boolean;
 };
 
+export enum SORT_ORDER {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
 type PoolsSortValue = {
   label: JSX.Element;
   value: string;
@@ -36,13 +41,15 @@ type UseLendingPoolsFiltering = () => {
   pools: LiquidityPool[];
   setSearch: (value?: string) => void;
   showStakedOnlyToggle: boolean;
+  setValue?: any;
+  sort?: PoolsSortValue;
 };
 
 export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
   const liquidityPools = useSelector(selectLiquidityPools);
   const { connected } = useWallet();
 
-  const { control, watch } = useForm({
+  const { control, watch, setValue } = useForm({
     defaultValues: {
       [FilterFormInputsNames.SHOW_STAKED]: false,
       [FilterFormInputsNames.SORT]: SORT_VALUES[0],
@@ -56,6 +63,7 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
   }, 300);
 
   const sort = watch(FilterFormInputsNames.SORT);
+
   const showStaked = watch(FilterFormInputsNames.SHOW_STAKED);
 
   const filteredPools = useMemo(() => {
@@ -76,7 +84,7 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
         })
         .sort((poolA, poolB) => {
           if (sortField === SortField.NAME) {
-            if (sortOrder === 'asc')
+            if (sortOrder === SORT_ORDER.ASC)
               return poolA.name.localeCompare(poolB.name);
             return poolB.name.localeCompare(poolA.name);
           }
@@ -84,14 +92,14 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
             return compareNumbers(
               poolA.depositApr,
               poolB.depositApr,
-              sortOrder === 'asc',
+              sortOrder === SORT_ORDER.ASC,
             );
           }
           if (sortField === SortField.TOTAL_LIQUIDITY) {
             return compareNumbers(
               poolA.totalLiquidity,
               poolB.totalLiquidity,
-              sortOrder === 'asc',
+              sortOrder === SORT_ORDER.ASC,
             );
           }
           return 0;
@@ -99,66 +107,42 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
     }
 
     return [];
-  }, [liquidityPools, sort, searchString, showStaked]);
+  }, [liquidityPools, sort, searchString, showStaked, setValue]);
 
   return {
     control,
     pools: filteredPools,
     setSearch: searchDebounced,
     showStakedOnlyToggle: connected,
+    setValue,
+    sort,
   };
 };
 
 export const SORT_VALUES: PoolsSortValue[] = [
   {
     label: (
-      <span className={styles.sortName}>
+      <span>
         Liquidity
         <ArrowDownSmallIcon className={styles.arrowDown} />
       </span>
     ),
-    value: 'totalLiquidity_asc',
+    value: 'totalLiquidity_',
   },
   {
     label: (
-      <span className={styles.sortName}>
-        Liquidity
-        <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'totalLiquidity_desc',
-  },
-
-  {
-    label: (
-      <span className={styles.sortName}>
+      <span>
         Name <ArrowDownSmallIcon className={styles.arrowDown} />
       </span>
     ),
-    value: 'name_asc',
+    value: 'name_',
   },
   {
     label: (
-      <span className={styles.sortName}>
-        Name <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'name_desc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
+      <span>
         APR <ArrowDownSmallIcon className={styles.arrowDown} />
       </span>
     ),
-    value: 'apr_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        APR <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'apr_desc',
+    value: 'apr_',
   },
 ];

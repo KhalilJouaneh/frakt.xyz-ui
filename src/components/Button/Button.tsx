@@ -11,7 +11,7 @@ interface IButtonRegularProps {
   linkAttrs?: any;
   onClick?: (args: any) => any;
   children: any;
-  type?: 'primary' | 'secondary' | 'tertiary';
+  type?: 'primary' | 'secondary' | 'tertiary' | 'alternative';
 }
 
 const Button: FC<IButtonRegularProps> = ({
@@ -30,7 +30,6 @@ const Button: FC<IButtonRegularProps> = ({
           styles.root,
           styles.link,
           className,
-          { [styles.disabled]: disabled },
           styles[type],
         ])}
         {...linkAttrs}

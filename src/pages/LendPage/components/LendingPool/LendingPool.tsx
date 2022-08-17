@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { PoolModal } from '../../../../components/PoolModal';
-import { useLoansPage } from '../../hooks';
 import Button from '../../../../components/Button';
 import styles from './LendingPool.module.scss';
 import { TabsNames } from '../../../../components/PoolModal/usePoolModal';
