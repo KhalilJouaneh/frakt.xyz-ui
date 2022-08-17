@@ -157,6 +157,7 @@ const Liquidations: FC = () => {
         ))}
       {tabValue === LiquidationsTabsNames.GRACE && (
         <LiquidationsList
+          isGraceList
           fetchItemsFunc={(params) =>
             dispatch(liquidationsActions.fetchGraceList(params))
           }

@@ -2,7 +2,11 @@ import { FC, ReactNode } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import { SORT_VALUES, useLiquidationsPage } from '../Liquidations';
+import {
+  SORT_VALUES as RAW_SORT_VALUES,
+  SORT_VALUES_WITH_GRACE,
+  useLiquidationsPage,
+} from '../Liquidations';
 import {
   selectLotteryTickets,
   selectRaffleCollectionsDropdownData,
@@ -18,6 +22,7 @@ import { TicketsCounter } from '../TicketsCounter';
 interface LiquidationsListProps {
   children: ReactNode;
   withRafflesInfo?: boolean;
+  isGraceList?: boolean;
   fetchItemsFunc?: (params: FetchItemsParams) => void;
 }
 
@@ -25,6 +30,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   children,
   withRafflesInfo,
   fetchItemsFunc,
+  isGraceList,
 }) => {
   const { control, setSearch, setCollections } =
     useLiquidationsPage(fetchItemsFunc);
@@ -42,6 +48,8 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
         label: <span className={styles.sortName}>{item.label}</span>,
         value: item.value,
       }));
+
+  const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
 
   return (
     <>

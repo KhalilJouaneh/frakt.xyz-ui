@@ -130,6 +130,26 @@ export const SORT_VALUES: LiquiditionsSortValue[] = [
   },
 ];
 
+export const SORT_VALUES_WITH_GRACE = [
+  ...SORT_VALUES,
+  {
+    label: (
+      <span className={styles.sortName}>
+        Grace Period <ArrowDownSmallIcon className={styles.arrowUp} />
+      </span>
+    ),
+    value: 'startedAt_asc',
+  },
+  {
+    label: (
+      <span className={styles.sortName}>
+        Grace Period <ArrowDownSmallIcon className={styles.arrowDown} />
+      </span>
+    ),
+    value: 'startedAt_desc',
+  },
+];
+
 export const LIQUIDATIONS_TABS: Tab[] = [
   {
     label: 'Ongoing raffles',
