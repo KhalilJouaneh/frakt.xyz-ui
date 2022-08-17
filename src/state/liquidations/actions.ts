@@ -80,7 +80,10 @@ export const liquidationsActions = {
   ),
   fetchCollectionsListFulfilled: createCustomAction(
     liquidationsTypes.FETCH_COLLECTIONS_LIST__FULFILLED,
-    (response: CollectionsListItem[]) => ({ payload: response }),
+    (response: {
+      raffleCollections: CollectionsListItem[];
+      graceCollections: CollectionsListItem[];
+    }) => ({ payload: response }),
   ),
   fetchCollectionsListFailed: createCustomAction(
     liquidationsTypes.FETCH_COLLECTIONS_LIST__FAILED,

@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { SORT_VALUES, useLiquidationsPage } from '../Liquidations';
 import {
   selectLotteryTickets,
-  selectCollectionsDropdownData,
+  selectRaffleCollectionsDropdownData,
+  selectGraceCollectionsDropdownData,
 } from '../../../../state/liquidations/selectors';
 import { CollectionDropdown } from '../../../../components/CollectionDropdown';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
@@ -29,13 +30,18 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
     useLiquidationsPage(fetchItemsFunc);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
-  const collectionsListDropdownData = useSelector(
-    selectCollectionsDropdownData,
+  const collectionsRaffleListDropdownData = useSelector(
+    selectRaffleCollectionsDropdownData,
   );
-  const SORT_COLLECTIONS_VALUES = collectionsListDropdownData.map((item) => ({
-    label: <span className={styles.sortName}>{item.label}</span>,
-    value: item.value,
-  }));
+  const collectionsGraceListDropdownData = useSelector(
+    selectGraceCollectionsDropdownData,
+  );
+  const SORT_COLLECTIONS_VALUES = withRafflesInfo
+    ? collectionsRaffleListDropdownData
+    : collectionsGraceListDropdownData.map((item) => ({
+        label: <span className={styles.sortName}>{item.label}</span>,
+        value: item.value,
+      }));
 
   return (
     <>
