@@ -32,8 +32,10 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   fetchItemsFunc,
   isGraceList,
 }) => {
-  const { control, setSearch, setCollections } =
-    useLiquidationsPage(fetchItemsFunc);
+  const { control, setSearch, setCollections } = useLiquidationsPage(
+    fetchItemsFunc,
+    isGraceList,
+  );
 
   const lotteryTickets = useSelector(selectLotteryTickets);
   const collectionsRaffleListDropdownData = useSelector(
