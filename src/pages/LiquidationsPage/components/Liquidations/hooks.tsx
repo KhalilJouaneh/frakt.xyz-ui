@@ -34,7 +34,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const [collections, setCollections] = useState<[]>([]);
   const stringRef = useRef(null);
 
-  const defaultSortIndex = isGraceList ? 5 : 3;
+  const defaultSortIndex = isGraceList ? 4 : 3;
 
   const { control, watch } = useForm({
     defaultValues: {
