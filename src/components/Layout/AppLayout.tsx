@@ -29,6 +29,8 @@ export const Layout: FC<LayoutProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
+  return <div>{children}</div>;
+
   return (
     <div className={classNames(className)}>
       <Header

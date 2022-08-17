@@ -1,0 +1,77 @@
+@import '../../scss/abstracts/mixins';
+@import '../../scss/abstracts/typography';
+
+@mixin wrapper {
+  padding: 32px 16px;
+}
+
+@mixin listItem {
+  border: none;
+  background-color: transparent;
+  height: 34px;
+  padding: 8px;
+  @include flex;
+  @include gapX(8px);
+  user-select: none;
+  & > * {
+    cursor: pointer;
+  }
+}
+
+.container {
+  position: fixed;
+  top: 64px;
+  width: 177px;
+  height: calc(100vh - 64px);
+  background-color: #F2F2F7;
+  border-right: 1px solid #000000;
+  @include flex(column, nowrap, flex-start, flex-start);  
+}
+
+.navigation {
+  width: 100%;
+  border-bottom: 1px solid #AEAEB2;
+  @include wrapper;
+  @include text-menu-item;
+
+  & > * {
+    @include listItem;
+    color: black !important;
+  }
+
+  & .active {
+    border: 1px solid #AEAEB2;
+    background: #FFFFFF;
+    user-select: none;
+    & > * {
+      cursor: default;
+    }
+  }
+}
+
+.section {
+  @include text-menu-section;
+  cursor: default;
+  margin-bottom: 16px;
+}
+
+.community {
+  width: 100%;
+  @include wrapper;
+  @include text-menu-item;
+  padding-bottom: 0;
+
+  & > div {
+   @include listItem;
+  }
+}
+
+.documentation {
+  width: 100%;
+  @include wrapper;
+  @include text-menu-item;
+
+  & > div {
+   @include listItem;
+  }
+}

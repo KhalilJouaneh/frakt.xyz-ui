@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { routes } from './constants/routes';
+import Header from './componentsNew/Header';
+import Navigation from './componentsNew/Navigation';
 import {
   useConnectionInit,
   useAppInit,
@@ -18,6 +20,8 @@ export const Router = (): JSX.Element => {
 
   return (
     <BrowserRouter>
+      <Route component={Header} />
+      <Route component={Navigation} />
       <Switch>
         {routes.map(({ exact, path, component: Component }, index) => (
           <Route

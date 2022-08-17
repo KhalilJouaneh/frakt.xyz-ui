@@ -1,0 +1,27 @@
+@import '../../scss/abstracts/mixins';
+@import '../../scss/abstracts/typography';
+
+.container {
+  width: 194px;
+  height: 48px;
+  border: 1px solid #9CFF1F;
+  background-color: #F5FFE9;
+  @include flex;
+}
+
+.icon {
+  width: 40px;
+  height: 48px;
+  @include flex(row, nowrap, center, center);
+  border-right: 1px solid #9CFF1F;
+  cursor: pointer;
+}
+
+.text {
+  width: 154px;
+  height: 48px;
+  @include flex(row, nowrap, center, center);
+  @include text-header-button;
+  cursor: pointer;
+  user-select: none;
+}
