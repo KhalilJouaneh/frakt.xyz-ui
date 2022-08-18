@@ -3,6 +3,8 @@ import classNames from 'classnames';
 
 import styles from './ShortTermFields.module.scss';
 import { BorrowNft } from '../../../../state/loans/types';
+import Tooltip from '../../../../components/Tooltip';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface ShortTermFields {
   nft: BorrowNft;
@@ -53,7 +55,16 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
       </div>
 
       <div className={styles.staticValue} style={{ marginBottom: 10 }}>
-        <p className={styles.staticValueTitle}>Fee</p>
+        <div className={styles.tooltipWrapper}>
+          <p className={styles.staticValueTitle}>Fee</p>
+          <Tooltip
+            placement="bottom"
+            overlay="The dept accrues daily throughout the duration, and this fee is to be paid if the loan keeps active until the last day"
+          >
+            <QuestionCircleOutlined className={styles.questionIcon} />
+          </Tooltip>
+        </div>
+
         <p className={styles.staticValueData}>{fee} SOL</p>
       </div>
 
