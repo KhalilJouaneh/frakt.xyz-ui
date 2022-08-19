@@ -24,7 +24,7 @@ import {
 } from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { loansActions } from '../../state/loans/actions';
 import { commonActions } from '../../state/common/actions';
-import { SolanaIcon } from '../../icons';
+import { SolanaIcon, Timer } from '../../icons';
 
 interface LoanCardProps {
   loan: Loan;
@@ -275,15 +275,19 @@ const TimeToReturn: FC<{
 
   return (
     <div className={classNames(styles.valueInfo, styles.valueInfoHealth)}>
-      <div className={styles.countdown}>
-        <p>{timeLeft.days}d</p>
-        <span className={styles.timeDelim}>:</span>
-        <p>{timeLeft.hours}h</p>
-        <span className={styles.timeDelim}>:</span>
-        <p>{timeLeft.minutes}m</p>
-        <span className={styles.timeDelim}>:</span>
-        <p>{timeLeft.seconds}s</p>
+      <div className={styles.timerWrapper}>
+        <Timer className={styles.icon} />
+        <div className={styles.countdown}>
+          <p>{timeLeft.days}d</p>
+          <span className={styles.timeDelim}>:</span>
+          <p>{timeLeft.hours}h</p>
+          <span className={styles.timeDelim}>:</span>
+          <p>{timeLeft.minutes}m</p>
+          <span className={styles.timeDelim}>:</span>
+          <p>{timeLeft.seconds}s</p>
+        </div>
       </div>
+
       <LoanHealthProgress healthPercent={progress} />
     </div>
   );

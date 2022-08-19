@@ -37,7 +37,7 @@
 .value {
   display: flex;
   align-items: baseline;
-  padding-top: 10px;
+  padding-top: 4px;
   gap: 3px;
 }
 
@@ -93,7 +93,11 @@
 }
 
 .icon {
-  margin-top: 5px;
+  margin-top: 2px;
+
+  path {
+    fill: var(--gray-color-6);
+  }
 }
 
 .timeProgressWrapper {
@@ -115,7 +119,7 @@
 .countdown {
   display: flex;
   align-items: center;
-  padding-top: 10px;
+  padding-top: 4px;
   gap: 5px;
 
   @media screen and (max-width: 500px) {

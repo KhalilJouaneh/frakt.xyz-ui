@@ -65,6 +65,20 @@
   margin-top: 20px;
 }
 
+.timerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon {
+  margin-top: 2px;
+
+  path {
+    fill: var(--gray-color-6);
+  }
+}
+
 .countdown {
   display: flex;
   align-items: center;

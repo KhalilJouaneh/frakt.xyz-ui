@@ -59,20 +59,16 @@ export const PoolModal: FC<PoolModalProps> = ({
       width={500}
       footer={false}
       closable={false}
+      className={styles.modal}
     >
       <div className={styles.closeModalSection}>
         <div className={styles.closeModalIcon} onClick={onCancel}>
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
-      <Tabs
-        className={styles.tabs}
-        tabs={poolTabs}
-        value={tabValue}
-        setValue={setTabValue}
-      />
+      <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
       {tabValue === TabsNames.DEPOSIT && (
-        <>
+        <div className={styles.content}>
           <TokenFieldWithBalance
             className={styles.input}
             value={depositValue}
@@ -116,10 +112,10 @@ export const PoolModal: FC<PoolModalProps> = ({
           >
             Deposit
           </Button>
-        </>
+        </div>
       )}
       {tabValue === TabsNames.WITHDRAW && (
-        <>
+        <div className={styles.content}>
           <TokenFieldWithBalance
             value={withdrawValue}
             onValueChange={onWithdrawValueChange}
@@ -151,7 +147,7 @@ export const PoolModal: FC<PoolModalProps> = ({
           >
             Confirm
           </Button>
-        </>
+        </div>
       )}
     </Modal>
   );
