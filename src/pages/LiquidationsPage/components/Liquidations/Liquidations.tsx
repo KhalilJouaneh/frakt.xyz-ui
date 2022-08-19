@@ -129,7 +129,6 @@ const Liquidations: FC = () => {
         tabs={liquidationTabs}
         value={tabValue}
         setValue={setTabValue}
-        type="secondary"
         {...renderTip}
       />
       {tabValue === LiquidationsTabsNames.LIQUIDATIONS &&

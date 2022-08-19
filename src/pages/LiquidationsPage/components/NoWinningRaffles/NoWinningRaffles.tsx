@@ -9,7 +9,7 @@ const NoWinningRaffles: FC<{ onClick }> = ({ onClick }) => {
       <h2 className={styles.title}>
         You haven{`'`}t won the lottery - yet! ;{`)`} Want to give it a try?
       </h2>
-      <Button type="alternative" className={styles.btn} onClick={onClick}>
+      <Button type="secondary" className={styles.btn} onClick={onClick}>
         I{`'`}m feeling lucky
       </Button>
     </div>

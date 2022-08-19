@@ -30,7 +30,7 @@ export const MyLoansList: FC = () => {
   });
 
   return (
-    <div className={styles.wrapper}>
+    <div>
       {connected ? (
         <>
           <div className={styles.sortWrapper}>

@@ -1,13 +1,11 @@
 .container {
-  padding-top: 64px;
-  padding-bottom: 64px;
-  
+  padding-top: 96px;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
+  justify-content: center;
+  margin-bottom: 48px;
 
   @media screen and (max-width: 1023px) {
     margin-top: 30px;
@@ -18,11 +16,12 @@
 .title {
   font: var(--font-title-2);
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .subtitle {
-  font: var(--font-text-2);
-  margin-bottom: 18px;
+  font: var(--font-text-1);
+  text-align: center;
 }
 
 .sortWrapper {

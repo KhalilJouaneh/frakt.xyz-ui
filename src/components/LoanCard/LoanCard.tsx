@@ -24,6 +24,7 @@ import {
 } from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { loansActions } from '../../state/loans/actions';
 import { commonActions } from '../../state/common/actions';
+import { SolanaIcon } from '../../icons';
 
 interface LoanCardProps {
   loan: Loan;
@@ -150,11 +151,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />
-            <Button
-              type="alternative"
-              className={styles.btn}
-              onClick={onPayback}
-            >
+            <Button type="secondary" className={styles.btn} onClick={onPayback}>
               Repay
             </Button>
           </div>
@@ -200,8 +197,7 @@ const LoanCardValues: FC<{
           <p className={styles.valueTitle}>Borrowed</p>
           <div className={styles.valueInfo}>
             <p>{loanValue && loanValue.toFixed(2)}</p>
-            <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
-            <p>{SOL_TOKEN.symbol}</p>
+            <SolanaIcon />
           </div>
         </div>
 
@@ -215,8 +211,7 @@ const LoanCardValues: FC<{
                 ? liquidationPrice.toFixed(2)
                 : repayValue && repayValue.toFixed(2)}
             </p>
-            <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
-            <p>{SOL_TOKEN.symbol}</p>
+            <SolanaIcon />
           </div>
         </div>
       </div>

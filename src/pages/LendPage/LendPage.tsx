@@ -44,7 +44,7 @@ const LendPage: FC = () => {
           <SearchInput
             onChange={(event) => setSearch(event.target.value || '')}
             className={styles.searchInput}
-            placeholder="Search by pool name"
+            placeholder="Search by name"
           />
           <div style={{ position: 'relative' }}>
             <Button

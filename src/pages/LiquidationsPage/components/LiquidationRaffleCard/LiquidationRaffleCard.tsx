@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import Button from '../../../../components/Button';
-import { Ticket } from '../../../../icons';
+import { SolanaIcon, Ticket } from '../../../../icons';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
 import { selectTxRaffleTryStatus } from '../../../../state/liquidations/selectors';
 import { useOnFulfilled } from '../../../../hooks';
@@ -44,11 +44,16 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
       <div className={styles.statsValue}>
         <div className={classNames(styles.totalValue, styles.opacity)}>
           <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>{`${data.nftFloorPrice} SOL`}</p>
+          <p className={styles.value}>
+            {`${data.nftFloorPrice}`} <SolanaIcon />
+          </p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>{`${data.liquidationPrice} SOL`}</p>
+          <p className={styles.value}>
+            {`${data.liquidationPrice}`}
+            <SolanaIcon />
+          </p>
         </div>
         <Button
           type="secondary"
@@ -56,8 +61,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
           onClick={handleClick}
           disabled={disabled}
         >
-          <Ticket className={styles.ticket} />
-          Try
+          Try by 0 ticket
         </Button>
       </div>
       <ConfirmModal

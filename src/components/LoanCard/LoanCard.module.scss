@@ -9,28 +9,17 @@
   cursor: pointer;
   border: 1px solid var(--gray-color-6);
   position: relative;
-  background: var(--black-color);
+  background: var(--white-color);
   user-select: none;
   transition: border var(--transition-1);
   display: flex;
   flex-direction: column;
-
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    border: 1px solid var(--gray-color-6);
-    top: 10px;
-    left: 10px;
-    z-index: -1;
-  }
 }
 
 .isGracePeriodCard {
-  border: 1px solid #fd9b66;
+  border: 1px solid #ff701f;
   &:before {
-    border: 1px solid #fd9b66;
+    border: 1px solid #ff701f;
   }
 }
 
@@ -48,7 +37,7 @@
 }
 
 .isGracePeriodImage {
-  border-bottom: 1px solid #fd9b66;
+  border-bottom: 1px solid #ff701f;
 }
 
 .content {
@@ -56,11 +45,11 @@
   flex-direction: column;
   min-height: 196px;
   flex-grow: 1;
-  padding: 24px;
+  padding: 16px;
 }
 
 .title {
-  font: var(--font-subtitle-2);
+  font: var(--font-text-2);
   flex-grow: 1;
   margin-bottom: 12px;
 
@@ -92,18 +81,21 @@
 
 .progressWrapper {
   width: 100%;
-  height: 1px;
-  background-color: var(--color-gray-4);
+  height: 4px;
+  background-color: var(--gray-color-9);
+  border-radius: 2px;
   position: relative;
   margin-top: 10px;
   overflow: hidden;
 }
 .progress {
-  border: 1px solid var(--accent-color-1);
+  background-color: var(--light-green-color);
+  border: var(--border-black-1);
   position: absolute;
   left: 0;
   top: 0;
-  height: 1px;
+  height: 4px;
+  border-radius: 2px;
 }
 
 .valuesWrapper {
@@ -131,16 +123,16 @@
   gap: 10px;
 }
 .valueTitle {
-  color: var(--color-gray-4);
-  font: var(--font-text-7);
+  color: var(--gray-color-6);
+  font: var(--font-text-6);
   margin-bottom: 4px;
   text-transform: uppercase;
 }
 .valueInfo {
   display: flex;
   align-items: center;
-  color: var(--white-color);
-  font: var(--font-text-3);
+  color: var(--black-color);
+  font: var(--font-text-8);
   gap: 5px;
 }
 .valueInfoHealth {

@@ -5,7 +5,7 @@ import Button from '../../../../components/Button';
 import { Modal } from '../../../../components/Modal';
 import { Slider } from '../../../../components/Slider';
 import { TokenAmountInputWithBalance } from '../../../../components/TokenAmountInputWithBalance';
-import { CloseModalIcon } from '../../../../icons';
+import { CloseModalIcon, SolanaIcon } from '../../../../icons';
 import { Loan } from '../../../../state/loans/types';
 import { SOL_TOKEN } from '../../../../utils';
 import { useNativeAccount } from '../../../../utils/accounts';
@@ -93,39 +93,31 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         <CloseModalIcon className={styles.closeIcon} />
       </div>
 
-      <TokenAmountInputWithBalance
-        value={paybackAmount}
-        setValue={onPaybackAmountChange}
-        tokenTicker={SOL_TOKEN.name}
-        tokenImage={SOL_TOKEN.logoURI}
-        balance={loan?.repayValue?.toFixed(3)}
-        customLabel="Debt:"
-        className={styles.input}
-        error={notEnoughBalanceError}
-      />
-      <div className={styles.errors}>
-        {notEnoughBalanceError && <p>Not enough SOL</p>}
-        {invalidValueError && <p>Invalid value</p>}
-      </div>
       <Slider
         value={partialPercent}
         setValue={onPartialPercentChange}
         className={styles.slider}
         marks={SLIDER_MARKS}
+        withTooltip
         step={1}
       />
-      {/* <div className={styles.info}>
+      <div className={styles.info}>
         <span className={styles.infoTitle}>Repay value</span>
-        <span className={styles.infoValue}>{2.5} SOL</span>
-      </div> */}
+        <span className={styles.infoValue}>
+          {2.5}
+          <SolanaIcon />
+        </span>
+      </div>
       <div className={styles.info}>
         <span className={styles.infoTitle}>Remaining debt</span>
-        <span className={styles.infoValue}>{remainingDebt} SOL</span>
+        <span className={styles.infoValue}>
+          {remainingDebt} <SolanaIcon />
+        </span>
       </div>
       <Button
         onClick={onSubmit}
         className={styles.repayBtn}
-        type="alternative"
+        type="secondary"
         disabled={submitDisabled}
       >
         Repay {remainingDebt === '0' && 'all'}

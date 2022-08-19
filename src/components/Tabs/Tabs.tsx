@@ -39,11 +39,7 @@ export const Tabs: FC<TabsProps> = ({
           className={classNames([
             styles.tab,
             styles[type],
-            {
-              [type === 'primary'
-                ? styles.tabActive
-                : styles.tabActiveSecondary]: tabValue === value,
-            },
+            { [styles.tabActive]: tabValue === value },
           ])}
           name={tabValue}
           onClick={() => {
