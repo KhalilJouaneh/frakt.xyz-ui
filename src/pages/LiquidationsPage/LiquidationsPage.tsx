@@ -13,17 +13,15 @@ export enum InputControlsNames {
 const LiquidationsPage: FC = () => {
   return (
     <AppLayout>
-      <Container component="main" className={styles.container}>
-        <div className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Liquidations</h1>
-            <h2 className={styles.subtitle}>
-              Buyout liquidated NFTs on discount
-            </h2>
-          </div>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Liquidations</h1>
+          <h2 className={styles.subtitle}>
+            Buyout liquidated NFTs on discount
+          </h2>
         </div>
-        <Liquidations />
-      </Container>
+      </div>
+      <Liquidations />
     </AppLayout>
   );
 };

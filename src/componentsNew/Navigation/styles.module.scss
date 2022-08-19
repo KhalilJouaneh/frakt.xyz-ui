@@ -22,15 +22,15 @@
   position: sticky;
   top: 64px;
   width: 177px;
-  height: calc(100vh - 64px);
-  background-color: #F2F2F7;
+  height: 100vh;
+  background-color: #f2f2f7;
   border-right: 1px solid #000000;
-  @include flex(column, nowrap, flex-start, flex-start);  
+  @include flex(column, nowrap, flex-start, flex-start);
 }
 
 .navigation {
   width: 100%;
-  border-bottom: 1px solid #AEAEB2;
+  border-bottom: 1px solid #aeaeb2;
   @include wrapper;
   @include text-menu-item;
 
@@ -40,8 +40,8 @@
   }
 
   & .active {
-    border: 1px solid #AEAEB2;
-    background: #FFFFFF;
+    border: 1px solid #aeaeb2;
+    background: #ffffff;
     user-select: none;
     & > * {
       cursor: default;
@@ -62,7 +62,7 @@
   padding-bottom: 0;
 
   & > div {
-   @include listItem;
+    @include listItem;
   }
 }
 
@@ -72,6 +72,6 @@
   @include text-menu-item;
 
   & > div {
-   @include listItem;
+    @include listItem;
   }
 }
