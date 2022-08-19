@@ -30,7 +30,7 @@ export const Layout: FC<LayoutProps> = ({
   }, [location]);
 
   return (
-    <div>
+    <div className={styles.container}>
       {children}
       <NotificationBar />
     </div>

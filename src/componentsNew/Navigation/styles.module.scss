@@ -19,7 +19,7 @@
 }
 
 .container {
-  position: fixed;
+  position: sticky;
   top: 64px;
   width: 177px;
   height: calc(100vh - 64px);
