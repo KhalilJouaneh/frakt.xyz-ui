@@ -55,8 +55,10 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
       </div>
 
       <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee</p>
+
         <div className={styles.tooltipWrapper}>
-          <p className={styles.staticValueTitle}>Fee</p>
+          <p className={styles.staticValueData}>{fee} SOL</p>
           <Tooltip
             placement="bottom"
             overlay="The dept accrues daily throughout the duration, and this fee is to be paid if the loan keeps active until the last day"
@@ -64,8 +66,6 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
         </div>
-
-        <p className={styles.staticValueData}>{fee} SOL</p>
       </div>
 
       {!!feeDiscountPercents && (
