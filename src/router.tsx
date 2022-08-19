@@ -21,17 +21,19 @@ export const Router = (): JSX.Element => {
   return (
     <BrowserRouter>
       <Route component={Header} />
-      <Route component={Navigation} />
-      <Switch>
-        {routes.map(({ exact, path, component: Component }, index) => (
-          <Route
-            key={index}
-            exact={exact}
-            path={path}
-            component={() => <Component />}
-          />
-        ))}
-      </Switch>
+      <div style={{ display: 'flex' }}>
+        <Route component={Navigation} />
+        <Switch>
+          {routes.map(({ exact, path, component: Component }, index) => (
+            <Route
+              key={index}
+              exact={exact}
+              path={path}
+              component={() => <Component />}
+            />
+          ))}
+        </Switch>
+      </div>
     </BrowserRouter>
   );
 };
