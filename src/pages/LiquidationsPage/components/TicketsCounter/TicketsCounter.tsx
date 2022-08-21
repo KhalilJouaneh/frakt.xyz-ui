@@ -10,8 +10,10 @@ interface TicketsCounterProps {
 export const TicketsCounter: FC<TicketsCounterProps> = ({ tickets }) => {
   return (
     <div className={styles.ticket}>
-      <Ticket />
-      <h2 className={styles.value}>Your tickets: {tickets}</h2>
+      <Ticket className={styles.ticketIcon} />
+      <h2 className={styles.value}>
+        Your tickets: <span>{tickets}</span>
+      </h2>
     </div>
   );
 };

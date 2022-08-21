@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,10 @@ import { SearchInput } from '../../../../components/SearchInput';
 import { Select } from '../../../../components/Select';
 import styles from './LiquidationsList.module.scss';
 import { TicketsCounter } from '../TicketsCounter';
+import Button from '../../../../components/Button';
+import SortOrderButton from '../../../../components/SortOrderButton';
+import { LiquidationsListFormNames } from '../../model';
+import FiltersDropdown from '../../../../components/FiltersDropdown';
 
 interface LiquidationsListProps {
   children: ReactNode;
@@ -25,7 +29,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   withRafflesInfo,
   fetchItemsFunc,
 }) => {
-  const { control, setSearch, setCollections } =
+  const { control, setSearch, setValue, sort, setCollections } =
     useLiquidationsPage(fetchItemsFunc);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
@@ -36,6 +40,9 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
     label: <span className={styles.sortName}>{item.label}</span>,
     value: item.value,
   }));
+
+  const [filtersDropdownVisible, setFiltersDropdownVisible] =
+    useState<boolean>(false);
 
   return (
     <>
@@ -51,8 +58,41 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
             {/* <TicketsRefillCountdown /> */}
           </div>
         )}
+
         <div className={styles.sortWrapper}>
-          <Controller
+          <Button
+            type="tertiary"
+            onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
+          >
+            Filters
+          </Button>
+          {filtersDropdownVisible && (
+            <FiltersDropdown
+              onCancel={() => setFiltersDropdownVisible(false)}
+              className={styles.filtersDropdown}
+            >
+              <Controller
+                control={control}
+                name={LiquidationsListFormNames.SORT}
+                render={() => (
+                  <div className={styles.sortingWrapper}>
+                    {SORT_VALUES.map(({ label, value }, idx) => (
+                      <div className={styles.sorting} key={idx}>
+                        <p className={styles.label}>{label}</p>
+                        <SortOrderButton
+                          label={label}
+                          setValue={setValue}
+                          sort={sort}
+                          value={value}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              />
+            </FiltersDropdown>
+          )}
+          {/* <Controller
             control={control}
             name="collections"
             render={({ field: { ref, ...field } }) => (
@@ -66,21 +106,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                 {...field}
               />
             )}
-          />
-          <Controller
-            control={control}
-            name="sort"
-            render={({ field: { ref, ...field } }) => (
-              <Select
-                className={styles.sortingSelect}
-                valueContainerClassName={styles.sortingSelectValueContainer}
-                label="Sort by"
-                name="sort"
-                options={SORT_VALUES}
-                {...field}
-              />
-            )}
-          />
+          /> */}
         </div>
       </div>
       {children}

@@ -13,6 +13,7 @@ import DiscordIcon from '../../icons/DiscordIcon2';
 import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
+import Button from '../Button';
 
 interface CurrentUserTableProps {
   className?: string;
@@ -41,7 +42,7 @@ const CurrentUserTable = ({
     )}`;
     return (
       <div className={styles.row}>
-        <span>Balance</span> {valueStr} <SolanaIcon /> SOL
+        <span>Balance</span> {valueStr} <SolanaIcon />
       </div>
     );
   };
@@ -74,9 +75,13 @@ const CurrentUserTable = ({
           Link discord
         </a>
       )}
-      <button onClick={disconnect} className={styles.disconnectButton}>
+      <Button
+        className={styles.disconnectButton}
+        onClick={disconnect}
+        type="secondary"
+      >
         Disconnect wallet
-      </button>
+      </Button>
     </div>
   );
 };

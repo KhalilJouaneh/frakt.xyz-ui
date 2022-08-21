@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { FC } from 'react';
+import { ArrowUp } from '../../icons';
 import Button from '../Button';
 import styles from './SortOrderButton.module.scss';
 
@@ -37,7 +38,7 @@ const SortOrderButton: FC<SortOrderButtonProps> = ({
         )}
         onClick={() => setValue('sort', { label, value: ASC_SORT })}
       >
-        asc &uarr;
+        asc <ArrowUp />
       </Button>
       <Button
         type="tertiary"
@@ -47,7 +48,7 @@ const SortOrderButton: FC<SortOrderButtonProps> = ({
         )}
         onClick={() => setValue('sort', { label, value: DESC_SORT })}
       >
-        dsc &#8595;
+        dsc <ArrowUp className={styles.arrowDown} />
       </Button>
     </div>
   );

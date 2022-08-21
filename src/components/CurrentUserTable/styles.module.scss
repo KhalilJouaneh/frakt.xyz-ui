@@ -1,6 +1,7 @@
 .wrapper {
   padding: 20px;
   display: block;
+  background-color: var(--white-color);
   width: 100%;
 }
 
@@ -8,37 +9,27 @@
   margin-top: 10px;
   width: 100%;
   height: 48px;
-  color: var(--white-color);
-  background-color: var(--accent-color-1);
   font: var(--font-btn-small);
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition-1), color var(--transition-1);
-
-  &:hover {
-    background-color: var(--accent-color-3);
-    color: var(--white-color);
-  }
 }
 
 .discordButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 5px;
-  margin-top: 10px;
+  column-gap: 8px;
+  margin-top: 32px;
   width: 100%;
   height: 48px;
-  color: var(--white-color);
-  background-color: var(--accent-shadow-color);
-  border: 1px solid var(--accent-color-1);
-  font: var(--font-btn-small);
+  color: var(--black-color);
+  background-color: var(--gray-color-5);
+  border: 1px solid var(--light-green-color);
+  font: var(--font-body-small);
   cursor: pointer;
   transition: background-color var(--transition-1), color var(--transition-1);
 
   &:hover {
-    background-color: var(--accent-color-3);
-    color: var(--white-color);
+    background-color: var(--light-green-hover);
+    color: var(--black-color);
   }
 }
 
@@ -46,7 +37,7 @@
   margin-top: -2px;
   width: 24px;
   height: 24px;
-  fill: var(--white-color);
+  fill: var(--black-color);
 }
 
 .table {
@@ -64,7 +55,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   font: var(--font-text-3);
   border-bottom: var(--border-gray-1);
   margin-bottom: 10px;
@@ -77,10 +68,6 @@
     margin-left: 10px;
     margin-right: 5px;
   }
-}
-
-.name {
-  margin-right: 20px;
 }
 
 .userWrapper {

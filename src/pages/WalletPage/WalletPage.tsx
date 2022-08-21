@@ -70,32 +70,26 @@ const WalletPage: FC = () => {
 
   return (
     <AppLayout>
-      <Container component="main" className={styles.container}>
-        <div className={styles.pageHeader}>
-          <div>
-            <h2 className={styles.title}>{pageTitle}</h2>
-          </div>
-        </div>
-        <div className={styles.content}>
-          <ProfileCard
-            walletPubkey={walletPubkey}
-            name={nameServiceInfo?.domain}
-            twitterName={nameServiceInfo?.twitterHandle}
-            user={user}
+      <h2 className={styles.title}>{pageTitle}</h2>
+      <div className={styles.content}>
+        <ProfileCard
+          walletPubkey={walletPubkey}
+          name={nameServiceInfo?.domain}
+          twitterName={nameServiceInfo?.twitterHandle}
+          user={user}
+        />
+        <div className={styles.tabsContent}>
+          <Tabs
+            className={styles.tabs}
+            tabs={tabs}
+            value={tabValue}
+            setValue={setTabValue}
           />
-          <div className={styles.tabsContent}>
-            <Tabs
-              className={styles.tabs}
-              tabs={tabs}
-              value={tabValue}
-              setValue={setTabValue}
-            />
-            {tabValue === WalletTabs.LOANS && (
-              <LoansList loans={userLoans} className={styles.loansList} />
-            )}
-          </div>
+          {tabValue === WalletTabs.LOANS && (
+            <LoansList loans={userLoans} className={styles.loansList} />
+          )}
         </div>
-      </Container>
+      </div>
     </AppLayout>
   );
 };

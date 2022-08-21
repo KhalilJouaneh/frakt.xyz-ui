@@ -5,10 +5,8 @@ import { useSelector } from 'react-redux';
 
 import { selectLiquidityPools } from '../../../state/loans/selectors';
 import { LiquidityPool } from '../../../state/loans/types';
-import { ArrowDownSmallIcon } from '../../../icons';
-import styles from '../LendPage.module.scss';
-import { useDebounce } from '../../../hooks';
 import { compareNumbers } from '../../../utils';
+import { useDebounce } from '../../../hooks';
 
 type FilterFormFieldsValues = {
   [FilterFormInputsNames.SORT]: PoolsSortValue;
@@ -121,28 +119,15 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
 
 export const SORT_VALUES: PoolsSortValue[] = [
   {
-    label: (
-      <span>
-        Liquidity
-        <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span>Liquidity</span>,
     value: 'totalLiquidity_',
   },
   {
-    label: (
-      <span>
-        Name <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span>Name</span>,
     value: 'name_',
   },
   {
-    label: (
-      <span>
-        APR <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span>APR</span>,
     value: 'apr_',
   },
 ];

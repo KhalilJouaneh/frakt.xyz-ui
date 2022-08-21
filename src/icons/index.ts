@@ -41,3 +41,4 @@ export { PencilIcon } from './PencilIcon';
 export { PaperPlane } from './PaperPlane';
 export { Timer } from './Timer';
 export { Ticket } from './Ticket';
+export { ArrowUp } from './ArrowUp';

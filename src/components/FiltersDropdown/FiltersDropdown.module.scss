@@ -2,7 +2,8 @@
   background: rgba(255, 255, 255, 0.87);
   border: 1px solid #000000;
   backdrop-filter: blur(20px);
-
+  
+  z-index: 1;
   padding: 32px;
   width: 512px;
 }

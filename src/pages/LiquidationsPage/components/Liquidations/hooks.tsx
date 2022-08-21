@@ -19,6 +19,8 @@ type UseLiquidationsPage = (fetchItemsFunc: FetchDataFunc) => {
   control: Control<FilterFormFieldsValues>;
   setSearch: (value?: string) => void;
   setCollections: (value?: []) => void;
+  setValue?: any;
+  sort?: LiquiditionsSortValue;
 };
 
 export const useLiquidationsPage: UseLiquidationsPage = (
@@ -30,9 +32,9 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const [collections, setCollections] = useState<[]>([]);
   const stringRef = useRef(null);
 
-  const { control, watch } = useForm({
+  const { control, watch, setValue } = useForm({
     defaultValues: {
-      [LiquidationsListFormNames.SORT]: SORT_VALUES[3],
+      [LiquidationsListFormNames.SORT]: SORT_VALUES[1],
       [LiquidationsListFormNames.COLLECTIONS_SORT]: null,
     },
   });
@@ -92,41 +94,19 @@ export const useLiquidationsPage: UseLiquidationsPage = (
     control,
     setSearch,
     setCollections,
+    setValue,
+    sort,
   };
 };
 
 export const SORT_VALUES: LiquiditionsSortValue[] = [
   {
-    label: (
-      <span className={styles.sortName}>
-        Name <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'nftName_asc',
+    label: <span>Name</span>,
+    value: 'nftName_',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Name <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'nftName_desc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Liquidation Price <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'liquidationPrice_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Liquidation Price <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'liquidationPrice_desc',
+    label: <span>Liquidation Price</span>,
+    value: 'liquidationPrice_',
   },
 ];
 

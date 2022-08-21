@@ -1,13 +1,28 @@
 .ticket {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
+  border: 1px solid var(--gray-color-6);
+  padding: 10px 24px;
 }
 
 .value {
-  font: var(--font-text-3);
+  color: var(--gray-color-6);
+  font: var(--font-text-5);
+  text-transform: uppercase;
+
+  span {
+    font: var(--font-text-8);
+    color: var(--black-color);
+  }
 
   @media screen and (max-width: 510px) {
     font-size: 15px;
+  }
+}
+
+.ticketIcon {
+  path {
+    fill: var(--gray-color-6);
   }
 }

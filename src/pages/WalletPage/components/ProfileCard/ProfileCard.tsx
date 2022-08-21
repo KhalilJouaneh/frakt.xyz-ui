@@ -82,35 +82,6 @@ export const ProfileCard: FC<ProfileCard> = ({
           </button>
         )}
       </div>
-
-      {/* <div className={styles.line} /> */}
-
-      {/* <div className={styles.rewardInfo}>
-        <h2 className={styles.title}>Rewards</h2>
-        <div className={styles.scrollContent}>
-          {rewardInfoMock.map(({ amount, symbol }) => (
-            <div className={styles.rewardWrapper} key={amount}>
-              <span>
-                {amount} {symbol}
-              </span>
-              <Button className={styles.btn} type="alternative">
-                Claim rewards
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };
-
-// const rewardInfoMock = [
-//   {
-//     amount: '3454.545',
-//     symbol: 'FRKX',
-//   },
-//   {
-//     amount: '1428.182',
-//     symbol: 'FRKX',
-//   },
-// ];
