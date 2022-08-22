@@ -28,16 +28,11 @@
   background-color: var(--gray-color-7);
   background-size: cover;
   background-repeat: no-repeat;
-  border-bottom: 1px solid var(--gray-color-6);
   &::after {
     content: '';
     display: block;
     padding-bottom: 100%;
   }
-}
-
-.isGracePeriodImage {
-  border-bottom: 1px solid #ff701f;
 }
 
 .content {

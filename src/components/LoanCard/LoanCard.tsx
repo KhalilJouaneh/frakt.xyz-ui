@@ -141,12 +141,8 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
           })}
         >
           <div
-            className={classNames(styles.image, {
-              [styles.isGracePeriodImage]: isGracePeriod,
-            })}
-            style={{
-              backgroundImage: `url(${imageUrl})`,
-            }}
+            className={styles.image}
+            style={{ backgroundImage: `url(${imageUrl})` }}
           />
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>

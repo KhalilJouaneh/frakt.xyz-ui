@@ -26,6 +26,10 @@ body .input {
     box-shadow: unset;
   }
 
+  &::placeholder {
+    color: var(--gray-color-6) !important;
+  }
+
   &Error {
     &,
     &:hover,

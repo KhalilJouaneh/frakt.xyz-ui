@@ -33,8 +33,8 @@
 
 .primary {
   flex: 1;
-  border: 1px solid #aeaeb2;
-  background: #f2f2f7;
+  border: 1px solid var(--gray-color-6);
+  background: var(--gray-color-9);
   color: var(--black-color);
   font: var(--font-text-8);
 
@@ -44,6 +44,8 @@
 }
 
 .tabActive {
+  border: 1px solid var(--black-color);
+
   &,
   &:hover {
     background: var(--white-color);
