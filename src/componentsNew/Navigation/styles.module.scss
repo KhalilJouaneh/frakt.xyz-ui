@@ -19,8 +19,9 @@
 }
 
 .container {
-  position: sticky;
+  position: fixed;
   top: 64px;
+  left: 0;
   width: 177px;
   height: 100vh;
   background-color: #f2f2f7;

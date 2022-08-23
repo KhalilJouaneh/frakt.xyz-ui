@@ -19,6 +19,17 @@ h5 {
 }
 
 :global {
+  .fraktion__layout_navigation {
+    display: flex;
+  }
+
+  .fraktion__layout_container {
+    position: relative; 
+    left: 177px;
+    width: calc(100vw - 177px);
+  }
+
+
   .fraktion__notification {
     svg.anticon {
       fill: var(--accent-color-1);
