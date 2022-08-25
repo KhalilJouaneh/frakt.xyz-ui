@@ -44,18 +44,18 @@ export const MyLoansList: FC = () => {
             <div className={styles.container}>
               <div className={styles.content}>
                 <div className={styles.valuesWrapper}>
-                  <p className={styles.value}>
+                  <div className={styles.value}>
                     <div className={styles.valueTitle}>Total borrowed:</div>
                     <div className={styles.valueInfo}>
                       {totalBorrowed.toFixed(2)} SOL
                     </div>
-                  </p>
-                  <p className={styles.value}>
+                  </div>
+                  <div className={styles.value}>
                     <div className={styles.valueTitle}>Total Debt:</div>
                     <div className={styles.valueInfo}>
                       {totalDebt.toFixed(2)} SOL
                     </div>
-                  </p>
+                  </div>
                 </div>
                 <div className={styles.filters}>
                   <Button

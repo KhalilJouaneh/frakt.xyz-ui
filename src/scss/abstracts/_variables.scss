@@ -1,7 +1,109 @@
-:root {
+:root[data-theme="light"] {
   --black-color: #000000;
   --color-dark: #111111;
   --white-color: #ffffff;
+  --accent-color-1: #5d5fef;
+  --accent-color-3: #7879f1;
+  --accent-shadow-color: rgba(93, 95, 239, 0.3);
+  --yellow-color: #b5d307;
+  --green-color: #83d6a4;
+  --red-color: #f83e3e;
+  --red-error-color: #ff6666;
+
+  --light-green-color: #9cff1f;
+  --light-green-color-1: #f5ffe9;
+  --light-green-hover: #8cea15;
+
+  --blue-color: #007aff;
+
+  --gray-color-1: #373737;
+  --gray-color-2: rgba(255, 255, 255, 0.15);
+  --gray-color-3: rgba(255, 255, 255, 0.3);
+  --gray-color-4: rgba(255, 255, 255, 0.75);
+  --gray-color-5: rgba(245, 255, 233, 0.2);
+  --gray-color-6: #aeaeb2;
+  --gray-color-7: #F2F2F7; // rgba(255, 255, 255, 0.1);
+  --gray-color-8: rgba(255, 255, 255, 0.5);
+  --gray-color-9: #f2f2f7;
+
+  --color-gray-1: #c4c4c4;
+  // --color-gray-075: #b4b4b4;
+  // --color-gray-3: #929292;
+  --color-gray-4: #4d4d4d;
+  --color-gray-5: #efeff0;
+  // --color-gray-6: #1e1e1e;
+  --color-gray-7: #191919;
+  --color-gray-03: rgba(255, 255, 255, 0.3);
+  --color-dark-06: rgba(0, 0, 0, 0.6);
+
+  --border-white-1: 1px solid #ffffff;
+  --border-black-1: 1px solid #000000;
+  --border-gray-1: 1px solid #4d4d4d;
+  --border-light-green-1: 1px solid #9cff1f;
+
+  --transition-1: 0.2s ease-in;
+
+  --font-family-syne: 'Syne', sans-serif;
+  --font-family-chakra: 'Chakra Petch', sans-serif;
+
+  --font-btn-middle: 500 14px var(--font-family-syne);
+
+  --font-family-oxanium: 'Oxanium', 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-family-inter: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --font-btn-smallest: 400 10px var(--font-family-oxanium);
+  --font-btn-small: 400 18px var(--font-family-oxanium);
+  --font-btn-mid: 400 24px var(--font-family-oxanium);
+
+  --font-subtitle: 400 32px var(--font-family-oxanium);
+  --font-subtitle-2: 700 24px var(--font-family-syne);
+
+  // --font-h1: 600 96px var(--font-family-oxanium);
+  // --font-h2: 600 64px var(--font-family-oxanium);
+  --font-h3: 600 56px var(--font-family-oxanium);
+  --font-h4: 600 40px var(--font-family-oxanium);
+
+  --font-body-small: 500 16px var(--font-family-syne);
+  --font-body-large: 400 24px var(--font-family-inter);
+
+  --font-link: 700 18px var(--font-family-inter);
+
+  --font-title-2: 800 48px var(--font-family-syne);
+  --font-text-1: 400 32px var(--font-family-chakra);
+  --font-text-2: 700 24px var(--font-family-syne);
+  --font-text-3: 400 18px var(--font-family-oxanium);
+  --font-text-4: 400 18px var(--font-family-chakra);
+  --font-text-5: 700 14px var(--font-family-syne);
+  --font-text-6: 700 12px var(--font-family-syne);
+  --font-text-7: 700 10px var(--font-family-oxanium);
+  --font-text-8: 400 16px var(--font-family-chakra);
+  --font-text-9: 500 12px var(--font-family-chakra);
+
+  @media screen and (max-width: 900px) {
+    --font-title-2: 600 40px var(--font-family-oxanium);
+    --font-text-1: 400 28px var(--font-family-oxanium);
+    --font-text-2: 400 20px var(--font-family-oxanium);
+  }
+
+  @media screen and (max-width: 767px) {
+    --font-title-2: 600 32px var(--font-family-oxanium);
+    --font-text-1: 400 24px var(--font-family-oxanium);
+    --font-text-2: 400 18px var(--font-family-oxanium);
+  }
+
+  @media screen and (max-width: 500px) {
+    --font-text-1: 400 18px var(--font-family-oxanium);
+    --font-text-2: 400 15px var(--font-family-oxanium);
+  }
+
+  --header-height: 50px;
+}
+
+:root[data-theme="dark"] {
+  --black-color:  #ffffff;
+  --color-dark: #111111;
+  --white-color: #000000;
   --accent-color-1: #5d5fef;
   --accent-color-3: #7879f1;
   --accent-shadow-color: rgba(93, 95, 239, 0.3);
