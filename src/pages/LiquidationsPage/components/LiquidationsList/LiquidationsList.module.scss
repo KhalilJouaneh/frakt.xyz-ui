@@ -73,6 +73,9 @@
 
 .sortWrapper {
   position: relative;
+  width: 180px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .rafflesInfo {

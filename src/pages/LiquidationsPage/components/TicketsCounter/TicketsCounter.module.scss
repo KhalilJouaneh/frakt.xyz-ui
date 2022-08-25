@@ -1,28 +1,21 @@
 .ticket {
   display: flex;
+  flex-flow: column;
   align-items: center;
-  gap: 14px;
-  border: 1px solid var(--gray-color-6);
-  padding: 10px 24px;
 }
 
-.value {
+.title {
   color: var(--gray-color-6);
   font: var(--font-text-5);
   text-transform: uppercase;
-
-  span {
-    font: var(--font-text-8);
-    color: var(--black-color);
-  }
-
-  @media screen and (max-width: 510px) {
-    font-size: 15px;
-  }
 }
 
-.ticketIcon {
-  path {
-    fill: var(--gray-color-6);
-  }
+.value {
+  font: var(--font-text-8);
+  color: var(--black-color);
+
+    @media screen and (max-width: 510px) {
+      font-size: 15px;
+    }
 }
+
