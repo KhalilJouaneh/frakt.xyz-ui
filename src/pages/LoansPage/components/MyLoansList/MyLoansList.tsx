@@ -2,8 +2,12 @@ import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
+import Button from '../../../../components/Button';
 import { Controller } from 'react-hook-form';
 import { CollectionDropdown } from '../../../../components/CollectionDropdown';
+import FiltersDropdown from '../../../../components/FiltersDropdown';
+import SortOrderButton from '../../../../components/SortOrderButton';
+import Toggle from '../../../../components/Toggle';
 import { LoansList } from '../../../WalletPage/components/LoansList';
 import { Select } from '../../../../components/Select';
 import {
@@ -25,26 +29,76 @@ export const MyLoansList: FC = () => {
 
   const totalDebt = useSelector(selectTotalDebt);
 
-  const { control, loans, totalBorrowed, sortValueOption } = useLoansFiltering({
-    selectedCollections,
-  });
+  const { control, loans, totalBorrowed, sortValueOption, sort, setValue } =
+    useLoansFiltering({
+      selectedCollections,
+    });
+  const [filtersDropdownVisible, setFiltersDropdownVisible] =
+    useState<boolean>(false);
 
   return (
     <div>
       {connected ? (
         <>
           <div className={styles.sortWrapper}>
-            <div className={styles.content}>
-              <div className={styles.valuesWrapper}>
-                <p className={styles.value}>
-                  Total borrowed: <span>{totalBorrowed.toFixed(2)} SOL</span>
-                </p>
-                <p className={styles.value}>
-                  Total Debt: <span>{totalDebt.toFixed(2)} SOL</span>
-                </p>
+            <div className={styles.container}>
+              <div className={styles.content}>
+                <div className={styles.valuesWrapper}>
+                  <p className={styles.value}>
+                    <div className={styles.valueTitle}>Total borrowed:</div>
+                    <div className={styles.valueInfo}>
+                      {totalBorrowed.toFixed(2)} SOL
+                    </div>
+                  </p>
+                  <p className={styles.value}>
+                    <div className={styles.valueTitle}>Total Debt:</div>
+                    <div className={styles.valueInfo}>
+                      {totalDebt.toFixed(2)} SOL
+                    </div>
+                  </p>
+                </div>
+                <div className={styles.filters}>
+                  <Button
+                    type="tertiary"
+                    onClick={() =>
+                      setFiltersDropdownVisible(!filtersDropdownVisible)
+                    }
+                  >
+                    Filters
+                  </Button>
+                  {filtersDropdownVisible && (
+                    <FiltersDropdown
+                      onCancel={() => setFiltersDropdownVisible(false)}
+                      className={styles.filtersDropdown}
+                    >
+                      <div className={styles.controllers}>
+                        <Controller
+                          control={control}
+                          name={FilterFormInputsNames.SORT}
+                          render={() => (
+                            <div className={styles.sortingWrapper}>
+                              {SORT_VALUES.map(({ label, value }, idx) => (
+                                <div className={styles.sorting} key={idx}>
+                                  <p className={styles.label}>{label}</p>
+                                  <SortOrderButton
+                                    label={label}
+                                    setValue={setValue}
+                                    sort={sort}
+                                    value={value}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        />
+                      </div>
+                    </FiltersDropdown>
+                  )}
+                </div>
               </div>
             </div>
-            <div className={styles.filters}>
+
+            {/* <div className={styles.filters}>
               <div className={styles.filtersContent}>
                 <Controller
                   control={control}
@@ -81,7 +135,7 @@ export const MyLoansList: FC = () => {
                   />
                 )}
               />
-            </div>
+            </div> */}
           </div>
           <LoansList loans={loans} />
         </>

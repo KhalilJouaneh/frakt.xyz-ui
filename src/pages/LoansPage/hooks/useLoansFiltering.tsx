@@ -8,7 +8,6 @@ import moment from 'moment';
 import styles from '../components/MyLoansList/MyLoansList.module.scss';
 import { selectLoanNfts } from '../../../state/loans/selectors';
 import { caclTimeToRepay } from '../../../utils/loans';
-import { ArrowDownSmallIcon } from '../../../icons';
 import { Loan } from '../../../state/loans/types';
 import { compareNumbers } from '../../../utils';
 
@@ -50,6 +49,8 @@ type UseLoansFiltering = ({
   totalDebt: number;
   totalBorrowed: number;
   sortValueOption: LoansValue[];
+  sort: any;
+  setValue: any;
 };
 
 export const useLoansFiltering: UseLoansFiltering = ({
@@ -58,7 +59,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
   const { connected } = useWallet();
   const userLoans: Loan[] = useSelector(selectLoanNfts);
 
-  const { control, watch } = useForm({
+  const { control, watch, setValue } = useForm({
     defaultValues: {
       [FilterFormInputsNames.SORT]: SORT_VALUES[0],
       [FilterFormInputsNames.LOANS_STATUS]: SORT_LOANS_TYPE_VALUES[0],
@@ -184,77 +185,10 @@ export const useLoansFiltering: UseLoansFiltering = ({
     totalDebt,
     totalBorrowed,
     sortValueOption,
+    sort,
+    setValue,
   };
 };
-
-export const SORT_VALUES: LoansValue[] = [
-  {
-    label: (
-      <span className={styles.sortName}>
-        Creation <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'creation_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Creation <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'creation_desc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Dept
-        <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'debt_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Dept
-        <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'debt_desc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Time to repay <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'timeToRepay_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Time to repay <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'timeToRepay_desc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Health <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
-    value: 'health_asc',
-  },
-  {
-    label: (
-      <span className={styles.sortName}>
-        Health <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
-    value: 'health_desc',
-  },
-];
 
 export const SORT_LOANS_TYPE_VALUES: LoansValue[] = [
   {
@@ -268,5 +202,24 @@ export const SORT_LOANS_TYPE_VALUES: LoansValue[] = [
   {
     label: <span className={styles.sortName}>Flip</span>,
     value: 'showTimeBasedLoans',
+  },
+];
+
+export const SORT_VALUES = [
+  {
+    label: <span>Creation</span>,
+    value: 'creation_',
+  },
+  {
+    label: <span>Debt</span>,
+    value: 'debt_',
+  },
+  {
+    label: <span>Time yo repay</span>,
+    value: 'timeToRepay_',
+  },
+  {
+    label: <span>Health</span>,
+    value: 'health_',
   },
 ];

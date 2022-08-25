@@ -1,12 +1,19 @@
+@import '../../../../scss/abstracts/mixins';
+
 .content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  @include flex(row, nowrap, center, center);
+  margin-bottom: 12px;
 
   @media screen and (max-width: 1180px) {
     justify-content: center;
     width: 100%;
   }
+}
+
+.container  {
+  position: relative;
+  width: 100%;
 }
 
 .valuesWrapper {
@@ -16,6 +23,7 @@
 }
 
 .value {
+  @include flex(column, nowrap, flex-start, center);
   color: var(--black-color);
 
   @media screen and (max-width: 780px) {
@@ -24,6 +32,23 @@
     align-items: center;
     justify-content: space-evenly;
   }
+}
+
+.valueTitle {
+  color: var(--gray-color-6);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.valueInfo {
+  color: var(--black-color);
+  font: var(--font-text-8);
+}
+
+.filters {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .filters {
@@ -107,4 +132,38 @@
   @media screen and (max-width: 1180px) {
     flex-direction: column;
   }
+}
+
+.filtersDropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  overflow: hidden;
+}
+
+.sortingWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 36.5px;
+  row-gap: 12px;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: var(--gray-color-6);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.toggle {
+  min-width: 160px;
+}
+
+.controllers {
+  margin-top: 16px;
 }
