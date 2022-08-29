@@ -3,6 +3,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
 import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
+import { RewardState, usePaybackLoan } from './hooks';
 import { caclTimeToRepay } from '../../utils/loans';
 import { HEALTH_TOOLTIP_TEXT } from './constants';
 import { LoadingModal } from '../LoadingModal';
@@ -10,7 +11,6 @@ import { Loan } from '../../state/loans/types';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
 import { SOL_TOKEN } from '../../utils';
-import { usePaybackLoan } from './hooks';
 import Button from '../Button';
 import Tooltip from '../Tooltip';
 
@@ -59,16 +59,17 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
               >
                 Repay
               </Button>
-              {!!reward?.amount && (
+              {reward?.stakeState === RewardState.STAKED && (
                 <Button
                   type="tertiary"
                   className={styles.btn}
                   onClick={onGemClaim}
+                  disabled={!reward?.amount}
                 >
                   Claim {reward?.token}
                 </Button>
               )}
-              {!!reward && !reward?.amount && (
+              {reward?.stakeState === RewardState.UNSTAKED && (
                 <Button
                   type="tertiary"
                   className={styles.btn}

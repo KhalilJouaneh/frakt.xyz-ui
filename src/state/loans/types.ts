@@ -13,12 +13,14 @@ export interface BorrowNft {
     repayValue: string; // 1.101
     liquidityPoolPubkey: string;
     loanValue: string; // 1.020
+    isCanStake: boolean;
   };
   priceBased?: {
     liquidityPoolPubkey: string;
     ltvPercents: number; // 40
     borrowAPRPercents: number; // 10
     collaterizationRate: number; // 10(%)
+    isCanStake: boolean;
   };
 }
 

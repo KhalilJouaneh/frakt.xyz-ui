@@ -16,6 +16,11 @@ import {
   DEGODS_FARM_PUBKEY,
 } from '../../utils/stake/constants';
 
+export enum RewardState {
+  STAKED = 'staked',
+  UNSTAKED = 'unstaked',
+}
+
 export const usePaybackLoan = (loan: Loan) => {
   const wallet = useWallet();
   const connection = useConnection();
@@ -67,7 +72,7 @@ export const usePaybackLoan = (loan: Loan) => {
 
   const onPayback = async () => {
     try {
-      const { isPriceBased, isGracePeriod } = loan;
+      const { isPriceBased, isGracePeriod, reward } = loan;
 
       if (isPriceBased && !isGracePeriod) {
         openPartialRepayModal();
@@ -86,7 +91,9 @@ export const usePaybackLoan = (loan: Loan) => {
         throw new Error('Payback failed');
       }
 
-      onUnstakeClaim();
+      if (reward?.stakeType === RewardState.STAKED) {
+        onUnstakeClaim();
+      }
 
       showConfetti();
       removeTokenOptimistic(loan.mint);

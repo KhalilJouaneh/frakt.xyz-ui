@@ -42,11 +42,11 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
         >
           <div className={styles.imageShadow} />
           <div className={styles.badges}>
-            {/* {!isCanStake && (
+            {isCanStake && (
               <div className={styles.badge}>
                 <p className={styles.badgeTitle}>Staking support</p>
               </div>
-            )} */}
+            )}
             {!isCanFreeze && (
               <div className={styles.badge}>
                 <PaperPlane />
