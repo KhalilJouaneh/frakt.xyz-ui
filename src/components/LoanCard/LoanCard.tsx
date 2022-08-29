@@ -32,6 +32,8 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
 
   const { imageUrl, name, isGracePeriod, reward } = loan;
 
+  const rewardAmount = reward?.amount;
+
   return (
     <>
       <div className={styles.cardWrapper}>
@@ -59,7 +61,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
               >
                 Repay
               </Button>
-              {reward?.stakeState === RewardState.STAKED && (
+              {!!rewardAmount && (
                 <Button
                   type="tertiary"
                   className={styles.btn}
@@ -112,6 +114,8 @@ const LoanCardValues: FC<{
     reward,
   } = loan;
 
+  const rewardAmount = reward?.amount / 1e9;
+
   return (
     <div className={styles.valuesWrapper}>
       <div
@@ -152,7 +156,10 @@ const LoanCardValues: FC<{
         </div>
 
         {isPriceBased && (
-          <div className={styles.valuesWrapperRow}>
+          <div
+            style={{ flexDirection: 'column' }}
+            className={styles.valuesWrapperRow}
+          >
             <div className={styles.valueWrapper}>
               <div className={styles.valueWithTooltip}>
                 <p className={styles.valueTitle}>Borrow interest</p>
@@ -180,16 +187,16 @@ const LoanCardValues: FC<{
             </div>
           </div>
         )}
-
-        {reward?.amount && (
-          <div className={styles.reward}>
-            <p className={styles.rewardTitle}>Rewards</p>
-            <p>
-              {reward?.amount} {reward?.token}
-            </p>
-          </div>
-        )}
       </div>
+
+      {!!rewardAmount && (
+        <div className={styles.reward}>
+          <p className={styles.rewardTitle}>Rewards</p>
+          <p>
+            {rewardAmount.toFixed(2)} {reward?.token}
+          </p>
+        </div>
+      )}
 
       <div className={styles.valueWrapper}>
         {isPriceBased ? (

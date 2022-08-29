@@ -51,6 +51,10 @@ export const usePaybackLoan = (loan: Loan) => {
       openLoadingModal();
       closePartialRepayModal();
 
+      if (loan?.reward?.stakeState === RewardState.STAKED) {
+        await onGemUnstake();
+      }
+
       const result = await paybackLoanTx({
         connection,
         wallet,
@@ -70,16 +74,48 @@ export const usePaybackLoan = (loan: Loan) => {
     }
   };
 
+  const onGemUnstake = async (): Promise<void> => {
+    try {
+      const { pubkey, mint, reward } = loan;
+
+      openLoadingModal();
+
+      const result = await unstakeGemFarm({
+        connection,
+        wallet,
+        gemFarm: DEGODS_FARM_PUBKEY,
+        gemBank: DEGODS_BANK_PUBKEY,
+        farm: reward.farm,
+        bank: reward.bank,
+        nftMint: mint,
+        loan: pubkey,
+        isDegod: true,
+      });
+
+      if (!result) {
+        throw new Error('Unstake failed');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      closeLoadingModal();
+    }
+  };
+
   const onPayback = async () => {
     try {
       const { isPriceBased, isGracePeriod, reward } = loan;
+
+      openLoadingModal();
 
       if (isPriceBased && !isGracePeriod) {
         openPartialRepayModal();
         return;
       }
 
-      openLoadingModal();
+      if (reward?.stakeState === RewardState.STAKED) {
+        await onGemUnstake();
+      }
 
       const result = await paybackLoanTx({
         connection,
@@ -89,10 +125,6 @@ export const usePaybackLoan = (loan: Loan) => {
 
       if (!result) {
         throw new Error('Payback failed');
-      }
-
-      if (reward?.stakeType === RewardState.STAKED) {
-        onUnstakeClaim();
       }
 
       showConfetti();
@@ -116,12 +148,12 @@ export const usePaybackLoan = (loan: Loan) => {
         wallet,
         gemFarm: DEGODS_FARM_PUBKEY,
         gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.dataA,
-        bank: reward?.dataB,
+        farm: reward?.farm,
+        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
         isDegod: true,
-        creatorWhitelistProof: reward?.creatorWhiteListProof,
+        creatorWhitelistProof: reward?.creatorWhitelistProof,
       });
 
       if (!result) {
@@ -145,46 +177,18 @@ export const usePaybackLoan = (loan: Loan) => {
         wallet,
         gemFarm: DEGODS_FARM_PUBKEY,
         gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.dataA,
-        bank: reward?.dataB,
+        farm: reward?.farm,
+        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
         isDegod: true,
-        rewardAMint: reward?.dataC,
-        rewardBMint: reward?.dataD,
-        creatorWhitelistProof: reward?.creatorWhiteListProof,
+        rewardAMint: reward?.rewardAMint,
+        rewardBMint: reward?.rewardBMint,
+        creatorWhitelistProof: reward?.creatorWhitelistProof,
       });
 
       if (!result) {
         throw new Error('Claim failed');
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  const onUnstakeClaim = async (): Promise<void> => {
-    try {
-      const { pubkey, mint, reward } = loan;
-
-      openLoadingModal();
-
-      const result = await unstakeGemFarm({
-        connection,
-        wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward.dataA,
-        bank: reward.dataB,
-        nftMint: mint,
-        loan: pubkey,
-        isDegod: true,
-      });
-
-      if (!result) {
-        throw new Error('Unstake failed');
       }
     } catch (error) {
       console.error(error);
@@ -200,7 +204,6 @@ export const usePaybackLoan = (loan: Loan) => {
     onPayback,
     onGemClaim,
     onGemStake,
-    onUnstakeClaim,
     closeLoadingModal,
     loadingModalVisible,
   };

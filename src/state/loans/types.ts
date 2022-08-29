@@ -82,12 +82,12 @@ export interface Loan {
   reward?: {
     stakeState: string;
     stakeType: string;
-    dataA: string;
-    dataB: string;
-    dataC: string;
-    dataD: string;
+    farm: string;
+    bank: string;
+    rewardAMint: string;
+    rewardBMint: string;
     amount: number;
     token: string;
-    creatorWhiteListProof: string;
+    creatorWhitelistProof: string;
   };
 }
