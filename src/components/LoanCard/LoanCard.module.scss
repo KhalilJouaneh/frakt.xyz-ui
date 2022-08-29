@@ -69,11 +69,33 @@
   }
 }
 
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reward {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 43px;
+}
+
+.rewardTitle {
+  color: var(--color-gray-4);
+  font: var(--font-smallest);
+  font-family: var(--font-family-inter);
+  text-transform: uppercase;
+}
+
 .btn {
   height: 40px;
   padding: 0;
   justify-content: center;
   margin-top: 20px;
+  width: 100%;
 }
 
 .countdown {

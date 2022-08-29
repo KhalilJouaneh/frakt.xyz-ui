@@ -76,4 +76,16 @@ export interface Loan {
   health?: number; //? 80(%) 0-100%
   nftOriginalPrice?: number;
   borrowAPRPercents?: number;
+
+  reward?: {
+    stakeState: string;
+    stakeType: string;
+    dataA: string;
+    dataB: string;
+    dataC: string;
+    dataD: string;
+    amount: number;
+    token: string;
+    creatorWhiteListProof: string;
+  };
 }

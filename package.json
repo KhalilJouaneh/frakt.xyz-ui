@@ -6,7 +6,7 @@
     "@amplitude/analytics-browser": "^1.0.2",
     "@ant-design/icons": "^4.7.0",
     "@bonfida/spl-name-service": "0.1.24",
-    "@frakt-protocol/frakt-sdk": "^0.7.1",
+    "@frakt-protocol/frakt-sdk": "^0.7.6",
     "@sentry/react": "^7.1.1",
     "@sentry/tracing": "^7.1.1",
     "@solana/wallet-adapter-base": "^0.9.9",
