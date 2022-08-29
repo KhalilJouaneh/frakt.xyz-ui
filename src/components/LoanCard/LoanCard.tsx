@@ -75,7 +75,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
                   className={styles.btn}
                   onClick={onGemStake}
                 >
-                  Stake {reward?.token}
+                  Stake
                 </Button>
               )}
             </div>

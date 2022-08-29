@@ -41,7 +41,7 @@ export const claimGemFarm: ClaimGemFarm = async ({
     await loans.claimGemFarm({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
-      user: new web3.PublicKey(wallet.publicKey),
+      user: wallet.publicKey,
       gemFarm: new web3.PublicKey(gemFarm),
       farm: new web3.PublicKey(farm),
       nftMint: new web3.PublicKey(nftMint),

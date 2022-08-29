@@ -37,7 +37,7 @@ export const unstakeGemFarm: UnstakeGemFarm = async ({
     await loans.unstakeGemFarm({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
-      user: new web3.PublicKey(wallet.publicKey),
+      user: wallet.publicKey,
       gemFarm: new web3.PublicKey(gemFarm),
       gemBank: new web3.PublicKey(gemBank),
       farm: new web3.PublicKey(farm),
