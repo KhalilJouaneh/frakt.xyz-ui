@@ -28,6 +28,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     onPayback,
     onGemStake,
     onGemClaim,
+    transactionsLeft,
   } = usePaybackLoan(loan);
 
   const { imageUrl, name, isGracePeriod, reward } = loan;
@@ -92,8 +93,12 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
       />
       <LoadingModal
         title="Please approve transaction"
-        visible={loadingModalVisible}
+        visible={true}
         onCancel={closeLoadingModal}
+        subtitle={
+          transactionsLeft &&
+          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+        }
       />
     </>
   );

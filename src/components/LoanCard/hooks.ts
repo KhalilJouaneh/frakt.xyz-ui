@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { claimGemFarm } from './../../utils/stake/claimGemFarm';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { BN } from '@frakt-protocol/frakt-sdk';
@@ -26,6 +27,8 @@ export const usePaybackLoan = (loan: Loan) => {
   const connection = useConnection();
   const dispatch = useDispatch();
 
+  const [transactionsLeft, setTransactionsLeft] = useState<number>(null);
+
   const {
     visible: loadingModalVisible,
     open: openLoadingModal,
@@ -51,10 +54,6 @@ export const usePaybackLoan = (loan: Loan) => {
       openLoadingModal();
       closePartialRepayModal();
 
-      if (loan?.reward?.stakeState === RewardState.STAKED) {
-        await onGemUnstake();
-      }
-
       const result = await paybackLoanTx({
         connection,
         wallet,
@@ -76,11 +75,14 @@ export const usePaybackLoan = (loan: Loan) => {
 
   const onGemUnstake = async (): Promise<void> => {
     try {
+      setTransactionsLeft(2);
       const { pubkey, mint, reward } = loan;
 
       openLoadingModal();
 
       await onGemClaim();
+
+      setTransactionsLeft(1);
 
       const result = await unstakeGemFarm({
         connection,
@@ -101,6 +103,7 @@ export const usePaybackLoan = (loan: Loan) => {
       console.error(error);
     } finally {
       closeLoadingModal();
+      setTransactionsLeft(null);
     }
   };
 
@@ -208,5 +211,6 @@ export const usePaybackLoan = (loan: Loan) => {
     onGemStake,
     closeLoadingModal,
     loadingModalVisible,
+    transactionsLeft,
   };
 };
