@@ -28,13 +28,15 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   fetchItemsFunc: FetchDataFunc,
   isGraceList?: boolean,
 ) => {
-  const [sortOrder, setSortOrder] = useState<string>('desc');
-  const [sortBy, setSortBy] = useState<string>('liquidationPrice');
+  const defaultSortIndex = isGraceList ? 4 : 3;
+  const defaultSortBy = isGraceList ? 'startedAt' : 'liquidationPrice';
+  const defaultSortOrder = isGraceList ? 'asc' : 'desc';
+
+  const [sortOrder, setSortOrder] = useState<string>(defaultSortOrder);
+  const [sortBy, setSortBy] = useState<string>(defaultSortBy);
   const [search, setSearch] = useState<string>('');
   const [collections, setCollections] = useState<[]>([]);
   const stringRef = useRef(null);
-
-  const defaultSortIndex = isGraceList ? 4 : 3;
 
   const { control, watch } = useForm({
     defaultValues: {
