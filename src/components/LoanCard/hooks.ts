@@ -76,14 +76,21 @@ export const usePaybackLoan = (loan: Loan) => {
 
   const onGemUnstake = async (): Promise<void> => {
     try {
+      const { pubkey, mint, reward } = loan;
+
       openLoadingModal();
+
+      await onGemClaim();
 
       const result = await unstakeGemFarm({
         connection,
         wallet,
         gemFarm: DEGODS_FARM_PUBKEY,
         gemBank: DEGODS_BANK_PUBKEY,
-        loan,
+        farm: reward?.farm,
+        bank: reward?.bank,
+        nftMint: mint,
+        loan: pubkey,
         isDegod: true,
       });
 
