@@ -60,7 +60,7 @@ export const stakeGemFarm: StakeGemFarm = async ({
     });
 
     notify({
-      message: 'Stake successfully!',
+      message: 'Staked successfully!',
       type: NotifyType.SUCCESS,
     });
 

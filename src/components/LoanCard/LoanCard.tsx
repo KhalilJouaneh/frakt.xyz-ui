@@ -191,9 +191,9 @@ const LoanCardValues: FC<{
 
       {!!rewardAmount && (
         <div className={styles.reward}>
-          <p className={styles.rewardTitle}>Rewards</p>
+          <p className={styles.valueTitle}>Rewards</p>
           <p>
-            {rewardAmount.toFixed(2)} {reward?.token}
+            {rewardAmount} {reward?.token}
           </p>
         </div>
       )}

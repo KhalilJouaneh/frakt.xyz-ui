@@ -60,7 +60,7 @@ export const claimGemFarm: ClaimGemFarm = async ({
     });
 
     notify({
-      message: 'Claim successfully!',
+      message: 'Claimed successfully!',
       type: NotifyType.SUCCESS,
     });
 

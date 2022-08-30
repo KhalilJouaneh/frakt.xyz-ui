@@ -8,17 +8,21 @@ import {
   signAndConfirmTransaction,
   showSolscanLinkNotification,
 } from '../transactions';
-import { FEE_ACCOUNT_PUBKEY } from './constants';
+import {
+  DEGODS_BANK_PUBKEY,
+  DEGODS_FARM_PUBKEY,
+  FEE_ACCOUNT_PUBKEY,
+} from './constants';
+import { claimGemFarm } from './claimGemFarm';
+import { Loan } from '../../state/loans/types';
+import { RewardState } from '../../components/LoanCard/hooks';
 
 type UnstakeGemFarm = (props: {
   connection: web3.Connection;
   wallet: WalletContextState;
   gemFarm: string;
   gemBank: string;
-  farm: string;
-  bank: string;
-  nftMint: string;
-  loan: string;
+  loan: Loan;
   isDegod: boolean;
 }) => Promise<boolean>;
 
@@ -27,24 +31,50 @@ export const unstakeGemFarm: UnstakeGemFarm = async ({
   wallet,
   gemFarm,
   gemBank,
-  farm,
-  bank,
-  nftMint,
   loan,
   isDegod,
 }): Promise<boolean> => {
+  const transaction = new web3.Transaction();
+
+  const { reward } = loan;
+
   try {
-    await loans.unstakeGemFarm({
+    // const claimInstruction = await loans.claimGemFarm({
+    //   programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+    //   connection,
+    //   user: wallet.publicKey,
+    //   gemFarm: new web3.PublicKey(DEGODS_FARM_PUBKEY),
+    //   farm: new web3.PublicKey(loan?.reward?.farm),
+    //   nftMint: new web3.PublicKey(loan?.mint),
+    //   loan: new web3.PublicKey(loan?.pubkey),
+    //   isDegod: true,
+    //   rewardAMint: new web3.PublicKey(loan?.reward?.rewardAMint),
+    //   rewardBMint: new web3.PublicKey(loan?.reward?.rewardBMint),
+    //   sendTxn: async (transaction) => {
+    //     await signAndConfirmTransaction({
+    //       transaction,
+    //       connection,
+    //       wallet,
+    //       commitment: 'finalized',
+    //     });
+    //   },
+    // });
+
+    // if (loan?.reward?.amount) {
+    //   transaction.add(...claimInstruction);
+    // }
+
+    const txnUnstake = await loans.unstakeGemFarm({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
       user: wallet.publicKey,
       gemFarm: new web3.PublicKey(gemFarm),
       gemBank: new web3.PublicKey(gemBank),
-      farm: new web3.PublicKey(farm),
-      bank: new web3.PublicKey(bank),
+      farm: new web3.PublicKey(reward.farm),
+      bank: new web3.PublicKey(reward.bank),
       feeAcc: new web3.PublicKey(FEE_ACCOUNT_PUBKEY),
-      nftMint: new web3.PublicKey(nftMint),
-      loan: new web3.PublicKey(loan),
+      nftMint: new web3.PublicKey(loan.mint),
+      loan: new web3.PublicKey(loan.pubkey),
       isDegod,
       sendTxn: async (transaction) => {
         await signAndConfirmTransaction({
@@ -57,7 +87,7 @@ export const unstakeGemFarm: UnstakeGemFarm = async ({
     });
 
     notify({
-      message: 'Unstake successfully!',
+      message: 'Unstaked successfully!',
       type: NotifyType.SUCCESS,
     });
 
@@ -79,9 +109,6 @@ export const unstakeGemFarm: UnstakeGemFarm = async ({
       params: {
         gemFarm,
         gemBank,
-        farm,
-        bank,
-        nftMint,
         loan,
         isDegod,
       },
