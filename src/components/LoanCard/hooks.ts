@@ -22,7 +22,7 @@ export enum RewardState {
   UNSTAKED = 'unstaked',
 }
 
-export const usePaybackLoan = (loan: Loan) => {
+export const useLoans = (loan: Loan) => {
   const wallet = useWallet();
   const connection = useConnection();
   const dispatch = useDispatch();
@@ -65,6 +65,8 @@ export const usePaybackLoan = (loan: Loan) => {
         await onGemUnstake();
       }
 
+      setTransactionsLeft(null);
+
       const result = await paybackLoanTx({
         connection,
         wallet,
@@ -80,18 +82,32 @@ export const usePaybackLoan = (loan: Loan) => {
     } catch (error) {
       console.error(error);
     } finally {
+      setTransactionsLeft(null);
       closeLoadingModal();
     }
   };
 
-  const onGemUnstake = async (): Promise<void> => {
+  const onGemUnstake = async (): Promise<boolean> => {
     try {
-      setTransactionsLeft(2);
       const { pubkey, mint, reward } = loan;
 
+      setTransactionsLeft(2);
       openLoadingModal();
 
-      await onGemClaim();
+      await claimGemFarm({
+        connection,
+        wallet,
+        gemFarm: DEGODS_FARM_PUBKEY,
+        gemBank: DEGODS_BANK_PUBKEY,
+        farm: reward?.farm,
+        bank: reward?.bank,
+        nftMint: mint,
+        loan: pubkey,
+        isDegod: true,
+        rewardAMint: reward?.rewardAMint,
+        rewardBMint: reward?.rewardBMint,
+        creatorWhitelistProof: reward?.creatorWhitelistProof,
+      });
 
       setTransactionsLeft(1);
 
@@ -110,11 +126,10 @@ export const usePaybackLoan = (loan: Loan) => {
       if (!result) {
         throw new Error('Unstake failed');
       }
+      return true;
     } catch (error) {
       console.error(error);
-    } finally {
-      closeLoadingModal();
-      setTransactionsLeft(null);
+      return false;
     }
   };
 
@@ -133,6 +148,8 @@ export const usePaybackLoan = (loan: Loan) => {
         await onGemUnstake();
       }
 
+      setTransactionsLeft(null);
+
       const result = await paybackLoanTx({
         connection,
         wallet,
@@ -149,6 +166,7 @@ export const usePaybackLoan = (loan: Loan) => {
       // eslint-disable-next-line no-console
       console.error(error);
     } finally {
+      setTransactionsLeft(null);
       closeLoadingModal();
     }
   };

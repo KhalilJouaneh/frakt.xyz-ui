@@ -3,7 +3,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
 import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
-import { RewardState, usePaybackLoan } from './hooks';
+import { RewardState, useLoans } from './hooks';
 import { caclTimeToRepay } from '../../utils/loans';
 import { HEALTH_TOOLTIP_TEXT } from './constants';
 import { LoadingModal } from '../LoadingModal';
@@ -29,7 +29,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     onGemStake,
     onGemClaim,
     transactionsLeft,
-  } = usePaybackLoan(loan);
+  } = useLoans(loan);
 
   const { imageUrl, name, isGracePeriod, reward } = loan;
 
