@@ -29,6 +29,8 @@ export const usePaybackLoan = (loan: Loan) => {
 
   const [transactionsLeft, setTransactionsLeft] = useState<number>(null);
 
+  const isStaked = loan?.reward?.stakeState === RewardState.STAKED;
+
   const {
     visible: loadingModalVisible,
     open: openLoadingModal,
@@ -49,10 +51,19 @@ export const usePaybackLoan = (loan: Loan) => {
     dispatch(commonActions.setConfetti({ isVisible: true }));
   };
 
-  const onPartialPayback = async (paybackAmount: BN) => {
+  const onPartialPayback = async (
+    paybackAmount: BN,
+    partialPercent: number,
+  ) => {
     try {
       openLoadingModal();
       closePartialRepayModal();
+
+      const isFullPayback = partialPercent === 100;
+
+      if (isStaked && isFullPayback) {
+        await onGemUnstake();
+      }
 
       const result = await paybackLoanTx({
         connection,
@@ -109,7 +120,7 @@ export const usePaybackLoan = (loan: Loan) => {
 
   const onPayback = async () => {
     try {
-      const { isPriceBased, isGracePeriod, reward } = loan;
+      const { isPriceBased, isGracePeriod } = loan;
 
       openLoadingModal();
 
@@ -118,7 +129,7 @@ export const usePaybackLoan = (loan: Loan) => {
         return;
       }
 
-      if (reward?.stakeState === RewardState.STAKED) {
+      if (isStaked) {
         await onGemUnstake();
       }
 

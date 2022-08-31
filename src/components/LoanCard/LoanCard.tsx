@@ -62,7 +62,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
               >
                 Repay
               </Button>
-              {!!rewardAmount && (
+              {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
                 <Button
                   type="tertiary"
                   className={styles.btn}
