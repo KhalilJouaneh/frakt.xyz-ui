@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.scss';
@@ -13,9 +13,10 @@ interface NFTCheckboxInterface {
   onClick?: () => void;
   isCanFreeze?: boolean;
   loanValue?: string;
+  isCanStake?: boolean;
 }
 
-const NFTCheckbox = ({
+const NFTCheckbox: FC<NFTCheckboxInterface> = ({
   className,
   selected = false,
   imageUrl,
@@ -23,7 +24,8 @@ const NFTCheckbox = ({
   onClick,
   loanValue,
   isCanFreeze,
-}: NFTCheckboxInterface): JSX.Element => {
+  isCanStake,
+}) => {
   return (
     <div className={styles.wrapper}>
       <div
@@ -39,12 +41,19 @@ const NFTCheckbox = ({
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
           <div className={styles.imageShadow} />
-          {!isCanFreeze && (
-            <div className={styles.badge}>
-              <PaperPlane />
-              <p className={styles.badgeTitle}>Leaves wallet</p>
-            </div>
-          )}
+          <div className={styles.badges}>
+            {isCanStake && (
+              <div className={styles.badge}>
+                <p className={styles.badgeTitle}>Staking support</p>
+              </div>
+            )}
+            {!isCanFreeze && (
+              <div className={styles.badge}>
+                <PaperPlane />
+                <p className={styles.badgeTitle}>Leaves wallet</p>
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.root__content}>
           <p className={styles.root__title}>{name}</p>

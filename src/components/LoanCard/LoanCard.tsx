@@ -1,123 +1,22 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { useWallet } from '@solana/wallet-adapter-react';
-import classNames from 'classnames';
-import Tooltip from '../Tooltip';
-import { BN } from '@frakt-protocol/frakt-sdk';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import classNames from 'classnames';
 
-import { LoadingModal, useLoadingModal } from '../LoadingModal';
-import {
-  paybackLoan as paybackLoanTx,
-  caclTimeToRepay,
-} from '../../utils/loans';
+import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
+import { RewardState, useLoans } from './hooks';
+import { caclTimeToRepay } from '../../utils/loans';
+import { HEALTH_TOOLTIP_TEXT } from './constants';
+import { LoadingModal } from '../LoadingModal';
+import { Loan } from '../../state/loans/types';
 import styles from './LoanCard.module.scss';
-import { useConnection, useCountdown } from '../../hooks';
+import { useCountdown } from '../../hooks';
 import { SOL_TOKEN } from '../../utils';
 import Button from '../Button';
-import { Loan } from '../../state/loans/types';
-
-import { HEALTH_TOOLTIP_TEXT } from './constants';
-import {
-  PartialRepayModal,
-  usePartialRepayModal,
-} from '../../pages/LiquidationsPage/components/PartialRepayModal';
-import { loansActions } from '../../state/loans/actions';
-import { commonActions } from '../../state/common/actions';
+import Tooltip from '../Tooltip';
 
 interface LoanCardProps {
   loan: Loan;
 }
-
-const usePaybackLoan = (loan: Loan) => {
-  const wallet = useWallet();
-  const connection = useConnection();
-  const dispatch = useDispatch();
-
-  const {
-    visible: loadingModalVisible,
-    open: openLoadingModal,
-    close: closeLoadingModal,
-  } = useLoadingModal();
-
-  const {
-    visible: partialRepayModalVisible,
-    open: openPartialRepayModal,
-    close: closePartialRepayModal,
-  } = usePartialRepayModal();
-
-  const removeTokenOptimistic = (mint: string) => {
-    dispatch(loansActions.addHiddenLoanNftMint(mint));
-  };
-
-  const showConfetti = (): void => {
-    dispatch(commonActions.setConfetti({ isVisible: true }));
-  };
-
-  const onPartialPayback = async (paybackAmount: BN) => {
-    try {
-      openLoadingModal();
-      closePartialRepayModal();
-
-      const result = await paybackLoanTx({
-        connection,
-        wallet,
-        loan,
-        paybackAmount,
-      });
-
-      if (!result) {
-        throw new Error('Payback failed');
-      }
-
-      showConfetti();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  const onPayback = async () => {
-    try {
-      const { isPriceBased, isGracePeriod } = loan;
-
-      if (isPriceBased && !isGracePeriod) {
-        openPartialRepayModal();
-        return;
-      }
-
-      openLoadingModal();
-
-      const result = await paybackLoanTx({
-        connection,
-        wallet,
-        loan,
-      });
-
-      if (!result) {
-        throw new Error('Payback failed');
-      }
-
-      showConfetti();
-      removeTokenOptimistic(loan.mint);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  return {
-    onPartialPayback,
-    closePartialRepayModal,
-    partialRepayModalVisible,
-    onPayback,
-    closeLoadingModal,
-    loadingModalVisible,
-  };
-};
 
 const LoanCard: FC<LoanCardProps> = ({ loan }) => {
   const {
@@ -127,9 +26,14 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-  } = usePaybackLoan(loan);
+    onGemStake,
+    onGemClaim,
+    transactionsLeft,
+  } = useLoans(loan);
 
-  const { imageUrl, name, isGracePeriod } = loan;
+  const { imageUrl, name, isGracePeriod, reward } = loan;
+
+  const rewardAmount = reward?.amount;
 
   return (
     <>
@@ -150,13 +54,34 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />
-            <Button
-              type="alternative"
-              className={styles.btn}
-              onClick={onPayback}
-            >
-              Repay
-            </Button>
+            <div className={styles.btnWrapper}>
+              <Button
+                type="alternative"
+                className={styles.btn}
+                onClick={onPayback}
+              >
+                Repay
+              </Button>
+              {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+                <Button
+                  type="tertiary"
+                  className={styles.btn}
+                  onClick={onGemClaim}
+                  disabled={!reward?.amount}
+                >
+                  Claim {reward?.token}
+                </Button>
+              )}
+              {reward?.stakeState === RewardState.UNSTAKED && (
+                <Button
+                  type="tertiary"
+                  className={styles.btn}
+                  onClick={onGemStake}
+                >
+                  Stake
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -170,6 +95,10 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
+        subtitle={
+          transactionsLeft &&
+          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+        }
       />
     </>
   );
@@ -187,7 +116,10 @@ const LoanCardValues: FC<{
     borrowAPRPercents,
     liquidationPrice,
     realLiquidationPrice,
+    reward,
   } = loan;
+
+  const rewardAmount = reward?.amount / 1e9;
 
   return (
     <div className={styles.valuesWrapper}>
@@ -196,51 +128,11 @@ const LoanCardValues: FC<{
           [styles.valuesWrapperRow]: isPriceBased,
         })}
       >
-        <div className={styles.valueWrapper}>
-          <p className={styles.valueTitle}>Borrowed</p>
-          <div className={styles.valueInfo}>
-            <p>{loanValue && loanValue.toFixed(2)}</p>
-            <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
-            <p>{SOL_TOKEN.symbol}</p>
-          </div>
-        </div>
-
-        <div className={styles.valueWrapper}>
-          <p className={styles.valueTitle}>Debt</p>
-          <div className={styles.valueInfo}>
-            <p>
-              {isPriceBased
-                ? liquidationPrice && liquidationPrice.toFixed(2)
-                : liquidationPrice
-                ? liquidationPrice.toFixed(2)
-                : repayValue && repayValue.toFixed(2)}
-            </p>
-            <img className={styles.valueInfoSolImage} src={SOL_TOKEN.logoURI} />
-            <p>{SOL_TOKEN.symbol}</p>
-          </div>
-        </div>
-      </div>
-
-      {isPriceBased && (
-        <div className={styles.valuesWrapperRow}>
+        <div className={styles.valuesWrapper}>
           <div className={styles.valueWrapper}>
-            <div className={styles.valueWithTooltip}>
-              <p className={styles.valueTitle}>Borrow interest</p>
-              <Tooltip
-                placement="bottom"
-                overlay="The current yearly interest rate paid by borrowers"
-              >
-                <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip>
-            </div>
+            <p className={styles.valueTitle}>Borrowed</p>
             <div className={styles.valueInfo}>
-              <p>{borrowAPRPercents} %</p>
-            </div>
-          </div>
-          <div className={styles.valueWrapper}>
-            <p className={styles.valueTitle}>Liquidation price</p>
-            <div className={styles.valueInfo}>
-              <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
+              <p>{loanValue && loanValue.toFixed(2)}</p>
               <img
                 className={styles.valueInfoSolImage}
                 src={SOL_TOKEN.logoURI}
@@ -248,6 +140,66 @@ const LoanCardValues: FC<{
               <p>{SOL_TOKEN.symbol}</p>
             </div>
           </div>
+
+          <div className={styles.valueWrapper}>
+            <p className={styles.valueTitle}>Debt</p>
+            <div className={styles.valueInfo}>
+              <p>
+                {isPriceBased
+                  ? liquidationPrice && liquidationPrice.toFixed(2)
+                  : liquidationPrice
+                  ? liquidationPrice.toFixed(2)
+                  : repayValue && repayValue.toFixed(2)}
+              </p>
+              <img
+                className={styles.valueInfoSolImage}
+                src={SOL_TOKEN.logoURI}
+              />
+              <p>{SOL_TOKEN.symbol}</p>
+            </div>
+          </div>
+        </div>
+
+        {isPriceBased && (
+          <div
+            style={{ flexDirection: 'column' }}
+            className={styles.valuesWrapperRow}
+          >
+            <div className={styles.valueWrapper}>
+              <div className={styles.valueWithTooltip}>
+                <p className={styles.valueTitle}>Borrow interest</p>
+                <Tooltip
+                  placement="bottom"
+                  overlay="The current yearly interest rate paid by borrowers"
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </div>
+              <div className={styles.valueInfo}>
+                <p>{borrowAPRPercents} %</p>
+              </div>
+            </div>
+            <div className={styles.valueWrapper}>
+              <p className={styles.valueTitle}>Liquidation price</p>
+              <div className={styles.valueInfo}>
+                <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
+                <img
+                  className={styles.valueInfoSolImage}
+                  src={SOL_TOKEN.logoURI}
+                />
+                <p>{SOL_TOKEN.symbol}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {!!rewardAmount && (
+        <div className={styles.reward}>
+          <p className={styles.valueTitle}>Rewards</p>
+          <p>
+            {rewardAmount} {reward?.token}
+          </p>
         </div>
       )}
 
