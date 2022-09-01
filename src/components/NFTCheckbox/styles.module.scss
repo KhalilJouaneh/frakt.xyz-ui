@@ -3,10 +3,15 @@
   height: 100%;
 }
 
+.badges {
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  gap: 10px;
+  z-index: 1;
+}
+
 .badge {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
   border: 1px solid var(--color-gray-03);
   display: flex;
   align-items: center;
@@ -71,6 +76,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     border-bottom: 1px solid var(--gray-color-6);
+    display: flex;
     &::after {
       content: '';
       display: block;
@@ -126,7 +132,6 @@
       opacity: 0.5;
       border-color: var(--accent-color-1);
     }
-    
   }
 }
 
