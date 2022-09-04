@@ -238,6 +238,7 @@ export const useLoans = (loan: Loan) => {
     onPayback,
     onGemClaim,
     onGemStake,
+    onGemUnstake,
     closeLoadingModal,
     loadingModalVisible,
     transactionsLeft,

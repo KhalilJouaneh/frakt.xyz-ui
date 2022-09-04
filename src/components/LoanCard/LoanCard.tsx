@@ -11,8 +11,8 @@ import { Loan } from '../../state/loans/types';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
 import { SOL_TOKEN } from '../../utils';
-import Button from '../Button';
 import Tooltip from '../Tooltip';
+import Button from '../Button';
 
 interface LoanCardProps {
   loan: Loan;
@@ -28,6 +28,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     onPayback,
     onGemStake,
     onGemClaim,
+    onGemUnstake,
     transactionsLeft,
   } = useLoans(loan);
 
@@ -63,14 +64,24 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
                 Repay
               </Button>
               {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
-                <Button
-                  type="tertiary"
-                  className={styles.btn}
-                  onClick={onGemClaim}
-                  disabled={!reward?.amount}
-                >
-                  Claim {reward?.token}
-                </Button>
+                <div className={styles.btnWrapperRow}>
+                  <Button
+                    type="tertiary"
+                    className={styles.btn}
+                    onClick={onGemClaim}
+                    disabled={!rewardAmount}
+                  >
+                    Claim {reward?.token}
+                  </Button>
+                  <Button
+                    type="tertiary"
+                    className={styles.btn}
+                    onClick={onGemUnstake}
+                    disabled={!rewardAmount}
+                  >
+                    Unstake
+                  </Button>
+                </div>
               )}
               {reward?.stakeState === RewardState.UNSTAKED && (
                 <Button
