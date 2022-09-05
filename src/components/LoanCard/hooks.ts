@@ -56,7 +56,6 @@ export const useLoans = (loan: Loan) => {
     partialPercent: number,
   ) => {
     try {
-      openLoadingModal();
       closePartialRepayModal();
 
       const isFullPayback = partialPercent === 100;
@@ -66,6 +65,7 @@ export const useLoans = (loan: Loan) => {
       }
 
       setTransactionsLeft(null);
+      openLoadingModal();
 
       const result = await paybackLoanTx({
         connection,
@@ -130,14 +130,15 @@ export const useLoans = (loan: Loan) => {
     } catch (error) {
       console.error(error);
       return false;
+    } finally {
+      setTransactionsLeft(null);
+      closeLoadingModal();
     }
   };
 
   const onPayback = async () => {
     try {
       const { isPriceBased, isGracePeriod } = loan;
-
-      openLoadingModal();
 
       if (isPriceBased && !isGracePeriod) {
         openPartialRepayModal();
@@ -148,7 +149,7 @@ export const useLoans = (loan: Loan) => {
         await onGemUnstake();
       }
 
-      setTransactionsLeft(null);
+      openLoadingModal();
 
       const result = await paybackLoanTx({
         connection,

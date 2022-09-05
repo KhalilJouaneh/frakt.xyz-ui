@@ -205,7 +205,7 @@ const LoanCardValues: FC<{
         )}
       </div>
 
-      {!!rewardAmount && (
+      {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
         <div className={styles.reward}>
           <p className={styles.valueTitle}>Rewards</p>
           <p>
