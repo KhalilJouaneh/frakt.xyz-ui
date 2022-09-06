@@ -45,5 +45,6 @@ export const captureSentryError = ({
   Sentry.captureException(error);
 
   console.error(error);
-  console.error('Transaction logs: ', error?.logs);
+  // eslint-disable-next-line no-console
+  console.warn('Transaction logs: ', error?.logs?.join('\n'));
 };
