@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+import { compose, split, nth, tail } from 'ramda';
 import Icons from '../../iconsNew/';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
@@ -20,19 +22,45 @@ interface MenuItem {
   icon?: any;
   className?: string;
   event?: string;
-  to?: string;
+  selector?: any;
+  to?: string | ((param: string) => string);
+  pathname?: string;
   props?: any;
 }
 
-const MenuItem = ({ label, className, icon = Icons.Chart, to }: MenuItem) => {
-  if (to) {
-    const isActive = location.pathname === to;
+const MenuItem = ({
+  label,
+  className,
+  icon = Icons.Chart,
+  to,
+  selector,
+  pathname = '',
+}: MenuItem) => {
+  const isActive =
+    compose(nth(1), split('/'))(location.pathname) === tail(pathname);
+
+  if (typeof to === 'string') {
     return (
       <NavLink to={to} className={cx(className, { [styles.active]: isActive })}>
         {icon()}
         <span>{label}</span>
       </NavLink>
     );
+  } else if (typeof to === 'function') {
+    const param: string = useSelector(selector);
+    if (param) {
+      return (
+        <NavLink
+          to={to(param)}
+          className={cx(className, { [styles.active]: isActive })}
+        >
+          {icon()}
+          <span>{label}</span>
+        </NavLink>
+      );
+    } else {
+      return null;
+    }
   }
   return (
     <div className={className}>
@@ -50,8 +78,9 @@ export const Navigation = () => {
           <MenuItem
             label={item.label}
             key={item.label}
-            className={item.label === 'Borrow' ? styles.active : ''}
             to={item.to}
+            pathname={item.pathname}
+            selector={item.selector}
           />
         ))}
       </div>

@@ -1,20 +1,26 @@
-import { FC } from 'react';
+import { useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
-
+import { withRouter, useParams } from 'react-router-dom';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { Tab, Tabs, useTabs } from '../../components/Tabs';
 import { ProfileCard } from './components/ProfileCard';
 import { Container } from '../../components/Layout';
 import { LoansList } from './components/LoansList';
 import styles from './WalletPage.module.scss';
-import { useParams } from 'react-router-dom';
 import { usePublicKeyParam } from '../../hooks';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useNameService } from './hooks';
 import { shortenAddress } from '../../utils/solanaUtils';
-import { selectUser } from '../../state/common/selectors';
+import {
+  selectUser,
+  selectWalletPublicKey,
+} from '../../state/common/selectors';
 import { Loan } from '../../state/loans/types';
 import { selectLoanNfts } from '../../state/loans/selectors';
+
+interface WalletPageProps {
+  history: any;
+}
 
 export enum WalletTabs {
   TOKENS = 'tokens',
@@ -56,7 +62,7 @@ const useWalletPage = () => {
   };
 };
 
-const WalletPage: FC = () => {
+const WalletPage: FC<WalletPageProps> = (props) => {
   const {
     tabs,
     tabValue,
@@ -67,6 +73,13 @@ const WalletPage: FC = () => {
   } = useWalletPage();
   const user = useSelector(selectUser);
   const userLoans: Loan[] = useSelector(selectLoanNfts);
+  const wallet = useSelector(selectWalletPublicKey);
+
+  useEffect(() => {
+    if (!wallet) {
+      props.history.push('/');
+    }
+  }, [wallet]);
 
   return (
     <AppLayout>
@@ -94,7 +107,7 @@ const WalletPage: FC = () => {
   );
 };
 
-export default WalletPage;
+export default withRouter(WalletPage);
 
 const POOL_TABS: Tab[] = [
   {

@@ -46,7 +46,7 @@ export const routes: Route[] = [
   },
   {
     exact: true,
-    path: `${PATHS.WALLET}${PATHS.WALLET_PUBKEY}`,
+    path: `${PATHS.PROFILE}${PATHS.WALLET_PUBKEY}`,
     component: WalletPage,
   },
   {

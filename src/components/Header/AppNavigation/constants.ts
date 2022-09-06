@@ -6,28 +6,47 @@ import {
   MediumIcon,
   DocsIcon,
 } from '../../../icons';
+import { selectWalletPublicKey } from '../../../state/common/selectors';
 
 export const NAVIGATION_LINKS = [
   {
+    pathname: PATHS.PROFILE,
+    to: (param) => `${PATHS.PROFILE}/${param}`,
+    selector: selectWalletPublicKey,
+    label: 'My profile',
+    event: 'navigation-profile',
+  },
+  {
+    pathname: PATHS.BORROW,
+    to: PATHS.BORROW,
+    label: 'Borrow',
+    event: 'navigation-borrow',
+  },
+  {
+    pathname: PATHS.LOANS,
     to: PATHS.LOANS,
     label: 'My Loans',
     event: 'navigation-loans',
   },
   {
+    pathname: PATHS.LEND,
     to: PATHS.LEND,
     label: 'Lending',
     event: 'navigation-lend',
   },
   {
+    pathname: PATHS.LIQUIDATIONS,
     to: PATHS.LIQUIDATIONS,
     label: 'Liquidations',
     event: 'navigation-liquidation',
   },
   {
+    pathname: PATHS.STATS,
     to: PATHS.STATS,
     label: 'Stats',
   },
   {
+    pathname: PATHS.ROOT,
     to: PATHS.ROOT,
     label: 'Dashboard',
   },
