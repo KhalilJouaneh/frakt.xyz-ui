@@ -45,5 +45,5 @@ export const captureSentryError = ({
   Sentry.captureException(error);
 
   console.error(error);
-  console.error('Transaction logs: ', error);
+  console.error('Transaction logs: ', error?.logs);
 };
