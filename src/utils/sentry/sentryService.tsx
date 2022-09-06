@@ -10,6 +10,7 @@ export const initSentry = (history: RouterHistory): void => {
     dsn: SENTRY_APP_DSN,
     integrations: [
       new Integrations.BrowserTracing({
+        traceXHR: false,
         routingInstrumentation:
           ReactSentry.reactRouterV5Instrumentation(history),
       }),
@@ -25,7 +26,7 @@ export const captureSentryError = ({
   transactionName,
   params,
 }: {
-  error: Error;
+  error: any;
   wallet?: WalletContextState;
   transactionName: string;
   params?: any;
@@ -39,8 +40,10 @@ export const captureSentryError = ({
   }
 
   Sentry.setContext('params', params);
+  Sentry.setContext('Transaction logs: ', error?.logs);
   Sentry.configureScope((scope) => scope.setTransactionName(transactionName));
   Sentry.captureException(error);
 
   console.error(error);
+  console.error('Transaction logs: ', error);
 };
