@@ -128,9 +128,12 @@ const LoanCardValues: FC<{
     liquidationPrice,
     realLiquidationPrice,
     reward,
+    isGracePeriod,
   } = loan;
 
   const rewardAmount = reward?.amount / 1e9;
+
+  const isPriceBasedAndGracePeriod = isPriceBased && isGracePeriod;
 
   return (
     <div className={styles.valuesWrapper}>
@@ -215,7 +218,7 @@ const LoanCardValues: FC<{
       )}
 
       <div className={styles.valueWrapper}>
-        {isPriceBased ? (
+        {!isPriceBasedAndGracePeriod && isPriceBased ? (
           <div className={styles.valueWithTooltip}>
             <p className={styles.valueTitle}>Health</p>
             <Tooltip placement="bottom" overlay={HEALTH_TOOLTIP_TEXT}>
@@ -225,7 +228,11 @@ const LoanCardValues: FC<{
         ) : (
           <p className={styles.valueTitle}>Time to return</p>
         )}
-        {isPriceBased ? <Health loan={loan} /> : <TimeToReturn loan={loan} />}
+        {!isPriceBasedAndGracePeriod && isPriceBased ? (
+          <Health loan={loan} />
+        ) : (
+          <TimeToReturn loan={loan} />
+        )}
       </div>
     </div>
   );
