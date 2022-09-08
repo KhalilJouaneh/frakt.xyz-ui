@@ -4,18 +4,12 @@ import { DiscordModal } from '../../components/DiscordModal';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import Statistics from './sections/Statistics/Statistics';
 import { FullPotentialSection } from './sections/FullPotentialSection';
-// import { OurTokensSection } from './sections/OurTokensSection';
 import { TeamSection } from './sections/TeamSection';
-// import { TestimonialsSection } from './sections/TestimonialsSection';
-// import PartnersSection from './sections/PartnersSection';
 import { Footer } from './sections/Footer';
 import { CustomHeader } from './CustomHeader';
 import { MainSection } from './sections/MainSection';
-import { sendAmplitudeData } from '../../utils/amplitude';
 
 const HomePage = (): JSX.Element => {
-  useMemo(() => sendAmplitudeData('landingpage-start'), []);
-
   const sectionRef1 = useRef<HTMLParagraphElement>();
   const sectionRef2 = useRef<HTMLParagraphElement>();
   const sectionRef3 = useRef<HTMLParagraphElement>();
