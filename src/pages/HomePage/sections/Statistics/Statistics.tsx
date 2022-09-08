@@ -1,12 +1,20 @@
-import { useCountUp } from 'react-countup';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import styles from './Statistics.module.scss';
-import { useOnScreen } from '../../../../hooks';
 import { Container } from '../../../../components/Layout';
 import { Stats } from './model';
 import { fetchStats } from './helpers';
 
+export const tvlFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+export const nftsLockedFormatter = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
 const useStats = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats | null>(null);
@@ -30,64 +38,23 @@ const useStats = () => {
 };
 
 const Statistics: FC = () => {
-  const { loading, stats } = useStats();
-
-  const lockedNFTRef = useRef(null);
-  const { update: updateLockedNFTCount, reset: resetLockedNFTCount } =
-    useCountUp({
-      ref: lockedNFTRef,
-      start: 0,
-      end: 0,
-      startOnMount: false,
-      duration: 2,
-      separator: ',',
-    });
-  const tvlRef = useRef(null);
-  const { update: updateTvlCount, reset: resetTvlCount } = useCountUp({
-    ref: tvlRef,
-    start: 0,
-    end: 0,
-    startOnMount: false,
-    duration: 2,
-    decimals: 2,
-    separator: ',',
-    prefix: '$',
-  });
-
-  const isLockedNFTRef = useOnScreen(lockedNFTRef);
-  const isTvlRefVisible = useOnScreen(tvlRef);
-
-  useEffect(() => {
-    if (!loading && isTvlRefVisible && stats) {
-      updateTvlCount(stats.TVL);
-    }
-    if (!loading && isLockedNFTRef) {
-      updateLockedNFTCount(stats.nftsLocked);
-    }
-
-    return () => {
-      resetLockedNFTCount();
-      resetTvlCount();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, isTvlRefVisible, isLockedNFTRef, stats]);
+  const { stats } = useStats();
 
   return (
     <Container component="section" className={styles.root}>
       <div className={styles.stat}>
         <span className={styles.value}>
-          <span style={{ display: loading ? 'inline' : 'none' }}>---</span>
-          <span
-            ref={lockedNFTRef}
-            style={{ display: loading ? 'none' : 'inline' }}
-          />
+          <span>
+            {stats?.nftsLocked
+              ? nftsLockedFormatter.format(stats?.nftsLocked)
+              : '---'}
+          </span>
         </span>
         <span className={styles.title}>NFTs locked</span>
       </div>
       <div className={styles.stat}>
         <span className={styles.value}>
-          <span style={{ display: loading ? 'inline' : 'none' }}>---</span>
-          <span ref={tvlRef} style={{ display: loading ? 'none' : 'inline' }} />
+          <span>{stats?.TVL ? tvlFormatter.format(stats?.TVL) : '---'}</span>
         </span>
         <span className={styles.title}>Total Value Locked</span>
       </div>
