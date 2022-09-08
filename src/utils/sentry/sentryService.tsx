@@ -1,20 +1,27 @@
 import * as Sentry from '@sentry/browser';
-import * as ReactSentry from '@sentry/react';
+// import * as ReactSentry from '@sentry/react';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { RouterHistory } from '@sentry/react/types/reactrouter';
-import { Integrations } from '@sentry/tracing';
+// import { RouterHistory } from '@sentry/react/types/reactrouter';
+// import { Integrations } from '@sentry/tracing';
 import { SENTRY_APP_DSN } from './constants';
 
-export const initSentry = (history: RouterHistory): void => {
+export const initSentry = (/*history: RouterHistory*/): void => {
   Sentry.init({
     dsn: SENTRY_APP_DSN,
-    integrations: [
-      new Integrations.BrowserTracing({
-        traceXHR: false,
-        routingInstrumentation:
-          ReactSentry.reactRouterV5Instrumentation(history),
-      }),
+    ignoreErrors: [
+      'Registration failed - push service error',
+      'We are unable to register the default service worker',
+      'The notification permission was not granted and blocked instead',
+      'The string did not match the expected pattern',
     ],
+
+    // integrations: [
+    //   new Integrations.BrowserTracing({
+    //     traceXHR: false,
+    //     routingInstrumentation:
+    //       ReactSentry.reactRouterV5Instrumentation(history),
+    //   }),
+    // ],
 
     tracesSampleRate: 1.0,
   });
@@ -39,8 +46,9 @@ export const captureSentryError = ({
     Sentry.setUser(null);
   }
 
-  Sentry.setContext('params', params);
-  Sentry.setContext('Transaction logs: ', error?.logs);
+  Sentry.setTag('Transaction name', transactionName);
+  Sentry.setContext('Params', params);
+  Sentry.setExtra('Transaction logs: ', error?.logs?.join('\n'));
   Sentry.configureScope((scope) => scope.setTransactionName(transactionName));
   Sentry.captureException(error);
 

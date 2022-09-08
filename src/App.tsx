@@ -22,14 +22,14 @@ import { Router } from './router';
 import store from './state/store';
 import { ENDPOINT } from './config';
 // import { IntercomService, INTERCOM_APP_ID } from './utils/intercom';
-import { createBrowserHistory } from 'history';
+// import { createBrowserHistory } from 'history';
 import { initSentry } from './utils/sentry';
 import { initAmplitude } from './utils/amplitude';
 import Confetti from './components/Confetti';
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
-initSentry(history);
+initSentry(/*history*/);
 initAmplitude();
 
 const wallets = [
