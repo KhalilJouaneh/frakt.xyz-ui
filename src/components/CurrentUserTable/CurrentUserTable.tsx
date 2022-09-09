@@ -13,6 +13,8 @@ import DiscordIcon from '../../icons/DiscordIcon2';
 import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
+import { networkRequest } from '../../utils/state';
+import { sum } from 'ramda';
 
 interface CurrentUserTableProps {
   className?: string;
@@ -30,6 +32,41 @@ const CurrentUserTable = ({
   if (!publicKey) {
     return null;
   }
+
+  const REWARDS_ENDPOINT = process.env.REWARDS_ENDPOINT;
+
+  const getRewardsByUser = async () => {
+    console.log(REWARDS_ENDPOINT);
+    const { lenders, borrowers } = (await networkRequest({
+      url: `https://fraktion-monorep.herokuapp.com/stats/weekly-rewards`,
+    })) as {
+      lenders: [
+        {
+          user: string;
+          reward: number;
+        },
+      ];
+      borrowers: [
+        {
+          user: string;
+          reward: number;
+        },
+      ];
+    };
+    const lendersReward = lenders.filter(
+      ({ user }) => user === publicKey.toBase58(),
+    );
+    const borrowersReward = borrowers.filter(
+      ({ user }) => user === publicKey.toBase58(),
+    );
+
+    const sumRewadsLenders = sum(lendersReward.map(({ reward }) => reward));
+    const sumRewadsBorrowers = sum(borrowersReward.map(({ reward }) => reward));
+
+    return sumRewadsLenders;
+  };
+
+  getRewardsByUser();
 
   useEffect(() => {
     setAmplitudeUserId(publicKey?.toBase58());
