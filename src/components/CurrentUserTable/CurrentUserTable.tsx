@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from '@frakt-protocol/frakt-sdk';
+import { sum, filter, map } from 'ramda';
 
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
 import { SolanaIcon, UserIcon } from '../../icons';
@@ -14,11 +15,15 @@ import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import { networkRequest } from '../../utils/state';
-import { sum } from 'ramda';
 
 interface CurrentUserTableProps {
   className?: string;
   user?: UserState;
+}
+
+interface UsersRewards {
+  lenders?: [{ user: string; reward: number }];
+  borrowers?: [{ user: string; reward: number }];
 }
 
 const CurrentUserTable = ({
@@ -28,45 +33,42 @@ const CurrentUserTable = ({
   const { disconnect, publicKey } = useWallet();
   const { account } = useNativeAccount();
   const avatarUrl = getDiscordAvatarUrl(user?.discordId, user?.avatar);
+  const [usersRewards, setUsersRewars] = useState<UsersRewards>(null);
 
   if (!publicKey) {
     return null;
   }
 
-  const REWARDS_ENDPOINT = process.env.REWARDS_ENDPOINT;
+  useEffect(() => {
+    (async () => {
+      const data = await networkRequest({
+        url: process.env.REWARDS_ENDPOINT,
+      });
 
-  const getRewardsByUser = async () => {
-    console.log(REWARDS_ENDPOINT);
-    const { lenders, borrowers } = (await networkRequest({
-      url: `https://fraktion-monorep.herokuapp.com/stats/weekly-rewards`,
-    })) as {
-      lenders: [
-        {
-          user: string;
-          reward: number;
-        },
-      ];
-      borrowers: [
-        {
-          user: string;
-          reward: number;
-        },
-      ];
-    };
-    const lendersReward = lenders.filter(
-      ({ user }) => user === publicKey.toBase58(),
-    );
-    const borrowersReward = borrowers.filter(
-      ({ user }) => user === publicKey.toBase58(),
-    );
+      setUsersRewars(data);
+    })();
+  }, []);
 
-    const sumRewadsLenders = sum(lendersReward.map(({ reward }) => reward));
-    const sumRewadsBorrowers = sum(borrowersReward.map(({ reward }) => reward));
+  const getRewardsValue = () => {
+    const publicKeyString = publicKey.toBase58();
+    const currentUser = ({ user }) => user === publicKeyString;
+    const reward = ({ reward }) => reward;
 
-    return sumRewadsLenders;
+    if (usersRewards) {
+      const { lenders, borrowers } = usersRewards;
+
+      const allUsersRewards = [...lenders, ...borrowers];
+
+      const userRewards = filter(currentUser, allUsersRewards);
+      const valueUserRewards = sum(map(reward, userRewards)) || 0;
+
+      return (
+        <div className={styles.row}>
+          <span>Rewards</span> {valueUserRewards} FRKT
+        </div>
+      );
+    }
   };
-
-  getRewardsByUser();
 
   useEffect(() => {
     setAmplitudeUserId(publicKey?.toBase58());
@@ -98,6 +100,7 @@ const CurrentUserTable = ({
         </div>
       </div>
       {getBalanceValue()}
+      {getRewardsValue()}
       {!user && (
         <a
           href={getDiscordUri(publicKey)}
