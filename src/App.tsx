@@ -9,7 +9,9 @@ import {
   TorusWalletAdapter,
   MathWalletAdapter,
   SolletWalletAdapter,
+  ExodusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
+import { SentreWalletAdapter } from '@sentre/connector';
 import {
   ConnectionProvider,
   WalletProvider,
@@ -41,6 +43,8 @@ const wallets = [
   new CoinbaseWalletAdapter(),
   new TorusWalletAdapter(),
   new MathWalletAdapter(),
+  new ExodusWalletAdapter(),
+  new SentreWalletAdapter(),
   new SolletWalletAdapter({ network: WalletAdapterNetwork.Mainnet }),
 ];
 
