@@ -76,7 +76,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
       <div className={styles.continueBtnContainer}>
         <Button
           onClick={openConfirmModal}
-          type="alternative"
+          type="secondary"
           className={styles.continueBtn}
         >
           Borrow

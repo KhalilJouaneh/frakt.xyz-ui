@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   font: var(--font-text-3);
-  color: var(--white-color);
+  color: var(--black-color);
 }
 
 .valueFieldValue {
@@ -51,22 +51,24 @@
   font: var(--font-text-5);
   text-transform: uppercase;
 
-  &::after {
-    content: '';
-    flex-grow: 1;
-    height: 1px;
-    display: block;
-    background: var(--color-gray-4);
-    order: 2;
-  }
+  // &::after {
+  //   content: '';
+  //   flex-grow: 1;
+  //   height: 1px;
+  //   display: block;
+  //   background: var(--color-gray-4);
+  //   order: 2;
+  // }
 }
 .staticValueAccent {
-  color: var(--white-color);
+  color: var(--black-color);
 }
 
 .staticValueTitle {
+  color: var(--gray-color-6);
   order: 1;
 }
 .staticValueData {
+  color: var(--gray-color-6);
   order: 3;
 }

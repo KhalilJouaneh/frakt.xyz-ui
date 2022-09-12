@@ -39,9 +39,10 @@ const Sidebar: FC<SidebarProps> = ({
             ])}
           >
             <div className={styles.sidebar}>
-              <p className={styles.nftsAmount} onClick={toggleSidebarCollapse}>
-                Your NFT
-              </p>
+              <p
+                className={styles.nftsAmount}
+                onClick={toggleSidebarCollapse}
+              ></p>
               <Slider nfts={nfts} onDeselect={onDeselect} />
               <div className={styles.separator} />
               {isSidebarVisible && sidebarForm}

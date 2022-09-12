@@ -60,11 +60,11 @@ const NFTCheckbox = ({
               </div>
             </div>
           )}
-          <div className={styles.root__checkboxWrapper}>
+          {/* <div className={styles.root__checkboxWrapper}>
             <span className={styles.root__checkbox}>
               {selected ? 'Selected' : 'Select'}
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

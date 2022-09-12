@@ -1,12 +1,11 @@
 .sidebarWrapper {
   position: fixed;
   top: 0;
-  right: 10px; //scroll width
+  right: 0; //scroll width
   height: 100%;
   width: 25%;
   min-width: 375px;
-  background-color: red;
-  background-color: var(--black-color);
+  background-color: var(--white-color);
   border-left: 1px solid var(--gray-color-6);
   z-index: 2;
   transform: translateX(calc(100% + 10px));

@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { AppLayout } from '../../components/Layout/AppLayout';
 import { useSelectLayout, SelectLayout } from '../../components/SelectLayout';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
 import { SearchInput } from '../../components/SearchInput';
+import FiltersDropdown from '../../components/FiltersDropdown';
 import NFTCheckbox from '../../components/NFTCheckbox';
 import { BorrowForm } from './components/BorrowForm';
 import InfinityScroll from '../../components/InfinityScroll';
@@ -20,6 +22,8 @@ const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
 const BorrowPage: FC = () => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
+  const [filtersDropdownVisible, setFiltersDropdownVisible] =
+    useState<boolean>(false);
 
   const {
     isCloseSidebar,
@@ -32,6 +36,7 @@ const BorrowPage: FC = () => {
   } = useBorrowPage();
 
   return (
+    // <AppLayout>
     <SelectLayout
       selectedNfts={selectedNfts}
       onDeselect={onDeselect}
@@ -40,19 +45,71 @@ const BorrowPage: FC = () => {
         <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
       }
     >
-      <h1 className={styles.title}>Borrow money</h1>
-      <h2 className={styles.subtitle}>
-        Select your NFT to use as a collateral
-      </h2>
-      <SearchInput
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value || '');
-          searchItems(e.target.value || '');
-        }}
-        className={styles.search}
-        placeholder="Search by NFT name"
-      />
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Borrow money</h1>
+          <h2 className={styles.subtitle}>
+            Select your NFT to use as a collateral
+          </h2>
+        </div>
+      </div>
+
+      <div className={styles.sortWrapper}>
+        <SearchInput
+          onChange={(event) => setSearch(event.target.value || '')}
+          className={styles.searchInput}
+          placeholder="Search by name"
+        />
+        <div style={{ position: 'relative' }}>
+          <Button
+            type="tertiary"
+            onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
+          >
+            Filters
+          </Button>
+
+          {filtersDropdownVisible && (
+            <FiltersDropdown
+              onCancel={() => setFiltersDropdownVisible(false)}
+              className={styles.filtersDropdown}
+            >
+              {/* {showStakedOnlyToggle && (
+                <Controller
+                  control={control}
+                  name={InputControlsNames.SHOW_STAKED}
+                  render={({ field: { ref, ...field } }) => (
+                    <Toggle
+                      label="Staked only"
+                      className={styles.toggle}
+                      name={InputControlsNames.SHOW_STAKED}
+                      {...field}
+                    />
+                  )}
+                />
+              )}
+              <Controller
+                control={control}
+                name={InputControlsNames.SORT}
+                render={() => (
+                  <div className={styles.sortingWrapper}>
+                    {SORT_VALUES.map(({ label, value }, idx) => (
+                      <div className={styles.sorting} key={idx}>
+                        <p className={styles.label}>{label}</p>
+                        <SortOrderButton
+                          label={label}
+                          setValue={setValue}
+                          sort={sort}
+                          value={value}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              /> */}
+            </FiltersDropdown>
+          )}
+        </div>
+      </div>
 
       {!connected && (
         <Button
@@ -107,6 +164,33 @@ const BorrowPage: FC = () => {
           })}
         </InfinityScroll>
       )}
+    </SelectLayout>
+
+    // </AppLayout>
+  );
+
+  return (
+    <SelectLayout
+      selectedNfts={selectedNfts}
+      onDeselect={onDeselect}
+      isCloseSidebar={isCloseSidebar}
+      sidebarForm={
+        <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
+      }
+    >
+      <h1 className={styles.title}>Borrow money</h1>
+      <h2 className={styles.subtitle}>
+        Select your NFT to use as a collateral
+      </h2>
+      <SearchInput
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value || '');
+          searchItems(e.target.value || '');
+        }}
+        className={styles.search}
+        placeholder="Search by NFT name"
+      />
     </SelectLayout>
   );
 };

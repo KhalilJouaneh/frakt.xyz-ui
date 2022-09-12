@@ -7,6 +7,7 @@ import { Docs } from './Docs';
 import { Frakt } from './Frakt';
 import { Logo } from './Logo';
 import { Person } from './Person';
+import { Cross } from './Cross';
 
 export default {
   Chart,
@@ -18,4 +19,5 @@ export default {
   Frakt,
   Logo,
   Person,
+  Cross,
 };

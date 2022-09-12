@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Scrollbar } from 'swiper';
 import classNames from 'classnames';
+import Icons from '../../../../iconsNew/';
 
 import styles from './Slider.module.scss';
 import { BorrowNft } from '../../../../state/loans/types';
@@ -36,7 +37,9 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
             <button
               className={styles.removeBtn}
               onClick={() => onDeselect(nft)}
-            />
+            >
+              {Icons.Cross()}
+            </button>
           </div>
         </SwiperSlide>
       ))}

@@ -1,6 +1,7 @@
 .contentWrapper {
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0;
 }
 
 .positionRelative {
@@ -8,7 +9,7 @@
 }
 
 .contentReducer {
-  padding-right: 395px;
+  padding-right: 360px;
 
   @media screen and (max-width: 1023px) {
     padding-right: 0;
