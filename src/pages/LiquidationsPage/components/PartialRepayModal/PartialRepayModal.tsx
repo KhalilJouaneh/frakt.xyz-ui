@@ -14,7 +14,7 @@ import styles from './PartialRepayModal.module.scss';
 interface PartialRepayModalProps {
   visible: boolean;
   onCancel: () => void;
-  onPartialPayback: (paybackAmount: BN) => void;
+  onPartialPayback: (paybackAmount: BN, partialPercent?: number) => void;
   loan: Loan;
 }
 
@@ -64,7 +64,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         ? new BN(0) //? 0 === Repay all
         : new BN(parseFloat(paybackAmount) * 10 ** SOL_TOKEN.decimals);
 
-    onPartialPayback(paybackAmountBN);
+    onPartialPayback(paybackAmountBN, partialPercent);
   };
 
   const notEnoughBalanceError =

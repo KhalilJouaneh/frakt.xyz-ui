@@ -12,22 +12,20 @@ export const useWebSocketSubscriptions = (): void => {
   const socket = useSelector(selectSocket);
 
   useEffect(() => {
-    if (connected && publicKey && socket) {
-      socket.emit('loan-subscribe', publicKey);
-      socket.emit('lending-subscribe', publicKey);
+    if (wallet.connected) {
+      dispatch(commonActions.setWallet(wallet));
+      dispatch(commonActions.fetchUser(wallet.publicKey));
     }
-  }, [connected, socket, publicKey]);
+  }, [dispatch, wallet]);
 
   useEffect(() => {
     if (socket) {
-      socket.emit('lending-subscribe');
+      if (connected) {
+        socket.emit('loan-subscribe', publicKey);
+        socket.emit('lending-subscribe', publicKey);
+      } else {
+        socket.emit('lending-subscribe');
+      }
     }
-  }, [socket]);
-
-  useEffect(() => {
-    if (connected) {
-      dispatch(commonActions.setWallet(wallet));
-      dispatch(commonActions.fetchUser(publicKey));
-    }
-  }, [connected, dispatch, publicKey, wallet]);
+  }, [socket, connected, publicKey]);
 };

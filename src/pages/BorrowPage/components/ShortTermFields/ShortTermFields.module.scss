@@ -60,6 +60,24 @@
   //   order: 2;
   // }
 }
+
+.tooltipWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+  order: 3;
+}
+
+.questionIcon {
+  width: 18px;
+  margin-top: -4px;
+
+  svg {
+    fill: var(--accent-color-1);
+  }
+}
+
 .staticValueAccent {
   color: var(--black-color);
 }

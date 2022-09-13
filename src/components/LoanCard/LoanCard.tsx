@@ -1,124 +1,23 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { useWallet } from '@solana/wallet-adapter-react';
-import classNames from 'classnames';
-import Tooltip from '../Tooltip';
-import { BN } from '@frakt-protocol/frakt-sdk';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-
-import { LoadingModal, useLoadingModal } from '../LoadingModal';
-import {
-  paybackLoan as paybackLoanTx,
-  caclTimeToRepay,
-} from '../../utils/loans';
-import styles from './LoanCard.module.scss';
-import { useConnection, useCountdown } from '../../hooks';
-import { SOL_TOKEN } from '../../utils';
-import Button from '../Button';
+import classNames from 'classnames';
+import { RewardState, useLoans } from './hooks';
+import { caclTimeToRepay } from '../../utils/loans';
+import { LoadingModal } from '../LoadingModal';
 import { Loan } from '../../state/loans/types';
+import styles from './LoanCard.module.scss';
+import { useCountdown } from '../../hooks';
+import { SOL_TOKEN } from '../../utils';
+import Tooltip from '../Tooltip';
+import Button from '../Button';
 
 import { HEALTH_TOOLTIP_TEXT } from './constants';
-import {
-  PartialRepayModal,
-  usePartialRepayModal,
-} from '../../pages/LiquidationsPage/components/PartialRepayModal';
-import { loansActions } from '../../state/loans/actions';
-import { commonActions } from '../../state/common/actions';
+import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { SolanaIcon, Timer } from '../../icons';
 
 interface LoanCardProps {
   loan: Loan;
 }
-
-const usePaybackLoan = (loan: Loan) => {
-  const wallet = useWallet();
-  const connection = useConnection();
-  const dispatch = useDispatch();
-
-  const {
-    visible: loadingModalVisible,
-    open: openLoadingModal,
-    close: closeLoadingModal,
-  } = useLoadingModal();
-
-  const {
-    visible: partialRepayModalVisible,
-    open: openPartialRepayModal,
-    close: closePartialRepayModal,
-  } = usePartialRepayModal();
-
-  const removeTokenOptimistic = (mint: string) => {
-    dispatch(loansActions.addHiddenLoanNftMint(mint));
-  };
-
-  const showConfetti = (): void => {
-    dispatch(commonActions.setConfetti({ isVisible: true }));
-  };
-
-  const onPartialPayback = async (paybackAmount: BN) => {
-    try {
-      openLoadingModal();
-      closePartialRepayModal();
-
-      const result = await paybackLoanTx({
-        connection,
-        wallet,
-        loan,
-        paybackAmount,
-      });
-
-      if (!result) {
-        throw new Error('Payback failed');
-      }
-
-      showConfetti();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  const onPayback = async () => {
-    try {
-      const { isPriceBased, isGracePeriod } = loan;
-
-      if (isPriceBased && !isGracePeriod) {
-        openPartialRepayModal();
-        return;
-      }
-
-      openLoadingModal();
-
-      const result = await paybackLoanTx({
-        connection,
-        wallet,
-        loan,
-      });
-
-      if (!result) {
-        throw new Error('Payback failed');
-      }
-
-      showConfetti();
-      removeTokenOptimistic(loan.mint);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  return {
-    onPartialPayback,
-    closePartialRepayModal,
-    partialRepayModalVisible,
-    onPayback,
-    closeLoadingModal,
-    loadingModalVisible,
-  };
-};
 
 const LoanCard: FC<LoanCardProps> = ({ loan }) => {
   const {
@@ -128,9 +27,15 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-  } = usePaybackLoan(loan);
+    onGemStake,
+    onGemClaim,
+    onGemUnstake,
+    transactionsLeft,
+  } = useLoans(loan);
 
-  const { imageUrl, name, isGracePeriod } = loan;
+  const { imageUrl, name, isGracePeriod, reward } = loan;
+
+  const rewardAmount = reward?.amount;
 
   return (
     <>
@@ -163,6 +68,10 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
+        subtitle={
+          transactionsLeft &&
+          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+        }
       />
     </>
   );
@@ -180,7 +89,13 @@ const LoanCardValues: FC<{
     borrowAPRPercents,
     liquidationPrice,
     realLiquidationPrice,
+    reward,
+    isGracePeriod,
   } = loan;
+
+  const rewardAmount = reward?.amount / 1e9;
+
+  const isPriceBasedAndGracePeriod = isPriceBased && isGracePeriod;
 
   return (
     <div className={styles.valuesWrapper}>
@@ -213,7 +128,10 @@ const LoanCardValues: FC<{
       </div>
 
       {isPriceBased && (
-        <div className={styles.valuesWrapperRow}>
+        <div
+          style={{ flexDirection: 'column' }}
+          className={styles.valuesWrapperRow}
+        >
           <div className={styles.valueWrapper}>
             <div className={styles.valueWithTooltip}>
               <p className={styles.valueTitle}>Borrow interest</p>
@@ -242,8 +160,17 @@ const LoanCardValues: FC<{
         </div>
       )}
 
+      {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+        <div className={styles.reward}>
+          <p className={styles.valueTitle}>Rewards</p>
+          <p>
+            {rewardAmount} {reward?.token}
+          </p>
+        </div>
+      )}
+
       <div className={styles.valueWrapper}>
-        {isPriceBased ? (
+        {!isPriceBasedAndGracePeriod && isPriceBased ? (
           <div className={styles.valueWithTooltip}>
             <p className={styles.valueTitle}>Health</p>
             <Tooltip placement="bottom" overlay={HEALTH_TOOLTIP_TEXT}>
@@ -253,7 +180,11 @@ const LoanCardValues: FC<{
         ) : (
           <p className={styles.valueTitle}>Time to return</p>
         )}
-        {isPriceBased ? <Health loan={loan} /> : <TimeToReturn loan={loan} />}
+        {!isPriceBasedAndGracePeriod && isPriceBased ? (
+          <Health loan={loan} />
+        ) : (
+          <TimeToReturn loan={loan} />
+        )}
       </div>
     </div>
   );

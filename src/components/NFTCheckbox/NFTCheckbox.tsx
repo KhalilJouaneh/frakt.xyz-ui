@@ -12,6 +12,7 @@ interface NFTCheckboxInterface {
   onClick?: () => void;
   isCanFreeze?: boolean;
   loanValue?: string;
+  isCanStake?: boolean;
 }
 
 const NFTCheckbox: FC<NFTCheckboxInterface> = ({
@@ -22,6 +23,7 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
   onClick,
   loanValue,
   isCanFreeze,
+  isCanStake,
 }) => {
   return (
     <div className={styles.wrapper}>
@@ -38,11 +40,18 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
           <div className={styles.imageShadow} />
-          {!isCanFreeze && (
-            <div className={styles.badge}>
-              <p className={styles.badgeTitle}>Leaves wallet</p>
-            </div>
-          )}
+          <div className={styles.badges}>
+            {isCanStake && (
+              <div className={styles.badge}>
+                <p className={styles.badgeTitle}>Staking support</p>
+              </div>
+            )}
+            {!isCanFreeze && (
+              <div className={styles.badge}>
+                <p className={styles.badgeTitle}>Leaves wallet</p>
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.root__content}>
           <p className={styles.root__title}>{name}</p>

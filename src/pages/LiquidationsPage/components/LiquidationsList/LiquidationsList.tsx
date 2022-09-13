@@ -2,10 +2,15 @@ import { FC, ReactNode, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import { SORT_VALUES, useLiquidationsPage } from '../Liquidations';
+import {
+  SORT_VALUES as RAW_SORT_VALUES,
+  SORT_VALUES_WITH_GRACE,
+  useLiquidationsPage,
+} from '../Liquidations';
 import {
   selectLotteryTickets,
-  selectCollectionsDropdownData,
+  selectRaffleCollectionsDropdownData,
+  selectGraceCollectionsDropdownData,
 } from '../../../../state/liquidations/selectors';
 import { CollectionDropdown } from '../../../../components/CollectionDropdown';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
@@ -21,6 +26,7 @@ import FiltersDropdown from '../../../../components/FiltersDropdown';
 interface LiquidationsListProps {
   children: ReactNode;
   withRafflesInfo?: boolean;
+  isGraceList?: boolean;
   fetchItemsFunc?: (params: FetchItemsParams) => void;
 }
 
@@ -28,18 +34,26 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   children,
   withRafflesInfo,
   fetchItemsFunc,
+  isGraceList,
 }) => {
   const { control, setSearch, setValue, sort, setCollections } =
-    useLiquidationsPage(fetchItemsFunc);
+    useLiquidationsPage(fetchItemsFunc, isGraceList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
-  const collectionsListDropdownData = useSelector(
-    selectCollectionsDropdownData,
+  const collectionsRaffleListDropdownData = useSelector(
+    selectRaffleCollectionsDropdownData,
   );
-  const SORT_COLLECTIONS_VALUES = collectionsListDropdownData.map((item) => ({
-    label: <span className={styles.sortName}>{item.label}</span>,
-    value: item.value,
-  }));
+  const collectionsGraceListDropdownData = useSelector(
+    selectGraceCollectionsDropdownData,
+  );
+  const SORT_COLLECTIONS_VALUES = withRafflesInfo
+    ? collectionsRaffleListDropdownData
+    : collectionsGraceListDropdownData.map((item) => ({
+        label: <span className={styles.sortName}>{item.label}</span>,
+        value: item.value,
+      }));
+
+  const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
 
   const [filtersDropdownVisible, setFiltersDropdownVisible] =
     useState<boolean>(false);

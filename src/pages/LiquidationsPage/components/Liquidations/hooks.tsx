@@ -15,7 +15,10 @@ import { FetchItemsParams } from '../../../../state/liquidations/types';
 
 type FetchDataFunc = (params: FetchItemsParams) => void;
 
-type UseLiquidationsPage = (fetchItemsFunc: FetchDataFunc) => {
+type UseLiquidationsPage = (
+  fetchItemsFunc: FetchDataFunc,
+  isGraceList?: boolean,
+) => {
   control: Control<FilterFormFieldsValues>;
   setSearch: (value?: string) => void;
   setCollections: (value?: []) => void;
@@ -25,16 +28,22 @@ type UseLiquidationsPage = (fetchItemsFunc: FetchDataFunc) => {
 
 export const useLiquidationsPage: UseLiquidationsPage = (
   fetchItemsFunc: FetchDataFunc,
+  isGraceList?: boolean,
 ) => {
-  const [sortOrder, setSortOrder] = useState<string>('desc');
-  const [sortBy, setSortBy] = useState<string>('liquidationPrice');
+  const defaultSortIndex = isGraceList ? 4 : 3;
+  const defaultSortBy = isGraceList ? 'startedAt' : 'liquidationPrice';
+  const defaultSortOrder = isGraceList ? 'asc' : 'desc';
+
+  const [sortOrder, setSortOrder] = useState<string>(defaultSortOrder);
+  const [sortBy, setSortBy] = useState<string>(defaultSortBy);
   const [search, setSearch] = useState<string>('');
   const [collections, setCollections] = useState<[]>([]);
   const stringRef = useRef(null);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
-      [LiquidationsListFormNames.SORT]: SORT_VALUES[1],
+      [LiquidationsListFormNames.SORT]:
+        SORT_VALUES_WITH_GRACE[defaultSortIndex],
       [LiquidationsListFormNames.COLLECTIONS_SORT]: null,
     },
   });
@@ -107,6 +116,26 @@ export const SORT_VALUES: LiquiditionsSortValue[] = [
   {
     label: <span>Liquidation Price</span>,
     value: 'liquidationPrice_',
+  },
+];
+
+export const SORT_VALUES_WITH_GRACE = [
+  ...SORT_VALUES,
+  {
+    label: (
+      <span className={styles.sortName}>
+        Grace Period <ArrowDownSmallIcon className={styles.arrowUp} />
+      </span>
+    ),
+    value: 'startedAt_asc',
+  },
+  {
+    label: (
+      <span className={styles.sortName}>
+        Grace Period <ArrowDownSmallIcon className={styles.arrowDown} />
+      </span>
+    ),
+    value: 'startedAt_desc',
   },
 ];
 

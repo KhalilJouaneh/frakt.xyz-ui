@@ -96,8 +96,21 @@ export const selectTxLiquidateStatus = createSelector(
   identity,
 );
 
-export const selectCollectionsDropdownData = createSelector(
-  [pathOr([], ['liquidations', 'collectionsList', 'data'])],
+export const selectRaffleCollectionsDropdownData = createSelector(
+  [
+    pathOr(
+      [],
+      ['liquidations', 'collectionsList', 'data', 'raffleCollections'],
+    ),
+  ],
+  map((item: any) => ({
+    label: item,
+    value: item,
+  })),
+);
+
+export const selectGraceCollectionsDropdownData = createSelector(
+  [pathOr([], ['liquidations', 'collectionsList', 'data', 'graceCollections'])],
   map((item: any) => ({
     label: item,
     value: item,

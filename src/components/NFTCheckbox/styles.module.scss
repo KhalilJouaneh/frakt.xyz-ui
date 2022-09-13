@@ -3,12 +3,15 @@
   height: 100%;
 }
 
+.badges {
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  gap: 10px;
+  z-index: 1;
+}
+
 .badge {
-  font: var(--font-text-5);
-  background-color: var(--light-green-color);
-  position: absolute;
-  bottom: 16px;
-  left: 20px;
   border: 1px solid var(--color-gray-03);
   display: flex;
   align-items: center;
@@ -19,7 +22,7 @@
 
 .imageShadow {
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   width: 100%;
   height: 100px;
 }
@@ -70,7 +73,8 @@
     background-color: var(--gray-color-4);
     background-size: cover;
     background-repeat: no-repeat;
-    border-bottom: 1px solid var(--gray-color-2);
+    border-bottom: 1px solid var(--gray-color-6);
+    display: flex;
     &::after {
       content: '';
       display: block;

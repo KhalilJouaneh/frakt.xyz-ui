@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 import { selectStats } from '../../state/stats/selectors';
 import { statsActions } from '../../state/stats/actions';
@@ -14,7 +15,6 @@ import GraceList from './components/GraceList';
 import Lending from './components/Lending';
 import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
-import { useWallet } from '@solana/wallet-adapter-react';
 import AvailableBorrow from './components/AvailableBorrow';
 import MyDeposit from './components/MyDeposit';
 
