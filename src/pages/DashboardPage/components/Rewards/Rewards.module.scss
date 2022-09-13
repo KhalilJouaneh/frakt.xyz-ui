@@ -1,0 +1,50 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 643px;
+  width: 100%;
+  height: 100%;
+}
+.btnWrapper {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.btn {
+  height: 48px;
+  width: 100%;
+}
+
+.title {
+  font: var(--font-h6);
+  margin-bottom: 32px;
+}
+
+.tooltip {
+  display: flex;
+  align-content: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.questionIcon {
+  width: 18px;
+  margin-top: -1px;
+
+  svg {
+    fill: var(--blue-color);
+  }
+}
+
+.subtitle {
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--gray-color-2);
+  font: var(--font-subtitle);
+  margin-bottom: 4px;
+}

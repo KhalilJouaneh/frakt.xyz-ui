@@ -1,0 +1,41 @@
+.content {
+  height: 100%;
+
+  @media screen and (max-width: 1240px) {
+    max-width: 100%;
+    justify-content: center;
+  }
+}
+
+.title {
+  font: var(--font-h6);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.blockWrapper {
+  display: flex;
+  gap: 17px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  min-width: 132px;
+}
+
+.subtitle {
+  color: var(--black-color);
+  font: var(--font-text-6);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--gray-color-2);
+  font: var(--font-text-1);
+  font-weight: 700;
+  text-align: center;
+}

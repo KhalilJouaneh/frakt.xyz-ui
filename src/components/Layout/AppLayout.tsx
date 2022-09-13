@@ -1,12 +1,10 @@
 import { FC, useEffect } from 'react';
-import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 
-import Header from '../Header';
+import { commonActions } from '../../state/common/actions';
+import { HeaderStateProvider } from './headerState';
 import NotificationBar from '../NotificationBar';
 import styles from './styles.module.scss';
-import { HeaderStateProvider, useHeaderState } from './headerState';
-import { commonActions } from '../../state/common/actions';
 
 interface LayoutProps {
   customHeader?: JSX.Element;
@@ -15,14 +13,8 @@ interface LayoutProps {
   contentClassName?: string;
 }
 
-export const Layout: FC<LayoutProps> = ({
-  customHeader,
-  children,
-  className = '',
-  contentClassName = '',
-}) => {
+export const Layout: FC<LayoutProps> = ({ children }) => {
   const dispatch = useDispatch();
-  const { isHeaderHidden, onContentScroll } = useHeaderState();
 
   useEffect(() => {
     dispatch(commonActions.setWalletModal({ isVisible: false }));
@@ -33,26 +25,6 @@ export const Layout: FC<LayoutProps> = ({
     <div className={styles.container}>
       {children}
       <NotificationBar />
-    </div>
-  );
-
-  return (
-    <div className={classNames(className)}>
-      <Header
-        className={classNames(styles.header, {
-          [styles.headerHide]: isHeaderHidden,
-        })}
-        customHeader={customHeader}
-      />
-      <div
-        onScroll={onContentScroll}
-        id="app-content"
-        className={classNames(styles.content, contentClassName)}
-      >
-        {children}
-      </div>
-      <NotificationBar />
-      <div className={styles.noise} />
     </div>
   );
 };

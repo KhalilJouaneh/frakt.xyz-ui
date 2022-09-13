@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { uniqBy, prop } from 'ramda';
+import { uniqBy, prop, sum, map } from 'ramda';
 import moment from 'moment';
 
 import styles from '../components/MyLoansList/MyLoansList.module.scss';
@@ -46,11 +46,11 @@ type UseLoansFiltering = ({
 }) => {
   control: Control<FilterFormFieldsValues>;
   loans: Loan[];
-  totalDebt: number;
   totalBorrowed: number;
   sortValueOption: LoansValue[];
-  sort: any;
+  sort: LoansValue;
   setValue: any;
+  showLoansStatus: LoansValue;
 };
 
 export const useLoansFiltering: UseLoansFiltering = ({
@@ -168,25 +168,17 @@ export const useLoansFiltering: UseLoansFiltering = ({
     return [];
   }, [userLoans, sort, showLoansStatus, selectedCollectionsName]);
 
-  const totalDebt = filteredLoans.reduce(
-    (acc, { repayValue }) => acc + repayValue,
-    0,
-  );
-
-  const totalBorrowed = filteredLoans.reduce(
-    (acc, { loanValue }) => acc + loanValue,
-    0,
-  );
+  const totalBorrowed = sum(map(({ loanValue }) => loanValue, filteredLoans));
 
   return {
     control,
     loans: filteredLoans,
     showStakedOnlyToggle: connected,
-    totalDebt,
     totalBorrowed,
     sortValueOption,
     sort,
     setValue,
+    showLoansStatus,
   };
 };
 
@@ -215,7 +207,7 @@ export const SORT_VALUES = [
     value: 'debt_',
   },
   {
-    label: <span>Time yo repay</span>,
+    label: <span>Time to repay</span>,
     value: 'timeToRepay_',
   },
   {

@@ -23,7 +23,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  background: var(--gray-color-9);
+  background: var(--gray-color-4);
   border-radius: 30px;
   position: absolute;
   top: -64px;
@@ -47,7 +47,7 @@
   height: 40px;
   width: 40px;
   border: 1px solid var(--black-color);
-  background: var(--gray-color-9);
+  background: var(--gray-color-4);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -81,7 +81,7 @@
 }
 
 .infoTitle {
-  color: var(--gray-color-6);
+  color: var(--gray-color-2);
   font: var(--font-text-6);
 }
 

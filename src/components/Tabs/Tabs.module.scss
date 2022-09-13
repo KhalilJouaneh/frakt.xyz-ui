@@ -33,13 +33,13 @@
 
 .primary {
   flex: 1;
-  border: 1px solid var(--gray-color-6);
-  background: var(--gray-color-9);
+  border: 1px solid var(--gray-color-2);
+  background: var(--gray-color-4);
   color: var(--black-color);
   font: var(--font-text-8);
 
   &:hover {
-    background: var(--gray-color-7);
+    background: var(--gray-color-4);
   }
 }
 

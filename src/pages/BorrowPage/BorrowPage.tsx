@@ -1,20 +1,19 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { useSelectLayout, SelectLayout } from '../../components/SelectLayout';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
+import InfinityScroll from '../../components/InfinityScroll';
 import { SearchInput } from '../../components/SearchInput';
-import FiltersDropdown from '../../components/FiltersDropdown';
+import { commonActions } from '../../state/common/actions';
+import { sendAmplitudeData } from '../../utils/amplitude';
 import NFTCheckbox from '../../components/NFTCheckbox';
 import { BorrowForm } from './components/BorrowForm';
-import InfinityScroll from '../../components/InfinityScroll';
+import { BorrowNft } from '../../state/loans/types';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
 import { useBorrowPage } from './hooks';
-import { commonActions } from '../../state/common/actions';
-import { BorrowNft } from '../../state/loans/types';
-import { sendAmplitudeData } from '../../utils/amplitude';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -22,8 +21,6 @@ const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
 const BorrowPage: FC = () => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
-  const [filtersDropdownVisible, setFiltersDropdownVisible] =
-    useState<boolean>(false);
 
   const {
     isCloseSidebar,
@@ -60,55 +57,6 @@ const BorrowPage: FC = () => {
           className={styles.searchInput}
           placeholder="Search by name"
         />
-        <div style={{ position: 'relative' }}>
-          <Button
-            type="tertiary"
-            onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
-          >
-            Filters
-          </Button>
-
-          {filtersDropdownVisible && (
-            <FiltersDropdown
-              onCancel={() => setFiltersDropdownVisible(false)}
-              className={styles.filtersDropdown}
-            >
-              {/* {showStakedOnlyToggle && (
-                <Controller
-                  control={control}
-                  name={InputControlsNames.SHOW_STAKED}
-                  render={({ field: { ref, ...field } }) => (
-                    <Toggle
-                      label="Staked only"
-                      className={styles.toggle}
-                      name={InputControlsNames.SHOW_STAKED}
-                      {...field}
-                    />
-                  )}
-                />
-              )}
-              <Controller
-                control={control}
-                name={InputControlsNames.SORT}
-                render={() => (
-                  <div className={styles.sortingWrapper}>
-                    {SORT_VALUES.map(({ label, value }, idx) => (
-                      <div className={styles.sorting} key={idx}>
-                        <p className={styles.label}>{label}</p>
-                        <SortOrderButton
-                          label={label}
-                          setValue={setValue}
-                          sort={sort}
-                          value={value}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              /> */}
-            </FiltersDropdown>
-          )}
-        </div>
       </div>
 
       {!connected && (

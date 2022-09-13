@@ -8,13 +8,15 @@
   }
 }
 
-.detailsTitle {
+.tabs {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  color: var(--gray-color-3);
-  font: var(--font-text-5);
+}
+
+.detailsTitle {
+  color: var(--gray-color-2);
+  font: var(--font-text-6);
+  margin-bottom: 9px;
+  text-align: center;
   text-transform: uppercase;
 }
 
@@ -28,10 +30,4 @@
   width: 100%;
   justify-content: center;
   font: var(--font-btn-small);
-}
-
-.radioWrapper {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }

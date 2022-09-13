@@ -5,7 +5,6 @@ import {
   Page404,
   HomePage,
   WalletPage,
-  StatsPage,
   LendPage,
   LiquidationsPage,
   LoansPage,
@@ -49,11 +48,7 @@ export const routes: Route[] = [
     path: `${PATHS.PROFILE}${PATHS.WALLET_PUBKEY}`,
     component: WalletPage,
   },
-  {
-    exact: true,
-    path: PATHS.STATS,
-    component: StatsPage,
-  },
+
   {
     exact: true,
     path: PATHS.PAGE_404,

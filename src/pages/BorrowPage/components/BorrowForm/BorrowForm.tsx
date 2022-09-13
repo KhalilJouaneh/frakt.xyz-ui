@@ -10,10 +10,16 @@ import styles from './BorrowForm.module.scss';
 import { FormFieldTypes, useBorrowForm } from './hooks';
 import { BorrowNft } from '../../../../state/loans/types';
 import { sendAmplitudeData } from '../../../../utils/amplitude';
+import { Tabs } from '../../../../components/Tabs';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
   onDeselect?: () => void;
+}
+
+export enum BorrowFormTabs {
+  PERPETUAL = 'perpetual',
+  FLIP = 'flip',
 }
 
 export const BorrowForm: FC<BorrowFormProps> = ({
@@ -33,6 +39,9 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     setPriceBasedLTV,
     confirmText,
     priceBasedDisabled,
+    borrowTabs,
+    tabValue,
+    setTabValue,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
@@ -42,36 +51,22 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     <>
       <div className={styles.details}>
         <p className={styles.detailsTitle}>Loan Type</p>
-        <div className={styles.radioWrapper}>
-          <Radio
-            checked={formField === FormFieldTypes.LONG_TERM_FIELD}
-            disabled={priceBasedDisabled}
-            onClick={() => {
-              setFormField(FormFieldTypes.LONG_TERM_FIELD);
-              sendAmplitudeData('loans-perpetual');
-            }}
-            label="Perpetual loan"
-          />
-          <Radio
-            checked={formField === FormFieldTypes.SHORT_TERM_FIELD}
-            onClick={() => {
-              setFormField(FormFieldTypes.SHORT_TERM_FIELD);
-              sendAmplitudeData('loans-flip');
-            }}
-            label="Flip loan"
-          />
-        </div>
-        {formField === FormFieldTypes.SHORT_TERM_FIELD && (
+        <Tabs
+          className={styles.tabs}
+          tabs={borrowTabs}
+          value={tabValue}
+          setValue={setTabValue}
+        />
+        {tabValue === BorrowFormTabs.FLIP && (
           <ShortTermFields nft={selectedNft} />
         )}
-        {formField === FormFieldTypes.LONG_TERM_FIELD &&
-          !priceBasedDisabled && (
-            <LongTermFields
-              nft={selectedNft}
-              ltv={priceBasedLTV}
-              setLtv={setPriceBasedLTV}
-            />
-          )}
+        {tabValue === BorrowFormTabs.PERPETUAL && !priceBasedDisabled && (
+          <LongTermFields
+            nft={selectedNft}
+            ltv={priceBasedLTV}
+            setLtv={setPriceBasedLTV}
+          />
+        )}
       </div>
       <div className={styles.continueBtnContainer}>
         <Button

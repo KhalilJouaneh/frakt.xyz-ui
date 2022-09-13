@@ -1,0 +1,79 @@
+.title {
+  font: var(--font-h4);
+  margin-bottom: 20px;
+}
+
+.block {
+  max-width: 643px;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.subtitle {
+  font: var(--font-h6);
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.nftName {
+  font: var(--font-text-2);
+}
+
+.tableInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rowImage {
+  height: 58px;
+  width: 58px;
+}
+
+.poolImage {
+  display: flex;
+  margin: 0 5px 0 10px;
+  position: relative;
+}
+
+.value {
+  font: var(--font-text-8);
+}
+
+.btn {
+  margin-top: 8px;
+  height: 48px;
+  width: 100%;
+}
+
+.poolImageWithLabel {
+  &::before {
+    content: attr(data-collections-amount);
+    background: var(--accent-color-1);
+    color: var(--white-color);
+    position: absolute;
+    font: var(--font-smallest);
+    padding: 2px 4px 4px 5px;
+    top: -4px;
+    left: 7px;
+    border-radius: 10px;
+    transform: translateX(-13px);
+    width: 29px;
+    height: 16px;
+  }
+}
+
+.poolImage .rowImage {
+  margin: 0;
+}

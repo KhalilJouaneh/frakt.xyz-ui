@@ -1,0 +1,102 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 420px;
+  width: 100%;
+  height: 100%;
+}
+
+.poolsConainer {
+  width: 100%;
+}
+
+.title {
+  font: var(--font-h6);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.loansInfoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.loansInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.loansValue {
+  color: var(--gray-color-2);
+  font: var(--font-subtitle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.chart {
+  height: 192px;
+  width: 192px;
+  margin: 0 auto;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-gray-4);
+}
+
+.chartInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dot {
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+}
+
+.rowInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rowIcon {
+  height: 24px;
+  width: 24px;
+}
+
+.name {
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.value {
+  font: var(--font-text-8);
+}
+
+.icon {
+  width: 20px;
+}
+
+.btn {
+  margin-top: 32px;
+  height: 48px;
+  width: 100%;
+}

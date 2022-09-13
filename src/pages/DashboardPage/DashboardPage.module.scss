@@ -1,0 +1,47 @@
+.container {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+
+  @media screen and (max-width: 1023px) {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+}
+
+.title {
+  font: var(--font-title-2);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.subtitle {
+  font: var(--font-text-2);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.protocolStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+
+  @media screen and (max-width: 1240px) {
+    flex-direction: column;
+  }
+}
+
+.poolsWrapper {
+  display: flex;
+  padding-top: 70px;
+  gap: 30px;
+
+  @media screen and (max-width: 1430px) {
+    flex-direction: column;
+  }
+}

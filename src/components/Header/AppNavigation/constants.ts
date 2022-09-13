@@ -41,11 +41,6 @@ export const NAVIGATION_LINKS = [
     event: 'navigation-liquidation',
   },
   {
-    pathname: PATHS.STATS,
-    to: PATHS.STATS,
-    label: 'Stats',
-  },
-  {
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,
     label: 'Dashboard',

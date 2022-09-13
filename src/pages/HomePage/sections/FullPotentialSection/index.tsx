@@ -1,1 +1,0 @@
-export { FullPotentialSection } from './FullPotentialSection';

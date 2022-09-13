@@ -60,16 +60,7 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
         for health.
       </p>
       <div className={styles.sliderWrapper}>
-        <p className={styles.sliderLabel}>
-          loan to value: {ltv}%{' '}
-          <Tooltip
-            placement="bottom"
-            trigger="hover"
-            overlay="Ratio between debt and deposited NFT valuation. The higher it is, the riskier the loan"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </p>
+        <p className={styles.sliderLabel}>loan to value: {ltv}% </p>
         <Slider
           marks={marks}
           className={styles.slider}

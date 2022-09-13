@@ -9,6 +9,7 @@ import { BorrowNft } from '../../../../state/loans/types';
 import { useEffect, useState } from 'react';
 import { loansActions } from '../../../../state/loans/actions';
 import { commonActions } from '../../../../state/common/actions';
+import { Tab, useTabs } from '../../../../components/Tabs';
 
 export enum FormFieldTypes {
   SHORT_TERM_FIELD = 'shortTermField',
@@ -28,6 +29,7 @@ type UseBorrowForm = (props: {
   onDeselect?: () => void;
   selectedNft?: BorrowNft;
 }) => {
+  borrowTabs: Tab[];
   openConfirmModal: () => void;
   confirmModalVisible: boolean;
   closeConfirmModal: () => void;
@@ -40,6 +42,8 @@ type UseBorrowForm = (props: {
   setPriceBasedLTV: (nextValue: number) => void;
   confirmText: string;
   priceBasedDisabled: boolean;
+  tabValue: string;
+  setTabValue: (value: string) => void;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -50,6 +54,27 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const [formField, setFormField] = useState<FormFieldTypes>(
     FormFieldTypes.LONG_TERM_FIELD,
   );
+
+  const BORROW_FORM_TABS: Tab[] = [
+    {
+      label: 'Perpetual',
+      value: 'perpetual',
+      disabled: !selectedNft?.priceBased,
+    },
+    {
+      label: 'Flip',
+      value: 'flip',
+    },
+  ];
+
+  const {
+    tabs: borrowTabs,
+    value: tabValue,
+    setValue: setTabValue,
+  } = useTabs({
+    tabs: BORROW_FORM_TABS,
+    defaultValue: BORROW_FORM_TABS[1].value,
+  });
 
   const [priceBasedLTV, setPriceBasedLTV] = useState<number>(0);
 
@@ -129,6 +154,9 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   );
 
   return {
+    borrowTabs,
+    tabValue,
+    setTabValue,
     openConfirmModal,
     confirmModalVisible,
     closeConfirmModal,

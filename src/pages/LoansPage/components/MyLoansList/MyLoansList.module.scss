@@ -11,7 +11,7 @@
   }
 }
 
-.container  {
+.container {
   position: relative;
   width: 100%;
 }
@@ -35,7 +35,7 @@
 }
 
 .valueTitle {
-  color: var(--gray-color-6);
+  color: var(--gray-color-2);
   font: var(--font-text-6);
   text-transform: uppercase;
 }
@@ -62,6 +62,16 @@
     width: 100%;
     justify-content: space-between;
   }
+}
+
+.filterBtn {
+  display: flex;
+  height: 36px;
+  min-width: 60px;
+}
+
+.filterBtnActive {
+  background-color: var(--light-green-color);
 }
 
 .filtersContent {
@@ -148,6 +158,12 @@
   row-gap: 12px;
 }
 
+.radioWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 9.5px;
+}
+
 .sorting {
   display: flex;
   flex-direction: column;
@@ -155,7 +171,7 @@
 }
 
 .label {
-  color: var(--gray-color-6);
+  color: var(--gray-color-2);
   font: var(--font-text-6);
   text-transform: uppercase;
 }

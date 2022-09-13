@@ -1,15 +1,16 @@
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
-import Button from '../../../../components/Button';
 import { Controller } from 'react-hook-form';
-import { CollectionDropdown } from '../../../../components/CollectionDropdown';
+import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+
+import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import FiltersDropdown from '../../../../components/FiltersDropdown';
 import SortOrderButton from '../../../../components/SortOrderButton';
-import Toggle from '../../../../components/Toggle';
 import { LoansList } from '../../../WalletPage/components/LoansList';
-import { Select } from '../../../../components/Select';
+import { selectTotalDebt } from '../../../../state/loans/selectors';
+import Button from '../../../../components/Button';
+import styles from './MyLoansList.module.scss';
 import {
   FilterFormInputsNames,
   LoansValue,
@@ -17,8 +18,8 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
-import styles from './MyLoansList.module.scss';
-import { selectTotalDebt } from '../../../../state/loans/selectors';
+import { CollectionDropdown } from '../../../../components/CollectionDropdown';
+import { Radio } from '../../../../components/Radio';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -29,10 +30,18 @@ export const MyLoansList: FC = () => {
 
   const totalDebt = useSelector(selectTotalDebt);
 
-  const { control, loans, totalBorrowed, sortValueOption, sort, setValue } =
-    useLoansFiltering({
-      selectedCollections,
-    });
+  const {
+    control,
+    loans,
+    totalBorrowed,
+    showLoansStatus,
+    sortValueOption,
+    sort,
+    setValue,
+  } = useLoansFiltering({
+    selectedCollections,
+  });
+
   const [filtersDropdownVisible, setFiltersDropdownVisible] =
     useState<boolean>(false);
 
@@ -74,6 +83,33 @@ export const MyLoansList: FC = () => {
                       <div className={styles.controllers}>
                         <Controller
                           control={control}
+                          name={FilterFormInputsNames.LOANS_STATUS}
+                          render={() => (
+                            <div className={styles.radioWrapper}>
+                              {SORT_LOANS_TYPE_VALUES.map(
+                                ({ label, value }, idx) => (
+                                  <div className={styles.sorting} key={idx}>
+                                    <Radio
+                                      label={value}
+                                      className={classNames(
+                                        showLoansStatus.value === value &&
+                                          styles.filterBtnActive,
+                                      )}
+                                      onClick={() =>
+                                        setValue(
+                                          FilterFormInputsNames.LOANS_STATUS,
+                                          { label, value },
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                ),
+                              )}
+                            </div>
+                          )}
+                        />
+                        <Controller
+                          control={control}
                           name={FilterFormInputsNames.SORT}
                           render={() => (
                             <div className={styles.sortingWrapper}>
@@ -91,51 +127,25 @@ export const MyLoansList: FC = () => {
                             </div>
                           )}
                         />
+
+                        <div className={styles.filters}>
+                          <div className={styles.filtersContent}>
+                            <CollectionDropdown
+                              options={sortValueOption}
+                              values={selectedCollections}
+                              setValues={(value) =>
+                                setSelectedCollections(value)
+                              }
+                              className={styles.sortingSelect}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </FiltersDropdown>
                   )}
                 </div>
               </div>
             </div>
-
-            {/* <div className={styles.filters}>
-              <div className={styles.filtersContent}>
-                <Controller
-                  control={control}
-                  name={FilterFormInputsNames.LOANS_STATUS}
-                  render={({ field: { ref, ...field } }) => (
-                    <Select
-                      valueContainerClassName={styles.sortingSelectContainer}
-                      className={styles.sortingSelect}
-                      label="Loan Type"
-                      name={FilterFormInputsNames.LOANS_STATUS}
-                      options={SORT_LOANS_TYPE_VALUES}
-                      {...field}
-                    />
-                  )}
-                />
-                <CollectionDropdown
-                  options={sortValueOption}
-                  values={selectedCollections}
-                  setValues={(value) => setSelectedCollections(value)}
-                  className={styles.sortingSelect}
-                />
-              </div>
-              <Controller
-                control={control}
-                name={FilterFormInputsNames.SORT}
-                render={({ field: { ref, ...field } }) => (
-                  <Select
-                    valueContainerClassName={styles.sortingSelectContainer}
-                    className={styles.sortingSelect}
-                    label="Sort by"
-                    name={FilterFormInputsNames.SORT}
-                    options={SORT_VALUES}
-                    {...field}
-                  />
-                )}
-              />
-            </div> */}
           </div>
           <LoansList loans={loans} />
         </>
