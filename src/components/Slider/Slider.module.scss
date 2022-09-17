@@ -4,7 +4,7 @@
       margin: 0;
     }
     .ant-slider-dot {
-      background-color: var(--color-gray-5);
+      background-color: var(--secondary-background);
       border: 0;
       margin-top: -1px;
       height: 10px;
@@ -14,10 +14,10 @@
       top: 22px !important;
     }
     .ant-slider-mark-text-active {
-      color: var(--black-color) !important;
+      color: var(--secondary-border) !important;
     }
     .ant-slider-mark-text {
-      color: var(--gray-color-2);
+      color: var(--secondary-text);
       font: var(--font-text-8);
     }
     .ant-slider-mark-text:first-child {
@@ -32,7 +32,7 @@
       border: var(--border-black-1);
     }
     .ant-slider-rail {
-      background-color: var(--color-gray-5);
+      background-color: var(--secondary-background);
       height: 4px;
     }
     .ant-slider-track {
@@ -41,7 +41,7 @@
       height: 4px;
     }
     .ant-slider:hover .ant-slider-rail {
-      background-color: var(--color-gray-5);
+      background-color: var(--secondary-background);
     }
     .ant-slider:hover .ant-slider-track {
       background-color: var(--light-green-color);
@@ -86,8 +86,8 @@
         width: 43px;
         height: 22px;
         position: absolute;
-        font: var( --font-text-9);
-        color: var(--white-color);
+        font: var(--font-text-9);
+        color: #f3f3f3;
         transform: translateX(-13px);
         text-align: center;
         padding: 4px 0;

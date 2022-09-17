@@ -24,24 +24,28 @@ h5 {
   }
 
   .fraktion__layout_container {
-    position: relative; 
+    position: relative;
     left: 177px;
-    width: calc(100vw - 177px);
+    width: calc(100vw - 187px);
   }
 
+  .closed {
+    left: 66px;
+    width: calc(100vw - 76px);
+  }
 
   .fraktion__notification {
     svg.anticon {
-      fill: var(--accent-color-1);
+      fill: var(--black-color);
     }
 
-    background: var(--black-color) !important;
+    background: var(--white-color) !important;
     border: 1px solid var(--gray-color-3);
     border-radius: 0 !important;
   }
 
   .ant-notification-notice-message {
-    color: var(--white-color);
+    color: var(--black-color);
   }
 
   .fraktion__notificationLink {
@@ -118,7 +122,4 @@ h5 {
       opacity: 0 !important;
     }
   }
-
 }
-
-

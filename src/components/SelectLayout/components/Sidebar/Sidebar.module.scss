@@ -1,17 +1,17 @@
 .sidebarWrapper {
   position: fixed;
   top: 0;
-  right: 0; //scroll width
+  right: 0;
   height: 100%;
-  width: 25%;
-  min-width: 375px;
+
+  width: 300px;
   background-color: var(--white-color);
   border-left: 1px solid var(--gray-color-2);
   z-index: 2;
   transform: translateX(calc(100% + 10px));
   transition: transform var(--transition-1), opacity var(--transition-1),
     padding-top var(--transition-1);
-  padding-top: var(--header-height);
+  padding-top: 96px;
 
   &.visible {
     transform: translateX(0);
@@ -57,51 +57,5 @@
   @media screen and (max-width: 375px) {
     max-width: none;
     width: 100%;
-  }
-}
-
-.nftsAmount {
-  font: var(--font-subtitle-2);
-  padding: 24px 24px 12px;
-
-  @media screen and (max-width: 1023px) {
-    height: 90px;
-    padding: unset;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--accent-color-1);
-    cursor: pointer;
-  }
-}
-
-.separator {
-  padding: 0 24px;
-  margin-bottom: 32px;
-
-  &::after {
-    content: '';
-    display: block;
-    height: 1px;
-    width: 100%;
-    background-color: var(--gray-color-3);
-  }
-}
-
-.backDrop {
-  display: none;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(16px);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 1;
-}
-
-.backDropVisible {
-  @media screen and (max-width: 1023px) {
-    display: block;
   }
 }

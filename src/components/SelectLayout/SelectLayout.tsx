@@ -29,9 +29,7 @@ export const SelectLayout: FC<SelectLayoutProps> = ({
         isCloseSidebar={isCloseSidebar}
       />
       <Container component="main" className={styles.contentWrapper}>
-        <div id="content-reducer" className={styles.contentReducer}>
-          {children}
-        </div>
+        <div id="content-reducer">{children}</div>
       </Container>
     </AppLayout>
   );

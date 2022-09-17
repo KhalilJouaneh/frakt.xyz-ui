@@ -33,7 +33,6 @@ const BorrowPage: FC = () => {
   } = useBorrowPage();
 
   return (
-    // <AppLayout>
     <SelectLayout
       selectedNfts={selectedNfts}
       onDeselect={onDeselect}
@@ -53,7 +52,11 @@ const BorrowPage: FC = () => {
 
       <div className={styles.sortWrapper}>
         <SearchInput
-          onChange={(event) => setSearch(event.target.value || '')}
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value || '');
+            searchItems(e.target.value || '');
+          }}
           className={styles.searchInput}
           placeholder="Search by name"
         />
@@ -115,33 +118,6 @@ const BorrowPage: FC = () => {
           })}
         </InfinityScroll>
       )}
-    </SelectLayout>
-
-    // </AppLayout>
-  );
-
-  return (
-    <SelectLayout
-      selectedNfts={selectedNfts}
-      onDeselect={onDeselect}
-      isCloseSidebar={isCloseSidebar}
-      sidebarForm={
-        <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
-      }
-    >
-      <h1 className={styles.title}>Borrow money</h1>
-      <h2 className={styles.subtitle}>
-        Select your NFT to use as a collateral
-      </h2>
-      <SearchInput
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value || '');
-          searchItems(e.target.value || '');
-        }}
-        className={styles.search}
-        placeholder="Search by NFT name"
-      />
     </SelectLayout>
   );
 };

@@ -2,15 +2,13 @@ import { FC } from 'react';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { BorrowNft } from '../../../../state/loans/types';
 import { ShortTermFields } from '../ShortTermFields';
+import { Tabs } from '../../../../components/Tabs';
 import Button from '../../../../components/Button';
-import { Radio } from '../../../../components/Radio';
 import LongTermFields from '../LongTermFields';
 import styles from './BorrowForm.module.scss';
-import { FormFieldTypes, useBorrowForm } from './hooks';
-import { BorrowNft } from '../../../../state/loans/types';
-import { sendAmplitudeData } from '../../../../utils/amplitude';
-import { Tabs } from '../../../../components/Tabs';
+import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
@@ -33,8 +31,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     loadingModalVisible,
     closeLoadingModal,
     onSubmit,
-    formField,
-    setFormField,
     priceBasedLTV,
     setPriceBasedLTV,
     confirmText,
@@ -74,7 +70,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
           type="secondary"
           className={styles.continueBtn}
         >
-          Borrow
+          Quick borrow
         </Button>
       </div>
       <ConfirmModal

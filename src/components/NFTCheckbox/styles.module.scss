@@ -12,7 +12,9 @@
 }
 
 .badge {
-  border: 1px solid var(--color-gray-03);
+  background-color: var(--light-green-color);
+  color: var(--button-text);
+  font: var(--font-text-5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,10 +23,26 @@
 }
 
 .imageShadow {
+  background: rgba(0, 0, 0, 0.64);
   position: absolute;
-  bottom: -1px;
+  top: 0;
+  bottom: 0;
+  right: 0;
   width: 100%;
-  height: 100px;
+  height: 100%;
+  z-index: 2;
+}
+
+.line {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  height: 5px;
+  width: 34px;
+  border-radius: 5px;
 }
 
 .badgeTitle {
@@ -58,19 +76,10 @@
     transition: border-color var(--transition-1), opacity var(--transition-1);
   }
 
-  &:hover {
-    border-color: var(--accent-color-1);
-
-    &::after {
-      opacity: 0.5;
-      border-color: var(--accent-color-1);
-    }
-  }
-
   &__image {
     position: relative;
     width: 100%;
-    background-color: var(--gray-color-4);
+    background-color: var(--secondary-background);
     background-size: cover;
     background-repeat: no-repeat;
     border-bottom: 1px solid var(--gray-color-6);
@@ -115,19 +124,12 @@
   }
 
   &_checked {
-    border: 1px solid var(--accent-color-1);
-
+    border: 1px solid var(--black-color);
     .root__checkbox {
-      background-color: var(--accent-color-1);
-
+      background: rgba(0, 0, 0, 0.64);
       &::before {
         content: '- ';
       }
-    }
-
-    &::after {
-      opacity: 0.5;
-      border-color: var(--accent-color-1);
     }
   }
 }
@@ -139,8 +141,9 @@
 }
 
 .ltvTitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
+  margin-top: 8px;
   margin-bottom: 10px;
   text-transform: uppercase;
 }

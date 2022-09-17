@@ -6,21 +6,19 @@
 .modal {
   :global {
     .ant-modal-content {
-      border: 1px solid var(--gray-color-3);
+      border: 1px solid var(--secondary-border);
       border-radius: 0;
     }
 
     .ant-modal-body {
       font: var(--font-body-small);
-      color: var(--gray-color-8);
-      padding: 32px;
+      padding: 16px;
     }
 
     .ant-modal-content,
     .ant-modal-header,
     .ant-modal-footer {
-      background-color: var(--white-color);
-      opacity: 0.87;
+      background-color: var(--primary-background);
     }
 
     .ant-modal-header {
@@ -37,8 +35,8 @@
 }
 
 .close {
-  margin-top: 35px;
-  margin-right: 35px;
+  margin-top: 16px;
+  margin-right: 16px;
 }
 
 .okButton {

@@ -18,14 +18,14 @@
 }
 
 .itemsContainer {
-  max-width: 315px;
+  max-width: 370px;
   border: var(--border-gray-1);
   display: grid;
   grid-template-columns: repeat(3, 104px);
   position: absolute;
   top: 64px;
   right: 0;
-  background-color: var(--black-color);
+  background-color: var(--secondary-background);
 
   &::before {
     content: '';

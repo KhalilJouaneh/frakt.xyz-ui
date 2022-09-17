@@ -1,5 +1,10 @@
 .block {
+  max-width: 860px;
   width: 100%;
+
+  @media screen and (max-width: 1430px) {
+    max-width: unset;
+  }
 }
 
 .title {
@@ -19,19 +24,15 @@
 }
 
 .table {
-  height: 291px;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding-right: 10px;
-  scrollbar-gutter: stable;
   overflow: auto;
+  height: 270px;
 
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--gray-color-3);
+    width: 0px;
   }
 }
 
@@ -40,6 +41,10 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+
+  @media screen and (max-width: 1430px) {
+    margin-bottom: 18px;
+  }
 }
 
 .headerValues {
@@ -66,8 +71,6 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--color-gray-4);
-  padding: 10px 0 8px;
-  min-width: 663px;
 
   &::-webkit-scrollbar {
     height: 5px;
@@ -103,17 +106,16 @@
 .poolImageWithLabel {
   &::before {
     content: attr(data-collections-amount);
-    background: var(--accent-color-1);
-    color: var(--white-color);
+    background: var(--light-green-color);
+    color: var(--black-color);
     position: absolute;
-    font: var(--font-smallest);
-    padding: 2px 4px 4px 5px;
-    top: -4px;
-    left: 7px;
-    border-radius: 10px;
+    font: var(--font-text-5);
+    padding: 8px 4px;
+    top: -17px;
+    left: 4px;
     transform: translateX(-13px);
-    width: 29px;
-    height: 16px;
+    width: 44px;
+    height: 33px;
   }
 }
 
@@ -125,6 +127,11 @@
   margin-top: 22px;
   height: 48px;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 24px;
+    height: 40px;
+  }
 }
 
 .loansInfoWrapper {
@@ -133,6 +140,10 @@
   justify-content: center;
   gap: 32px;
   margin-bottom: 32px;
+
+  @media screen and (max-width: 1024px) {
+    margin-bottom: 24px;
+  }
 }
 
 .loansInfo {

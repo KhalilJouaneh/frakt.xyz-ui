@@ -12,17 +12,21 @@ import styles from './GraceList.module.scss';
 import { Timer } from '../../../../icons';
 import Block from '../Block';
 
-const GraceList: FC = () => {
-  const graceList = useSelector(selectGraceList);
-  const dispatch = useDispatch();
+interface GraceListProps {
+  graceList: any;
+}
 
-  useEffect(() => {
-    dispatch(liquidationsActions.fetchGraceList());
-  }, [dispatch]);
-
-  const { timeLeft } = useCountdown(
-    moment(graceList[0]?.data?.expiredAt).unix(),
-  );
+const GraceList: FC<GraceListProps> = ({ graceList }) => {
+  const getTimeleft = (expiredAt) => {
+    const { timeLeft } = useCountdown(moment(expiredAt).unix());
+    return (
+      <div className={styles.countdown}>
+        {timeLeft.days}d<p>:</p>
+        {timeLeft.hours}h<p>:</p>
+        {timeLeft.minutes}m
+      </div>
+    );
+  };
 
   return (
     <Block className={styles.block}>
@@ -32,7 +36,7 @@ const GraceList: FC = () => {
         <p className={styles.headerTitle}>Grace period</p>
       </div>
       <div className={styles.content}>
-        {graceList.map(({ nftName, nftImageUrl }) => (
+        {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
           <div key={nftName} className={styles.card}>
             <div className={styles.nftInfo}>
               <img src={nftImageUrl} className={styles.nftImage} />
@@ -40,11 +44,7 @@ const GraceList: FC = () => {
             </div>
             <div className={styles.wrapper}>
               <Timer className={styles.icon} />
-              <div className={styles.countdown}>
-                {timeLeft.days}d<p>:</p>
-                {timeLeft.hours}h<p>:</p>
-                {timeLeft.minutes}m
-              </div>
+              {getTimeleft(expiredAt)}
             </div>
           </div>
         ))}

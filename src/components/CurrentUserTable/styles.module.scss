@@ -1,7 +1,8 @@
 .wrapper {
   padding: 20px;
   display: block;
-  background-color: var(--white-color);
+  background-color: var(--primary-background);
+  border: 1px solid var(--secondary-border);
   width: 100%;
 }
 
@@ -52,21 +53,13 @@
 }
 
 .row {
-  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font: var(--font-text-3);
   border-bottom: var(--border-gray-1);
-  margin-bottom: 10px;
-
-  span {
-    margin-right: auto;
-  }
 
   svg {
-    margin-left: 10px;
-    margin-right: 5px;
+    margin-left: 3px;
   }
 }
 
@@ -94,9 +87,24 @@
 }
 
 .userInfo {
-  margin-left: 10px;
+  width: 100%;
+  margin-left: 16px;
+}
+
+.address {
+  color: var(--secondary-text);
+  font: var(--font-body-small);
+  font-weight: 700;
 }
 
 .avatar {
   border-radius: 50%;
+  min-height: 72px;
+  min-width: 72px;
+}
+
+.walletInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

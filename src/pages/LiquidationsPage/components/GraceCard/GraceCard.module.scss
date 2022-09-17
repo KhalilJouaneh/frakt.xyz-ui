@@ -1,7 +1,7 @@
 .card {
   align-items: center;
-  background: var(--white-color);
-  border: var(--border-black-1);
+  background: var(--primary-background);
+  border: 1px solid var(--primary-border);
   display: flex;
   justify-content: space-between;
   padding: 32px;
@@ -29,7 +29,7 @@
 }
 
 .subtitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
 }

@@ -5,6 +5,7 @@ import InfiniteScrollComponent, {
 import styles from './styles.module.scss';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
+import EmptyList from '../../componentsNew/EmptyList';
 
 interface InfinityScrollProps {
   itemsToShow?: number;
@@ -45,11 +46,7 @@ const InfinityScroll = ({
   }
 
   if (!children.length) {
-    return (
-      <div className={classNames(styles.empty, emptyMessageClassName)}>
-        {emptyMessage}
-      </div>
-    );
+    return <EmptyList text={emptyMessage} />;
   }
 
   return (

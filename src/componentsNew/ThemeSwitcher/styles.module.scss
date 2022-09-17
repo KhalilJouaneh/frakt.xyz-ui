@@ -1,52 +1,29 @@
-body {
-  .toggle,
-  .toggle:global(.ant-switch-disabled) {
-    &:focus {
-      outline: 0;
-      box-shadow: unset;
+.switch {
+  :global {
+    .react-switch-bg {
+      background: transparent !important;
+      border: 1px solid var(--primary-border) !important;
     }
-    :global {
-      opacity: 1;
-      .ant-click-animating-node {
+    .react-switch-handle {
+      background: var(--primary-background) !important;
+      border: 1px solid var(--primary-border) !important;
+      height: 40px !important;
+      width: 40px !important;
+      top: -7px !important;
+
+      div {
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+      }
+    }
+    .react-switch-bg {
+      border: 1px solid var(--primary-border) !important;
+
+      div {
         display: none;
       }
-
-      .ant-switch-handle {
-        width: 39px;
-        height: 8px;
-        top: -10px;
-        left: -16px;
-      }
-      .ant-switch-handle::before {
-        width: 40px;
-        height: 40px;
-        background-color: var(--white-color);
-        background: url('/src/iconsNew/sun.png');
-        border-radius: 32px;
-      }
-
-      width: 37px;
-      height: 20px;
-      box-sizing: border-box;
-      background-image: unset !important;
-      background-color: var(--gray-color-4);
-      border: 1px solid var(--gray-color-2);
-      border-radius: 10px;
-      margin: 10px 10px 9px 0;
-    }
-  }
-
-  .toggle:global.ant-switch-checked {
-    background: var(--light-green-color);
-    .ant-switch-handle {
-      transform: translateX(24px);
-    }
-  }
-
-  .toggle:global.ant-switch-checked.ant-switch-disabled {
-    .ant-switch-handle::before {
-      background: var(--gray-color-1);
-      box-shadow: none;
     }
   }
 }

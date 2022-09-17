@@ -128,34 +128,30 @@ const LoanCardValues: FC<{
       </div>
 
       {isPriceBased && (
-        <div
-          style={{ flexDirection: 'column' }}
-          className={styles.valuesWrapperRow}
-        >
-          <div className={styles.valueWrapper}>
-            <div className={styles.valueWithTooltip}>
-              <p className={styles.valueTitle}>Borrow interest</p>
-              <Tooltip
-                placement="bottom"
-                overlay="The current yearly interest rate paid by borrowers"
-              >
-                <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip>
-            </div>
-            <div className={styles.valueInfo}>
-              <p>{borrowAPRPercents} %</p>
-            </div>
-          </div>
+        <div className={styles.valuesWrapperRow}>
           <div className={styles.valueWrapper}>
             <p className={styles.valueTitle}>Liquidation price</p>
             <div className={styles.valueInfo}>
               <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
-              <img
-                className={styles.valueInfoSolImage}
-                src={SOL_TOKEN.logoURI}
-              />
-              <p>{SOL_TOKEN.symbol}</p>
+              <SolanaIcon />
             </div>
+          </div>
+          <div
+            className={styles.valueWrapper}
+            style={{ alignItems: 'flex-end' }}
+          >
+            <div className={styles.valueWithTooltip}>
+              <p className={styles.valueTitle} style={{ textAlign: 'right' }}>
+                Borrow interest
+              </p>
+              {/* <Tooltip
+                placement="bottom"
+                overlay="The current yearly interest rate paid by borrowers"
+              >
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip> */}
+            </div>
+            <p className={styles.valueInfo}>{borrowAPRPercents} %</p>
           </div>
         </div>
       )}
@@ -173,9 +169,9 @@ const LoanCardValues: FC<{
         {!isPriceBasedAndGracePeriod && isPriceBased ? (
           <div className={styles.valueWithTooltip}>
             <p className={styles.valueTitle}>Health</p>
-            <Tooltip placement="bottom" overlay={HEALTH_TOOLTIP_TEXT}>
+            {/* <Tooltip placement="bottom" overlay={HEALTH_TOOLTIP_TEXT}>
               <QuestionCircleOutlined className={styles.questionIcon} />
-            </Tooltip>
+            </Tooltip> */}
           </div>
         ) : (
           <p className={styles.valueTitle}>Time to return</p>

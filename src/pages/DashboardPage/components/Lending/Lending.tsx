@@ -44,12 +44,12 @@ const Lending: FC<LendingProps> = ({ lendingPools }) => {
             </div>
           ),
         )}
-        <NavLink to={PATHS.LEND}>
-          <Button className={styles.btn} type="secondary">
-            Lend
-          </Button>
-        </NavLink>
       </div>
+      <NavLink to={PATHS.LEND}>
+        <Button className={styles.btn} type="secondary">
+          Lend
+        </Button>
+      </NavLink>
     </Block>
   );
 };

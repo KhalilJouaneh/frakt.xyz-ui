@@ -7,11 +7,3 @@
 .positionRelative {
   position: relative;
 }
-
-.contentReducer {
-  padding-right: 360px;
-
-  @media screen and (max-width: 1023px) {
-    padding-right: 0;
-  }
-}

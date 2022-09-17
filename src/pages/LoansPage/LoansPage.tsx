@@ -15,7 +15,7 @@ const LoansPage: FC = () => {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>My Loans</h1>
-          <h2 className={styles.subtitle}>Keep track of your loans</h2>
+          <h2 className={styles.subtitle}>JPEGs you borrowed SOLANA for</h2>
         </div>
       </div>
       <MyLoansList />

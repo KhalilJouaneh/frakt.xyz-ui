@@ -1,38 +1,47 @@
 .content {
-  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 272px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .btnWrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 }
 
 .btn {
   justify-content: center;
-  height: 48px;
+  height: 26px;
   padding: 0;
   font: var(--font-text-3);
-  color: var(--white-color);
+  color: var(--black-color);
+  width: 100%;
 }
 
 .title {
-  font: var(--font-h4);
+  color: var(--blue-color);
+  font: var(--font-text-2);
   white-space: pre-line;
 }
 
 .subtitle {
-  color: var(--white-color);
-  font: var(--font-text-2);
-  margin: 20px 0;
+  color: var(--black-color);
+  font: var(--font-text-4);
+  margin: 8px 0 16px;
   white-space: pre-line;
 }
 
 .modal {
   :global {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    right: 28px;
+    bottom: 28px;
     top: unset;
   }
   @media (max-width: 767px) {

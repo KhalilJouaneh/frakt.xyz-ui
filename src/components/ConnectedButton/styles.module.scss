@@ -1,7 +1,43 @@
-.arrowDownIcon {
-  margin-left: 10px;
+@import '../../scss/abstracts/mixins';
+@import '../../scss/abstracts/typography';
+
+.container {
+  width: 194px;
+  height: 48px;
+  border: 1px solid var(--light-green-color);
+  background-color: var(--light-green-color-2);
+  @include flex;
+}
+
+.icon {
+  min-width: 40px;
+  height: 48px;
+  @include flex(row, nowrap, center, center);
+  border-right: 1px solid var(--light-green-color);
+  cursor: pointer;
 
   path {
-    transition: .2s ease-in;
+    fill: var(--connect-btn-text);
+  }
+}
+
+.text {
+  color: var(--connect-btn-text);
+  height: 48px;
+  @include flex(row, nowrap, center, center);
+  @include text-header-button;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  max-width: 154px;
+  width: 100%;
+}
+
+.arrowDownIcon {
+  width: 10px;
+  height: 10px;
+
+  path {
+    fill: var(--connect-btn-text);
   }
 }

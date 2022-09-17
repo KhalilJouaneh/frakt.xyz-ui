@@ -6,6 +6,7 @@ import { Slider } from '../../../../components/Slider';
 import Tooltip from '../../../../components/Tooltip';
 import styles from './LongTermFields.module.scss';
 import { BorrowNft } from '../../../../state/loans/types';
+import { SolanaIcon } from '../../../../icons';
 
 enum Risk {
   Low = 'Low',
@@ -72,62 +73,61 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
         />
       </div>
 
-      <div
-        className={styles.staticValue}
-        style={{ marginBottom: 10, paddingTop: 20 }}
-      >
-        <p className={styles.staticValueTitle}>Valuation</p>
-        <p className={styles.staticValueData}>{valuation} SOL</p>
-      </div>
+      <div className={styles.staticValueWrapper}>
+        <div className={styles.staticValue}>
+          <p className={styles.staticValueTitle}>Valuation</p>
+          <p className={styles.staticValueData}>{valuation} SOL</p>
+        </div>
 
-      <div className={styles.staticValue}>
-        <p className={styles.staticValueTitle}>liquidation price</p>
-        <p
-          className={classNames(styles.staticValueData, {
-            [styles.highLoanRisk]: risk === Risk.High,
-            [styles.mediumLoanRisk]: risk === Risk.Medium,
-            [styles.lowLoanRisk]: risk === Risk.Low,
-          })}
+        <div className={styles.staticValue}>
+          <p className={styles.staticValueTitle}>liquidation price</p>
+          <p
+            className={classNames(styles.staticValueData, {
+              [styles.highLoanRisk]: risk === Risk.High,
+              [styles.mediumLoanRisk]: risk === Risk.Medium,
+              [styles.lowLoanRisk]: risk === Risk.Low,
+            })}
+          >
+            {liquidationPrice.toFixed(3)} SOL (-{liquidationDrop.toFixed()}%)
+            <Tooltip
+              placement="bottom"
+              trigger="hover"
+              overlay="How much the NFT price needs to drop for your loan to get liquidated"
+            >
+              <QuestionCircleOutlined className={styles.questionIcon} />
+            </Tooltip>
+          </p>
+        </div>
+
+        <div className={classNames(styles.staticValue)}>
+          <p className={styles.staticValueTitle}>Borrow interest</p>
+          <p className={styles.staticValueData}>
+            {borrowAPRPercents.toFixed(0)}%
+            <Tooltip
+              placement="bottom"
+              trigger="hover"
+              overlay="The current yearly interest rate paid by borrowers"
+            >
+              <QuestionCircleOutlined className={styles.questionIcon} />
+            </Tooltip>
+          </p>
+        </div>
+
+        <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+          <p className={styles.staticValueTitle}>Upfront fee</p>
+          <p className={styles.staticValueData}>
+            {mintingFee.toFixed(3)} <SolanaIcon />
+          </p>
+        </div>
+
+        <div
+          className={classNames(styles.staticValue, styles.staticValueAccent)}
         >
-          {liquidationPrice.toFixed(3)} SOL (-{liquidationDrop.toFixed()}%)
-          <Tooltip
-            placement="bottom"
-            trigger="hover"
-            overlay="How much the NFT price needs to drop for your loan to get liquidated"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </p>
-      </div>
-
-      <div
-        className={classNames(styles.staticValue)}
-        style={{ marginTop: 20, marginBottom: 10 }}
-      >
-        <p className={styles.staticValueTitle}>Borrow interest</p>
-        <p className={styles.staticValueData}>
-          {borrowAPRPercents.toFixed(0)}%
-          <Tooltip
-            placement="bottom"
-            trigger="hover"
-            overlay="The current yearly interest rate paid by borrowers"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </p>
-      </div>
-
-      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
-        <p className={styles.staticValueTitle}>Upfront fee</p>
-        <p className={styles.staticValueData}>{mintingFee.toFixed(3)} SOL</p>
-      </div>
-
-      <div
-        className={classNames(styles.staticValue, styles.staticValueAccent)}
-        style={{ marginBottom: 30 }}
-      >
-        <p className={styles.staticValueTitle}>Loan value</p>
-        <p className={styles.staticValueData}>{loanValue.toFixed(3)} SOL</p>
+          <p className={styles.staticValueTitle}>Loan value</p>
+          <p className={styles.staticValueData}>
+            {loanValue.toFixed(3)} <SolanaIcon />
+          </p>
+        </div>
       </div>
     </div>
   );

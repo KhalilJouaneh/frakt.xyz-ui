@@ -16,3 +16,9 @@
 .arrowDown {
   transform: rotate(180deg);
 }
+
+.icon {
+  path {
+    fill: var(--primary-icon);
+  }
+}

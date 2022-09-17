@@ -39,7 +39,11 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
           className={styles.root__image}
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
-          <div className={styles.imageShadow} />
+          {selected && (
+            <div className={styles.imageShadow}>
+              <div className={styles.line} />
+            </div>
+          )}
           <div className={styles.badges}>
             {isCanStake && (
               <div className={styles.badge}>

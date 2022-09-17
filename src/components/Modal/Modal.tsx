@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames';
 
 import styles from './styles.module.scss';
-import { CloseIcon } from '../../icons';
+import { CloseModalIcon } from '../../iconsNew/Close';
 
 export interface ModalProps extends ModalAntProps {
   className?: string;
@@ -41,9 +41,7 @@ export const ConfirmModal = (
 ): { update: any; destroy: any } =>
   ModalAnt.confirm({
     className: classNames(styles.modal, props.className),
-    closeIcon: (
-      <CloseIcon width="24px" height="24px" className={styles.close} />
-    ),
+    closeIcon: <CloseModalIcon className={styles.close} />,
     okButtonProps: { className: styles.okButton },
     cancelButtonProps: { className: styles.cancelButton },
     content: props.content,
@@ -62,9 +60,7 @@ export const Modal = ({
       footer={footer}
       className={classNames(styles.modal, className)}
       wrapClassName={styles.wrap}
-      closeIcon={
-        <CloseIcon width="24px" height="24px" className={styles.close} />
-      }
+      closeIcon={<CloseModalIcon className={styles.close} />}
     >
       {children}
     </ModalAnt>

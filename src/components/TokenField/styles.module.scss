@@ -33,10 +33,6 @@
 
     .useMaxBtn {
       border: 1px solid var(--light-green-color);
-
-      &:hover {
-        background: var(--light-green-color);
-      }
     }
   }
 }
@@ -98,15 +94,15 @@ body input.valueInput {
   }
 
   cursor: pointer;
-  color: var(--black-color);
-  background: transparent;
+  color: var(--connect-btn-text);
+  background-color: var(--light-green-color-2);
   transition: background-color var(--transition-1);
-  font: var(--font-btn-small);
+  font: var(--font-btn-middle);
   min-width: 116px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 0 2px;
+  height: 26px;
 
   &:hover {
     background: var(--light-green-color-1);

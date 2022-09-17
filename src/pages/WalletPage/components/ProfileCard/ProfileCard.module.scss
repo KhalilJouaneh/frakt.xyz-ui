@@ -1,6 +1,7 @@
 .description {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   @media screen and (max-width: 1200px) {
     gap: 16px;
@@ -40,20 +41,24 @@
   .ownerAddress {
     font: var(--font-text-2);
     margin-top: 16px;
-  }
 
-  @media screen and (max-width: 1023px) {
-    font-size: 20px;
-  }
+    @media screen and (max-width: 1200px) {
+      margin-top: 0;
+    }
 
-  @media screen and (max-width: 767px) {
-    font-size: 16px;
+    @media screen and (max-width: 1023px) {
+      font-size: 20px;
+    }
+
+    @media screen and (max-width: 767px) {
+      font-size: 16px;
+    }
   }
 }
 
 .wrapper {
-  background: #fff;
-  border: var(--border-black-1);
+  background: var(--primary-background);
+  border: 1px solid var(--primary-border);
   padding: 32px;
   min-width: 303px;
 
@@ -70,8 +75,8 @@
 }
 
 .title {
-  font: var(--font-text-2);
-  margin-bottom: 20px;
+  font: var(--font-subtitle);
+  margin-bottom: 32px;
 }
 
 .ownerInfo {
@@ -80,7 +85,14 @@
 }
 
 .userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+
+  @media screen and (max-width: 1200px) {
+    align-items: flex-start;
+  }
 }
 
 .discordButton {
@@ -91,16 +103,16 @@
   margin-top: 32px;
   width: 100%;
   height: 48px;
-  color: var(--black-color);
-  background-color: var(--gray-color-5);
+  color: var(--connect-btn-text);
+  background-color: var(--light-green-color-2);
   border: 1px solid var(--light-green-color);
   font: var(--font-body-small);
   cursor: pointer;
   transition: background-color var(--transition-1), color var(--transition-1);
 
   &:hover {
-    background-color: var(--light-green-hover);
-    color: var(--black-color);
+    background-color: var(--light-green-color-1);
+    color: var(--connect-btn-text);
   }
 }
 
@@ -108,5 +120,5 @@
   margin-top: -2px;
   width: 24px;
   height: 24px;
-  fill: var(--black-color);
+  fill: var(--connect-btn-text);
 }

@@ -42,7 +42,7 @@ const CurrentUserTable = ({
     )}`;
     return (
       <div className={styles.row}>
-        <span>Balance</span> {valueStr} <SolanaIcon />
+        {valueStr} <SolanaIcon />
       </div>
     );
   };
@@ -52,16 +52,21 @@ const CurrentUserTable = ({
       <div className={styles.userWrapper}>
         <UserIcon className={styles.avatar} url={avatarUrl} />
         <div className={styles.userInfo}>
-          <p>{shortenAddress(`${publicKey || ''}`)}</p>
+          <div className={styles.walletInfo}>
+            <p className={styles.address}>
+              {shortenAddress(`${publicKey || ''}`)}
+            </p>
+            {getBalanceValue()}
+          </div>
+
           <LinkWithArrow
-            to={`${PATHS.WALLET}/${publicKey.toString()}`}
+            to={`${PATHS.PROFILE}/${publicKey.toString()}`}
             label="My profile"
             event="navigation-profile"
             className={styles.myCollectionLink}
           />
         </div>
       </div>
-      {getBalanceValue()}
       {!user && (
         <a
           href={getDiscordUri(publicKey)}

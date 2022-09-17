@@ -49,7 +49,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  background: var(--gray-color-4);
+  background: var(--secondary-background);
   border-radius: 30px;
   position: absolute;
   top: -70px;
@@ -72,7 +72,7 @@
   height: 40px;
   width: 40px;
   border: 1px solid var(--black-color);
-  background: var(--gray-color-4);
+  background: var(--secondary-background);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -96,6 +96,12 @@
 
 .closeIcon {
   width: 12px;
+
+  stroke: var(--secondary-border);
+
+  rect {
+    fill: var(--secondary-border);
+  }
 
   @media screen and (max-width: 470px) {
     width: 15px;

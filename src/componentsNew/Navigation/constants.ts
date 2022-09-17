@@ -1,12 +1,17 @@
-import { PATHS } from '../../../constants';
-import {
-  TwitterIcon,
-  DiscordIcon,
-  GitHubIcon,
-  MediumIcon,
-  DocsIcon,
-} from '../../../icons';
-import { selectWalletPublicKey } from '../../../state/common/selectors';
+import { PATHS } from '../../constants';
+import { selectWalletPublicKey } from '../../state/common/selectors';
+import Icons from '../../iconsNew/';
+
+export const community = [
+  { label: 'Discord', icon: Icons.Discord },
+  { label: 'Twitter', icon: Icons.Twitter },
+];
+
+export const documentation = [
+  { label: 'Medium', icon: Icons.Medium },
+  { label: 'GitHub', icon: Icons.Github },
+  { label: 'Docs', icon: Icons.Docs },
+];
 
 export const NAVIGATION_LINKS = [
   {
@@ -15,62 +20,40 @@ export const NAVIGATION_LINKS = [
     selector: selectWalletPublicKey,
     label: 'My profile',
     event: 'navigation-profile',
+    icon: Icons.Lending,
   },
   {
     pathname: PATHS.BORROW,
     to: PATHS.BORROW,
     label: 'Borrow',
     event: 'navigation-borrow',
+    icon: Icons.Borrow,
   },
   {
     pathname: PATHS.LOANS,
     to: PATHS.LOANS,
     label: 'My Loans',
     event: 'navigation-loans',
+    icon: Icons.MyLoans,
   },
   {
     pathname: PATHS.LEND,
     to: PATHS.LEND,
     label: 'Lending',
     event: 'navigation-lend',
+    icon: Icons.Lending,
   },
   {
     pathname: PATHS.LIQUIDATIONS,
     to: PATHS.LIQUIDATIONS,
     label: 'Liquidations',
     event: 'navigation-liquidation',
+    icon: Icons.Raffles,
   },
   {
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,
     label: 'Dashboard',
-  },
-];
-
-export const DROPDOWN_EXTERNAL_LINKS = [
-  {
-    label: 'Twitter',
-    href: 'https://twitter.com/FRAKT_HQ',
-    icon: TwitterIcon,
-  },
-  {
-    label: 'Discord',
-    href: 'https://tinyurl.com/zp3rx6z3',
-    icon: DiscordIcon,
-  },
-  {
-    label: 'GitHub',
-    href: 'https://github.com/frakt-solana',
-    icon: GitHubIcon,
-  },
-  {
-    label: 'Medium',
-    href: 'https://medium.com/@frakt_HQ',
-    icon: MediumIcon,
-  },
-  {
-    label: 'Docs',
-    href: 'https://docs.frakt.xyz/',
-    icon: DocsIcon,
+    icon: Icons.Dashboard,
   },
 ];

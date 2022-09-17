@@ -17,22 +17,24 @@
 
 .primary,
 .secondary {
-  color: var(--black-color);
+  color: var(--button-text);
   font: var(--font-btn-middle);
   padding: 6px 20px;
 }
 
 .primary {
-  border: var(--border-light-green-1);
-  background-color: var(--gray-color-5);
+  border: 1px solid var(--light-green-color);
+  background-color: var(--light-green-color-2);
+  color: var(--connect-btn-text);
 
   &:hover {
     background-color: var(--light-green-color-1);
   }
 
   &:disabled {
-    border: 1px solid var(--gray-color-2);
-    color: var(--gray-color-2);
+    border: 1px solid var(--primary-border);
+    color: var(--primary-border);
+    background-color: var(--primary-background);
   }
 }
 
@@ -44,14 +46,14 @@
   }
 
   &:disabled {
-    color: var(--gray-color-2);
-    background-color: var(--gray-color-4);
+    color: var(--primary-border);
+    background-color: var(--secondary-background);
   }
 }
 
 .tertiary {
-  background-color: var(--white-color);
-  border: var(--border-black-1);
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
   border-radius: 100px;
   padding: 8px;
   font: var(--font-text-8);

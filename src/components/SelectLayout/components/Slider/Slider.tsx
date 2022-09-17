@@ -41,6 +41,7 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
               {Icons.Cross()}
             </button>
           </div>
+          <p className={styles.nftName}>{nft.name}</p>
         </SwiperSlide>
       ))}
     </Swiper>

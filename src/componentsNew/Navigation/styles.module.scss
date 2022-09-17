@@ -9,10 +9,10 @@
   border: none;
   background-color: transparent;
   height: 34px;
-  padding: 8px;
+  padding: 8px 5px;
   @include flex;
-  @include gapX(8px);
   user-select: none;
+
   & > * {
     cursor: pointer;
   }
@@ -24,29 +24,33 @@
   left: 0;
   width: 177px;
   height: 100vh;
-  background-color: #f2f2f7;
-  border-right: 1px solid #000000;
+  background-color: var(--primary-background);
+  border-right: 1px solid var(--primary-border);
   @include flex(column, nowrap, flex-start, flex-start);
+}
+
+.closeContainer {
+  width: 66px;
 }
 
 .navigation {
   width: 100%;
-  border-bottom: 1px solid #aeaeb2;
+  border-bottom: 1px solid var(--primary-border);
   @include wrapper;
   @include text-menu-item;
+}
+
+.link {
+  @include listItem;
+}
+
+.active {
+  border: 1px solid var(--primary-border);
+  background: var(--primary-background);
+  user-select: none;
 
   & > * {
-    @include listItem;
-    color: black !important;
-  }
-
-  & .active {
-    border: 1px solid #aeaeb2;
-    background: #ffffff;
-    user-select: none;
-    & > * {
-      cursor: default;
-    }
+    cursor: default;
   }
 }
 
@@ -74,5 +78,47 @@
 
   & > div {
     @include listItem;
+  }
+}
+
+.burger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary-border);
+  border-radius: 100px;
+  width: 134px;
+  min-height: 40px;
+  margin-bottom: 24px;
+  cursor: pointer;
+
+  svg {
+    path {
+      stroke: var(--secondary-border);
+    }
+    ellipse {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.burgerClose {
+  width: 40px;
+}
+
+.label {
+  color: var(--primary-text);
+}
+
+.icon {
+  margin-right: 8px;
+  path {
+    stroke: var(--primary-icon);
+  }
+}
+
+.iconFill {
+  path {
+    fill: var(--primary-text);
   }
 }

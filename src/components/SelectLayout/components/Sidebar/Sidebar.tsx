@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
+import { BorrowNft } from '../../../../state/loans/types';
 import styles from './Sidebar.module.scss';
 import { useSidebar } from './hooks';
 import { Slider } from '../Slider';
-import { BorrowNft } from '../../../../state/loans/types';
 
 export interface SidebarProps {
   onDeselect?: (nft: BorrowNft) => void;
@@ -19,12 +19,8 @@ const Sidebar: FC<SidebarProps> = ({
   sidebarForm,
   isCloseSidebar = false,
 }) => {
-  const {
-    isSidebarVisible,
-    isHeaderHidden,
-    isSidebarCollapsed,
-    toggleSidebarCollapse,
-  } = useSidebar(nfts);
+  const { isSidebarVisible, isHeaderHidden, isSidebarCollapsed } =
+    useSidebar(nfts);
 
   return (
     <>
@@ -39,25 +35,10 @@ const Sidebar: FC<SidebarProps> = ({
             ])}
           >
             <div className={styles.sidebar}>
-              <p
-                className={styles.nftsAmount}
-                onClick={toggleSidebarCollapse}
-              ></p>
               <Slider nfts={nfts} onDeselect={onDeselect} />
-              <div className={styles.separator} />
               {isSidebarVisible && sidebarForm}
             </div>
           </div>
-          <div
-            className={classNames([
-              styles.backDrop,
-              {
-                [styles.backDropVisible]:
-                  isSidebarVisible && !isSidebarCollapsed,
-              },
-            ])}
-            onClick={toggleSidebarCollapse}
-          />
         </>
       )}
     </>

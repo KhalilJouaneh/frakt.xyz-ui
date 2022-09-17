@@ -2,10 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 643px;
+  justify-content: space-between;
+  max-width: 638px;
+  height: 252px;
   width: 100%;
-  height: 100%;
+
+  @media screen and (max-width: 1024px) {
+    height: 230px;
+  }
 }
+
 .btnWrapper {
   display: flex;
   gap: 24px;
@@ -15,11 +21,20 @@
 .btn {
   height: 48px;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    height: 40px;
+  }
 }
 
 .title {
   font: var(--font-h6);
   margin-bottom: 32px;
+  line-height: 34px;
+
+  @media screen and (max-width: 1024px) {
+    margin-bottom: 28px;
+  }
 }
 
 .tooltip {
@@ -39,12 +54,15 @@
 }
 
 .subtitle {
+  color: var(--secondary-border);
   font: var(--font-text-6);
   text-transform: uppercase;
+  line-height: 14px;
 }
 
 .value {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-subtitle);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
+  line-height: 42px;
 }

@@ -1,8 +1,8 @@
 .wrapper {
-  background: rgba(255, 255, 255, 0.87);
-  border: 1px solid #000000;
+  background: var(--primary-background);
+  border: 1px solid var(--secondary-border);
   backdrop-filter: blur(20px);
-  
+
   z-index: 1;
   padding: 32px;
   width: 512px;
@@ -15,14 +15,15 @@
 }
 
 .title {
+  color: var(--secondary-text);
   font: var(--font-text-2);
 }
 
 .closeModalIcon {
   height: 40px;
   width: 40px;
-  border: 1px solid var(--black-color);
-  background: var(--gray-color-4);
+  border: 1px solid var(--primary-border);
+  background: var(--primary-background);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -40,6 +41,12 @@
 
 .closeIcon {
   width: 12px;
+
+  stroke: var(--secondary-border);
+
+  rect {
+    fill: var(--secondary-border);
+  }
 
   @media screen and (max-width: 470px) {
     width: 15px;

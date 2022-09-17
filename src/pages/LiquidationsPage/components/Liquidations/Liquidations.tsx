@@ -15,7 +15,7 @@ import LiquidationsList from '../LiquidationsList';
 import styles from './Liquidations.module.scss';
 import GraceCard from '../GraceCard/GraceCard';
 import WonRaffleCard from '../WonRaffleCard';
-import EmptyList from '../EmptyList';
+import EmptyList from '../../../../componentsNew/EmptyList';
 import { RaffleNotifications } from '../../../../state/liquidations/types';
 import {
   selectSocket,

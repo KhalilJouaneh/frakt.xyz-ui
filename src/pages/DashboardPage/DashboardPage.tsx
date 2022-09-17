@@ -1,10 +1,13 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
+import cx from 'classnames';
 
+import AvailableBorrow from './components/AvailableBorrow';
 import { selectStats } from '../../state/stats/selectors';
 import { statsActions } from '../../state/stats/actions';
 import ConnectWallet from './components/ConnectWallet';
+import LowestBorrow from './components/LowestBorrow';
 import { Container } from '../../components/Layout';
 import DailyActive from './components/DailyActive';
 import TotalStats from './components/TotalStats';
@@ -12,11 +15,12 @@ import { Loader } from '../../components/Loader';
 import styles from './DashboardPage.module.scss';
 import LastLoans from './components/LastLoans';
 import GraceList from './components/GraceList';
+import MyDeposit from './components/MyDeposit';
 import Lending from './components/Lending';
 import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
-import AvailableBorrow from './components/AvailableBorrow';
-import MyDeposit from './components/MyDeposit';
+import { liquidationsActions } from '../../state/liquidations/actions';
+import { selectGraceList } from '../../state/liquidations/selectors';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
@@ -25,17 +29,25 @@ const DashboardPage: FC = () => {
   const { totalStats, lastLoans, lendingPools, dailyActivity, loading } =
     useSelector(selectStats);
 
+  const graceList = useSelector(selectGraceList);
+
   useEffect(() => {
     dispatch(statsActions.fetchStats());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(
+      liquidationsActions.fetchGraceList({
+        sortBy: 'startedAt',
+        sort: 'asc',
+      }),
+    );
   }, [dispatch]);
 
   return (
     <Container component="main" className={styles.container}>
       <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Dashboard</h1>
-          <h2 className={styles.subtitle}>Personal overview</h2>
-        </div>
+        <h1 className={styles.title}>Dashboard</h1>
       </div>
 
       {loading ? (
@@ -43,22 +55,38 @@ const DashboardPage: FC = () => {
       ) : (
         <>
           {connected ? (
-            <div className={styles.protocolStats}>
-              <MyLoans />
-              <MyDeposit lendingPools={lendingPools} />
-              <Rewards />
-              <AvailableBorrow />
+            <div className={styles.statsWrapper}>
+              <h2 className={styles.subtitle}>Personal overview</h2>
+              <div className={styles.statsContainer}>
+                <div className={styles.row}>
+                  <MyLoans />
+                  <MyDeposit lendingPools={lendingPools} />
+                </div>
+                <div className={cx(styles.row, styles.rowDirection)}>
+                  <Rewards />
+                  <AvailableBorrow />
+                </div>
+              </div>
             </div>
           ) : (
             <ConnectWallet />
           )}
-
-          <div className={styles.protocolStats}>
-            <TotalStats totalStats={totalStats} />
-            <DailyActive dailyStats={dailyActivity} />
-            <LastLoans lastLoans={lastLoans} />
-            <Lending lendingPools={lendingPools} />
-            <GraceList />
+          <div className={styles.statsWrapper}>
+            <h2 className={styles.subtitle}>Protocol overview</h2>
+            <div className={styles.statsContainer}>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <TotalStats totalStats={totalStats} />
+                <DailyActive dailyStats={dailyActivity} />
+              </div>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <Lending lendingPools={lendingPools} />
+                <LowestBorrow lastLoans={lastLoans} />
+              </div>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <GraceList graceList={graceList} />
+                <LastLoans lastLoans={lastLoans} />
+              </div>
+            </div>
           </div>
         </>
       )}

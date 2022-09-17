@@ -14,7 +14,7 @@ interface LendingProps {
 
 const MyDeposit: FC<LendingProps> = ({ lendingPools }) => {
   return (
-    <Block>
+    <Block className={styles.block}>
       <h3 className={styles.title}>My deposits</h3>
       <div className={styles.loansInfoWrapper}>
         <div className={styles.loansInfo}>

@@ -8,6 +8,15 @@ import { Frakt } from './Frakt';
 import { Logo } from './Logo';
 import { Person } from './Person';
 import { Cross } from './Cross';
+import { MyLoans } from './MyLoans';
+import { Borrow } from './Borrow';
+import { Dashboard } from './Dashboard';
+import { BurgerClosed } from './BurgerClosed';
+import { BurgerOpen } from './BurgerOpen';
+import { Lending } from './Lending';
+import { Raffles } from './Raffles';
+import { Moon } from './Moon';
+import { Sun } from './Sun';
 
 export default {
   Chart,
@@ -20,4 +29,13 @@ export default {
   Logo,
   Person,
   Cross,
+  MyLoans,
+  Borrow,
+  Dashboard,
+  BurgerClosed,
+  BurgerOpen,
+  Lending,
+  Raffles,
+  Moon,
+  Sun,
 };

@@ -38,7 +38,6 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
         <div className={styles.btnWrapper}>
           <Button
             className={styles.btn}
-            type="alternative"
             onClick={() => {
               onSubmit();
               sendAmplitudeData('loans-confirm-borrow');
@@ -46,7 +45,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
           >
             {btnAgree}
           </Button>
-          <Button className={styles.btn} type="tertiary" onClick={onCancel}>
+          <Button className={styles.btn} type="secondary" onClick={onCancel}>
             {btnCancel}
           </Button>
         </div>
