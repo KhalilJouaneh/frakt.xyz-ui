@@ -27,6 +27,10 @@
   background-color: var(--primary-background);
   border-right: 1px solid var(--primary-border);
   @include flex(column, nowrap, flex-start, flex-start);
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 .closeContainer {
@@ -112,13 +116,4 @@
 
 .icon {
   margin-right: 8px;
-  path {
-    stroke: var(--primary-icon);
-  }
-}
-
-.iconFill {
-  path {
-    fill: var(--primary-text);
-  }
 }

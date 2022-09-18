@@ -12,10 +12,10 @@ import {
   selectRaffleCollectionsDropdownData,
   selectGraceCollectionsDropdownData,
 } from '../../../../state/liquidations/selectors';
-import { CollectionDropdown } from '../../../../components/CollectionDropdown';
+// import { CollectionDropdown } from '../../../../components/CollectionDropdown';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
 import { SearchInput } from '../../../../components/SearchInput';
-import { Select } from '../../../../components/Select';
+// import { Select } from '../../../../components/Select';
 import styles from './LiquidationsList.module.scss';
 import { TicketsCounter } from '../TicketsCounter';
 import Button from '../../../../components/Button';
@@ -40,18 +40,18 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
     useLiquidationsPage(fetchItemsFunc, isGraceList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
-  const collectionsRaffleListDropdownData = useSelector(
-    selectRaffleCollectionsDropdownData,
-  );
-  const collectionsGraceListDropdownData = useSelector(
-    selectGraceCollectionsDropdownData,
-  );
-  const SORT_COLLECTIONS_VALUES = withRafflesInfo
-    ? collectionsRaffleListDropdownData
-    : collectionsGraceListDropdownData.map((item) => ({
-        label: <span className={styles.sortName}>{item.label}</span>,
-        value: item.value,
-      }));
+  // const collectionsRaffleListDropdownData = useSelector(
+  //   selectRaffleCollectionsDropdownData,
+  // );
+  // const collectionsGraceListDropdownData = useSelector(
+  //   selectGraceCollectionsDropdownData,
+  // );
+  // const SORT_COLLECTIONS_VALUES = withRafflesInfo
+  //   ? collectionsRaffleListDropdownData
+  //   : collectionsGraceListDropdownData.map((item) => ({
+  //       label: <span>{item.label}</span>,
+  //       value: item.value,
+  //     }));
 
   const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
 

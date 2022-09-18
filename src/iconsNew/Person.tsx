@@ -1,4 +1,6 @@
-export const Person = () => (
+import { FC } from 'react';
+
+export const Person: FC = () => (
   <svg
     width="14"
     height="15"

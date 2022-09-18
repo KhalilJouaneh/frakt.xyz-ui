@@ -4,7 +4,6 @@ import { withRouter, useParams } from 'react-router-dom';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { Tab, Tabs, useTabs } from '../../components/Tabs';
 import { ProfileCard } from './components/ProfileCard';
-import { Container } from '../../components/Layout';
 import { LoansList } from './components/LoansList';
 import styles from './WalletPage.module.scss';
 import { usePublicKeyParam } from '../../hooks';

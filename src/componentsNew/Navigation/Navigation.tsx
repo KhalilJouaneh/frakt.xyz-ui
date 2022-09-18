@@ -6,10 +6,12 @@ import cx from 'classnames';
 import Icons from '../../iconsNew/';
 import styles from './styles.module.scss';
 import { NAVIGATION_LINKS, community, documentation } from './constants';
+import { selectTheme } from '../../state/theme/selectors';
 
 interface MenuItem {
   label: string;
   icon?: any;
+  iconDark?: any;
   className?: string;
   event?: string;
   selector?: any;
@@ -21,12 +23,15 @@ interface MenuItem {
 export const MenuItem = ({
   label,
   className,
-  icon,
+  icon: rawIcon,
+  iconDark,
   to,
   selector,
   pathname = '',
 }: MenuItem) => {
-  console.log(pathname);
+  const theme: string = useSelector(selectTheme);
+  const icon = theme === 'dark' ? iconDark : rawIcon;
+
   const isActive =
     compose(nth(1), split('/'))(location.pathname) === tail(pathname);
 
@@ -87,6 +92,7 @@ export const Navigation = ({
             key={item.label}
             to={item.to}
             icon={(item as any).icon}
+            iconDark={(item as any).iconDark}
             pathname={item.pathname}
             selector={item.selector}
           />
@@ -98,6 +104,7 @@ export const Navigation = ({
           <MenuItem
             label={!close && item.label}
             icon={item.icon}
+            iconDark={(item as any).iconDark}
             key={item.label}
           />
         ))}
@@ -108,6 +115,7 @@ export const Navigation = ({
           <MenuItem
             label={!close && item.label}
             icon={item.icon}
+            iconDark={(item as any).iconDark}
             key={item.label}
           />
         ))}

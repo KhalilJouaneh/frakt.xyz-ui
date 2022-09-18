@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AppLayout } from '../../components/Layout/AppLayout';
 import { useSelectLayout, SelectLayout } from '../../components/SelectLayout';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
 import InfinityScroll from '../../components/InfinityScroll';

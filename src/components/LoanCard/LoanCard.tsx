@@ -7,11 +7,10 @@ import { LoadingModal } from '../LoadingModal';
 import { Loan } from '../../state/loans/types';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
-import { SOL_TOKEN } from '../../utils';
-import Tooltip from '../Tooltip';
+// import Tooltip from '../Tooltip';
 import Button from '../Button';
 
-import { HEALTH_TOOLTIP_TEXT } from './constants';
+// import { HEALTH_TOOLTIP_TEXT } from './constants';
 import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { SolanaIcon, Timer } from '../../icons';
 
@@ -27,15 +26,15 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-    onGemStake,
-    onGemClaim,
-    onGemUnstake,
+    // onGemStake,
+    // onGemClaim,
+    // onGemUnstake,
     transactionsLeft,
   } = useLoans(loan);
 
   const { imageUrl, name, isGracePeriod, reward } = loan;
 
-  const rewardAmount = reward?.amount;
+  // const rewardAmount = reward?.amount;
 
   return (
     <>

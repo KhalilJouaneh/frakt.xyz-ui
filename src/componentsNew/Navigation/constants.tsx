@@ -1,16 +1,20 @@
-import { PATHS } from '../../constants';
 import { selectWalletPublicKey } from '../../state/common/selectors';
-import Icons from '../../iconsNew/';
+import { PATHS } from '../../constants';
+import Icons from '../../iconsNew';
 
 export const community = [
-  { label: 'Discord', icon: Icons.Discord },
-  { label: 'Twitter', icon: Icons.Twitter },
+  {
+    label: 'Discord',
+    icon: Icons.Discord,
+    iconDark: Icons.DiscordDark,
+  },
+  { label: 'Twitter', icon: Icons.Twitter, iconDark: Icons.TwitterDark },
 ];
 
 export const documentation = [
-  { label: 'Medium', icon: Icons.Medium },
-  { label: 'GitHub', icon: Icons.Github },
-  { label: 'Docs', icon: Icons.Docs },
+  { label: 'Medium', icon: Icons.Medium, iconDark: Icons.MediumDark },
+  { label: 'GitHub', icon: Icons.Github, iconDark: Icons.GithubDark },
+  { label: 'Docs', icon: Icons.Docs, iconDark: Icons.DocsDark },
 ];
 
 export const NAVIGATION_LINKS = [
@@ -21,6 +25,7 @@ export const NAVIGATION_LINKS = [
     label: 'My profile',
     event: 'navigation-profile',
     icon: Icons.Lending,
+    iconDark: Icons.LendingDark,
   },
   {
     pathname: PATHS.BORROW,
@@ -28,6 +33,7 @@ export const NAVIGATION_LINKS = [
     label: 'Borrow',
     event: 'navigation-borrow',
     icon: Icons.Borrow,
+    iconDark: Icons.BorrowDark,
   },
   {
     pathname: PATHS.LOANS,
@@ -35,6 +41,7 @@ export const NAVIGATION_LINKS = [
     label: 'My Loans',
     event: 'navigation-loans',
     icon: Icons.MyLoans,
+    iconDark: Icons.MyLoansDark,
   },
   {
     pathname: PATHS.LEND,
@@ -42,6 +49,7 @@ export const NAVIGATION_LINKS = [
     label: 'Lending',
     event: 'navigation-lend',
     icon: Icons.Lending,
+    iconDark: Icons.LendingDark,
   },
   {
     pathname: PATHS.LIQUIDATIONS,
@@ -49,11 +57,13 @@ export const NAVIGATION_LINKS = [
     label: 'Liquidations',
     event: 'navigation-liquidation',
     icon: Icons.Raffles,
+    iconDark: Icons.RafflesDark,
   },
   {
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,
     label: 'Dashboard',
     icon: Icons.Dashboard,
+    iconDark: Icons.DashboardDark,
   },
 ];

@@ -37,7 +37,7 @@ const TransactionModal = ({
       <h2 className={styles.failContent__title}>Ooops! Something went wrong</h2>
       <p className={styles.failContent__subtitle}>Please try again</p>
       <Button
-        type="alternative"
+        type="secondary"
         className={styles.failContent__retryBtn}
         onClick={onRetryClick}
       >

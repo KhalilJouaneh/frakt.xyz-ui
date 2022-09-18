@@ -2,16 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { compose, join, pluck, equals } from 'ramda';
 
-import { Tab } from '../../../../components/Tabs';
-import { ArrowDownSmallIcon } from '../../../../icons';
-import styles from '../LiquidationsList/LiquidationsList.module.scss';
+import { FetchItemsParams } from '../../../../state/liquidations/types';
 import { useDebounce, usePrevious } from '../../../../hooks';
+import { Tab } from '../../../../components/Tabs';
 import {
   FilterFormFieldsValues,
   LiquidationsListFormNames,
   LiquiditionsSortValue,
 } from '../../model';
-import { FetchItemsParams } from '../../../../state/liquidations/types';
 
 type FetchDataFunc = (params: FetchItemsParams) => void;
 

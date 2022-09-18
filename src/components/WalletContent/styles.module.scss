@@ -27,21 +27,6 @@
   right: 0;
   background-color: var(--secondary-background);
 
-  &::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-left: var(--border-gray-1);
-    border-top: var(--border-gray-1);
-    background-color: var(--white-color);
-    transform: rotate(45deg);
-    position: absolute;
-    right: 20%;
-    top: -11px;
-    z-index: 1;
-  }
-
   @media screen and (max-width: 1200px) {
     right: 15px;
   }
@@ -60,7 +45,7 @@
   padding-top: 22px;
   padding-bottom: 22px;
   cursor: pointer;
-  transition: background-color .1s ease-in;
+  transition: background-color 0.1s ease-in;
   position: relative;
   z-index: 2;
 

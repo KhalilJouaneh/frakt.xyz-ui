@@ -6,7 +6,7 @@ export const CloseModalIcon = ({ className }: { className?: string }) => (
     fill="none"
     className={className}
   >
-    <rect x="0.5" y="0.5" width="31" height="31" rx="15.5" fill="white" />
+    <rect x="0.5" y="0.5" width="31" height="31" rx="15.5" />
     <path
       d="M20.5 11.5L11.5 20.5"
       stroke="black"

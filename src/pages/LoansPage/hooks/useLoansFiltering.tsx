@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { uniqBy, prop, sum, map } from 'ramda';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 
-import styles from '../components/MyLoansList/MyLoansList.module.scss';
 import { selectLoanNfts } from '../../../state/loans/selectors';
 import { caclTimeToRepay } from '../../../utils/loans';
 import { Loan } from '../../../state/loans/types';
@@ -184,15 +183,15 @@ export const useLoansFiltering: UseLoansFiltering = ({
 
 export const SORT_LOANS_TYPE_VALUES: LoansValue[] = [
   {
-    label: <span className={styles.sortName}>All</span>,
+    label: <span>All</span>,
     value: 'showAllLoans',
   },
   {
-    label: <span className={styles.sortName}>Perpetual</span>,
+    label: <span>Perpetual</span>,
     value: 'showPriceBasedLoans',
   },
   {
-    label: <span className={styles.sortName}>Flip</span>,
+    label: <span>Flip</span>,
     value: 'showTimeBasedLoans',
   },
 ];

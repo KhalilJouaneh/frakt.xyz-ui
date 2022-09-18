@@ -3,11 +3,11 @@
 .content {
   width: 100%;
   @include flex(row, nowrap, center, center);
-  margin-bottom: 12px;
+  margin-bottom: 32px;
 
-  @media screen and (max-width: 1180px) {
-    justify-content: center;
-    width: 100%;
+  @media screen and (max-width: 900px) {
+    justify-content: flex-start;
+    margin-bottom: 24px;
   }
 }
 
@@ -24,7 +24,7 @@
 
 .value {
   @include flex(column, nowrap, flex-start, center);
-  color: var(--black-color);
+  color: var(--secondary-border);
 
   @media screen and (max-width: 780px) {
     display: flex;
@@ -35,13 +35,13 @@
 }
 
 .valueTitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
 }
 
 .valueInfo {
-  color: var(--black-color);
+  color: var(--secondary-border);
   font: var(--font-text-8);
 }
 
@@ -56,12 +56,6 @@
   justify-content: flex-end;
   align-items: center;
   gap: 15px 30px;
-
-  @media screen and (max-width: 1180px) {
-    margin: 20px 0;
-    width: 100%;
-    justify-content: space-between;
-  }
 }
 
 .filterBtn {
@@ -71,6 +65,7 @@
 }
 
 .filterBtnActive {
+  color: red;
 }
 
 .filtersContent {
@@ -94,31 +89,11 @@
   }
 }
 
-.sortingSelectContainer {
-  svg {
-    path {
-      stroke: var(--accent-color-1) !important;
-    }
-  }
-
-  .sortName {
-    color: var(--accent-color-1);
-  }
-  @media screen and (max-width: 780px) {
-    font-size: 15px;
-  }
-}
-
 .sortWrapper {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-  margin-bottom: 32px;
-
-  @media screen and (max-width: 1023px) {
-    margin-bottom: 0;
-  }
 }
 
 .sortWrapper {
@@ -170,7 +145,7 @@
 }
 
 .label {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
 }

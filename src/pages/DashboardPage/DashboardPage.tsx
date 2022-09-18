@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import cx from 'classnames';
@@ -8,7 +8,6 @@ import { selectStats } from '../../state/stats/selectors';
 import { statsActions } from '../../state/stats/actions';
 import ConnectWallet from './components/ConnectWallet';
 import LowestBorrow from './components/LowestBorrow';
-import { Container } from '../../components/Layout';
 import DailyActive from './components/DailyActive';
 import TotalStats from './components/TotalStats';
 import { Loader } from '../../components/Loader';
@@ -21,6 +20,7 @@ import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
 import { liquidationsActions } from '../../state/liquidations/actions';
 import { selectGraceList } from '../../state/liquidations/selectors';
+import { AppLayout } from '../../components/Layout/AppLayout';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const DashboardPage: FC = () => {
   }, [dispatch]);
 
   return (
-    <Container component="main" className={styles.container}>
+    <AppLayout>
       <div className={styles.header}>
         <h1 className={styles.title}>Dashboard</h1>
       </div>
@@ -60,7 +60,7 @@ const DashboardPage: FC = () => {
               <div className={styles.statsContainer}>
                 <div className={styles.row}>
                   <MyLoans />
-                  <MyDeposit lendingPools={lendingPools} />
+                  <MyDeposit />
                 </div>
                 <div className={cx(styles.row, styles.rowDirection)}>
                   <Rewards />
@@ -90,7 +90,7 @@ const DashboardPage: FC = () => {
           </div>
         </>
       )}
-    </Container>
+    </AppLayout>
   );
 };
 

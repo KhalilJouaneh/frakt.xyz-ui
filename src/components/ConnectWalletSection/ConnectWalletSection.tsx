@@ -17,7 +17,7 @@ export const ConnectWalletSection = ({
     <div className={styles.connectWallet}>
       <p className={styles.connectWalletText}>{text}</p>
       <Button
-        type="alternative"
+        type="secondary"
         className={styles.connectWalletBtn}
         onClick={() =>
           dispatch(commonActions.setWalletModal({ isVisible: true }))

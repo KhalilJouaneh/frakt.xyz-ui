@@ -1,10 +1,7 @@
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 
-import { liquidationsActions } from '../../../../state/liquidations/actions';
-import { selectGraceList } from '../../../../state/liquidations/selectors';
 import Button from '../../../../components/Button';
 import { useCountdown } from '../../../../hooks';
 import { PATHS } from '../../../../constants';

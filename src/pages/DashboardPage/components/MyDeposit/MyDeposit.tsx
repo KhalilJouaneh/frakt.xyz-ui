@@ -1,73 +1,84 @@
-import classNames from 'classnames';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { sum, map, filter } from 'ramda';
+import classNames from 'classnames';
+
+import { selectLiquidityPools } from '../../../../state/loans/selectors';
 import Button from '../../../../components/Button';
-import { PATHS } from '../../../../constants';
-import { SolanaIcon } from '../../../../icons';
-import { LedningPools } from '../../../../state/stats/types';
-import Block from '../Block';
 import styles from './MyDeposit.module.scss';
+import { SolanaIcon } from '../../../../icons';
+import { PATHS } from '../../../../constants';
+import Block from '../Block';
 
-interface LendingProps {
-  lendingPools: LedningPools[];
-}
+const MyDeposit: FC = () => {
+  const liquidityPools = useSelector(selectLiquidityPools);
 
-const MyDeposit: FC<LendingProps> = ({ lendingPools }) => {
+  const depositAmount = ({ userDeposit }) => userDeposit?.depositAmount;
+  const depositApr = ({ depositApr }) => depositApr;
+
+  const depositedPools = filter(depositAmount as any, liquidityPools);
+  const totalLiquidity = sum(map(depositAmount as any, depositedPools));
+  const totalApy = sum(map(depositApr, depositedPools));
+
   return (
     <Block className={styles.block}>
       <h3 className={styles.title}>My deposits</h3>
       <div className={styles.loansInfoWrapper}>
         <div className={styles.loansInfo}>
-          <div className={styles.loansValue}>215 %</div>
+          <div className={styles.loansValue}>{totalApy.toFixed(0)} %</div>
           <p className={styles.subtitle}>Total apy</p>
         </div>
         <div className={styles.loansInfo}>
           <div className={styles.loansValue}>
-            195.033 <SolanaIcon className={styles.icon} />
+            {totalLiquidity.toFixed(3)} <SolanaIcon className={styles.icon} />
           </div>
           <p className={styles.subtitle}>Total liquidity</p>
         </div>
       </div>
       <div className={styles.header}>
-        <p className={styles.headerTitle}>{lendingPools.length} Pools</p>
+        <p className={styles.headerTitle}>{depositedPools.length} Pools</p>
         <div className={styles.headerValues}>
           <p className={styles.headerTitle}>APY</p>
           <p className={styles.headerTitle}>Your liquidity</p>
         </div>
       </div>
       <div className={styles.table}>
-        {lendingPools.map(
-          ({ nftName, apr, image, tvl, collectionsCount }, idx) => (
+        {depositedPools.map(
+          (
+            { name, depositApr, userDeposit, imageUrl, collectionsAmount },
+            idx,
+          ) => (
             <div key={idx} className={styles.tableRow}>
               <div className={styles.tableInfo}>
-                {image?.length > 1 ? (
+                {imageUrl?.length > 1 ? (
                   <div
                     className={classNames(styles.poolImage, {
-                      [styles.poolImageWithLabel]: collectionsCount - 2 > 0,
+                      [styles.poolImageWithLabel]: collectionsAmount - 2 > 0,
                     })}
-                    data-collections-amount={`+${collectionsCount - 2}`}
+                    data-collections-amount={`+${collectionsAmount - 2}`}
                   >
-                    <img className={styles.rowImage} src={image[0]} />
-                    <img className={styles.rowImage} src={image[1]} />
+                    <img className={styles.rowImage} src={imageUrl[0]} />
+                    <img className={styles.rowImage} src={imageUrl[1]} />
                   </div>
                 ) : (
-                  <img className={styles.rowImage} src={image} />
+                  <img className={styles.rowImage} src={imageUrl[0]} />
                 )}
-                <p className={styles.nftName}>{nftName}</p>
+                <p className={styles.nftName}>{name}</p>
               </div>
               <div className={styles.tableStats}>
-                <p>{apr.toFixed(2)} %</p>
+                <p>{depositApr.toFixed(2)} %</p>
                 <p>
-                  {tvl.toFixed(2)} <SolanaIcon />
+                  {userDeposit?.depositAmount.toFixed(2)} <SolanaIcon />
                 </p>
               </div>
             </div>
           ),
         )}
       </div>
-      <NavLink style={{ width: '100%' }} to={PATHS.BORROW}>
+      <NavLink style={{ width: '100%' }} to={PATHS.LEND}>
         <Button className={styles.btn} type="secondary">
-          Borrow
+          Lend
         </Button>
       </NavLink>
     </Block>

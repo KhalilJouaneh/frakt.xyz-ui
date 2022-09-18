@@ -29,7 +29,6 @@ const InfinityScroll = ({
   wrapperClassName,
   isLoading = false,
   emptyMessage = 'No items found',
-  emptyMessageClassName,
   children,
   infinityScrollProps,
   scrollableTargetId = 'app-content',
@@ -56,6 +55,7 @@ const InfinityScroll = ({
       dataLength={itemsToShow}
       hasMore={true}
       loader={false}
+      style={{ overflow: 'initial' }}
       {...infinityScrollProps}
     >
       <div className={classNames(wrapperClassName)}>

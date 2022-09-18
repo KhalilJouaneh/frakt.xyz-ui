@@ -25,10 +25,6 @@
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 20px 0;
-
-  @media screen and (max-width: 1023px) {
-    margin-bottom: 0;
-  }
 }
 
 .searchInput {
@@ -111,10 +107,14 @@
 
 .nftsList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  gap: 24px;
   align-items: stretch;
-  padding-right: 260px;
+  padding-right: 258px;
+
+  @media (max-width: 1023px) {
+    padding-right: 0;
+  }
 }
 
 .noSuiableMessageWrapper {

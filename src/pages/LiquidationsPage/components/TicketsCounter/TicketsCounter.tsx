@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import styles from './TicketsCounter.module.scss';
-import { Ticket } from '../../../../icons';
 
 interface TicketsCounterProps {
   tickets: number;

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
-import { Container } from '../../components/Layout';
 import Liquidations from './components/Liquidations';
 import styles from './LiquidationsPage.module.scss';
 

@@ -1,4 +1,6 @@
-export const Bell = () => (
+import { FC } from 'react';
+
+export const Bell: FC = () => (
   <svg
     width="24"
     height="24"

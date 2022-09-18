@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import { PATHS } from '../../../../constants';
-import { LastLoans, LedningPools } from '../../../../state/stats/types';
+import { LastLoans } from '../../../../state/stats/types';
 import Block from '../Block';
 import styles from './LowestBorrow.module.scss';
 

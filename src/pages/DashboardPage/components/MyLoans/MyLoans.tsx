@@ -1,27 +1,46 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { sum, map } from 'ramda';
+import { sum, map, filter } from 'ramda';
 
-import { selectLoanNfts } from '../../../../state/loans/selectors';
+import {
+  selectLoanNfts,
+  selectTotalDebt,
+} from '../../../../state/loans/selectors';
 import { ChartPie, defaultColors } from '../ChartPie';
 import { Loan } from '../../../../state/loans/types';
 import { SolanaIcon } from '../../../../icons';
 import styles from './MyLoans.module.scss';
 import Block from '../Block';
-import { NavLink } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import { PATHS } from '../../../../constants';
 
-const MyLoans = () => {
+const MyLoans: FC = () => {
   const userLoans: Loan[] = useSelector(selectLoanNfts);
 
-  const totalBorrowed = sum(map(({ loanValue }) => loanValue, userLoans));
+  const loanToValue = ({ loanValue }) => loanValue;
+  const isPriceBased = ({ isPriceBased }) => isPriceBased === true;
+  const isTimeBased = ({ isPriceBased }) => isPriceBased === false;
+  const isGracePeriod = ({ isGracePeriod }) => isGracePeriod === true;
+
+  const totalDebt = useSelector(selectTotalDebt);
+
+  const perpetualLoans = filter(isPriceBased, userLoans);
+  const flipLoans = filter(isTimeBased, userLoans);
+  const graceLoans = filter(isGracePeriod as any, userLoans);
+
+  const perpetualLoansValue = sum(map(loanToValue, perpetualLoans));
+  const flipLoansValue = sum(map(loanToValue, flipLoans));
+  const graceLoansValue = sum(map(loanToValue, graceLoans));
+
+  const countLoans = userLoans.length;
+  const totalBorrowed = sum(map(loanToValue, userLoans));
 
   const loansInfo = [
-    { name: 'FLIP', value: 2000 },
-    { name: 'PERPETUAL', value: 3000 },
-    { name: 'ON GRACE', value: 3000 },
-    { name: 'BONDS', value: 2000 },
+    { name: 'Flip', value: flipLoansValue },
+    { name: 'Perpetual', value: perpetualLoansValue },
+    { name: 'On grace', value: graceLoansValue },
+    { name: 'Bound', value: 0 },
   ];
   return (
     <Block className={styles.block}>
@@ -30,20 +49,29 @@ const MyLoans = () => {
         <div className={styles.loansInfoWrapper}>
           <div className={styles.loansInfo}>
             <div className={styles.loansValue}>
-              {totalBorrowed} <SolanaIcon className={styles.icon} />
+              {totalBorrowed.toFixed(3)} <SolanaIcon className={styles.icon} />
             </div>
             <p className={styles.subtitle}>Total borrowed</p>
           </div>
           <div className={styles.loansInfo}>
             <div className={styles.loansValue}>
-              {totalBorrowed} <SolanaIcon className={styles.icon} />
+              {totalDebt.toFixed(3)} <SolanaIcon className={styles.icon} />
             </div>
             <p className={styles.subtitle}>Total debt</p>
           </div>
         </div>
         <div className={styles.chartWrapper}>
           <div className={styles.chart}>
-            <ChartPie rawData={loansInfo} width={192} />
+            <ChartPie
+              rawData={loansInfo}
+              width={192}
+              label={
+                <div className={styles.labelWrapper}>
+                  <p className={styles.labelValue}>{countLoans}</p>
+                  <p className={styles.label}>Loans</p>
+                </div>
+              }
+            />
           </div>
           <div className={styles.chartInfo}>
             {loansInfo.map(({ name, value }, idx) => (
@@ -55,7 +83,7 @@ const MyLoans = () => {
                   />
                   <p className={styles.name}>{name}</p>
                 </div>
-                <p className={styles.value}>{value} SOL</p>
+                <p className={styles.value}>{value}</p>
               </div>
             ))}
           </div>

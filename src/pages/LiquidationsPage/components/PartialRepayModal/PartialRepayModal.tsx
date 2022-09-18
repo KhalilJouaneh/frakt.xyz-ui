@@ -4,7 +4,6 @@ import { FC, useState } from 'react';
 import Button from '../../../../components/Button';
 import { Modal } from '../../../../components/Modal';
 import { Slider } from '../../../../components/Slider';
-import { TokenAmountInputWithBalance } from '../../../../components/TokenAmountInputWithBalance';
 import { CloseModalIcon, SolanaIcon } from '../../../../icons';
 import { Loan } from '../../../../state/loans/types';
 import { SOL_TOKEN } from '../../../../utils';
@@ -51,11 +50,11 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
     setPaybackAmount(((loan?.repayValue * nextValue) / 100)?.toFixed(3));
   };
 
-  const onPaybackAmountChange = (nextValue: string) => {
-    const nextValueNumber = parseFloat(nextValue);
-    setPaybackAmount(nextValue);
-    setPartialPercent((nextValueNumber / loan?.repayValue) * 100);
-  };
+  // const onPaybackAmountChange = (nextValue: string) => {
+  //   const nextValueNumber = parseFloat(nextValue);
+  //   setPaybackAmount(nextValue);
+  //   setPartialPercent((nextValueNumber / loan?.repayValue) * 100);
+  // };
 
   const onSubmit = () => {
     //? Prevent rounding problems

@@ -58,7 +58,7 @@ const WonRaffleCard: FC<{ data }> = ({ data }) => {
           <Tooltip placement="top" overlay="Not enough SOL">
             <div>
               <Button
-                type="alternative"
+                type="secondary"
                 className={styles.btn}
                 onClick={handleClick}
                 disabled
@@ -68,11 +68,7 @@ const WonRaffleCard: FC<{ data }> = ({ data }) => {
             </div>
           </Tooltip>
         ) : (
-          <Button
-            type="alternative"
-            className={styles.btn}
-            onClick={handleClick}
-          >
+          <Button type="secondary" className={styles.btn} onClick={handleClick}>
             Liquidate
           </Button>
         )}

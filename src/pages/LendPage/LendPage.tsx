@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
-import { Container } from '../../components/Layout';
 import LendingPool from './components/LendingPool';
 import styles from './LendPage.module.scss';
 import { Loader } from '../../components/Loader';

@@ -57,33 +57,32 @@
   --font-link: 700 18px var(--font-family-inter);
 
   --font-title-2: 800 48px var(--font-family-syne);
+
   --font-text-1: 400 32px var(--font-family-chakra);
   --font-text-2: 700 24px var(--font-family-syne);
   --font-text-3: 400 18px var(--font-family-oxanium);
   --font-text-4: 400 18px var(--font-family-chakra);
   --font-text-5: 700 14px var(--font-family-syne);
   --font-text-6: 700 12px var(--font-family-syne);
-  --font-text-7: 700 10px var(--font-family-oxanium);
+  --font-text-7: 700 10px var(--font-family-syne);
   --font-text-8: 400 16px var(--font-family-chakra);
   --font-text-9: 500 12px var(--font-family-chakra);
 
   @media screen and (max-width: 1024px) {
+    --font-title-2: 800 32px var(--font-family-syne);
+    --font-text-1: 400 24px var(--font-family-chakra);
     --font-text-2: 700 20px var(--font-family-syne);
+
     --font-h6: 700 22px var(--font-family-syne);
   }
 
   @media screen and (max-width: 767px) {
-    --font-title-2: 600 32px var(--font-family-oxanium);
-    --font-text-1: 400 24px var(--font-family-oxanium);
-    --font-text-2: 400 18px var(--font-family-oxanium);
+    --font-text-1: 400 16px var(--font-family-chakra);
+    --font-title-2: 800 24px var(--font-family-syne);
   }
 
   @media screen and (max-width: 500px) {
-    --font-text-1: 400 18px var(--font-family-oxanium);
-    --font-text-2: 400 15px var(--font-family-oxanium);
   }
-
-  --header-height: 50px;
 }
 
 :root[data-theme='dark'] {
@@ -144,31 +143,30 @@
   --font-link: 700 18px var(--font-family-inter);
 
   --font-title-2: 800 48px var(--font-family-syne);
+
   --font-text-1: 400 32px var(--font-family-chakra);
   --font-text-2: 700 24px var(--font-family-syne);
   --font-text-3: 400 18px var(--font-family-oxanium);
   --font-text-4: 400 18px var(--font-family-chakra);
   --font-text-5: 700 14px var(--font-family-syne);
   --font-text-6: 700 12px var(--font-family-syne);
-  --font-text-7: 700 10px var(--font-family-oxanium);
+  --font-text-7: 700 10px var(--font-family-syne);
   --font-text-8: 400 16px var(--font-family-chakra);
   --font-text-9: 500 12px var(--font-family-chakra);
 
   @media screen and (max-width: 1024px) {
+    --font-title-2: 800 32px var(--font-family-syne);
+    --font-text-1: 400 24px var(--font-family-chakra);
     --font-text-2: 700 20px var(--font-family-syne);
+
     --font-h6: 700 22px var(--font-family-syne);
   }
 
   @media screen and (max-width: 767px) {
-    --font-title-2: 600 32px var(--font-family-oxanium);
-    --font-text-1: 400 24px var(--font-family-oxanium);
-    --font-text-2: 400 18px var(--font-family-oxanium);
+    --font-text-1: 400 16px var(--font-family-chakra);
+    --font-title-2: 800 24px var(--font-family-syne);
   }
 
   @media screen and (max-width: 500px) {
-    --font-text-1: 400 18px var(--font-family-oxanium);
-    --font-text-2: 400 15px var(--font-family-oxanium);
   }
-
-  --header-height: 50px;
 }

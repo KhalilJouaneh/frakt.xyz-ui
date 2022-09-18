@@ -8,6 +8,8 @@ import {
   NAVIGATION_LINKS,
 } from '../../componentsNew/Navigation';
 import { MenuItem } from '../../componentsNew/Navigation/Navigation';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../../state/theme/selectors';
 
 interface BurgerMenuProps {
   className?: string;
@@ -17,6 +19,9 @@ const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const closeMenu = (): void => setIsOpen(false);
+  const theme: string = useSelector(selectTheme);
+
+  const isDark = theme === 'dark';
 
   return (
     <>
@@ -49,13 +54,17 @@ const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
         <div className={styles.community}>
           <p className={styles.subtitle}>Community</p>
           <div className={styles.icons}>
-            {community.map(({ icon }) => icon())}
+            {community.map(({ icon, iconDark }) =>
+              isDark ? iconDark() : icon(),
+            )}
           </div>
         </div>
         <div className={styles.documentation}>
           <p className={styles.subtitle}>Documentation</p>
           <div className={styles.icons}>
-            {documentation.map(({ icon }) => icon())}
+            {documentation.map(({ icon, iconDark }) =>
+              isDark ? iconDark() : icon(),
+            )}
           </div>
         </div>
         <div className={styles.switcher}>

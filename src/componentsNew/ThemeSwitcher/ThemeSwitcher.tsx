@@ -6,6 +6,7 @@ import { selectTheme } from '../../state/theme/selectors';
 import { themeActions } from '../../state/theme/actions';
 import styles from './styles.module.scss';
 import Icons from '../../iconsNew';
+import classNames from 'classnames';
 
 export const ThemeSwitcher: FC = () => {
   const dispatch = useDispatch();
@@ -16,17 +17,19 @@ export const ThemeSwitcher: FC = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const handleThemeChange = (evt) => {
+  const handleThemeChange = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     dispatch(themeActions.setTheme(next));
   };
 
+  const checked = theme === 'dark';
+
   return (
     <Switch
       width={64}
-      className={styles.switch}
+      className={classNames(styles.switch, checked && styles.checkedValue)}
       onChange={handleThemeChange}
-      checked={theme === 'dark'}
+      checked={checked}
       offColor={'#fff'}
       offHandleColor={'#fff'}
       uncheckedHandleIcon={<Icons.Sun />}

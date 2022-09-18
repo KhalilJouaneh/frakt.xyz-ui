@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import Button from '../../../../components/Button';
-import { SolanaIcon, Ticket } from '../../../../icons';
+import { SolanaIcon } from '../../../../icons';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
 import { selectTxRaffleTryStatus } from '../../../../state/liquidations/selectors';
 import { useOnFulfilled } from '../../../../hooks';

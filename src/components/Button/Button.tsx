@@ -11,7 +11,7 @@ interface IButtonRegularProps {
   linkAttrs?: any;
   onClick?: (args: any) => any;
   children: any;
-  type?: 'primary' | 'secondary' | 'tertiary' | 'alternative';
+  type?: 'primary' | 'secondary' | 'tertiary';
 }
 
 const Button: FC<IButtonRegularProps> = ({

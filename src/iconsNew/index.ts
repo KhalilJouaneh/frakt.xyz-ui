@@ -1,27 +1,29 @@
 import { Chart } from './Chart';
-import { Discord } from './Discord';
-import { Twitter } from './Twitter';
-import { Medium } from './Medium';
-import { Github } from './Github';
-import { Docs } from './Docs';
+import { Discord, DiscordDark } from './Discord';
+import { Twitter, TwitterDark } from './Twitter';
+import { Medium, MediumDark } from './Medium';
+import { Github, GithubDark } from './Github';
+import { Docs, DocsDark } from './Docs';
 import { Frakt } from './Frakt';
 import { Logo } from './Logo';
 import { Person } from './Person';
 import { Cross } from './Cross';
-import { MyLoans } from './MyLoans';
-import { Borrow } from './Borrow';
-import { Dashboard } from './Dashboard';
+import { MyLoans, MyLoansDark } from './MyLoans';
+import { Borrow, BorrowDark } from './Borrow';
+import { Dashboard, DashboardDark } from './Dashboard';
 import { BurgerClosed } from './BurgerClosed';
 import { BurgerOpen } from './BurgerOpen';
-import { Lending } from './Lending';
-import { Raffles } from './Raffles';
+import { Lending, LendingDark } from './Lending';
+import { Raffles, RafflesDark } from './Raffles';
 import { Moon } from './Moon';
 import { Sun } from './Sun';
 
 export default {
   Chart,
   Discord,
+  DiscordDark,
   Twitter,
+  TwitterDark,
   Medium,
   Github,
   Docs,
@@ -38,4 +40,12 @@ export default {
   Raffles,
   Moon,
   Sun,
+  RafflesDark,
+  LendingDark,
+  MyLoansDark,
+  DashboardDark,
+  BorrowDark,
+  MediumDark,
+  GithubDark,
+  DocsDark,
 };
