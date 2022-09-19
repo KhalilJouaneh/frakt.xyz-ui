@@ -64,7 +64,7 @@ const CurrentUserTable = ({
 
       return (
         <div className={styles.row}>
-          <span>Rewards</span> {valueUserRewards} FRKT
+          <span>Rewards</span> {valueUserRewards.toFixed(2)} FRKT
         </div>
       );
     }
