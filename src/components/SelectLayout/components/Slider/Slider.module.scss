@@ -14,6 +14,10 @@
       padding-top: 20px;
     }
   }
+
+  @media screen and (max-width: 767px) {
+    min-height: 80px;
+  }
 }
 
 .image {
@@ -52,4 +56,62 @@
 .nftName {
   font: var(--font-text-2);
   text-align: center;
+
+  @media screen and (max-width: 767px) {
+    text-align: left;
+  }
+}
+
+.mobileSlide {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.removeBtnMobile {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  background-color: var(--primary-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+
+  svg {
+    path {
+      stroke: var(--secondary-border);
+    }
+  }
+}
+
+.mobileSlideInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  @media screen and (max-width: 767px) {
+    display: none !important;
+  }
 }

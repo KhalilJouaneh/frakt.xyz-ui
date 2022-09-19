@@ -68,6 +68,15 @@
   display: flex;
   gap: 36.5px;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 767px) {
+    gap: 16px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      height: 0px;
+    }
+  }
 }
 
 .sorting {
@@ -86,4 +95,14 @@
   position: absolute;
   top: 45px;
   right: 0;
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: unset;
+    max-height: 200px;
+    width: 100% !important;
+  }
 }

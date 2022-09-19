@@ -11,7 +11,7 @@ const Rewards: FC = () => {
     <Block className={styles.block}>
       <h3 className={styles.title}>My rewards</h3>
       <div>
-        <p className={styles.value}>195.033 FRKX</p>
+        <p className={styles.value}>0 FRKX</p>
       </div>
       <div className={styles.tooltip}>
         <p className={styles.subtitle}>For the protocol use</p>
@@ -20,10 +20,12 @@ const Rewards: FC = () => {
         </Tooltip>
       </div>
       <div className={styles.btnWrapper}>
-        <Button className={styles.btn} type="secondary">
+        <Button className={styles.btn} type="secondary" disabled>
           Stake FRKX
         </Button>
-        <Button className={styles.btn}>Claim FRKX</Button>
+        <Button className={styles.btn} disabled>
+          Claim FRKX
+        </Button>
       </div>
     </Block>
   );

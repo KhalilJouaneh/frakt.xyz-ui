@@ -122,7 +122,16 @@
   position: absolute;
   top: 45px;
   right: 0;
-  overflow: hidden;
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: unset;
+    height: 200px;
+    width: 100% !important;
+  }
 }
 
 .sortingWrapper {
@@ -130,6 +139,16 @@
   flex-flow: row wrap;
   gap: 36.5px;
   row-gap: 12px;
+
+  @media screen and (max-width: 767px) {
+    flex-flow: row nowrap;
+    gap: 16px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      height: 0px;
+    }
+  }
 }
 
 .radioWrapper {
@@ -137,6 +156,11 @@
   flex-direction: column;
   gap: 9.5px;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 15px;
+    flex-direction: row;
+  }
 }
 
 .sorting {

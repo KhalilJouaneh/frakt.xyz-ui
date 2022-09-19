@@ -29,20 +29,40 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
       scrollbar={{ draggable: true }}
     >
       {nfts.map((nft, idx) => (
-        <SwiperSlide key={idx}>
-          <div
-            className={styles.image}
-            style={{ backgroundImage: `url(${nft.imageUrl})` }}
-          >
-            <button
-              className={styles.removeBtn}
-              onClick={() => onDeselect(nft)}
-            >
-              {Icons.Cross()}
-            </button>
-          </div>
-          <p className={styles.nftName}>{nft.name}</p>
-        </SwiperSlide>
+        <>
+          <SwiperSlide key={idx}>
+            <div className={styles.slide}>
+              <div
+                className={styles.image}
+                style={{ backgroundImage: `url(${nft.imageUrl})` }}
+              >
+                <button
+                  className={styles.removeBtn}
+                  onClick={() => onDeselect(nft)}
+                >
+                  {Icons.Cross()}
+                </button>
+              </div>
+              <p className={styles.nftName}>{nft.name}</p>
+            </div>
+
+            <div className={styles.mobileSlide}>
+              <div className={styles.mobileSlideInfo}>
+                <div
+                  className={styles.image}
+                  style={{ backgroundImage: `url(${nft.imageUrl})` }}
+                />
+                <p className={styles.nftName}>{nft.name}</p>
+              </div>
+              <button
+                className={styles.removeBtnMobile}
+                onClick={() => onDeselect(nft)}
+              >
+                {Icons.Cross()}
+              </button>
+            </div>
+          </SwiperSlide>
+        </>
       ))}
     </Swiper>
   );

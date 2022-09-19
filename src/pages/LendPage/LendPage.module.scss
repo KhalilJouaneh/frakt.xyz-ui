@@ -78,6 +78,15 @@
 .sortingWrapper {
   display: flex;
   gap: 36.5px;
+
+  @media screen and (max-width: 767px) {
+    gap: 16px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      height: 0px;
+    }
+  }
 }
 
 .sorting {

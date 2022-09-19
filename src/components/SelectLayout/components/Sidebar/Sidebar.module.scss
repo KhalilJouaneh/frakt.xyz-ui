@@ -5,8 +5,8 @@
   height: 100%;
 
   width: 300px;
-  background-color: var(--white-color);
-  border-left: 1px solid var(--gray-color-2);
+  background-color: var(--primary-background);
+  border-left: 1px solid var(--primary-border);
   z-index: 2;
   transform: translateX(calc(100% + 10px));
   transition: transform var(--transition-1), opacity var(--transition-1),
@@ -21,6 +21,10 @@
     .sidebar {
       opacity: 1;
     }
+
+    @media screen and (max-width: 767px) {
+      max-height: 570px;
+    }
   }
 
   @media screen and (max-width: 1023px) {
@@ -31,6 +35,16 @@
       transform: translateY(calc(100% - 90px));
       padding-top: 0;
     }
+  }
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    top: unset;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 0px;
   }
 }
 
@@ -54,8 +68,7 @@
   position: relative;
   z-index: 9;
 
-  @media screen and (max-width: 375px) {
-    max-width: none;
-    width: 100%;
+  @media screen and (max-width: 767px) {
+    overflow: unset;
   }
 }

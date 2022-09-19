@@ -97,7 +97,7 @@
   &::before {
     content: attr(data-collections-amount);
     background: var(--light-green-color);
-    color: var(--black-color);
+    color: var(--button-text);
     position: absolute;
     font: var(--font-text-5);
     padding: 8px 4px;

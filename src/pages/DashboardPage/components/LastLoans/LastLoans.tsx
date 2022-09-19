@@ -15,7 +15,7 @@ const LastLoans: FC<LastLoansProps> = ({ lastLoans }) => {
       <h3 className={styles.subtitle}>Last loans</h3>
       <div className={styles.header}>
         <p className={styles.headerTitle}>NFT</p>
-        <p className={styles.headerTitle}>To borrow</p>
+        <p className={styles.headerTitle}>Borrowed</p>
       </div>
       <div className={styles.cards}>
         {lastLoans.map(({ nftName, loanValue, image }) => (

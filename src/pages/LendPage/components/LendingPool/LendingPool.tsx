@@ -102,14 +102,16 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
               </>
             )}
             <div className={styles.btnWrapper}>
-              <Button
-                className={styles.btn}
-                type="primary"
-                onClick={() => openPoolModal(TabsNames.WITHDRAW)}
-                disabled={connected && !userDeposit?.depositAmount}
-              >
-                Withdraw
-              </Button>
+              {connected && !!userDeposit?.depositAmount && (
+                <Button
+                  className={styles.btn}
+                  type="primary"
+                  onClick={() => openPoolModal(TabsNames.WITHDRAW)}
+                >
+                  Withdraw
+                </Button>
+              )}
+
               <Button
                 className={styles.btn}
                 type="secondary"

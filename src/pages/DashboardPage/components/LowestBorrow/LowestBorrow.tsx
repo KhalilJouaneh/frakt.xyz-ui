@@ -1,7 +1,9 @@
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import { PATHS } from '../../../../constants';
+import { selectLiquidityPools } from '../../../../state/loans/selectors';
 import { LastLoans } from '../../../../state/stats/types';
 import Block from '../Block';
 import styles from './LowestBorrow.module.scss';
@@ -11,6 +13,10 @@ interface LowestBorrowProps {
 }
 
 const LowestBorrow: FC<LowestBorrowProps> = ({ lastLoans }) => {
+  const liquidityPools = useSelector(selectLiquidityPools);
+
+  console.log(liquidityPools);
+
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Lowest fees on borrowing</h3>
