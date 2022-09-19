@@ -32,20 +32,29 @@ const GraceList: FC<GraceListProps> = ({ graceList }) => {
         <p className={styles.headerTitle}>Collections</p>
         <p className={styles.headerTitle}>Grace period</p>
       </div>
-      <div className={styles.content}>
-        {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
-          <div key={nftName} className={styles.card}>
-            <div className={styles.nftInfo}>
-              <img src={nftImageUrl} className={styles.nftImage} />
-              <p className={styles.nftName}>{nftName}</p>
+      {graceList.length ? (
+        <div className={styles.content}>
+          {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
+            <div key={nftName} className={styles.card}>
+              <div className={styles.nftInfo}>
+                <img src={nftImageUrl} className={styles.nftImage} />
+                <p className={styles.nftName}>{nftName}</p>
+              </div>
+              <div className={styles.wrapper}>
+                <Timer className={styles.icon} />
+                {getTimeleft(expiredAt)}
+              </div>
             </div>
-            <div className={styles.wrapper}>
-              <Timer className={styles.icon} />
-              {getTimeleft(expiredAt)}
-            </div>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.content}>
+          <div className={styles.emtyList}>
+            <p>No loans on grace at the moment</p>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
       <NavLink to={PATHS.LIQUIDATIONS}>
         <Button className={styles.btn} type="secondary">
           Liqudations
