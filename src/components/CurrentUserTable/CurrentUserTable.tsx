@@ -14,6 +14,7 @@ import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import Button from '../Button';
+import { NavLink } from 'react-router-dom';
 
 interface CurrentUserTableProps {
   className?: string;
@@ -59,12 +60,13 @@ const CurrentUserTable = ({
             {getBalanceValue()}
           </div>
 
-          <LinkWithArrow
+          <NavLink
+            onClick={() => sendAmplitudeData('navigation-profile')}
             to={`${PATHS.PROFILE}/${publicKey.toString()}`}
-            label="My profile"
-            event="navigation-profile"
             className={styles.myCollectionLink}
-          />
+          >
+            My profile
+          </NavLink>
         </div>
       </div>
       {!user && (

@@ -136,6 +136,7 @@
   display: flex;
   flex-direction: column;
   gap: 9.5px;
+  margin-bottom: 10px;
 }
 
 .sorting {
@@ -156,4 +157,16 @@
 
 .controllers {
   margin-top: 16px;
+}
+
+.checkbox {
+  font: var(--font-text-3);
+
+  :global {
+    .ant-checkbox {
+      + span {
+        padding-left: 10px !important;
+      }
+    }
+  }
 }

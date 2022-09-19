@@ -73,12 +73,20 @@
     --font-text-1: 400 24px var(--font-family-chakra);
     --font-text-2: 700 20px var(--font-family-syne);
 
+    --font-text-6: 700 10px var(--font-family-syne);
+
+    --font-text-8: 400 14px var(--font-family-chakra);
+
     --font-h6: 700 22px var(--font-family-syne);
   }
 
   @media screen and (max-width: 767px) {
-    --font-text-1: 400 16px var(--font-family-chakra);
     --font-title-2: 800 24px var(--font-family-syne);
+
+    --font-text-1: 400 16px var(--font-family-chakra);
+    --font-text-2: 700 16px var(--font-family-syne);
+
+    --font-h6: 700 18px var(--font-family-syne);
   }
 
   @media screen and (max-width: 500px) {

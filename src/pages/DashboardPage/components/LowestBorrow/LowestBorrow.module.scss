@@ -6,6 +6,10 @@
 .block {
   max-width: 638px;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    max-width: unset;
+  }
 }
 
 .content {
@@ -17,6 +21,12 @@
 
   &::-webkit-scrollbar {
     width: 0;
+  }
+
+  @media screen and (max-width: 1024px) {
+    row-gap: 16px;
+    max-height: 295px;
+    height: 100%;
   }
 }
 
@@ -58,6 +68,16 @@
 .rowImage {
   height: 58px;
   width: 58px;
+
+  @media screen and (max-width: 1024px) {
+    height: 48px;
+    width: 48px;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 38px;
+    width: 38px;
+  }
 }
 
 .value {

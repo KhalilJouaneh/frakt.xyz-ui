@@ -6,7 +6,6 @@ import ConnectedButton from '../../components/ConnectedButton';
 import WalletContent from '../../components/WalletContent';
 import ThemeSwitcher from '../ThemeSwitcher';
 import { Logo } from '../../iconsNew/Logo';
-import { Frakt } from '../../iconsNew/Frakt';
 import ConnectWallet from '../ConnectWallet';
 import styles from './styles.module.scss';
 import BurgerMenu from '../../components/BurgerMenu';
@@ -19,7 +18,6 @@ export const Header = () => {
     <div className={styles.container}>
       {visible && <WalletContent />}
       <Logo className={styles.logo} />
-      <Frakt className={styles.logo} />
       <div className={styles.widgetContainer}>
         {connected ? (
           <ConnectedButton className={styles.walletBtn} />

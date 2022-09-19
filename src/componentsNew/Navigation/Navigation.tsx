@@ -18,6 +18,7 @@ interface MenuItem {
   to?: string | ((param: string) => string);
   pathname?: string;
   props?: any;
+  href?: string;
 }
 
 export const MenuItem = ({
@@ -28,6 +29,7 @@ export const MenuItem = ({
   to,
   selector,
   pathname = '',
+  href,
 }: MenuItem) => {
   const theme: string = useSelector(selectTheme);
   const icon = theme === 'dark' ? iconDark : rawIcon;
@@ -62,10 +64,15 @@ export const MenuItem = ({
     }
   }
   return (
-    <div className={cx(styles.link, className)}>
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href={href}
+      className={cx(styles.link, className)}
+    >
       {icon && <span className={styles.icon}>{icon()}</span>}
       {label && <span className={styles.label}>{label}</span>}
-    </div>
+    </a>
   );
 };
 
@@ -106,6 +113,7 @@ export const Navigation = ({
             icon={item.icon}
             iconDark={(item as any).iconDark}
             key={item.label}
+            href={item?.href}
           />
         ))}
       </div>
@@ -117,6 +125,7 @@ export const Navigation = ({
             icon={item.icon}
             iconDark={(item as any).iconDark}
             key={item.label}
+            href={item?.href}
           />
         ))}
       </div>

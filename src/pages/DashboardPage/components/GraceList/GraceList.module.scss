@@ -2,6 +2,10 @@
   max-width: 638px;
   width: 100%;
   height: 100%;
+
+  @media screen and (max-width: 1024px) {
+    max-width: unset;
+  }
 }
 
 .subtitle {
@@ -33,6 +37,10 @@
   &::-webkit-scrollbar {
     width: 0px;
   }
+
+  @media screen and (max-width: 1024px) {
+    row-gap: 16px;
+  }
 }
 
 .card {
@@ -50,6 +58,16 @@
 .nftImage {
   width: 58px;
   height: 58px;
+
+  @media screen and (max-width: 1024px) {
+    height: 48px;
+    width: 48px;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 38px;
+    width: 38px;
+  }
 }
 
 .nftName {

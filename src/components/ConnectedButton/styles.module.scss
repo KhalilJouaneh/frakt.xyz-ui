@@ -7,6 +7,12 @@
   border: 1px solid var(--light-green-color);
   background-color: var(--light-green-color-2);
   @include flex;
+  transition: background-color var(--transition-1), color var(--transition-1);
+
+  &:hover {
+    background-color: var(--light-green-color-1);
+    color: var(--connect-btn-text);
+  }
 }
 
 .icon {

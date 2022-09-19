@@ -18,6 +18,10 @@
   min-width: 300px;
   @include flex(row-reverse, nowrap, flex-start, center);
   gap: 36px;
+
+  @media screen and (max-width: 767px) {
+    min-width: unset;
+  }
 }
 
 .walletBtn {
@@ -45,5 +49,10 @@
 .logo {
   path {
     fill: var(--primary-icon);
+  }
+
+  @media (max-width: 767px) {
+    width: 107px;
+    height: 32px;
   }
 }

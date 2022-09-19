@@ -2,8 +2,8 @@
   &:hover {
     :global {
       .ant-radio-input + .ant-radio-inner {
-        border-color: var(--black-color);
-        background-color: var(--black-color);
+        border-color: #000;
+        background-color: #9cff1f;
       }
     }
   }
@@ -25,14 +25,14 @@
     .ant-radio-inner::after {
       top: 8px;
       left: 8px;
-      background-color: var(--white-color);
+      background-color: #000000;
     }
 
     .ant-radio-wrapper:hover .ant-radio-inner,
     .ant-radio-checked .ant-radio-inner,
     .ant-radio:hover .ant-radio-inner {
-      border-color: var(--black-color);
-      background-color: var(--black-color);
+      border-color: #000;
+      background-color: #9cff1f;
     }
   }
 }

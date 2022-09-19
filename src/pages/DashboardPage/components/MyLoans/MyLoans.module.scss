@@ -18,6 +18,11 @@
     justify-content: center;
     gap: 32px;
   }
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 .poolsConainer {
@@ -63,8 +68,14 @@
   margin: 0 auto;
   margin-bottom: 8px;
   position: relative;
+
   @media screen and (max-width: 1430px) {
     margin: 0;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 139px;
+    width: 139px;
   }
 }
 
@@ -78,7 +89,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--color-gray-4);
 }
 
 .chartInfo {

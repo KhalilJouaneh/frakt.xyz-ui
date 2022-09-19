@@ -54,17 +54,31 @@ const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
         <div className={styles.community}>
           <p className={styles.subtitle}>Community</p>
           <div className={styles.icons}>
-            {community.map(({ icon, iconDark }) =>
-              isDark ? iconDark() : icon(),
-            )}
+            {community.map(({ icon, iconDark, href }, idx) => (
+              <a
+                key={idx}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={href}
+              >
+                {isDark ? iconDark(null) : icon(null)}
+              </a>
+            ))}
           </div>
         </div>
         <div className={styles.documentation}>
           <p className={styles.subtitle}>Documentation</p>
           <div className={styles.icons}>
-            {documentation.map(({ icon, iconDark }) =>
-              isDark ? iconDark() : icon(),
-            )}
+            {documentation.map(({ icon, iconDark, href }, idx) => (
+              <a
+                key={idx}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={href}
+              >
+                {isDark ? iconDark(null) : icon(null)}
+              </a>
+            ))}
           </div>
         </div>
         <div className={styles.switcher}>

@@ -29,11 +29,18 @@
   flex-direction: column;
   width: 100%;
   row-gap: 24px;
+
+  @media screen and (max-width: 1024px) {
+    row-gap: 16px;
+  }
 }
 
 .rowDirection {
   @media screen and (max-width: 1430px) {
     flex-direction: row !important;
+  }
+  @media screen and (max-width: 1024px) {
+    flex-direction: column !important;
   }
 }
 
@@ -43,5 +50,9 @@
 
   @media screen and (max-width: 1430px) {
     flex-direction: column;
+  }
+
+  @media screen and (max-width: 767px) {
+    gap: 16px;
   }
 }

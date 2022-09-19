@@ -20,6 +20,7 @@ import {
 } from '../../hooks/useLoansFiltering';
 import { CollectionDropdown } from '../../../../components/CollectionDropdown';
 import { Radio } from '../../../../components/Radio';
+import { Checkbox } from '../../../../components/Checkbox';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -90,7 +91,8 @@ export const MyLoansList: FC = () => {
                                 ({ label, value }, idx) => (
                                   <div className={styles.sorting} key={idx}>
                                     <Radio
-                                      label={value}
+                                      checked={showLoansStatus.value === value}
+                                      label={label.props?.children}
                                       className={classNames(
                                         showLoansStatus.value === value &&
                                           styles.filterBtnActive,
@@ -130,14 +132,28 @@ export const MyLoansList: FC = () => {
 
                         <div className={styles.filters}>
                           <div className={styles.filtersContent}>
-                            <CollectionDropdown
+                            {/* <CollectionDropdown
                               options={sortValueOption}
                               values={selectedCollections}
                               setValues={(value) =>
                                 setSelectedCollections(value)
                               }
                               className={styles.sortingSelect}
-                            />
+                            /> */}
+                            {/* {sortValueOption.map((value, idx) => (
+                              <div key={idx}>
+                                <Checkbox
+                                  className={styles.checkbox}
+                                  onChange={() => {
+                                    setSelectedCollections([value]);
+                                  }}
+                                  value={!!selectedCollections.filter(
+                                    ({ value: rawValue }) => rawValue === value.value,
+                                  )}
+                                  label={value.label}
+                                />
+                              </div>
+                            ))} */}
                           </div>
                         </div>
                       </div>

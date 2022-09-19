@@ -18,7 +18,7 @@
 }
 
 .sliderLabel {
-  color: var(--gray-color-3);
+  color: var(--secondary-border);
   font: var(--font-text-6);
   text-align: center;
   text-transform: uppercase;
@@ -30,7 +30,7 @@
   align-items: center;
   gap: 0 10px;
 
-  color: var(--gray-color-3);
+  color: var(--secondary-border);
   font: var(--font-text-5);
   text-transform: uppercase;
 
@@ -44,7 +44,7 @@
   }
 }
 .staticValueAccent {
-  color: var(--black-color);
+  color: var(--secondary-border);
 }
 
 .staticValueWrapper {
@@ -55,11 +55,11 @@
 }
 
 .staticValueTitle {
-  color: var(--gray-color-3);
+  color: var(--secondary-text);
   order: 1;
 }
 .staticValueData {
-  color: var(--black-color);
+  color: var(--secondary-border);
   font: var(--font-text-8);
   order: 3;
 }
@@ -80,7 +80,7 @@
   margin-left: 5px;
 
   svg {
-    fill: var(--accent-color-1);
+    fill: var(--blue-color);
   }
 }
 

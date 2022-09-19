@@ -69,7 +69,12 @@ const DashboardPage: FC = () => {
               </div>
             </div>
           ) : (
-            <ConnectWallet />
+            <div className={styles.statsWrapper}>
+              <h2 className={styles.subtitle}>Personal overview</h2>
+              <div className={styles.statsContainer}>
+                <ConnectWallet />
+              </div>
+            </div>
           )}
           <div className={styles.statsWrapper}>
             <h2 className={styles.subtitle}>Protocol overview</h2>

@@ -8,6 +8,12 @@
   background-color: var(--light-green-color-2);
   @include flex;
   color: var(--connect-btn-text);
+  transition: background-color var(--transition-1), color var(--transition-1);
+
+  &:hover {
+    background-color: var(--light-green-color-1);
+    color: var(--connect-btn-text);
+  }
 }
 
 .icon {

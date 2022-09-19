@@ -156,10 +156,11 @@
   gap: 10px;
 }
 .valueTitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
   margin-bottom: 4px;
   text-transform: uppercase;
+  max-width: 136px;
 }
 .valueInfo {
   display: flex;
