@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { sortBy, path } from 'ramda';
+import { descend, sort, prop } from 'ramda';
 import classNames from 'classnames';
 
 import { LedningPools } from '../../../../state/stats/types';
@@ -14,8 +14,11 @@ interface LendingProps {
 }
 
 const Lending: FC<LendingProps> = ({ lendingPools }) => {
-  const sortByApr = sortBy(path(['apr']));
-  const highestAprPools = sortByApr(lendingPools).slice(-3);
+  const sortByApr = descend(prop('apr') as any);
+  const highestAprPools = sort(sortByApr, lendingPools).slice(
+    0,
+    3,
+  ) as LedningPools[];
 
   return (
     <Block className={styles.block}>

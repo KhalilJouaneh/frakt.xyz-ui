@@ -6,17 +6,29 @@
   z-index: 1;
   padding: 32px;
   width: 512px;
+
+  @media screen and (max-width: 767px) {
+    padding: 24px;
+  }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    justify-content: flex-end;
+  }
 }
 
 .title {
   color: var(--secondary-text);
   font: var(--font-text-2);
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 .closeModalIcon {

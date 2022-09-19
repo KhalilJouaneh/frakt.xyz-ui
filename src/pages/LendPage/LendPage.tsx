@@ -44,7 +44,7 @@ const LendPage: FC = () => {
           className={styles.searchInput}
           placeholder="Search by name"
         />
-        <div style={{ position: 'relative' }}>
+        <div className={styles.filtersWrapper}>
           <Button
             type="tertiary"
             onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}

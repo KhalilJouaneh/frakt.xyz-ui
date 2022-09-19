@@ -92,8 +92,26 @@
   text-transform: uppercase;
 }
 
+.filtersWrapper {
+  position: relative;
+
+  @media screen and (max-width: 767px) {
+    position: initial;
+  }
+}
+
 .filtersDropdown {
   position: absolute;
   top: 45px;
   right: 0;
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: unset;
+    height: 200px;
+    width: 100% !important;
+  }
 }

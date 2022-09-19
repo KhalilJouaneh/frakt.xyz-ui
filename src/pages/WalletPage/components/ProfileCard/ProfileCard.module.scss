@@ -84,6 +84,16 @@
   flex-direction: column;
 }
 
+.name {
+  margin-top: 16px;
+  font: var(--font-text-2);
+  text-align: center;
+
+  @media screen and (max-width: 1200px) {
+    text-align: left;
+  }
+}
+
 .userInfo {
   display: flex;
   flex-direction: column;

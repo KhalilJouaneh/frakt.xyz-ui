@@ -51,7 +51,7 @@ export const ProfileCard: FC<ProfileCard> = ({
           </div>
 
           <div className={styles.ownerInfo}>
-            {!!name && <p>{name}</p>}
+            {!!name && <p className={styles.name}>{name}</p>}
             <p className={styles.ownerAddress}>
               {shortenAddress(walletPubkey)}
             </p>
