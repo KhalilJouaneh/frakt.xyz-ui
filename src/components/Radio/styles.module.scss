@@ -2,23 +2,26 @@
   &:hover {
     :global {
       .ant-radio-input + .ant-radio-inner {
-        border-color: #000;
-        background-color: #9cff1f;
+        border-color: var(--secondary-border);
       }
     }
   }
 
   :global {
+    .ant-radio-checked + span {
+      color: var(--secondary-border) !important;
+    }
     .ant-radio {
       + span {
+        font: var(--font-text-8);
         padding-left: 5px;
-        color: var(--black-color);
+        color: var(--secondary-text);
       }
 
       .ant-radio-inner {
         width: 18px;
         height: 18px;
-        border: 1px solid var(--black-color);
+        border: 1px solid var(--secondary-text);
       }
     }
 
@@ -28,11 +31,19 @@
       background-color: #000000;
     }
 
-    .ant-radio-wrapper:hover .ant-radio-inner,
+    .ant-radio-checked .ant-radio-inner {
+      background-color: var(--light-green-color);
+    }
+
+    .ant-radio-inner,
     .ant-radio-checked .ant-radio-inner,
-    .ant-radio:hover .ant-radio-inner {
-      border-color: #000;
-      background-color: #9cff1f;
+    .ant-radio-inner {
+      border-color: var(--button-text);
     }
   }
+}
+
+.radio:hover > span {
+  color: var(--secondary-border);
+  transition: transform 0.2s ease-in, opacity 0.2s ease-in;
 }

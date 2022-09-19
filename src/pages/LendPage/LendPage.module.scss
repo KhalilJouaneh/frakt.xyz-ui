@@ -21,6 +21,10 @@
   text-align: center;
 }
 
+.sortName {
+  font: var(--font-text-8);
+}
+
 .sortWrapper {
   display: flex;
   justify-content: space-between;

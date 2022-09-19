@@ -189,69 +189,35 @@ export const useLoansFiltering: UseLoansFiltering = ({
 
 export const SORT_VALUES: LoansValue[] = [
   {
-    label: (
-      <span className={styles.sortName}>
-        Creation <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Creation</span>,
     value: 'creation_asc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Creation <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Creation</span>,
     value: 'creation_desc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Dept
-        <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Dept</span>,
     value: 'debt_asc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Dept
-        <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Dept</span>,
     value: 'debt_desc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Time to repay <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Time to repay</span>,
     value: 'timeToRepay_asc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Time to repay <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Time to repay</span>,
     value: 'timeToRepay_desc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Health <ArrowDownSmallIcon className={styles.arrowDown} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Health</span>,
     value: 'health_asc',
   },
   {
-    label: (
-      <span className={styles.sortName}>
-        Health <ArrowDownSmallIcon className={styles.arrowUp} />
-      </span>
-    ),
+    label: <span className={styles.sortName}>Health</span>,
     value: 'health_desc',
   },
 ];

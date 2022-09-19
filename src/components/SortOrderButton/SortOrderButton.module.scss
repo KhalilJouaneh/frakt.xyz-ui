@@ -10,11 +10,18 @@
 }
 
 .filterBtnActive {
+  color: var(--button-text);
   background-color: var(--light-green-color);
 }
 
 .arrowDown {
   transform: rotate(180deg);
+}
+
+.filterBtnActive .icon {
+  path {
+    fill: var(--button-text);
+  }
 }
 
 .icon {

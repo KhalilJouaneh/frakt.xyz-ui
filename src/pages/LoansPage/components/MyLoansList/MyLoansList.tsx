@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import classNames from 'classnames';
 
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import FiltersDropdown from '../../../../components/FiltersDropdown';
@@ -20,7 +19,6 @@ import {
 } from '../../hooks/useLoansFiltering';
 import { CollectionDropdown } from '../../../../components/CollectionDropdown';
 import { Radio } from '../../../../components/Radio';
-import { Checkbox } from '../../../../components/Checkbox';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -93,10 +91,6 @@ export const MyLoansList: FC = () => {
                                     <Radio
                                       checked={showLoansStatus.value === value}
                                       label={label.props?.children}
-                                      className={classNames(
-                                        showLoansStatus.value === value &&
-                                          styles.filterBtnActive,
-                                      )}
                                       onClick={() =>
                                         setValue(
                                           FilterFormInputsNames.LOANS_STATUS,
