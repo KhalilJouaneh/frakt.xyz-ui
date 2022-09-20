@@ -17,7 +17,13 @@ export const Header = () => {
   return (
     <div className={styles.container}>
       {visible && <WalletContent />}
-      <Logo className={styles.logo} />
+      <a
+        href="https://frakt-landing.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo className={styles.logo} />
+      </a>
       <div className={styles.widgetContainer}>
         {connected ? (
           <ConnectedButton className={styles.walletBtn} />

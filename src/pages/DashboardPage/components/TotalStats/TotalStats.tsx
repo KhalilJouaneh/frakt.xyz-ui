@@ -10,7 +10,7 @@ interface TotalStatsProps {
 }
 
 const TotalStats: FC<TotalStatsProps> = ({ totalStats }) => {
-  const { totalIssued, loansTvl, loansVolumeAllTime } = totalStats;
+  const { activeLoansCount, loansTvl, loansVolumeAllTime } = totalStats;
 
   return (
     <Block className={styles.block}>
@@ -31,7 +31,7 @@ const TotalStats: FC<TotalStatsProps> = ({ totalStats }) => {
           <h3 className={styles.subtitle}>Loans volume all time</h3>
         </div>
         <div className={styles.statsInfo}>
-          <p className={styles.value}>{totalIssued}</p>
+          <p className={styles.value}>{activeLoansCount}</p>
           <h3 className={styles.subtitle}>Active loans</h3>
         </div>
       </div>

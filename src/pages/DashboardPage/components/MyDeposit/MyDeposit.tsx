@@ -19,7 +19,7 @@ const MyDeposit: FC = () => {
 
   const depositedPools = filter(depositAmount as any, liquidityPools);
   const totalLiquidity = sum(map(depositAmount as any, depositedPools));
-  const totalApy = sum(map(depositApr, depositedPools));
+  const totalApy = sum(map(depositApr, depositedPools)) / depositedPools.length;
 
   return (
     <Block className={styles.block}>

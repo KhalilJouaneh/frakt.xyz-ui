@@ -13,7 +13,7 @@ export const notify: Notify = ({
   key = '',
 }) => {
   notification[type]({
-    className: 'fraktion__notification',
+    className: `fraktion__notification_${[type]}`,
     message,
     description,
     placement: 'bottomRight',

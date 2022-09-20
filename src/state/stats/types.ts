@@ -5,6 +5,7 @@ export interface TotalStats {
   totalIssued: number;
   loansTvl: number;
   loansVolumeAllTime: number;
+  activeLoansCount: number;
 }
 
 export interface DailyActivity {

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Button from '../../../../components/Button';
 import { PATHS } from '../../../../constants';
+import { SolanaIcon } from '../../../../icons';
 import { selectLiquidityPools } from '../../../../state/loans/selectors';
 import { LastLoans } from '../../../../state/stats/types';
 import Block from '../Block';
@@ -15,14 +16,12 @@ interface LowestBorrowProps {
 const LowestBorrow: FC<LowestBorrowProps> = ({ lastLoans }) => {
   const liquidityPools = useSelector(selectLiquidityPools);
 
-  console.log(liquidityPools);
-
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Lowest fees on borrowing</h3>
       <div className={styles.header}>
         <p className={styles.headerTitle}>Collections</p>
-        <p className={styles.headerTitle}>Grace period</p>
+        <p className={styles.headerTitle}>Fee</p>
       </div>
       <div className={styles.content}>
         {lastLoans.map(({ nftName, image }, idx) => (
@@ -31,7 +30,9 @@ const LowestBorrow: FC<LowestBorrowProps> = ({ lastLoans }) => {
               <img className={styles.rowImage} src={image} />
               <p className={styles.nftName}>{nftName}</p>
             </div>
-            <p className={styles.value}>3 %</p>
+            <p className={styles.value}>
+              3 <SolanaIcon />
+            </p>
           </div>
         ))}
       </div>

@@ -34,6 +34,10 @@
   height: 357px;
   overflow: auto;
 
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
   @media screen and (max-width: 1024px) {
     row-gap: 16px;
     max-height: 295px;

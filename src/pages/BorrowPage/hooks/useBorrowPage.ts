@@ -19,6 +19,7 @@ export const useBorrowPage = (): {
   setSearch: (searchStr: string) => void;
   next: () => void;
   search: string;
+  fetchData: FetchData<BorrowNft>;
 } => {
   const [isCloseSidebar, setIsCloseSidebar] = useState<boolean>(false);
   const [nftsLoading, setNftsLoading] = useState<boolean>(true);
@@ -83,5 +84,6 @@ export const useBorrowPage = (): {
     next,
     searchItems,
     search,
+    fetchData,
   };
 };
