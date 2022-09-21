@@ -11,7 +11,12 @@ interface LendingProps {
   lastLoans: LastLoans[];
 }
 
-const Lending: FC<LendingProps> = ({ lendingPools, lastLoans }) => {
+const Lending: FC<LendingProps> = ({
+  lendingPools,
+  lastLoans: rawLastLoans,
+}) => {
+  const lastLoans = rawLastLoans.slice(0, 3);
+
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>Lending</h2>
