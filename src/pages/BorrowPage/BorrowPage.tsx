@@ -4,7 +4,7 @@ import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { TokenFieldWithBalance } from '../../components/TokenField';
-import DefaultBorrow from './components/DefaultBorrow';
+import BorrowNft from './components/BorrowNft';
 import { networkRequest } from '../../utils/state';
 import BorrowBulk from './components/BorrowBulk';
 import styles from './BorrowPage.module.scss';
@@ -90,7 +90,7 @@ const BorrowPage: FC = () => {
         />
       )}
       {borrowType === BorrowType.JUST && (
-        <DefaultBorrow onClick={() => setBorrowType(null)} />
+        <BorrowNft onClick={() => setBorrowType(null)} />
       )}
     </>
   );

@@ -18,6 +18,7 @@ import { Raffles, RafflesDark } from './Raffles';
 import { Moon } from './Moon';
 import { Sun } from './Sun';
 import { Arrow } from './Arrow';
+import { Chevron } from './Chevron';
 
 export default {
   Chart,
@@ -50,4 +51,5 @@ export default {
   GithubDark,
   DocsDark,
   Arrow,
+  Chevron,
 };

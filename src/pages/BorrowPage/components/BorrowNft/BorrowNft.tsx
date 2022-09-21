@@ -9,7 +9,7 @@ import { sendAmplitudeData } from '../../../../utils/amplitude';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
 import Button from '../../../../components/Button';
-import styles from './DefaultBorrow.module.scss';
+import styles from './BorrowNft.module.scss';
 import {
   SelectLayout,
   useSelectLayout,
@@ -21,11 +21,11 @@ import Icons from '../../../../iconsNew';
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
 
-interface DefaultBorrow {
+interface BorrowNftProps {
   onClick: () => void;
 }
 
-const DefaultBorrow: FC<DefaultBorrow> = ({ onClick }) => {
+const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
 
@@ -132,4 +132,4 @@ const DefaultBorrow: FC<DefaultBorrow> = ({ onClick }) => {
   );
 };
 
-export default DefaultBorrow;
+export default BorrowNft;
