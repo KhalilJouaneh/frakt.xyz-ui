@@ -17,6 +17,7 @@ import { Lending, LendingDark } from './Lending';
 import { Raffles, RafflesDark } from './Raffles';
 import { Moon } from './Moon';
 import { Sun } from './Sun';
+import { Arrow } from './Arrow';
 
 export default {
   Chart,
@@ -48,4 +49,5 @@ export default {
   MediumDark,
   GithubDark,
   DocsDark,
+  Arrow,
 };

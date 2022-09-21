@@ -1,0 +1,179 @@
+@import '../../../../scss/abstracts/mixins';
+
+.header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+
+  @media screen and (max-width: 1023px) {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+}
+
+.title {
+  font: var(--font-title-2);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.subtitle {
+  font: var(--font-text-1);
+  text-align: center;
+}
+
+.sortWrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.searchInput {
+  max-width: 173px;
+  margin-right: 20px;
+  width: unset;
+
+  @media screen and (max-width: 468px) {
+    margin-bottom: 20px;
+  }
+}
+
+.sortWrapper {
+  flex-shrink: 0;
+
+  .arrowDown,
+  .arrowUp {
+    margin-top: 2px;
+    margin-left: 3px;
+
+    path {
+      stroke: var(--white-color);
+    }
+  }
+
+  .arrowDown {
+    transform: rotate(180deg);
+  }
+}
+
+.loader {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle {
+  min-width: 160px;
+}
+
+.sortingWrapper {
+  display: flex;
+  gap: 36.5px;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: var(--gray-color-2);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.filtersDropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+}
+
+//
+
+.search {
+  margin-bottom: 32px;
+  max-width: 350px;
+}
+
+.connectBtn {
+  width: 100%;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: unset;
+}
+
+.nftsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  padding-right: 258px;
+
+  @media (max-width: 1023px) {
+    padding-right: 0;
+  }
+}
+
+.noSuiableMessageWrapper {
+  color: var(--white-color);
+}
+
+.noSuiableMessage {
+  font: var(--font-btn-mid);
+  margin-bottom: 6px;
+}
+
+.acceptedCollectionsLink {
+  color: var(--accent-color-1);
+
+  &::after {
+    background-color: var(--accent-color-1);
+  }
+
+  &:hover {
+    color: var(--accent-color-1);
+  }
+
+  svg path {
+    fill: var(--accent-color-1);
+  }
+}
+
+.loader {
+  padding-top: 32px;
+  display: flex;
+  justify-content: center;
+  font: var(--font-text-2);
+
+  &::after {
+    animation: dots 2s linear infinite;
+    width: 16px;
+    content: '...';
+  }
+}
+
+.btnBack {
+  @include flex(row, nowrap, center, center);
+
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  cursor: pointer;
+
+  position: absolute;
+  top: 110px;
+  left: 32px;
+  height: 40px;
+  width: 40px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}

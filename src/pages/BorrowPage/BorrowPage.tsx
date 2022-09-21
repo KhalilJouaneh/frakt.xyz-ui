@@ -1,123 +1,98 @@
-import { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 
-import { useSelectLayout, SelectLayout } from '../../components/SelectLayout';
-import { LinkWithArrow } from '../../components/LinkWithArrow';
-import InfinityScroll from '../../components/InfinityScroll';
-import { SearchInput } from '../../components/SearchInput';
-import { commonActions } from '../../state/common/actions';
-import { sendAmplitudeData } from '../../utils/amplitude';
-import NFTCheckbox from '../../components/NFTCheckbox';
-import { BorrowForm } from './components/BorrowForm';
-import { BorrowNft } from '../../state/loans/types';
+import { AppLayout } from '../../components/Layout/AppLayout';
+import { TokenFieldWithBalance } from '../../components/TokenField';
+import DefaultBorrow from './components/DefaultBorrow';
+import { networkRequest } from '../../utils/state';
+import BorrowBulk from './components/BorrowBulk';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
-import { useBorrowPage } from './hooks';
 
-const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
-  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
+enum BorrowType {
+  BULK = 'bulk',
+  JUST = 'just',
+}
 
 const BorrowPage: FC = () => {
-  const dispatch = useDispatch();
-  const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
+  const [borrowType, setBorrowType] = useState<BorrowType>(null);
+  const { publicKey } = useWallet();
+  const [bulks, setBulks] = useState<any>({});
+  const [value, setValue] = useState<string>('');
 
-  const {
-    isCloseSidebar,
-    nfts,
-    setSearch,
-    searchItems,
-    search,
-    next,
-    loading,
-  } = useBorrowPage();
+  const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+
+  useEffect(() => {
+    (async () => {
+      const bulks = await networkRequest({
+        url: `https://${BACKEND_DOMAIN}/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
+      });
+
+      setBulks(bulks);
+    })();
+  }, [value]);
 
   return (
-    <SelectLayout
-      selectedNfts={selectedNfts}
-      onDeselect={onDeselect}
-      isCloseSidebar={isCloseSidebar}
-      sidebarForm={
-        <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
-      }
-    >
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Borrow money</h1>
-          <h2 className={styles.subtitle}>
-            Select your NFT to use as a collateral
-          </h2>
-        </div>
-      </div>
+    <>
+      {borrowType === null && (
+        <AppLayout>
+          <div className={styles.header}>
+            <div>
+              <h1 className={styles.title}>Borrow money</h1>
+              <h2 className={styles.subtitle}>
+                Select your NFT to use as a collateral
+              </h2>
+            </div>
+          </div>
+          <div className={styles.wrapper}>
+            <div className={styles.block}>
+              <h3 className={styles.blockTitle}>Decide for me</h3>
+              <p className={styles.blockSubtitle}>I need...</p>
+              <div className={styles.blockContent}>
+                <div className={styles.input}>
+                  <TokenFieldWithBalance
+                    value={value}
+                    onValueChange={(e) => setValue(e)}
+                    currentToken={SOL_TOKEN}
+                  />
+                </div>
+                <Button
+                  onClick={() => setBorrowType(BorrowType.BULK)}
+                  disabled={!value}
+                  className={styles.btn}
+                  type="secondary"
+                >
+                  Confirm
+                </Button>
+              </div>
+            </div>
+            <div className={styles.block}>
+              <h3 className={styles.blockTitle}>Title 2</h3>
+              <p className={styles.blockSubtitle}>I just want to make a loan</p>
+              <Button
+                onClick={() => setBorrowType(BorrowType.JUST)}
+                className={styles.btnConfirm}
+                type="secondary"
+              >
+                Try it now
+              </Button>
+            </div>
+          </div>
+        </AppLayout>
+      )}
 
-      <div className={styles.sortWrapper}>
-        <SearchInput
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value || '');
-            searchItems(e.target.value || '');
-          }}
-          className={styles.searchInput}
-          placeholder="Search by name"
+      {borrowType === BorrowType.BULK && bulks?.best && (
+        <BorrowBulk
+          onClick={() => setBorrowType(null)}
+          value={value}
+          bulks={bulks}
         />
-      </div>
-
-      {!connected && (
-        <Button
-          type="secondary"
-          className={styles.connectBtn}
-          onClick={() => {
-            dispatch(commonActions.setWalletModal({ isVisible: true }));
-            sendAmplitudeData('loans-connect');
-          }}
-        >
-          Connect wallet
-        </Button>
       )}
-
-      {connected && !loading && !nfts.length && (
-        <div className={styles.noSuiableMessageWrapper}>
-          <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
-          <LinkWithArrow
-            className={styles.acceptedCollectionsLink}
-            label="Check collections accepted for loans"
-            to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
-            externalLink
-          />
-        </div>
+      {borrowType === BorrowType.JUST && (
+        <DefaultBorrow onClick={() => setBorrowType(null)} />
       )}
-
-      {connected && (
-        <InfinityScroll
-          itemsToShow={nfts.length}
-          next={next}
-          wrapperClassName={styles.nftsList}
-          isLoading={loading}
-          emptyMessage=""
-          customLoader={<p className={styles.loader}>loading your jpegs</p>}
-        >
-          {(nfts as BorrowNft[]).map((nft) => {
-            return (
-              <NFTCheckbox
-                key={nft.mint}
-                onClick={() => onSelect(nft)}
-                imageUrl={nft.imageUrl}
-                name={nft.name}
-                selected={
-                  !!selectedNfts.find(
-                    (selectedNft) => selectedNft?.mint === nft.mint,
-                  )
-                }
-                isCanStake={
-                  nft.timeBased?.isCanStake || nft.priceBased?.isCanStake
-                }
-                isCanFreeze={nft.isCanFreeze}
-                loanValue={nft.maxLoanValue}
-              />
-            );
-          })}
-        </InfinityScroll>
-      )}
-    </SelectLayout>
+    </>
   );
 };
 
