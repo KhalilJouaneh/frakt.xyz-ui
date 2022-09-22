@@ -125,14 +125,12 @@
 
   --transition-1: 0.2s ease-in;
 
+  --transition-1: 0.2s ease-in;
+
   --font-family-syne: 'Syne', sans-serif;
   --font-family-chakra: 'Chakra Petch', sans-serif;
 
   --font-btn-middle: 500 14px var(--font-family-syne);
-
-  --font-btn-smallest: 400 10px var(--font-family-oxanium);
-  --font-btn-small: 400 18px var(--font-family-oxanium);
-  --font-btn-mid: 400 24px var(--font-family-oxanium);
 
   --font-subtitle: 700 32px var(--font-family-chakra);
   --font-subtitle-2: 700 24px var(--font-family-syne);
@@ -150,7 +148,7 @@
 
   --font-text-1: 400 32px var(--font-family-chakra);
   --font-text-2: 700 24px var(--font-family-syne);
-  --font-text-3: 400 18px var(--font-family-oxanium);
+  --font-text-3: 400 18px var(--font-family-syne);
   --font-text-4: 400 18px var(--font-family-chakra);
   --font-text-5: 700 14px var(--font-family-syne);
   --font-text-6: 700 12px var(--font-family-syne);
@@ -163,12 +161,20 @@
     --font-text-1: 400 24px var(--font-family-chakra);
     --font-text-2: 700 20px var(--font-family-syne);
 
+    --font-text-6: 700 10px var(--font-family-syne);
+
+    --font-text-8: 400 14px var(--font-family-chakra);
+
     --font-h6: 700 22px var(--font-family-syne);
   }
 
   @media screen and (max-width: 767px) {
-    --font-text-1: 400 16px var(--font-family-chakra);
     --font-title-2: 800 24px var(--font-family-syne);
+
+    --font-text-1: 400 16px var(--font-family-chakra);
+    --font-text-2: 700 16px var(--font-family-syne);
+
+    --font-h6: 700 18px var(--font-family-syne);
   }
 
   @media screen and (max-width: 500px) {

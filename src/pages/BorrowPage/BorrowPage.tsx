@@ -17,7 +17,7 @@ enum BorrowType {
 
 const BorrowPage: FC = () => {
   const [borrowType, setBorrowType] = useState<BorrowType>(null);
-  const { publicKey } = useWallet();
+  const { publicKey, connected } = useWallet();
   const [bulks, setBulks] = useState<any>({});
   const [value, setValue] = useState<string>('');
 
@@ -59,7 +59,7 @@ const BorrowPage: FC = () => {
                 </div>
                 <Button
                   onClick={() => setBorrowType(BorrowType.BULK)}
-                  disabled={!value}
+                  disabled={!value && !connected}
                   className={styles.btn}
                   type="secondary"
                 >
