@@ -9,10 +9,9 @@ import styles from './SelectedBulkRaw.module.scss';
 import { useConnection } from '../../../../hooks';
 import { SolanaIcon } from '../../../../icons';
 import Icons from '../../../../iconsNew';
-import {
-  mergeIxsIntoTxn,
-  signAndSendTransactionsInSeries,
-} from '../../helpers';
+import { mergeIxsIntoTxn } from '../../helpers';
+import { LoadingModal } from '../../../../components/LoadingModal';
+import { signAndConfirmTransaction } from '../../../../utils/transactions';
 
 interface SelectedBulkRawProps {
   selectedBulk: any;
@@ -29,9 +28,12 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
   selectedBulkValue,
   onChangeAssetsMode,
 }) => {
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
   const wallet = useWallet();
   const connection = useConnection();
+
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const [loadingModalVisible, setLoadingModalVisible] =
+    useState<boolean>(false);
 
   const onCardClick = (id: number): void => {
     if (id === activeCardId) {
@@ -40,6 +42,8 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
       setActiveCardId(id);
     }
   };
+
+  const [transactionsLeft, setTransactionsLeft] = useState<number>(0);
 
   const onSubmit = async (): Promise<void> => {
     const transactions = [];
@@ -75,15 +79,32 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
 
     const ixsDataChunks = chunk(transactions, IX_PER_TXN);
 
-    const txnsData = ixsDataChunks.map((ixsAndSigners) =>
+    const txnData = ixsDataChunks.map((ixsAndSigners) =>
       mergeIxsIntoTxn(ixsAndSigners),
     );
 
-    await signAndSendTransactionsInSeries({
-      txnData: txnsData,
-      connection,
-      wallet,
-    });
+    for (let i = 0; i < txnData.length; ++i) {
+      setLoadingModalVisible(true);
+      setTransactionsLeft(txnData.length - i);
+
+      const { transaction, signers } = txnData[i];
+
+      try {
+        await signAndConfirmTransaction({
+          transaction,
+          signers,
+          connection,
+          wallet,
+          commitment: 'confirmed',
+        });
+      } catch (error) {
+        console.error(error);
+        setLoadingModalVisible(false);
+      } finally {
+        setLoadingModalVisible(false);
+        setTransactionsLeft(null);
+      }
+    }
   };
 
   return (
@@ -117,6 +138,7 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
             </h2>
           </div>
         </div>
+
         {selectedBulk.map((nft, id) => (
           <div className={styles.cardWrapper} key={id}>
             <div className={styles.card}>
@@ -177,6 +199,15 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
           </div>
         ))}
       </div>
+      <LoadingModal
+        title="Please approve transaction"
+        visible={loadingModalVisible}
+        onCancel={() => setLoadingModalVisible(false)}
+        subtitle={
+          transactionsLeft &&
+          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+        }
+      />
     </>
   );
 };

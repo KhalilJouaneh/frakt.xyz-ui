@@ -9,6 +9,10 @@ import { networkRequest } from '../../utils/state';
 import BorrowBulk from './components/BorrowBulk';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
+import { useDispatch } from 'react-redux';
+import { sendAmplitudeData } from '../../utils/amplitude';
+import { commonActions } from '../../state/common/actions';
+import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 
 enum BorrowType {
   BULK = 'bulk',
@@ -22,6 +26,7 @@ const BorrowPage: FC = () => {
   const [value, setValue] = useState<string>('');
 
   const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+  const isDisabled = !value;
 
   useEffect(() => {
     (async () => {
@@ -45,40 +50,47 @@ const BorrowPage: FC = () => {
               </h2>
             </div>
           </div>
-          <div className={styles.wrapper}>
-            <div className={styles.block}>
-              <h3 className={styles.blockTitle}>Decide for me</h3>
-              <p className={styles.blockSubtitle}>I need...</p>
-              <div className={styles.blockContent}>
-                <div className={styles.input}>
-                  <TokenFieldWithBalance
-                    value={value}
-                    onValueChange={(e) => setValue(e)}
-                    currentToken={SOL_TOKEN}
-                  />
+          {!connected && (
+            <ConnectWalletSection text="Connect your wallet to check ..." />
+          )}
+          {connected && (
+            <div className={styles.wrapper}>
+              <div className={styles.block}>
+                <h3 className={styles.blockTitle}>Decide for me</h3>
+                <p className={styles.blockSubtitle}>I need...</p>
+                <div className={styles.blockContent}>
+                  <div className={styles.input}>
+                    <TokenFieldWithBalance
+                      value={value}
+                      onValueChange={(e) => setValue(e)}
+                      currentToken={SOL_TOKEN}
+                    />
+                  </div>
+                  <Button
+                    onClick={() => setBorrowType(BorrowType.BULK)}
+                    disabled={isDisabled}
+                    className={styles.btn}
+                    type="secondary"
+                  >
+                    Confirm
+                  </Button>
                 </div>
+              </div>
+              <div className={styles.block}>
+                <h3 className={styles.blockTitle}>Title 2</h3>
+                <p className={styles.blockSubtitle}>
+                  I just want to make a loan
+                </p>
                 <Button
-                  onClick={() => setBorrowType(BorrowType.BULK)}
-                  disabled={!value && !connected}
-                  className={styles.btn}
+                  onClick={() => setBorrowType(BorrowType.JUST)}
+                  className={styles.btnConfirm}
                   type="secondary"
                 >
-                  Confirm
+                  Try it now
                 </Button>
               </div>
             </div>
-            <div className={styles.block}>
-              <h3 className={styles.blockTitle}>Title 2</h3>
-              <p className={styles.blockSubtitle}>I just want to make a loan</p>
-              <Button
-                onClick={() => setBorrowType(BorrowType.JUST)}
-                className={styles.btnConfirm}
-                type="secondary"
-              >
-                Try it now
-              </Button>
-            </div>
-          </div>
+          )}
         </AppLayout>
       )}
 

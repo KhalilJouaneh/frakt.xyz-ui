@@ -3,12 +3,9 @@ import { useDispatch } from 'react-redux';
 
 import InfinityScroll from '../../../../components/InfinityScroll';
 import { LinkWithArrow } from '../../../../components/LinkWithArrow';
-import { commonActions } from '../../../../state/common/actions';
 import { SearchInput } from '../../../../components/SearchInput';
-import { sendAmplitudeData } from '../../../../utils/amplitude';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
-import Button from '../../../../components/Button';
 import styles from './BorrowNft.module.scss';
 import {
   SelectLayout,
@@ -26,8 +23,8 @@ interface BorrowNftProps {
 }
 
 const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
-  const dispatch = useDispatch();
-  const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
+  const { connected, onDeselect, onSelect, onMultiSelect, selectedNfts } =
+    useSelectLayout();
 
   const {
     isCloseSidebar,
@@ -71,19 +68,6 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
           placeholder="Search by name"
         />
       </div>
-
-      {!connected && (
-        <Button
-          type="secondary"
-          className={styles.connectBtn}
-          onClick={() => {
-            dispatch(commonActions.setWalletModal({ isVisible: true }));
-            sendAmplitudeData('loans-connect');
-          }}
-        >
-          Connect wallet
-        </Button>
-      )}
 
       {connected && !loading && !nfts.length && (
         <div className={styles.noSuiableMessageWrapper}>
