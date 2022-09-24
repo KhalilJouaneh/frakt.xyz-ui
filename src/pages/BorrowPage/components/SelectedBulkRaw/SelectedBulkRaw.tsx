@@ -4,14 +4,15 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { chunk } from 'lodash';
 import cx from 'classnames';
 
+import { LoadingModal } from '../../../../components/LoadingModal';
+import { NotifyType } from '../../../../utils/solanaUtils';
 import Button from '../../../../components/Button';
 import styles from './SelectedBulkRaw.module.scss';
 import { useConnection } from '../../../../hooks';
+import { mergeIxsIntoTxn } from '../../helpers';
 import { SolanaIcon } from '../../../../icons';
 import Icons from '../../../../iconsNew';
-import { mergeIxsIntoTxn } from '../../helpers';
-import { LoadingModal } from '../../../../components/LoadingModal';
-import { signAndConfirmTransaction } from '../../../../utils/transactions';
+import { notify } from '../../../../utils';
 
 interface SelectedBulkRawProps {
   selectedBulk: any;
@@ -43,67 +44,86 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
     }
   };
 
-  const [transactionsLeft, setTransactionsLeft] = useState<number>(0);
-
   const onSubmit = async (): Promise<void> => {
     const transactions = [];
 
-    for (let index = 0; index < selectedBulk.length; index++) {
-      const {
-        mint,
-        valuation: rawValuation,
-        parameters,
-        isPriceBased,
-      } = selectedBulk[index];
+    try {
+      setLoadingModalVisible(true);
+      for (let index = 0; index < selectedBulk.length; index++) {
+        const {
+          mint,
+          valuation: rawValuation,
+          parameters,
+          isPriceBased,
+        } = selectedBulk[index];
 
-      const valuation = parseFloat(rawValuation);
-      const proposedNftPrice = valuation * 10 ** SOL_TOKEN.decimals;
+        const valuation = parseFloat(rawValuation);
+        const proposedNftPrice = valuation * 10 ** SOL_TOKEN.decimals;
 
-      const loanToValue = isPriceBased
-        ? (parameters?.ltvPercents + 10) / 2
-        : parameters?.ltvPercents;
+        const loanToValue = isPriceBased
+          ? (parameters?.ltvPercents + 10) / 2
+          : parameters?.ltvPercents;
 
-      const { ix, loan } = await loans.proposeLoanIx({
-        programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-        connection,
-        user: wallet.publicKey,
-        nftMint: new web3.PublicKey(mint),
-        proposedNftPrice: new BN(proposedNftPrice),
-        isPriceBased,
-        loanToValue: new BN(loanToValue * 100),
-        admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
+        const { ix, loan } = await loans.proposeLoanIx({
+          programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+          connection,
+          user: wallet.publicKey,
+          nftMint: new web3.PublicKey(mint),
+          proposedNftPrice: new BN(proposedNftPrice),
+          isPriceBased,
+          loanToValue: new BN(loanToValue * 100),
+          admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
+        });
+
+        transactions.push({ instructions: ix, signers: [loan] });
+      }
+
+      const ixsDataChunks = chunk(transactions, IX_PER_TXN);
+
+      const txnData = ixsDataChunks.map((ixsAndSigners) =>
+        mergeIxsIntoTxn(ixsAndSigners),
+      );
+
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash();
+
+      txnData.forEach(({ transaction }) => {
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = wallet.publicKey;
       });
 
-      transactions.push({ instructions: ix, signers: [loan] });
-    }
+      const txn = await txnData.map(({ transaction, signers }) => {
+        if (signers) {
+          transaction.sign(...signers);
+        }
+        return transaction;
+      });
 
-    const ixsDataChunks = chunk(transactions, IX_PER_TXN);
+      const signedTransactions = await wallet.signAllTransactions(txn);
 
-    const txnData = ixsDataChunks.map((ixsAndSigners) =>
-      mergeIxsIntoTxn(ixsAndSigners),
-    );
+      const txids = await Promise.all(
+        signedTransactions.map((signedTransaction) =>
+          connection.sendRawTransaction(signedTransaction.serialize()),
+        ),
+      );
 
-    for (let i = 0; i < txnData.length; ++i) {
-      setLoadingModalVisible(true);
-      setTransactionsLeft(txnData.length - i);
+      notify({
+        message: 'Transactions sent',
+        type: NotifyType.INFO,
+      });
 
-      const { transaction, signers } = txnData[i];
-
-      try {
-        await signAndConfirmTransaction({
-          transaction,
-          signers,
-          connection,
-          wallet,
-          commitment: 'confirmed',
-        });
-      } catch (error) {
-        console.error(error);
-        setLoadingModalVisible(false);
-      } finally {
-        setLoadingModalVisible(false);
-        setTransactionsLeft(null);
-      }
+      await Promise.all(
+        txids.map((txid) =>
+          connection.confirmTransaction(
+            { signature: txid, blockhash, lastValidBlockHeight },
+            'confirmed',
+          ),
+        ),
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingModalVisible(false);
     }
   };
 
@@ -203,10 +223,6 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={() => setLoadingModalVisible(false)}
-        subtitle={
-          transactionsLeft &&
-          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
-        }
       />
     </>
   );

@@ -84,27 +84,26 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
                 >
                   {Icons.Cross()}
                 </button>
+                {isBulkLoan && (
+                  <div className={styles.btnWrapper}>
+                    <Button
+                      className={classNames(styles.btn, styles.rotateLeft)}
+                      type="tertiary"
+                      onClick={() => onPrevNft(currentId - 1)}
+                    >
+                      <Icons.Chevron />
+                    </Button>
+                    <Button
+                      className={classNames(styles.btn, styles.rotateRight)}
+                      type="tertiary"
+                      onClick={() => onNextNft(currentId + 1)}
+                    >
+                      <Icons.Chevron />
+                    </Button>
+                  </div>
+                )}
               </div>
               <p className={styles.nftName}>{nft?.name}</p>
-
-              {isBulkLoan && (
-                <div className={styles.btnWrapper}>
-                  <Button
-                    className={classNames(styles.btn, styles.rotateLeft)}
-                    type="tertiary"
-                    onClick={() => onPrevNft(currentId - 1)}
-                  >
-                    <Icons.Chevron />
-                  </Button>
-                  <Button
-                    className={classNames(styles.btn, styles.rotateRight)}
-                    type="tertiary"
-                    onClick={() => onNextNft(currentId + 1)}
-                  >
-                    <Icons.Chevron />
-                  </Button>
-                </div>
-              )}
             </div>
 
             <div className={styles.mobileSlide}>

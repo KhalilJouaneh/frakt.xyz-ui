@@ -2,17 +2,14 @@ import { FC, useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 
-import { AppLayout } from '../../components/Layout/AppLayout';
+import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 import { TokenFieldWithBalance } from '../../components/TokenField';
-import BorrowNft from './components/BorrowNft';
+import { AppLayout } from '../../components/Layout/AppLayout';
 import { networkRequest } from '../../utils/state';
 import BorrowBulk from './components/BorrowBulk';
+import BorrowNft from './components/BorrowNft';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
-import { useDispatch } from 'react-redux';
-import { sendAmplitudeData } from '../../utils/amplitude';
-import { commonActions } from '../../state/common/actions';
-import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 
 enum BorrowType {
   BULK = 'bulk',
