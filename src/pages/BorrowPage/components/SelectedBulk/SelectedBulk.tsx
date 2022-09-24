@@ -12,7 +12,7 @@ import Icons from '../../../../iconsNew';
 
 interface BorrowingBulkProps {
   selectedBulk: any;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const SelectedBulk: FC<BorrowingBulkProps> = ({

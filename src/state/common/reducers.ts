@@ -19,6 +19,7 @@ import {
   WalletState,
   UserState,
   ConfettiState,
+  SelectedNftIdState,
 } from './types';
 
 export const initialSolanaHealthState: AsyncState<SolanaHealthState> =
@@ -44,6 +45,7 @@ export const initialNotificationState: NotificationState = {
 };
 export const initialModalState: ModalState = { isVisible: false };
 export const initialConfettiState: ModalState = { isVisible: false };
+export const initialSelectedNftIdState: SelectedNftIdState = { id: 0 };
 
 const solanaHealthReducer = createReducer(
   initialSolanaHealthState,
@@ -125,6 +127,19 @@ const setConfettiReducer = createReducer<ConfettiState>(initialConfettiState, {
   }),
 });
 
+const setSelectedNftIdReducer = createReducer<SelectedNftIdState>(
+  initialSelectedNftIdState,
+  {
+    [commonTypes.SET_SELECTED_NFT_ID]: (
+      state,
+      action: ReturnType<typeof commonActions.setSelectedNftId>,
+    ) => ({
+      ...state,
+      ...action.payload,
+    }),
+  },
+);
+
 export default combineReducers({
   connection: setConnectionReducer,
   socket: setSocketReducer,
@@ -136,4 +151,5 @@ export default combineReducers({
   walletModal: composeReducers(setWalletModalReducer, toggleWalletModalReducer),
   discordModal: toggleDiscordModalReducer,
   confetti: setConfettiReducer,
+  selectedNftId: setSelectedNftIdReducer,
 });

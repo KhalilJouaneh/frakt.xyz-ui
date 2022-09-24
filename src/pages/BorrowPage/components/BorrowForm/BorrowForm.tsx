@@ -12,7 +12,9 @@ import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
+  isBulkLoan?: boolean;
   onDeselect?: () => void;
+  onClick?: () => void;
 }
 
 export enum BorrowFormTabs {
@@ -23,6 +25,8 @@ export enum BorrowFormTabs {
 export const BorrowForm: FC<BorrowFormProps> = ({
   selectedNft,
   onDeselect,
+  isBulkLoan,
+  onClick,
 }) => {
   const {
     openConfirmModal,
@@ -66,11 +70,11 @@ export const BorrowForm: FC<BorrowFormProps> = ({
       </div>
       <div className={styles.continueBtnContainer}>
         <Button
-          onClick={openConfirmModal}
+          onClick={isBulkLoan ? onClick : openConfirmModal}
           type="secondary"
           className={styles.continueBtn}
         >
-          Quick borrow
+          {isBulkLoan ? 'View bulk loan' : 'Quick borrow'}
         </Button>
       </div>
       <ConfirmModal

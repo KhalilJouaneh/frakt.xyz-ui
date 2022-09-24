@@ -20,6 +20,24 @@
   }
 }
 
+.btnWrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.rotateLeft {
+  transform: rotate(90deg);
+}
+
+.rotateRight {
+  transform: rotate(270deg);
+}
+
 .image {
   width: 64px;
   height: 64px;

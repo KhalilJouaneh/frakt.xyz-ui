@@ -57,3 +57,8 @@ export const selectConfettiVisible = createSelector(
   [pathOr(false, ['common', 'confetti', 'isVisible'])],
   identity,
 );
+
+export const selectSelectedNftId = createSelector(
+  [pathOr(null, ['common', 'selectedNftId', 'id'])],
+  identity,
+);

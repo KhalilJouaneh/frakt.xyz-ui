@@ -8,6 +8,7 @@ import {
   WalletModalState,
   SolanaHealthState,
   ConfettiState,
+  SelectedNftIdState,
 } from './types';
 
 export const commonTypes = {
@@ -34,6 +35,7 @@ export const commonTypes = {
   FETCH_USER__FAILED: 'common/FETCH_USER__FAILED',
   TOGGLE_DISCORD_MODAL: 'common/TOGGLE_DISCORD_MODAL',
   SET_CONFETTI: 'common/SET_CONFETTI',
+  SET_SELECTED_NFT_ID: 'common/SET_SELECTED_NFT_ID',
 };
 
 export const commonActions = {
@@ -124,5 +126,9 @@ export const commonActions = {
   setConfetti: createCustomAction(
     commonTypes.SET_CONFETTI,
     (payload: ConfettiState) => ({ payload }),
+  ),
+  setSelectedNftId: createCustomAction(
+    commonTypes.SET_SELECTED_NFT_ID,
+    (payload: SelectedNftIdState) => ({ payload }),
   ),
 };
