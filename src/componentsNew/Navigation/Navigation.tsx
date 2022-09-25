@@ -3,7 +3,6 @@ import { compose, split, nth, tail } from 'ramda';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
-import Icons from '../../iconsNew/';
 import styles from './styles.module.scss';
 import { NAVIGATION_LINKS, community, documentation } from './constants';
 import { selectTheme } from '../../state/theme/selectors';
@@ -76,40 +75,26 @@ export const MenuItem = ({
   );
 };
 
-export const Navigation = ({
-  onClose,
-  close,
-}: {
-  onClose?: () => void;
-  close?: boolean;
-}) => {
+export const Navigation = () => {
   return (
-    <div className={cx(styles.container, close && styles.closeContainer)}>
+    <div className={styles.container}>
       <div className={styles.navigation}>
-        <div
-          className={cx(styles.burger, close && styles.burgerClose)}
-          onClick={onClose}
-        >
-          {close ? <Icons.BurgerClosed /> : <Icons.BurgerOpen />}
-        </div>
-
         {NAVIGATION_LINKS.map((item) => (
           <MenuItem
-            label={!close && item.label}
+            label={item.label}
             key={item.label}
             to={item.to}
             icon={(item as any).icon}
             iconDark={(item as any).iconDark}
             pathname={item.pathname}
-            selector={item.selector}
           />
         ))}
       </div>
       <div className={styles.community}>
-        {!close && <div className={styles.section}>Community</div>}
+        <div className={styles.section}>Community</div>
         {community.map((item) => (
           <MenuItem
-            label={!close && item.label}
+            label={item.label}
             icon={item.icon}
             iconDark={(item as any).iconDark}
             key={item.label}
@@ -118,10 +103,10 @@ export const Navigation = ({
         ))}
       </div>
       <div className={styles.documentation}>
-        {!close && <div className={styles.section}>Documentation</div>}
+        <div className={styles.section}>Documentation</div>
         {documentation.map((item) => (
           <MenuItem
-            label={!close && item.label}
+            label={item.label}
             icon={item.icon}
             iconDark={(item as any).iconDark}
             key={item.label}

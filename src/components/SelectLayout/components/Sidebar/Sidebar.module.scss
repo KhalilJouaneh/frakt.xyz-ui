@@ -4,13 +4,11 @@
   right: 0;
   height: 100%;
 
-  width: 300px;
+  width: 344px;
   background-color: var(--primary-background);
   border-left: 1px solid var(--primary-border);
   z-index: 2;
   transform: translateX(calc(100% + 10px));
-  transition: transform var(--transition-1), opacity var(--transition-1),
-    padding-top var(--transition-1);
   padding-top: 96px;
 
   &.visible {
@@ -62,7 +60,6 @@
 
 .sidebar {
   overflow: auto;
-  transition: transform var(--transition-1), opacity var(--transition-1);
   height: 100%;
   opacity: 0;
   display: flex;

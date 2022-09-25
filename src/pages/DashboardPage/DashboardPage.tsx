@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import cx from 'classnames';
 
+import { liquidationsActions } from '../../state/liquidations/actions';
+import { selectGraceList } from '../../state/liquidations/selectors';
+import { AppLayout } from '../../components/Layout/AppLayout';
 import AvailableBorrow from './components/AvailableBorrow';
 import { selectStats } from '../../state/stats/selectors';
 import { statsActions } from '../../state/stats/actions';
 import ConnectWallet from './components/ConnectWallet';
-import LowestBorrow from './components/LowestBorrow';
 import DailyActive from './components/DailyActive';
 import TotalStats from './components/TotalStats';
 import { Loader } from '../../components/Loader';
@@ -18,9 +20,6 @@ import MyDeposit from './components/MyDeposit';
 import Lending from './components/Lending';
 import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
-import { liquidationsActions } from '../../state/liquidations/actions';
-import { selectGraceList } from '../../state/liquidations/selectors';
-import { AppLayout } from '../../components/Layout/AppLayout';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
@@ -85,11 +84,10 @@ const DashboardPage: FC = () => {
               </div>
               <div className={cx(styles.row, styles.rowDirection)}>
                 <Lending lendingPools={lendingPools} />
-                <LowestBorrow lastLoans={lastLoans} />
+                <LastLoans lastLoans={lastLoans} />
               </div>
               <div className={cx(styles.row, styles.rowDirection)}>
                 <GraceList graceList={graceList} />
-                <LastLoans lastLoans={lastLoans} />
               </div>
             </div>
           </div>

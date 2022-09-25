@@ -13,6 +13,8 @@ import { BorrowNft } from '../../state/loans/types';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
 import { useBorrowPage } from './hooks';
+import classNames from 'classnames';
+import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -49,29 +51,18 @@ const BorrowPage: FC = () => {
         </div>
       </div>
 
-      <div className={styles.sortWrapper}>
-        <SearchInput
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value || '');
-            searchItems(e.target.value || '');
-          }}
-          className={styles.searchInput}
-          placeholder="Search by name"
-        />
-      </div>
-
-      {!connected && (
-        <Button
-          type="secondary"
-          className={styles.connectBtn}
-          onClick={() => {
-            dispatch(commonActions.setWalletModal({ isVisible: true }));
-            sendAmplitudeData('loans-connect');
-          }}
-        >
-          Connect wallet
-        </Button>
+      {connected && (
+        <div className={styles.sortWrapper}>
+          <SearchInput
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value || '');
+              searchItems(e.target.value || '');
+            }}
+            className={styles.searchInput}
+            placeholder="Search by name"
+          />
+        </div>
       )}
 
       {connected && !loading && !nfts.length && (
@@ -86,11 +77,14 @@ const BorrowPage: FC = () => {
         </div>
       )}
 
-      {connected && (
+      {connected ? (
         <InfinityScroll
           itemsToShow={nfts.length}
           next={next}
-          wrapperClassName={styles.nftsList}
+          wrapperClassName={classNames(
+            styles.nftsList,
+            !selectedNfts.length && styles.nftListActive,
+          )}
           isLoading={loading}
           emptyMessage=""
           customLoader={<p className={styles.loader}>loading your jpegs</p>}
@@ -116,6 +110,8 @@ const BorrowPage: FC = () => {
             );
           })}
         </InfinityScroll>
+      ) : (
+        <ConnectWalletSection text="Connect your wallet to check if you have any active loans" />
       )}
     </SelectLayout>
   );

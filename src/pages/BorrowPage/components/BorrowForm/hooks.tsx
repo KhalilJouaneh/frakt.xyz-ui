@@ -76,6 +76,12 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     defaultValue: BORROW_FORM_TABS[1].value,
   });
 
+  useEffect(() => {
+    if (!selectedNft?.priceBased) {
+      setTabValue('flip');
+    }
+  }, [selectedNft]);
+
   const [priceBasedLTV, setPriceBasedLTV] = useState<number>(0);
 
   useEffect(() => {
