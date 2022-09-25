@@ -20,18 +20,12 @@ export const Router = (): JSX.Element => {
   useFirebaseNotifications();
   useWebSocketSubscriptions();
 
-  const [close, onClose] = useState<boolean>(false);
-
   return (
     <BrowserRouter>
       <Route component={Header} />
       <div className="fraktion__layout_navigation">
-        <Route
-          component={() => (
-            <Navigation onClose={() => onClose(!close)} close={close} />
-          )}
-        />
-        <div className={cx('fraktion__layout_container', close && 'closed')}>
+        <Route component={Navigation} />
+        <div className="fraktion__layout_container">
           <Switch>
             {routes.map(({ exact, path, component: Component }, index) => (
               <Route

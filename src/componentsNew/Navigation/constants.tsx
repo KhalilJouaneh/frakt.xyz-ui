@@ -39,15 +39,15 @@ export const documentation = [
 ];
 
 export const NAVIGATION_LINKS = [
-  {
-    pathname: PATHS.PROFILE,
-    to: (param) => `${PATHS.PROFILE}/${param}`,
-    selector: selectWalletPublicKey,
-    label: 'My profile',
-    event: 'navigation-profile',
-    icon: Icons.Lending,
-    iconDark: Icons.LendingDark,
-  },
+  // {
+  //   pathname: PATHS.PROFILE,
+  //   to: (param) => `${PATHS.PROFILE}/${param}`,
+  //   selector: selectWalletPublicKey,
+  //   label: 'My profile',
+  //   event: 'navigation-profile',
+  //   icon: Icons.Lending,
+  //   iconDark: Icons.LendingDark,
+  // },
   {
     pathname: PATHS.BORROW,
     to: PATHS.BORROW,

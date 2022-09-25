@@ -34,16 +34,6 @@ h5 {
     }
   }
 
-  .closed {
-    left: 66px;
-    width: calc(100vw - 76px);
-
-    @media (max-width: 767px) {
-      left: 0;
-      width: 100vw;
-    }
-  }
-
   .fraktion__notification {
     svg.anticon {
       fill: var(--black-color);

@@ -53,8 +53,12 @@
   width: 100%;
 }
 
+.toggle {
+  min-width: 160px;
+}
+
 .btn {
-  width: 228px;
+  width: 258px;
   height: 48px;
 }
 
@@ -68,3 +72,56 @@
   width: 100%;
 }
 
+.nftsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  padding-right: 302px;
+
+  @media (max-width: 1023px) {
+    padding-right: 0;
+  }
+}
+
+.nftListActive {
+  padding-right: 0;
+}
+
+.noSuiableMessageWrapper {
+  color: var(--white-color);
+}
+
+.noSuiableMessage {
+  font: var(--font-btn-mid);
+  margin-bottom: 6px;
+}
+
+.acceptedCollectionsLink {
+  color: var(--accent-color-1);
+
+  &::after {
+    background-color: var(--accent-color-1);
+  }
+
+  &:hover {
+    color: var(--accent-color-1);
+  }
+
+  svg path {
+    fill: var(--accent-color-1);
+  }
+}
+
+.loader {
+  padding-top: 32px;
+  display: flex;
+  justify-content: center;
+  font: var(--font-text-2);
+
+  &::after {
+    animation: dots 2s linear infinite;
+    width: 16px;
+    content: '...';
+  }
+}

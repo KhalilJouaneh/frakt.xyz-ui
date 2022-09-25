@@ -18,7 +18,7 @@
 }
 
 .sliderLabel {
-  color: var(--secondary-border);
+  color: var(--secondary-text);
   font: var(--font-text-6);
   text-align: center;
   text-transform: uppercase;
@@ -56,8 +56,17 @@
 
 .staticValueTitle {
   color: var(--secondary-text);
+  font: var(--font-text-6);
+  font-size: 12px;
   order: 1;
+  max-width: 100px;
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+    max-width: unset;
+  }
 }
+
 .staticValueData {
   color: var(--secondary-border);
   font: var(--font-text-8);

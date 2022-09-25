@@ -19,7 +19,8 @@ const MyDeposit: FC = () => {
 
   const depositedPools = filter(depositAmount as any, liquidityPools);
   const totalLiquidity = sum(map(depositAmount as any, depositedPools));
-  const totalApy = sum(map(depositApr, depositedPools)) / depositedPools.length;
+  const totalApy =
+    sum(map(depositApr, depositedPools)) / depositedPools.length || 0;
 
   return (
     <Block className={styles.block}>
@@ -27,7 +28,7 @@ const MyDeposit: FC = () => {
       <div className={styles.loansInfoWrapper}>
         <div className={styles.loansInfo}>
           <div className={styles.loansValue}>{totalApy.toFixed(0)} %</div>
-          <p className={styles.subtitle}>Total apy</p>
+          <p className={styles.subtitle}>Average APY</p>
         </div>
         <div className={styles.loansInfo}>
           <div className={styles.loansValue}>
