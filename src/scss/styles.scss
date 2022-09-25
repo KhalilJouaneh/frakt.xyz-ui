@@ -36,7 +36,7 @@ h5 {
 
   .fraktion__notification {
     svg.anticon {
-      fill: var(--black-color);
+      fill: var(--primary-icon);
     }
 
     background: var(--primary-background) !important;
@@ -53,6 +53,16 @@ h5 {
 
   .fraktion__notification_info {
     border: 1px solid var(--blue-color);
+  }
+
+  .ant-notification-notice {
+    background: var(--primary-background);
+  }
+  .ant-notification-notice-close {
+    color: var(--primary-icon);
+    &:hover {
+      color: var(--primary-icon);
+    }
   }
 
   .ant-notification-notice-message {
