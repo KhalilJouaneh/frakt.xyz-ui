@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 
@@ -25,15 +25,13 @@ const BorrowPage: FC = () => {
   const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
   const isDisabled = !value;
 
-  useEffect(() => {
-    (async () => {
-      const bulks = await networkRequest({
-        url: `https://${BACKEND_DOMAIN}/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
-      });
+  const onSubmit = async (): Promise<void> => {
+    const bulks = await networkRequest({
+      url: `https://${BACKEND_DOMAIN}/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
+    });
 
-      setBulks(bulks);
-    })();
-  }, [value]);
+    setBulks(bulks);
+  };
 
   return (
     <>
@@ -64,7 +62,10 @@ const BorrowPage: FC = () => {
                     />
                   </div>
                   <Button
-                    onClick={() => setBorrowType(BorrowType.BULK)}
+                    onClick={() => {
+                      onSubmit();
+                      setBorrowType(BorrowType.BULK);
+                    }}
                     disabled={isDisabled}
                     className={styles.btn}
                     type="secondary"

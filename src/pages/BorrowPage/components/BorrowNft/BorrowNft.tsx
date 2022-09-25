@@ -45,6 +45,21 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
 
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
 
+  const bulkNfts = selectedNfts.map((nft) => {
+    if (!nft?.priceBased) {
+      return { ...nft, parameters: nft.timeBased, isPriceBased: false };
+    } else {
+      return {
+        ...nft,
+        parameters: {
+          ...nft.priceBased,
+          fee: nft?.timeBased.fee,
+        },
+        isPriceBased: true,
+      };
+    }
+  });
+
   return (
     <>
       {!openBulk && (
@@ -134,7 +149,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
         <AppLayout>
           <SelectedBulk
             onClick={() => setOpenBulk(false)}
-            selectedBulk={selectedNfts}
+            selectedBulk={bulkNfts}
           />
         </AppLayout>
       )}

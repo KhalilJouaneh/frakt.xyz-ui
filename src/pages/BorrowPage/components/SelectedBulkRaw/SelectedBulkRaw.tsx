@@ -191,24 +191,27 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
                   value: nft?.isPriceBased ? 'Perpetual' : 'Flip',
                 })}
                 {getStatsValue({
-                  title: 'Loan Type',
-                  value: `${nft?.maxLoanValue} %`,
+                  title: 'Loan to value',
+                  value: `${nft?.parameters?.ltvPercents} %`,
                 })}
                 {getStatsValue({
                   title: 'Floor price',
                   value: `${nft?.valuation}`,
                   withIcon: true,
                 })}
-                {getStatsValue({
-                  title: 'Liquidations price',
-                  value: `${nft?.maxLoanValue}`,
-                  withIcon: true,
-                })}
-                {getStatsValue({
-                  title: 'Borrow APY',
-                  value: `${nft?.maxLoanValue}`,
-                  withIcon: true,
-                })}
+                {nft?.isPriceBased &&
+                  getStatsValue({
+                    title: 'Liquidations price',
+                    value: `${nft?.maxLoanValue}`,
+                    withIcon: true,
+                  })}
+                {nft?.isPriceBased &&
+                  getStatsValue({
+                    title: 'Borrow APY',
+                    value: `${nft?.parameters?.borrowAPRPercents?.toFixed(
+                      0,
+                    )} %`,
+                  })}
                 {getStatsValue({
                   title: 'Minting fee',
                   value: `${nft?.parameters?.fee}`,

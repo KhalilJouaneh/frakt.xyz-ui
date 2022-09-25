@@ -2,11 +2,6 @@
   padding: 0 32px;
   flex-grow: 1;
 
-  @media screen and (max-width: 1450px) {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
   @media screen and (max-width: 767px) {
     padding-left: 24px;
     padding-right: 24px;
