@@ -53,6 +53,10 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
 
   const risk = getRisk({ LTV: ltv, limits: [10, ltvPercents] });
 
+  const feeOnDay =
+    (Number(nft.maxLoanValue) * (nft.priceBased.borrowAPRPercents * 0.01)) /
+    365;
+
   return (
     <div className={styles.fieldWrapper}>
       <p className={styles.fieldDesc}>
@@ -126,6 +130,22 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
         </p>
       </div>
 
+      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee on 1d</p>
+        <p className={styles.staticValueData}>{feeOnDay.toFixed(3)} SOL</p>
+      </div>
+      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee on 7d</p>
+        <p className={styles.staticValueData}>
+          {(feeOnDay * 7).toFixed(3)} SOL
+        </p>
+      </div>
+      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee on 30d</p>
+        <p className={styles.staticValueData}>
+          {(feeOnDay * 30).toFixed(3)} SOL
+        </p>
+      </div>
       <div className={styles.staticValue} style={{ marginBottom: 10 }}>
         <p className={styles.staticValueTitle}>Upfront fee</p>
         <p className={styles.staticValueData}>{mintingFee.toFixed(3)} SOL</p>
