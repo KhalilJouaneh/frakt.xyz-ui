@@ -40,13 +40,12 @@ const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
         onClick={closeMenu}
       >
         <ul className={styles.navigation}>
-          {NAVIGATION_LINKS.map(({ label, to, pathname, selector }) => (
+          {NAVIGATION_LINKS.map(({ label, to, pathname }) => (
             <MenuItem
               key={label}
               label={label}
               to={to}
               pathname={pathname}
-              selector={selector}
               className={styles.link}
             />
           ))}
