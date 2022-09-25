@@ -54,8 +54,7 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
   const risk = getRisk({ LTV: ltv, limits: [10, ltvPercents] });
 
   const feeOnDay =
-    (Number(nft.maxLoanValue) * (nft.priceBased.borrowAPRPercents * 0.01)) /
-    365;
+    (loanValue * (nft.priceBased.borrowAPRPercents * 0.01)) / 365;
 
   return (
     <div className={styles.fieldWrapper}>
