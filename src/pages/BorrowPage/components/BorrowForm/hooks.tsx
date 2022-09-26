@@ -99,7 +99,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     } else {
       setPriceBasedLTV(0);
     }
-  }, [selectedNft]);
+  }, []);
 
   const {
     visible: confirmModalVisible,

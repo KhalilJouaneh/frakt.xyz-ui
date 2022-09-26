@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
@@ -15,6 +15,7 @@ interface BorrowFormProps {
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
+  setLtvPercents?: (ltv: number) => void;
 }
 
 export enum BorrowFormTabs {
@@ -27,6 +28,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   onDeselect,
   isBulkLoan,
   onClick,
+  setLtvPercents,
 }) => {
   const {
     openConfirmModal,
@@ -46,6 +48,10 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     onDeselect,
     selectedNft,
   });
+
+  useEffect(() => {
+    setLtvPercents(priceBasedLTV);
+  }, [priceBasedLTV]);
 
   return (
     <>

@@ -44,6 +44,15 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
     }
   };
 
+  const getLiquidationPrice = (nft): string => {
+    const { valuation, parameters } = nft;
+    const loanValue = parseFloat(valuation) * (parameters.ltvPercents / 100);
+
+    const liquidationPrice =
+      loanValue + loanValue * (parameters.collaterizationRate / 100);
+    return liquidationPrice.toFixed(3);
+  };
+
   const onSubmit = async (): Promise<void> => {
     const transactions = [];
 
@@ -202,7 +211,7 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
                 {nft?.isPriceBased &&
                   getStatsValue({
                     title: 'Liquidations price',
-                    value: `${nft?.maxLoanValue}`,
+                    value: `${getLiquidationPrice(nft)}`,
                     withIcon: true,
                   })}
                 {nft?.isPriceBased &&

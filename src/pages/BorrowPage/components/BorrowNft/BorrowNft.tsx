@@ -45,15 +45,26 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
 
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
 
+  const [ltvPercents, setLtvPercents] = useState<number>(25);
+
   const bulkNfts = selectedNfts.map((nft) => {
     if (!nft?.priceBased) {
       return { ...nft, parameters: nft.timeBased, isPriceBased: false };
     } else {
+      const maxLoanValue = (
+        parseFloat(nft.valuation) *
+        (ltvPercents / 100)
+      ).toFixed(3);
+
+      const fee = nft?.timeBased.fee;
+
       return {
         ...nft,
+        maxLoanValue,
         parameters: {
           ...nft.priceBased,
-          fee: nft?.timeBased.fee,
+          fee,
+          ltvPercents: ltvPercents || 25,
         },
         isPriceBased: true,
       };
@@ -73,6 +84,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
               selectedNft={selectedNfts?.[currentId]}
               onDeselect={onDeselect}
               isBulkLoan={isBulkLoan}
+              setLtvPercents={setLtvPercents}
             />
           }
         >
