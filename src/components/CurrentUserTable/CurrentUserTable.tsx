@@ -1,20 +1,19 @@
 import { useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from '@frakt-protocol/frakt-sdk';
+import { NavLink } from 'react-router-dom';
 
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
 import { SolanaIcon, UserIcon } from '../../icons';
 
 import { getDiscordUri, getDiscordAvatarUrl } from '../../utils';
 import { PATHS } from '../../constants';
-import { LinkWithArrow } from '../LinkWithArrow';
 import { UserState } from '../../state/common/types';
 import DiscordIcon from '../../icons/DiscordIcon2';
 import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import Button from '../Button';
-import { NavLink } from 'react-router-dom';
 
 interface CurrentUserTableProps {
   className?: string;
