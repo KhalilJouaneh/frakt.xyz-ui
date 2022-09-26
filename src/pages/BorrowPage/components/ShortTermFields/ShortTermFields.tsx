@@ -22,6 +22,12 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
     loanValue,
   } = nft.timeBased;
 
+  const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
+
+  const feeOnDay = Number(fee) / returnPeriodDays;
+  const feeOnDayWithDiscount = feeOnDay - feeOnDay * feeDiscountPercentsValue;
+  const feeWithDiscount = Number(fee) - Number(fee) * feeDiscountPercentsValue;
+
   return (
     <div className={styles.fieldWrapper}>
       <p className={styles.fieldDesc}>
@@ -58,7 +64,9 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
         <p className={styles.staticValueTitle}>Fee</p>
 
         <div className={styles.tooltipWrapper}>
-          <p className={styles.staticValueData}>{fee} SOL</p>
+          <p className={styles.staticValueData}>
+            {feeWithDiscount.toFixed(3)} SOL
+          </p>
           <Tooltip
             placement="bottom"
             overlay="The dept accrues daily throughout the duration, and this fee is to be paid if the loan keeps active until the last day"
@@ -66,6 +74,18 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
         </div>
+      </div>
+      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee on 1d</p>
+        <p className={styles.staticValueData}>
+          {feeOnDayWithDiscount.toFixed(3)} SOL
+        </p>
+      </div>
+      <div className={styles.staticValue} style={{ marginBottom: 10 }}>
+        <p className={styles.staticValueTitle}>Fee on 7d</p>
+        <p className={styles.staticValueData}>
+          {(feeOnDayWithDiscount * 7).toFixed(3)} SOL
+        </p>
       </div>
 
       {!!feeDiscountPercents && (
