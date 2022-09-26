@@ -52,7 +52,7 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
       loanValue + loanValue * (parameters.collaterizationRate / 100);
     return liquidationPrice.toFixed(3);
   };
-  console.log(selectedBulk);
+
   const onSubmit = async (): Promise<void> => {
     const transactions = [];
 
@@ -135,6 +135,8 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
       setLoadingModalVisible(false);
     }
   };
+
+  console.log(selectedBulk);
 
   return (
     <>
@@ -223,7 +225,11 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
                   })}
                 {getStatsValue({
                   title: 'Minting fee',
-                  value: `${nft?.parameters?.fee}`,
+                  value: `${
+                    nft?.isPriceBased
+                      ? (Number(nft.maxLoanValue) * 0.01).toFixed(3)
+                      : nft.parameters?.fee
+                  } `,
                   withIcon: true,
                 })}
               </div>
