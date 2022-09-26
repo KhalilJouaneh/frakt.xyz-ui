@@ -57,7 +57,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
         (ltvPercents / 100)
       ).toFixed(3);
 
-      const fee = nft?.timeBased.fee;
+      const fee = (Number(maxLoanValue) * 0.01).toFixed(3);
 
       return {
         ...nft,

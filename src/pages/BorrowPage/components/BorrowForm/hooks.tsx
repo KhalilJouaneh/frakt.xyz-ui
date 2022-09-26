@@ -82,7 +82,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     }
   }, [selectedNft]);
 
-  const [priceBasedLTV, setPriceBasedLTV] = useState<number>(0);
+  const [priceBasedLTV, setPriceBasedLTV] = useState<number>(25);
 
   useEffect(() => {
     if (!selectedNft?.priceBased) {

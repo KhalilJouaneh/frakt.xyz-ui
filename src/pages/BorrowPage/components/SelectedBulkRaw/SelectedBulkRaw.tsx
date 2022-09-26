@@ -52,7 +52,7 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
       loanValue + loanValue * (parameters.collaterizationRate / 100);
     return liquidationPrice.toFixed(3);
   };
-
+  console.log(selectedBulk);
   const onSubmit = async (): Promise<void> => {
     const transactions = [];
 
