@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
@@ -128,7 +129,10 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
             <InfinityScroll
               itemsToShow={nfts.length}
               next={next}
-              wrapperClassName={styles.nftsList}
+              wrapperClassName={classNames(
+                styles.nftsList,
+                !selectedNfts.length && styles.nftListActive,
+              )}
               isLoading={loading}
               emptyMessage=""
               customLoader={<p className={styles.loader}>loading your jpegs</p>}
