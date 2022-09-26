@@ -152,7 +152,7 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
 
       <div
         className={classNames(styles.staticValue, styles.staticValueAccent)}
-        style={{ marginBottom: 30 }}
+        style={{ marginBottom: 16 }}
       >
         <p className={styles.staticValueTitle}>Loan value</p>
         <p className={styles.staticValueData}>{loanValue.toFixed(3)} SOL</p>
