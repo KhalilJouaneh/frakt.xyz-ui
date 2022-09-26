@@ -37,9 +37,9 @@ const MyLoans: FC = () => {
   const totalBorrowed = sum(map(loanToValue, userLoans));
 
   const loansInfo = [
-    { name: 'Flip', value: flipLoansValue },
-    { name: 'Perpetual', value: perpetualLoansValue },
-    { name: 'On grace', value: graceLoansValue },
+    { name: 'Flip', value: flipLoansValue?.toFixed(3) },
+    { name: 'Perpetual', value: perpetualLoansValue?.toFixed(3) },
+    { name: 'On grace', value: graceLoansValue?.toFixed(3) },
     { name: 'Bound', value: 0 },
   ];
   return (
