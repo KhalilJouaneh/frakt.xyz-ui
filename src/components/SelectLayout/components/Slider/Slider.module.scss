@@ -1,7 +1,7 @@
 .nftSlider {
   width: 100%;
   min-height: 149px;
-  margin-bottom: 38px;
+  margin-bottom: 20px;
   padding: 0 32px;
 
   :global {
@@ -53,6 +53,33 @@
   transform: rotate(270deg);
 }
 
+.btnWrapper {
+  position: absolute;
+  bottom: -20px;
+  left: 20px;
+  display: flex;
+  gap: 10px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.btn {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.rotateLeft {
+  transform: rotate(90deg);
+}
+
+.rotateRight {
+  transform: rotate(270deg);
+}
+
 .image {
   width: 128px;
   height: 128px;
@@ -61,6 +88,11 @@
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media screen and (max-width: 767px) {
+    height: 48px;
+    width: 48px;
+  }
 
   @media screen and (max-width: 767px) {
     height: 48px;

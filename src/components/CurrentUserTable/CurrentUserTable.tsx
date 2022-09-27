@@ -1,24 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from '@frakt-protocol/frakt-sdk';
+import { NavLink } from 'react-router-dom';
+import { sum, filter, map } from 'ramda';
 
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
 import { SolanaIcon, UserIcon } from '../../icons';
 
 import { getDiscordUri, getDiscordAvatarUrl } from '../../utils';
 import { PATHS } from '../../constants';
-import { LinkWithArrow } from '../LinkWithArrow';
 import { UserState } from '../../state/common/types';
 import DiscordIcon from '../../icons/DiscordIcon2';
 import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import Button from '../Button';
-import { NavLink } from 'react-router-dom';
+import { networkRequest } from '../../utils/state';
+import { FRKT } from '../../iconsNew/FRKT';
 
 interface CurrentUserTableProps {
   className?: string;
   user?: UserState;
+}
+
+interface UsersRewards {
+  lenders?: [{ user: string; reward: number }];
+  borrowers?: [{ user: string; reward: number }];
 }
 
 const CurrentUserTable = ({
@@ -28,10 +35,38 @@ const CurrentUserTable = ({
   const { disconnect, publicKey } = useWallet();
   const { account } = useNativeAccount();
   const avatarUrl = getDiscordAvatarUrl(user?.discordId, user?.avatar);
+  const [usersRewards, setUsersRewars] = useState<UsersRewards>(null);
 
   if (!publicKey) {
     return null;
   }
+
+  useEffect(() => {
+    (async () => {
+      const data = await networkRequest({
+        url: process.env.REWARDS_ENDPOINT,
+      });
+
+      setUsersRewars(data);
+    })();
+  }, []);
+
+  const getRewardsValue = () => {
+    const publicKeyString = publicKey.toBase58();
+    const currentUser = ({ user }) => user === publicKeyString;
+    const reward = ({ reward }) => reward;
+
+    if (usersRewards) {
+      const { lenders, borrowers } = usersRewards;
+
+      const allUsersRewards = [...lenders, ...borrowers];
+
+      const userRewards = filter(currentUser, allUsersRewards);
+      const valueUserRewards = sum(map(reward, userRewards)) || 0;
+
+      return valueUserRewards.toFixed(2);
+    }
+  };
 
   useEffect(() => {
     setAmplitudeUserId(publicKey?.toBase58());
@@ -41,9 +76,13 @@ const CurrentUserTable = ({
     const valueStr = `${formatNumber.format(
       (account?.lamports || 0) / web3.LAMPORTS_PER_SOL,
     )}`;
+
     return (
-      <div className={styles.row}>
-        {valueStr} <SolanaIcon />
+      <div className={styles.column}>
+        <p className={styles.columnTitle}>Balance</p>
+        <p className={styles.columnValue}>
+          {valueStr} <SolanaIcon />
+        </p>
       </div>
     );
   };
@@ -57,7 +96,6 @@ const CurrentUserTable = ({
             <p className={styles.address}>
               {shortenAddress(`${publicKey || ''}`)}
             </p>
-            {getBalanceValue()}
           </div>
 
           <NavLink
@@ -67,6 +105,15 @@ const CurrentUserTable = ({
           >
             My profile
           </NavLink>
+        </div>
+      </div>
+      <div className={styles.balanceInfo}>
+        {getBalanceValue()}
+        <div className={styles.column}>
+          <p className={styles.columnTitle}>Rewards</p>
+          <p className={styles.columnValue}>
+            {getRewardsValue() || '--'} <FRKT />
+          </p>
         </div>
       </div>
       {!user && (

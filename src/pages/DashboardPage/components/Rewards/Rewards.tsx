@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import Tooltip from 'rc-tooltip';
+// import { QuestionCircleOutlined } from '@ant-design/icons';
+// import Tooltip from 'rc-tooltip';
 
 import Button from '../../../../components/Button';
 import styles from './Rewards.module.scss';
@@ -15,9 +15,9 @@ const Rewards: FC = () => {
       </div>
       <div className={styles.tooltip}>
         <p className={styles.subtitle}>For the protocol use</p>
-        <Tooltip placement="bottom" overlay="">
+        {/* <Tooltip placement="bottom" overlay="">
           <QuestionCircleOutlined className={styles.questionIcon} />
-        </Tooltip>
+        </Tooltip> */}
       </div>
       <div className={styles.btnWrapper}>
         <Button className={styles.btn} type="secondary" disabled>

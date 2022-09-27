@@ -17,6 +17,7 @@ import { Lending, LendingDark } from './Lending';
 import { Raffles, RafflesDark } from './Raffles';
 import { Moon } from './Moon';
 import { Sun } from './Sun';
+import { FRKT } from './FRKT';
 import { Arrow } from './Arrow';
 import { Chevron } from './Chevron';
 
@@ -52,4 +53,5 @@ export default {
   DocsDark,
   Arrow,
   Chevron,
+  FRKT,
 };

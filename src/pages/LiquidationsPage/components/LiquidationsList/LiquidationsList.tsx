@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useRef, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
@@ -22,6 +22,7 @@ import Button from '../../../../components/Button';
 import SortOrderButton from '../../../../components/SortOrderButton';
 import { LiquidationsListFormNames } from '../../model';
 import FiltersDropdown from '../../../../components/FiltersDropdown';
+import { useOnClickOutside } from '../../../../utils';
 
 interface LiquidationsListProps {
   children: ReactNode;
@@ -58,6 +59,9 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   const [filtersDropdownVisible, setFiltersDropdownVisible] =
     useState<boolean>(false);
 
+  const ref = useRef();
+  useOnClickOutside(ref, () => setFiltersDropdownVisible(false));
+
   return (
     <>
       <div className={styles.searchWrapper}>
@@ -80,31 +84,34 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
           >
             Filters
           </Button>
+
           {filtersDropdownVisible && (
-            <FiltersDropdown
-              onCancel={() => setFiltersDropdownVisible(false)}
-              className={styles.filtersDropdown}
-            >
-              <Controller
-                control={control}
-                name={LiquidationsListFormNames.SORT}
-                render={() => (
-                  <div className={styles.sortingWrapper}>
-                    {SORT_VALUES.map(({ label, value }, idx) => (
-                      <div className={styles.sorting} key={idx}>
-                        <p className={styles.label}>{label}</p>
-                        <SortOrderButton
-                          label={label}
-                          setValue={setValue}
-                          sort={sort}
-                          value={value}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              />
-            </FiltersDropdown>
+            <div ref={ref}>
+              <FiltersDropdown
+                onCancel={() => setFiltersDropdownVisible(false)}
+                className={styles.filtersDropdown}
+              >
+                <Controller
+                  control={control}
+                  name={LiquidationsListFormNames.SORT}
+                  render={() => (
+                    <div className={styles.sortingWrapper}>
+                      {SORT_VALUES.map(({ label, value }, idx) => (
+                        <div className={styles.sorting} key={idx}>
+                          <p className={styles.label}>{label}</p>
+                          <SortOrderButton
+                            label={label}
+                            setValue={setValue}
+                            sort={sort}
+                            value={value}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                />
+              </FiltersDropdown>
+            </div>
           )}
           {/* <Controller
             control={control}

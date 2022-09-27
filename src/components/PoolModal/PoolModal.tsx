@@ -44,6 +44,7 @@ export const PoolModal: FC<PoolModalProps> = ({
     solWalletBalance,
   } = usePoolModal(liquidityPoolPubkey, visible, depositAmount, onCancel);
 
+  const depositAmountWithFee = Number(solWalletBalance) - 0.02;
   const notEnoughDepositError = depositAmount < Number(withdrawValue);
   const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
   const isDisabledDepositBtn =
@@ -75,7 +76,7 @@ export const PoolModal: FC<PoolModalProps> = ({
             onValueChange={onDepositValueChange}
             currentToken={SOL_TOKEN}
             label={`BALANCE:`}
-            lpBalance={Number(solWalletBalance)}
+            lpBalance={Number(depositAmountWithFee.toFixed(2))}
             error={notEnoughBalanceError}
             showMaxButton
             labelRight

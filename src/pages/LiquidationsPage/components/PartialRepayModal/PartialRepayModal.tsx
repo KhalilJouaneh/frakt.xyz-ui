@@ -73,6 +73,8 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
 
   const remainingDebt = getRemainingDebt(paybackAmount, loan?.repayValue);
 
+  const repayValue = Math.abs(loan?.repayValue - Number(remainingDebt) || 0);
+
   const submitDisabled =
     parseFloat(paybackAmount) <= 0 ||
     notEnoughBalanceError ||
@@ -92,6 +94,10 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         <CloseModalIcon className={styles.closeIcon} />
       </div>
 
+      <div className={styles.lable}>
+        <p>Debt:</p> <span>{loan?.repayValue.toFixed(2)} SOL</span>
+      </div>
+
       <Slider
         value={partialPercent}
         setValue={onPartialPercentChange}
@@ -103,7 +109,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
       <div className={styles.info}>
         <span className={styles.infoTitle}>Repay value</span>
         <span className={styles.infoValue}>
-          {2.5}
+          {repayValue.toFixed(2)}
           <SolanaIcon />
         </span>
       </div>
@@ -119,7 +125,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         type="secondary"
         disabled={submitDisabled}
       >
-        Repay {remainingDebt === '0' && 'all'}
+        Repay {remainingDebt === '0' ? 'all' : repayValue.toFixed(2)}
       </Button>
     </Modal>
   );
