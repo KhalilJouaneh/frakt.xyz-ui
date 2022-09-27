@@ -23,6 +23,12 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
     loanValue,
   } = nft.timeBased;
 
+  const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
+
+  const feeOnDay = Number(fee) / returnPeriodDays;
+  const feeOnDayWithDiscount = feeOnDay - feeOnDay * feeDiscountPercentsValue;
+  const feeWithDiscount = Number(fee) - Number(fee) * feeDiscountPercentsValue;
+
   return (
     <div className={styles.fieldWrapper}>
       <p className={styles.fieldDesc}>
@@ -61,7 +67,7 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
 
           <div className={styles.tooltipWrapper}>
             <p className={styles.staticValueData}>
-              {fee} <SolanaIcon />
+              {feeWithDiscount.toFixed(3)} <SolanaIcon />
             </p>
             <Tooltip
               placement="bottom"
@@ -71,6 +77,19 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
             </Tooltip>
           </div>
         </div>
+        <div className={styles.staticValue}>
+          <p className={styles.staticValueTitle}>Fee on 1d</p>
+          <p className={styles.staticValueData}>
+            {feeOnDayWithDiscount.toFixed(3)} <SolanaIcon />
+          </p>
+        </div>
+        <div className={styles.staticValue}>
+          <p className={styles.staticValueTitle}>Fee on 7d</p>
+          <p className={styles.staticValueData}>
+            {(feeOnDayWithDiscount * 7).toFixed(3)} <SolanaIcon />
+          </p>
+        </div>
+
         {!!feeDiscountPercents && (
           <div className={styles.staticValue}>
             <p className={styles.staticValueTitle}>Holder discount</p>

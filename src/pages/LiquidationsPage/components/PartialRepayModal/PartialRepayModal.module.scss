@@ -21,6 +21,24 @@
   margin-bottom: 40px;
 }
 
+.lable {
+  display: flex;
+  justify-content: flex-end;
+  text-transform: uppercase;
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  gap: 4px;
+
+  p {
+    margin-top: 4px;
+  }
+
+  span {
+    color: var(--secondary-border);
+    font: var(--font-text-8);
+  }
+}
+
 .info {
   margin-bottom: 10px;
   display: flex;

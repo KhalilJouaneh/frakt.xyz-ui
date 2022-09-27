@@ -92,6 +92,10 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         <CloseModalIcon className={styles.closeIcon} />
       </div>
 
+      <div className={styles.lable}>
+        <p>Debt:</p> <span>{loan?.repayValue.toFixed(2)} SOL</span>
+      </div>
+
       <Slider
         value={partialPercent}
         setValue={onPartialPercentChange}
@@ -100,13 +104,13 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         withTooltip
         step={1}
       />
-      <div className={styles.info}>
+      {/* <div className={styles.info}>
         <span className={styles.infoTitle}>Repay value</span>
         <span className={styles.infoValue}>
-          {2.5}
+          {loan?.repayValue.toFixed(2)}
           <SolanaIcon />
         </span>
-      </div>
+      </div> */}
       <div className={styles.info}>
         <span className={styles.infoTitle}>Remaining debt</span>
         <span className={styles.infoValue}>
