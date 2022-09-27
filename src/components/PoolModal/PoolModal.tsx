@@ -75,8 +75,8 @@ export const PoolModal: FC<PoolModalProps> = ({
             value={depositValue}
             onValueChange={onDepositValueChange}
             currentToken={SOL_TOKEN}
-            label={`BALANCE: ${depositAmountWithFee || 0} SOL`}
-            lpBalance={depositAmountWithFee}
+            label={`BALANCE:`}
+            lpBalance={Number(depositAmountWithFee.toFixed(2))}
             error={notEnoughBalanceError}
             showMaxButton
             labelRight

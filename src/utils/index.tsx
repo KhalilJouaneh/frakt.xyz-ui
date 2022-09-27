@@ -4,6 +4,7 @@ import { Dictionary } from 'lodash';
 
 import { formatNumber, Notify, NotifyType } from './solanaUtils';
 import { FRKT_TOKEN_MINT_PUBLIC_KEY } from '../config';
+import { useEffect } from 'react';
 
 export const notify: Notify = ({
   message = '',
@@ -226,4 +227,21 @@ export const compareNumbers = (
   if (desc) {
     if (numberA > numberB) return -1;
   } else if (numberB > numberA) return -1;
+};
+
+export const useOnClickOutside = (ref, handler) => {
+  useEffect(() => {
+    const listener = (event) => {
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+      handler(event);
+    };
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, [ref, handler]);
 };
