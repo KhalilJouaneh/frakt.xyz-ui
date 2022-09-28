@@ -30,6 +30,10 @@
   }
 }
 
+.closeContainer {
+  padding-right: 0;
+}
+
 .cardWrapper {
   background: var(--primary-background);
   border: 1px solid var(--primary-border);
@@ -236,4 +240,26 @@
     padding-bottom: 170px;
     padding-right: 0;
   }
+}
+
+.congratsWrapper {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.congratsTitle {
+  font: var(--font-text-1);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.congratsBtn {
+  width: 222px;
+  height: 48px;
+  padding: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

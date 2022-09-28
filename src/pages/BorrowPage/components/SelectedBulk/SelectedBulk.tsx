@@ -1,10 +1,9 @@
-import { FC, useEffect, useState } from 'react';
-import { sum, map } from 'ramda';
+import { FC } from 'react';
 import cx from 'classnames';
 
 import { useSelectLayout } from '../../../../components/SelectLayout';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
-import { BorrowNft } from '../../../../state/loans/types';
+import { useSeletedBulk } from './hooks';
 import Button from '../../../../components/Button';
 import SelectedBulkRaw from '../SelectedBulkRaw';
 import styles from './SelectedBulk.module.scss';
@@ -19,33 +18,19 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
   selectedBulk: rawselectedBulk,
   onClick,
 }) => {
-  const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
-  const [isAssetsMode, setIsAssetsMode] = useState<boolean>(false);
-  const [borrowedValue, setBorrowedValue] = useState<number>(0);
-  const [removedNft, setRemovedNft] = useState<BorrowNft[]>([]);
-
-  const { onMultiSelect, selectedNfts, setSelectedNfts } = useSelectLayout();
-
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-  const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
-
-  const isDisabled = selectedBulk.length === selectedNfts.length;
-
-  useEffect(() => {
-    setRemovedNft(
-      selectedBulk.filter(
-        (selectedBulkMint) =>
-          !selectedNfts.find(
-            (selectedNftMint) => selectedNftMint.mint === selectedBulkMint.mint,
-          ),
-      ),
-    );
-  }, [selectedNfts]);
-
-  useEffect(() => {
-    const borrowValueSelectedNft = sum(map(maxLoanValue, selectedNfts));
-    setBorrowedValue(selectedBulkValue - borrowValueSelectedNft);
-  }, [selectedNfts]);
+  const {
+    isAssetsMode,
+    setIsAssetsMode,
+    borrowedValue,
+    removedNft,
+    isDisabled,
+    setSelectedBulk,
+    selectedBulk,
+    selectedNfts,
+    selectedBulkValue,
+    onMultiSelect,
+    setSelectedNfts,
+  } = useSeletedBulk({ rawselectedBulk });
 
   return (
     <>
