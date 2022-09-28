@@ -1,32 +1,49 @@
 .content {
   display: flex;
-  flex-direction: column;
+  gap: 18px;
   font: var(--font-btn-mid);
   color: var(--secondary-border);
   background-color: var(--primary-background);
 }
 
-.infoTitle {
-  font: var(--font-title-2);
-  padding-bottom: 15px;
+.contentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  @media screen and (max-width: 450px) {
-    font-size: 35px;
-  }
+.infoTitle {
+  color: var(--blue-color);
+  font: var(--font-subtitle-2);
+  min-width: 320px;
+}
+
+.loader {
+  margin: 0;
 }
 
 .infoSubtitle {
-  font: var(--font-text-3);
-  opacity: 0.5;
+  font: var(--font-text-4);
   text-align: left;
+  min-width: 320px;
 }
 
 .modal {
   :global {
-    .ant-modal-body {
-      margin-top: -50px;
-      padding-top: 60px;
-      padding-bottom: 30px;
+    padding: 0 !important;
+    margin-right: 28px !important;
+    margin-top: -28px !important;
+
+    .ant-modal-content {
+      border: 1px solid var(--blue-color) !important;
     }
+
+    .ant-modal-body {
+      padding: 16px;
+    }
+  }
+  &::before {
+    border: 1px solid var(--blue-color) !important;
+    background-color: var(--blue-color) !important;
   }
 }

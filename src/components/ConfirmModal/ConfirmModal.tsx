@@ -30,13 +30,14 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
       visible={visible}
       closable={true}
       onCancel={onCancel}
-      width={500}
+      width={400}
     >
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.subtitle}>{subtitle}</p>
         <div className={styles.btnWrapper}>
           <Button
+            type="secondary"
             className={styles.btn}
             onClick={() => {
               onSubmit();
@@ -45,7 +46,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
           >
             {btnAgree}
           </Button>
-          <Button className={styles.btn} type="secondary" onClick={onCancel}>
+          <Button className={styles.btn} onClick={onCancel}>
             {btnCancel}
           </Button>
         </div>

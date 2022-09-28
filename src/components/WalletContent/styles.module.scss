@@ -19,7 +19,7 @@
 
 .itemsContainer {
   max-width: 370px;
-  border: var(--border-gray-1);
+  border: 1px solid var(--primary-border);
   display: grid;
   grid-template-columns: repeat(3, 104px);
   position: absolute;
@@ -66,5 +66,16 @@
   img {
     max-width: 35px;
     width: 100%;
+  }
+}
+
+.darkIcons {
+  img {
+    svg {
+      fill: red;
+      path {
+        fill: red;
+      }
+    }
   }
 }

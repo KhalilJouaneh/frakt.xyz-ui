@@ -18,6 +18,7 @@ interface MenuItem {
   pathname?: string;
   props?: any;
   href?: string;
+  fillIcon?: boolean;
 }
 
 export const MenuItem = ({
@@ -29,6 +30,7 @@ export const MenuItem = ({
   selector,
   pathname = '',
   href,
+  fillIcon,
 }: MenuItem) => {
   const theme: string = useSelector(selectTheme);
   const icon = theme === 'dark' ? iconDark : rawIcon;
@@ -42,7 +44,11 @@ export const MenuItem = ({
         to={to}
         className={cx(styles.link, className, { [styles.active]: isActive })}
       >
-        {icon && <span className={styles.icon}>{icon()}</span>}
+        {icon && (
+          <span className={cx(styles.icon, fillIcon && styles.fillIcon)}>
+            {icon()}
+          </span>
+        )}
         {label && <span className={styles.label}>{label}</span>}
       </NavLink>
     );
@@ -54,7 +60,11 @@ export const MenuItem = ({
           to={to(param)}
           className={cx(styles.link, className, { [styles.active]: isActive })}
         >
-          {icon && <span className={styles.icon}>{icon()}</span>}
+          {icon && (
+            <span className={cx(styles.icon, fillIcon && styles.fillIcon)}>
+              {icon()}
+            </span>
+          )}
           {label && <span className={styles.label}>{label}</span>}
         </NavLink>
       );
@@ -87,6 +97,7 @@ export const Navigation = () => {
             icon={(item as any).icon}
             iconDark={(item as any).iconDark}
             pathname={item.pathname}
+            fillIcon={item?.fillIcon}
           />
         ))}
       </div>
