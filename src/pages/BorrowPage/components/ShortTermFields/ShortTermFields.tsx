@@ -20,7 +20,6 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
     fee,
     feeDiscountPercents,
     repayValue,
-    loanValue,
   } = nft.timeBased;
 
   const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
@@ -53,15 +52,6 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
           <p className={styles.staticValueData}>{ltvPercents.toFixed(0)}%</p>
         </div>
 
-        <div
-          className={classNames(styles.staticValue, styles.staticValueAccent)}
-        >
-          <p className={styles.staticValueTitle}>To borrow</p>
-          <p className={styles.staticValueData}>
-            {loanValue} <SolanaIcon />
-          </p>
-        </div>
-
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>Fee</p>
 
@@ -84,9 +74,10 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
           </p>
         </div>
         <div className={styles.staticValue}>
-          <p className={styles.staticValueTitle}>Fee on 7d</p>
+          <p className={styles.staticValueTitle}>Fee on {returnPeriodDays}</p>
           <p className={styles.staticValueData}>
-            {(feeOnDayWithDiscount * 7).toFixed(3)} <SolanaIcon />
+            {(feeOnDayWithDiscount * returnPeriodDays).toFixed(3)}
+            <SolanaIcon />
           </p>
         </div>
 
