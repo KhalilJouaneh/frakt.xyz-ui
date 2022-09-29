@@ -18,6 +18,7 @@ import {
 } from '@solana/wallet-adapter-react';
 import { FC } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { IntercomProvider } from 'react-use-intercom';
 
 import { Router } from './router';
@@ -48,16 +49,20 @@ const wallets = [
   new SolletWalletAdapter({ network: WalletAdapterNetwork.Mainnet }),
 ];
 
+const queryClient = new QueryClient();
+
 const App: FC = () => {
   return (
     <ReduxProvider store={store}>
       <ConnectionProvider endpoint={ENDPOINT}>
         <WalletProvider wallets={wallets} autoConnect>
-          {/* <IntercomProvider appId={INTERCOM_APP_ID}> */}
-          <Router />
-          <Confetti />
-          {/* <IntercomService /> */}
-          {/* </IntercomProvider> */}
+          <QueryClientProvider client={queryClient}>
+            {/* <IntercomProvider appId={INTERCOM_APP_ID}> */}
+            <Router />
+            <Confetti />
+            {/* <IntercomService /> */}
+            {/* </IntercomProvider> */}
+          </QueryClientProvider>
         </WalletProvider>
       </ConnectionProvider>
     </ReduxProvider>

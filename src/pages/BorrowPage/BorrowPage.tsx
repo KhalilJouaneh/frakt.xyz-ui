@@ -21,21 +21,13 @@ const BorrowPage: FC = () => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
 
-  const {
-    isCloseSidebar,
-    nfts,
-    setSearch,
-    searchItems,
-    search,
-    next,
-    loading,
-  } = useBorrowPage();
+  const { nfts, isLoading, searchQuery, setSearchQuery, next } =
+    useBorrowPage();
 
   return (
     <SelectLayout
       selectedNfts={selectedNfts}
       onDeselect={onDeselect}
-      isCloseSidebar={isCloseSidebar}
       sidebarForm={
         <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
       }
@@ -45,11 +37,8 @@ const BorrowPage: FC = () => {
         Select your NFT to use as a collateral
       </h2>
       <SearchInput
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value || '');
-          searchItems(e.target.value || '');
-        }}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value || '')}
         className={styles.search}
         placeholder="Search by NFT name"
       />
@@ -67,7 +56,7 @@ const BorrowPage: FC = () => {
         </Button>
       )}
 
-      {connected && !loading && !nfts.length && (
+      {connected && !isLoading && !nfts.length && (
         <div className={styles.noSuiableMessageWrapper}>
           <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
           <LinkWithArrow
@@ -84,7 +73,7 @@ const BorrowPage: FC = () => {
           itemsToShow={nfts.length}
           next={next}
           wrapperClassName={styles.nftsList}
-          isLoading={loading}
+          isLoading={isLoading}
           emptyMessage=""
           customLoader={<p className={styles.loader}>loading your jpegs</p>}
         >

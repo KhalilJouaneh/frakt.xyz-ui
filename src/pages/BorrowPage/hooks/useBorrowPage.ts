@@ -1,70 +1,80 @@
-import { useState, useMemo, Dispatch, SetStateAction, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useQuery } from '@tanstack/react-query';
 
-import {
-  FetchData,
-  useInfinityScroll,
-} from '../../../components/InfinityScroll';
 import { useDispatch, useSelector } from 'react-redux';
 import { loansActions } from '../../../state/loans/actions';
 import { BorrowNft } from '../../../state/loans/types';
 import { selectBorrowNfts } from '../../../state/loans/selectors';
+import { useDebounce } from '../../../hooks';
 
-export const useBorrowPage = (): {
-  isCloseSidebar: boolean;
-  setIsCloseSidebar: Dispatch<SetStateAction<boolean>>;
+export const useBorrowPage = <T>(): {
   nfts: BorrowNft[];
-  loading: boolean;
-  searchItems: (search: string) => void;
-  setSearch: (searchStr: string) => void;
+  isLoading: boolean;
+  searchQuery: string;
+  setSearchQuery: (searchQuery: string) => void;
   next: () => void;
-  search: string;
 } => {
-  const [isCloseSidebar, setIsCloseSidebar] = useState<boolean>(false);
-  const [nftsLoading, setNftsLoading] = useState<boolean>(true);
-  const wallet = useWallet();
   const dispatch = useDispatch();
+  const [searchQuery, setSearch] = useState<string>('');
+  const [offset, setOffset] = useState<number>(0);
+  const [reFetch, setReFetch] = useState<boolean>(false);
 
-  const fetchData: FetchData<BorrowNft> = async ({
-    offset,
-    limit,
-    searchStr,
-  }) => {
-    try {
+  const wallet = useWallet();
+  const fetchOnlyConnectedWallet = wallet?.publicKey;
+
+  const LIMIT = 10;
+
+  const { refetch, isLoading } = useQuery(
+    ['borrowPageNfts'],
+    async () => {
       const URL = `https://${process.env.BACKEND_DOMAIN}/nft/meta`;
-      const isSearch = searchStr ? `search=${searchStr}&` : '';
-
-      const fullURL = `${URL}/${wallet?.publicKey?.toBase58()}?${isSearch}skip=${offset}&limit=${limit}`;
-      const response = await fetch(fullURL);
-      const nfts = await response.json();
-
-      return nfts || [];
-    } catch (error) {
-      // eslint-disable-next-line
-      console.log(error);
-    } finally {
-      setNftsLoading(false);
-    }
-  };
-
-  const {
-    next,
-    search,
-    setSearch,
-    items: userWhitelistedNFTs,
-    nextDebounced: searchItems,
-  } = useInfinityScroll(
-    {
-      fetchData,
+      const isSearch = searchQuery ? `search=${searchQuery}&` : '';
+      const response = await fetch(
+        `${URL}/${wallet?.publicKey?.toBase58()}?${isSearch}skip=${offset}&limit=${LIMIT}`,
+      );
+      return await response.json();
     },
-    [wallet],
+    {
+      enabled: !!fetchOnlyConnectedWallet,
+      onSuccess: (data) => {
+        if (data.length) {
+          dispatch(loansActions.setBorrowNfts(data));
+        }
+      },
+    },
   );
 
-  const nfts = useSelector(selectBorrowNfts);
+  const debouncedReFetch = useDebounce(() => {
+    dispatch(loansActions.setBorrowNfts([]));
+    setOffset(0);
+    setReFetch(true);
+  }, 2000);
+
+  const setSearchQuery = useCallback((searchQuery: string): void => {
+    setSearch(searchQuery);
+    debouncedReFetch();
+  }, []);
+
+  const next = useCallback((): void => {
+    setOffset((prevValue) => prevValue + LIMIT);
+    setReFetch(true);
+  }, []);
 
   useEffect(() => {
-    dispatch(loansActions.setBorrowNfts(userWhitelistedNFTs));
-  }, [userWhitelistedNFTs, dispatch]);
+    if (reFetch) {
+      refetch();
+      setReFetch(false);
+    }
+  }, [reFetch]);
+
+  useEffect(() => {
+    if (fetchOnlyConnectedWallet) {
+      dispatch(loansActions.setBorrowNfts([]));
+    }
+  }, [fetchOnlyConnectedWallet]);
+
+  const nfts = useSelector(selectBorrowNfts);
 
   const filteredNfts = useMemo(() => {
     return (nfts || []).sort(({ name: nameA }, { name: nameB }) =>
@@ -72,16 +82,11 @@ export const useBorrowPage = (): {
     );
   }, [nfts]);
 
-  const loading = nftsLoading;
-
   return {
-    isCloseSidebar,
-    setIsCloseSidebar,
     nfts: filteredNfts,
-    loading,
-    setSearch,
+    isLoading,
+    searchQuery,
+    setSearchQuery,
     next,
-    searchItems,
-    search,
   };
 };
