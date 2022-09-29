@@ -8,7 +8,7 @@ import { BorrowNft } from '../../../state/loans/types';
 import { selectBorrowNfts } from '../../../state/loans/selectors';
 import { useDebounce } from '../../../hooks';
 
-export const useBorrowPage = <T>(): {
+export const useBorrowPage = (): {
   nfts: BorrowNft[];
   isLoading: boolean;
   searchQuery: string;
@@ -38,15 +38,13 @@ export const useBorrowPage = <T>(): {
     {
       enabled: !!fetchOnlyConnectedWallet,
       onSuccess: (data) => {
-        if (data.length) {
-          dispatch(loansActions.setBorrowNfts(data));
-        }
+        dispatch(loansActions.setBorrowNfts(data));
       },
     },
   );
 
   const debouncedReFetch = useDebounce(() => {
-    dispatch(loansActions.setBorrowNfts([]));
+    dispatch(loansActions.setBorrowNfts(null));
     setOffset(0);
     setReFetch(true);
   }, 2000);
@@ -70,7 +68,7 @@ export const useBorrowPage = <T>(): {
 
   useEffect(() => {
     if (fetchOnlyConnectedWallet) {
-      dispatch(loansActions.setBorrowNfts([]));
+      dispatch(loansActions.setBorrowNfts(null));
     }
   }, [fetchOnlyConnectedWallet]);
 
