@@ -126,23 +126,24 @@
 }
 
 .noSuiableMessage {
-  font: var(--font-btn-mid);
+  font: var(--font-text-4);
   margin-bottom: 6px;
 }
 
 .acceptedCollectionsLink {
-  color: var(--accent-color-1);
+  font: var(--font-text-8);
+  color: var(--blue-color);
 
   &::after {
-    background-color: var(--accent-color-1);
+    background-color: var(--blue-color);
   }
 
   &:hover {
-    color: var(--accent-color-1);
+    color: var(--blue-color);
   }
 
   svg path {
-    fill: var(--accent-color-1);
+    fill: var(--blue-color);
   }
 }
 
