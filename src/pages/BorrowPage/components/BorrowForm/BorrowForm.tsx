@@ -49,6 +49,11 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
+  const borrowValue =
+    tabValue === BorrowFormTabs.PERPETUAL
+      ? (parseFloat(selectedNft?.valuation) * (priceBasedLTV / 100)).toFixed(3)
+      : selectedNft?.timeBased?.loanValue;
+
   useEffect(() => {
     setLtvPercents(priceBasedLTV);
   }, [priceBasedLTV]);
@@ -80,7 +85,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
           type="secondary"
           className={styles.continueBtn}
         >
-          {isBulkLoan ? 'View bulk loan' : 'Quick borrow'}
+          {isBulkLoan ? 'View bulk loan' : `Quick borrow ${borrowValue}`}
         </Button>
       </div>
       <ConfirmModal

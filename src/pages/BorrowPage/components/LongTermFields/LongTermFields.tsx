@@ -140,15 +140,6 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
             {mintingFee.toFixed(3)} <SolanaIcon />
           </p>
         </div>
-
-        <div
-          className={classNames(styles.staticValue, styles.staticValueAccent)}
-        >
-          <p className={styles.staticValueTitle}>Loan value</p>
-          <p className={styles.staticValueData}>
-            {loanValue.toFixed(3)} <SolanaIcon />
-          </p>
-        </div>
       </div>
     </div>
   );

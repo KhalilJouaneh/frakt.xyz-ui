@@ -79,6 +79,7 @@ export const NAVIGATION_LINKS = [
     event: 'navigation-liquidation',
     icon: Icons.Raffles,
     iconDark: Icons.RafflesDark,
+    fillIcon: true,
   },
   {
     pathname: PATHS.ROOT,
@@ -86,5 +87,6 @@ export const NAVIGATION_LINKS = [
     label: 'Dashboard',
     icon: Icons.Dashboard,
     iconDark: Icons.DashboardDark,
+    fillIcon: true,
   },
 ];

@@ -99,3 +99,12 @@
     }
   }
 }
+
+.active .fillIcon {
+  svg {
+    path {
+      fill: var(--light-green-color);
+      stroke: none !important;
+    }
+  }
+}

@@ -19,7 +19,7 @@ export const LoadingModal: FC<LoadingModalProps> = ({
   title = 'Please approve all transactions',
   subtitle = '',
   onCancel,
-  loaderSize = 'large',
+  loaderSize = 'small',
   className,
 }) => {
   return (
@@ -28,14 +28,16 @@ export const LoadingModal: FC<LoadingModalProps> = ({
       style={modalPosition}
       closable={!!onCancel}
       maskClosable={false}
-      width={560}
+      width={400}
       onCancel={onCancel}
       className={classNames(styles.modal, className)}
     >
       <div className={styles.content}>
-        <Loader size={loaderSize} />
-        <span className={styles.infoTitle}>{title}</span>
-        <span className={styles.infoSubtitle}>{subtitle}</span>
+        <Loader className={styles.loader} size={loaderSize} />
+        <div className={styles.contentInfo}>
+          <span className={styles.infoTitle}>{title}</span>
+          <span className={styles.infoSubtitle}>{subtitle}</span>
+        </div>
       </div>
     </Modal>
   );
