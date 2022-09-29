@@ -21,8 +21,7 @@ const BorrowPage: FC = () => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
 
-  const { nfts, isLoading, searchQuery, setSearchQuery, next } =
-    useBorrowPage();
+  const { nfts, isLoading, searchQuery, setSearch, next } = useBorrowPage();
 
   return (
     <SelectLayout
@@ -38,7 +37,7 @@ const BorrowPage: FC = () => {
       </h2>
       <SearchInput
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value || '')}
+        onChange={(e) => setSearch(e.target.value || '')}
         className={styles.search}
         placeholder="Search by NFT name"
       />

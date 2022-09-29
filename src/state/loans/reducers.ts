@@ -38,12 +38,7 @@ const setBorrowNftsReducer = createReducer<BorrowNft[]>([], {
   [loansTypes.SET_BORROW_NFTS]: (
     state,
     action: ReturnType<typeof loansActions.setBorrowNfts>,
-  ) => {
-    if (!action.payload) {
-      return [];
-    }
-    return [...state, ...action.payload];
-  },
+  ) => action.payload,
 });
 
 const addHiddenBorrowNftsReducer = createReducer<string[]>([], {

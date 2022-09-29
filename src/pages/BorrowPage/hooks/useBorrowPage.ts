@@ -12,11 +12,12 @@ export const useBorrowPage = (): {
   nfts: BorrowNft[];
   isLoading: boolean;
   searchQuery: string;
-  setSearchQuery: (searchQuery: string) => void;
+  setSearch: (searchQuery: string) => void;
   next: () => void;
 } => {
   const dispatch = useDispatch();
-  const [searchQuery, setSearch] = useState<string>('');
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [offset, setOffset] = useState<number>(0);
   const [reFetch, setReFetch] = useState<boolean>(false);
 
@@ -36,21 +37,27 @@ export const useBorrowPage = (): {
       return await response.json();
     },
     {
+      refetchOnWindowFocus: false,
       enabled: !!fetchOnlyConnectedWallet,
       onSuccess: (data) => {
-        dispatch(loansActions.setBorrowNfts(data));
+        if (isSearch) {
+          dispatch(loansActions.setBorrowNfts(data));
+          setIsSearch(false);
+        } else {
+          dispatch(loansActions.setBorrowNfts([...nfts, ...data]));
+        }
       },
     },
   );
 
   const debouncedReFetch = useDebounce(() => {
-    dispatch(loansActions.setBorrowNfts(null));
     setOffset(0);
     setReFetch(true);
-  }, 2000);
+    setIsSearch(true);
+  }, 500);
 
-  const setSearchQuery = useCallback((searchQuery: string): void => {
-    setSearch(searchQuery);
+  const setSearch = useCallback((searchQuery: string): void => {
+    setSearchQuery(searchQuery);
     debouncedReFetch();
   }, []);
 
@@ -68,7 +75,7 @@ export const useBorrowPage = (): {
 
   useEffect(() => {
     if (fetchOnlyConnectedWallet) {
-      dispatch(loansActions.setBorrowNfts(null));
+      dispatch(loansActions.setBorrowNfts([]));
     }
   }, [fetchOnlyConnectedWallet]);
 
@@ -84,7 +91,7 @@ export const useBorrowPage = (): {
     nfts: filteredNfts,
     isLoading,
     searchQuery,
-    setSearchQuery,
+    setSearch,
     next,
   };
 };
