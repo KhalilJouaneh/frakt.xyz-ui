@@ -43,7 +43,7 @@ export const captureSentryError = ({
   const user = wallet?.publicKey?.toBase58();
 
   if (user) {
-    Sentry.setUser({ user });
+    Sentry.setUser({ id: user });
   } else {
     Sentry.setUser(null);
   }
