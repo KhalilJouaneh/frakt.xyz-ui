@@ -13,7 +13,9 @@ export const initSentry = (/*history: RouterHistory*/): void => {
       'We are unable to register the default service worker',
       'The notification permission was not granted and blocked instead',
       'The string did not match the expected pattern',
+      'WalletSignTransactionError: User rejected the request.',
     ],
+    defaultIntegrations: false,
 
     // integrations: [
     //   new Integrations.BrowserTracing({
