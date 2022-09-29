@@ -21,7 +21,7 @@ export const useBorrowPage = (): {
   const [reFetch, setReFetch] = useState<boolean>(false);
 
   const wallet = useWallet();
-  const fetchOnlyConnectedWallet = wallet?.publicKey;
+  const fetchOnlyConnectedWallet: boolean = wallet?.connected;
 
   const LIMIT = 10;
 
