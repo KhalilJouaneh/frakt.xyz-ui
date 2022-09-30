@@ -124,27 +124,17 @@
 }
 
 .noSuiableMessageWrapper {
-  color: var(--white-color);
+  color: var(--secondary-border);
 }
 
 .noSuiableMessage {
-  font: var(--font-btn-mid);
+  font: var(--font-text-4);
   margin-bottom: 6px;
 }
 
 .acceptedCollectionsLink {
-  color: var(--accent-color-1);
-
-  &::after {
-    background-color: var(--accent-color-1);
-  }
-
-  &:hover {
-    color: var(--accent-color-1);
-  }
-
   svg path {
-    fill: var(--accent-color-1);
+    fill: var(--blue-color);
   }
 }
 

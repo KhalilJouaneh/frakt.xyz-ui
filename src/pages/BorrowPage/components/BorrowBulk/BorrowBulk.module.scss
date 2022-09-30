@@ -111,3 +111,18 @@
     }
   }
 }
+
+.noSuiableMessageWrapper {
+  color: var(--secondary-border);
+}
+
+.noSuiableMessage {
+  font: var(--font-text-4);
+  margin-bottom: 6px;
+}
+
+.acceptedCollectionsLink {
+  svg path {
+    fill: var(--blue-color);
+  }
+}

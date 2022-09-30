@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import cx from 'classnames';
 
-import { useSelectLayout } from '../../../../components/SelectLayout';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
-import { useSeletedBulk } from './hooks';
 import Button from '../../../../components/Button';
 import SelectedBulkRaw from '../SelectedBulkRaw';
 import styles from './SelectedBulk.module.scss';
+import { BulkValues } from '../../BorrowPage';
+import { useSeletedBulk } from './hooks';
 import Icons from '../../../../iconsNew';
 
 interface BorrowingBulkProps {
-  selectedBulk: any;
+  selectedBulk: any[];
   onClick?: () => void;
 }
 

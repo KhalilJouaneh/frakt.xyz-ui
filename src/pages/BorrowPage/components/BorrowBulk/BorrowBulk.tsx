@@ -1,22 +1,30 @@
 import { FC, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map } from 'ramda';
 
 import { AppLayout } from '../../../../components/Layout/AppLayout';
+import { LinkWithArrow } from '../../../../components/LinkWithArrow';
+import { BulksType, BulkValues } from '../../BorrowPage';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
-import Icons from '../../../../iconsNew';
 import SelectedBulk from '../SelectedBulk';
+import Icons from '../../../../iconsNew';
 
 interface BorrowBulk {
-  bulks: any;
+  bulks: BulksType;
   value: string;
   onClick: () => void;
 }
 
+const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
+  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
+
 const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick }) => {
+  const { connected } = useWallet();
+
   const { best, cheapest, safest } = bulks;
 
-  const [selectedBulk, setSelectedBulk] = useState<any>();
+  const [selectedBulk, setSelectedBulk] = useState<BulkValues[]>([]);
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
 
@@ -24,7 +32,13 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick }) => {
   const cheapestBulkValue = sum(map(maxLoanValue, cheapest));
   const safestBulkValue = sum(map(maxLoanValue, safest));
 
-  const getBulk = ({ bulk, value }: { bulk: any; value: number }) => {
+  const getBulkValues = ({
+    bulk,
+    value,
+  }: {
+    bulk: BulkValues[];
+    value: number;
+  }) => {
     return (
       <div className={styles.block}>
         <div>
@@ -59,11 +73,26 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick }) => {
               <h2 className={styles.subtitle}>I need {value} SOL</h2>
             </div>
           </div>
-          <div className={styles.wrapper}>
-            {getBulk({ bulk: best, value: bestBulkValue })}
-            {getBulk({ bulk: cheapest, value: cheapestBulkValue })}
-            {getBulk({ bulk: safest, value: safestBulkValue })}
-          </div>
+
+          {connected && !bulks.best.length && (
+            <div className={styles.noSuiableMessageWrapper}>
+              <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
+              <LinkWithArrow
+                className={styles.acceptedCollectionsLink}
+                label="Check collections accepted for loans"
+                to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
+                externalLink
+              />
+            </div>
+          )}
+
+          {connected && !!bulks.best.length && (
+            <div className={styles.wrapper}>
+              {getBulkValues({ bulk: best, value: bestBulkValue })}
+              {getBulkValues({ bulk: cheapest, value: cheapestBulkValue })}
+              {getBulkValues({ bulk: safest, value: safestBulkValue })}
+            </div>
+          )}
         </>
       ) : (
         <SelectedBulk

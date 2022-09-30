@@ -13,24 +13,44 @@ import Button from '../../components/Button';
 
 enum BorrowType {
   BULK = 'bulk',
-  JUST = 'just',
+  SINGLE = 'single',
 }
 
-const BorrowPage: FC = () => {
-  const [borrowType, setBorrowType] = useState<BorrowType>(null);
-  const { publicKey, connected } = useWallet();
-  const [bulks, setBulks] = useState<any>({});
-  const [value, setValue] = useState<string>('');
+type BulksKeys = 'best' | 'cheapest' | 'safest';
+export type BulkValues = {
+  mint: string;
+  name: string;
+  imageUrl: string;
+  valuation: string;
+  maxLoanValue: string;
+  isCanFreeze: boolean;
+  isPriceBased: boolean;
+  parameters: {
+    suggestedLoanValue: number;
+    liquidityPoolPubkey: string;
+    ltvPercents: number;
+    borrowAPRPercents: number;
+    collaterizationRate: number;
+  };
+};
 
-  const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
-  const isDisabled = !value;
+export type BulksType = { [key in BulksKeys]: BulkValues[] };
+
+const BorrowPage: FC = () => {
+  const { publicKey, connected } = useWallet();
+
+  const [borrowType, setBorrowType] = useState<BorrowType>(null);
+  const [bulks, setBulks] = useState<BulksType>(null);
+  const [value, setValue] = useState<string>('');
 
   const onSubmit = async (): Promise<void> => {
     const bulks = await networkRequest({
-      url: `https://${BACKEND_DOMAIN}/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
+      url: `https://${
+        process.env.BACKEND_DOMAIN
+      }/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
     });
 
-    setBulks(bulks);
+    setBulks(bulks as BulksType);
   };
 
   return (
@@ -45,9 +65,11 @@ const BorrowPage: FC = () => {
               </h2>
             </div>
           </div>
+
           {!connected && (
             <ConnectWalletSection text="Connect your wallet to check ..." />
           )}
+
           {connected && (
             <div className={styles.wrapper}>
               <div className={styles.block}>
@@ -66,7 +88,7 @@ const BorrowPage: FC = () => {
                       onSubmit();
                       setBorrowType(BorrowType.BULK);
                     }}
-                    disabled={isDisabled}
+                    disabled={!value}
                     className={styles.btn}
                     type="secondary"
                   >
@@ -80,7 +102,7 @@ const BorrowPage: FC = () => {
                   I just want to make a loan
                 </p>
                 <Button
-                  onClick={() => setBorrowType(BorrowType.JUST)}
+                  onClick={() => setBorrowType(BorrowType.SINGLE)}
                   className={styles.btnConfirm}
                   type="secondary"
                 >
@@ -99,7 +121,7 @@ const BorrowPage: FC = () => {
           bulks={bulks}
         />
       )}
-      {borrowType === BorrowType.JUST && (
+      {borrowType === BorrowType.SINGLE && (
         <BorrowNft onClick={() => setBorrowType(null)} />
       )}
     </>

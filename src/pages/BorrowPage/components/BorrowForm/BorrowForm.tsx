@@ -16,6 +16,7 @@ interface BorrowFormProps {
   onDeselect?: () => void;
   onClick?: () => void;
   setLtvPercents?: (ltv: number) => void;
+  setFormType?: (tabValue: string) => void;
 }
 
 export enum BorrowFormTabs {
@@ -29,6 +30,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   isBulkLoan,
   onClick,
   setLtvPercents,
+  setFormType,
 }) => {
   const {
     openConfirmModal,
@@ -57,6 +59,12 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   useEffect(() => {
     setLtvPercents(priceBasedLTV);
   }, [priceBasedLTV]);
+
+  useEffect(() => {
+    if (selectedNft?.priceBased) {
+      setFormType(tabValue);
+    }
+  }, [tabValue]);
 
   return (
     <>

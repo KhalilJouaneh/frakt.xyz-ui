@@ -47,27 +47,29 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
 
   const [ltvPercents, setLtvPercents] = useState<number>(25);
+  const [formType, setFormType] = useState<string>('');
 
   const bulkNfts = selectedNfts.map((nft) => {
     if (!nft?.priceBased) {
       return { ...nft, parameters: nft.timeBased, isPriceBased: false };
     } else {
-      const maxLoanValue = (
+      const maxLoanValuePriceBased = (
         parseFloat(nft.valuation) *
         (ltvPercents / 100)
       ).toFixed(3);
 
-      const rawFee = Number(maxLoanValue) * 0.01;
+      const rawFee = Number(maxLoanValuePriceBased) * 0.01;
+      const isPerpLoan = formType === 'perpetual';
 
       return {
         ...nft,
-        maxLoanValue,
+        maxLoanValue: isPerpLoan ? maxLoanValuePriceBased : nft?.maxLoanValue,
         parameters: {
           ...nft.priceBased,
-          fee: rawFee.toFixed(3),
+          fee: isPerpLoan ? nft.timeBased.fee : rawFee.toFixed(3),
           ltvPercents: ltvPercents || 25,
         },
-        isPriceBased: true,
+        isPriceBased: isPerpLoan ? true : false,
       };
     }
   });
@@ -86,6 +88,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
               onDeselect={onDeselect}
               isBulkLoan={isBulkLoan}
               setLtvPercents={setLtvPercents}
+              setFormType={setFormType}
             />
           }
         >

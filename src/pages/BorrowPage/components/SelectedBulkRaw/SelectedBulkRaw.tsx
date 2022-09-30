@@ -5,13 +5,14 @@ import cx from 'classnames';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import Button from '../../../../components/Button';
 import styles from './SelectedBulkRaw.module.scss';
-import { PATHS } from '../../../../constants';
 import { SolanaIcon } from '../../../../icons';
+import { BulkValues } from '../../BorrowPage';
+import { PATHS } from '../../../../constants';
 import { useSeletedBulkRaw } from './hooks';
 import Icons from '../../../../iconsNew';
 
 interface SelectedBulkRawProps {
-  selectedBulk: any;
+  selectedBulk: BulkValues[];
   onClick: () => void;
   selectedBulkValue: number;
   onChangeAssetsMode: () => void;
