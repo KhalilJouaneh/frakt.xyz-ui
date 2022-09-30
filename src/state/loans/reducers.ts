@@ -34,9 +34,9 @@ const setLiquidityPoolsReducer = createReducer<AsyncState<LiquidityPool[]>>(
   },
 );
 
-const setBorrowNftsReducer = createReducer<BorrowNft[]>([], {
+const setBorrowNftsReducer = createReducer<BorrowNft[]>(null, {
   [loansTypes.SET_BORROW_NFTS]: (
-    state,
+    __,
     action: ReturnType<typeof loansActions.setBorrowNfts>,
   ) => action.payload,
 });

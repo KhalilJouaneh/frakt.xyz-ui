@@ -1,12 +1,24 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { Control } from 'react-hook-form';
 import { loansActions } from '../../../state/loans/actions';
 import { BorrowNft } from '../../../state/loans/types';
 import { selectBorrowNfts } from '../../../state/loans/selectors';
 import { useDebounce } from '../../../hooks';
+import {
+  FilterFormFieldsValues,
+  useBorrowPageFilter,
+} from './useBorrowPageFilter';
+import { FETCH_LIMIT } from '../BorrowPage.constants';
 
 export const useBorrowPage = (): {
   nfts: BorrowNft[];
@@ -14,17 +26,22 @@ export const useBorrowPage = (): {
   searchQuery: string;
   setSearch: (searchQuery: string) => void;
   next: () => void;
+  control: Control<FilterFormFieldsValues>;
 } => {
   const dispatch = useDispatch();
-  const [isSearch, setIsSearch] = useState(false);
+  const [isClear, setIsClear] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [offset, setOffset] = useState<number>(0);
   const [reFetch, setReFetch] = useState<boolean>(false);
 
-  const wallet = useWallet();
-  const fetchOnlyConnectedWallet: boolean = wallet?.connected;
+  const firstUpdate = useRef<boolean>(true);
 
-  const LIMIT = 10;
+  const nfts = useSelector(selectBorrowNfts);
+
+  const { control, sortValue } = useBorrowPageFilter();
+  const [sortName, sortOrder] = sortValue.split('_');
+
+  const { publicKey, connected } = useWallet();
 
   const { refetch, isLoading } = useQuery(
     ['borrowPageNfts'],
@@ -32,17 +49,17 @@ export const useBorrowPage = (): {
       const URL = `https://${process.env.BACKEND_DOMAIN}/nft/meta`;
       const isSearch = searchQuery ? `search=${searchQuery}&` : '';
       const response = await fetch(
-        `${URL}/${wallet?.publicKey?.toBase58()}?${isSearch}skip=${offset}&limit=${LIMIT}`,
+        `${URL}/${publicKey?.toBase58()}?${isSearch}skip=${offset}&limit=${FETCH_LIMIT}&sortBy=${sortName}&sort=${sortOrder}`,
       );
       return await response.json();
     },
     {
       refetchOnWindowFocus: false,
-      enabled: !!fetchOnlyConnectedWallet,
+      enabled: connected,
       onSuccess: (data) => {
-        if (isSearch) {
+        if (isClear) {
           dispatch(loansActions.setBorrowNfts(data));
-          setIsSearch(false);
+          setIsClear(false);
         } else {
           dispatch(loansActions.setBorrowNfts([...nfts, ...data]));
         }
@@ -50,10 +67,14 @@ export const useBorrowPage = (): {
     },
   );
 
-  const debouncedReFetch = useDebounce(() => {
+  const clearAndFetch = () => {
     setOffset(0);
+    setIsClear(true);
     setReFetch(true);
-    setIsSearch(true);
+  };
+
+  const debouncedReFetch = useDebounce(() => {
+    clearAndFetch();
   }, 500);
 
   const setSearch = useCallback((searchQuery: string): void => {
@@ -62,9 +83,16 @@ export const useBorrowPage = (): {
   }, []);
 
   const next = useCallback((): void => {
-    setOffset((prevValue) => prevValue + LIMIT);
+    setOffset((prevValue) => prevValue + FETCH_LIMIT);
     setReFetch(true);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!firstUpdate.current) {
+      clearAndFetch();
+    }
+    firstUpdate.current = false;
+  }, [sortValue]);
 
   useEffect(() => {
     if (reFetch) {
@@ -73,25 +101,12 @@ export const useBorrowPage = (): {
     }
   }, [reFetch]);
 
-  useEffect(() => {
-    if (fetchOnlyConnectedWallet) {
-      dispatch(loansActions.setBorrowNfts([]));
-    }
-  }, [fetchOnlyConnectedWallet]);
-
-  const nfts = useSelector(selectBorrowNfts);
-
-  const filteredNfts = useMemo(() => {
-    return (nfts || []).sort(({ name: nameA }, { name: nameB }) =>
-      nameA?.localeCompare(nameB),
-    );
-  }, [nfts]);
-
   return {
-    nfts: filteredNfts,
+    nfts,
     isLoading,
     searchQuery,
     setSearch,
     next,
+    control,
   };
 };
