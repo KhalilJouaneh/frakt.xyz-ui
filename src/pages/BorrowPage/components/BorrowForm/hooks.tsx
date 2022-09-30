@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 
 import { useConfirmModal } from '../../../../components/ConfirmModal';
 import { useLoadingModal } from '../../../../components/LoadingModal';
-import { useConnection } from '../../../../hooks';
-import { proposeLoan } from '../../../../utils/loans';
-import { BorrowNft } from '../../../../state/loans/types';
-import { useEffect, useState } from 'react';
-import { loansActions } from '../../../../state/loans/actions';
 import { commonActions } from '../../../../state/common/actions';
+import { loansActions } from '../../../../state/loans/actions';
 import { Tab, useTabs } from '../../../../components/Tabs';
+import { BorrowNft } from '../../../../state/loans/types';
+import { proposeLoan } from '../../../../utils/loans';
+import { useConnection } from '../../../../hooks';
+import { useEffect, useState } from 'react';
 
 export enum FormFieldTypes {
   SHORT_TERM_FIELD = 'shortTermField',
@@ -51,9 +51,11 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const dispatch = useDispatch();
   const connection = useConnection();
 
-  const [formField, setFormField] = useState<FormFieldTypes>(
-    FormFieldTypes.LONG_TERM_FIELD,
-  );
+  const formType = (selectedNft as any)?.isPriceBased
+    ? FormFieldTypes.LONG_TERM_FIELD
+    : FormFieldTypes.SHORT_TERM_FIELD;
+
+  const [formField, setFormField] = useState<FormFieldTypes>(formType);
 
   const BORROW_FORM_TABS: Tab[] = [
     {
@@ -67,17 +69,21 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     },
   ];
 
+  const formTId = (selectedNft as any)?.isPriceBased ? 0 : 1;
+
   const {
     tabs: borrowTabs,
     value: tabValue,
     setValue: setTabValue,
   } = useTabs({
     tabs: BORROW_FORM_TABS,
-    defaultValue: BORROW_FORM_TABS[1].value,
+    defaultValue: BORROW_FORM_TABS[formTId].value,
   });
 
   useEffect(() => {
-    if (!selectedNft?.priceBased) {
+    if ((selectedNft as any)?.isPriceBased) {
+      setTabValue('perpetual');
+    } else {
       setTabValue('flip');
     }
   }, [selectedNft]);

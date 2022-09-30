@@ -1,12 +1,14 @@
-import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
+import { selectPerpLoansNfts } from '../../../../state/loans/selectors';
+import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
-import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 import { SearchInput } from '../../../../components/SearchInput';
+import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
 import styles from './BorrowNft.module.scss';
@@ -46,33 +48,46 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
 
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
 
-  const [ltvPercents, setLtvPercents] = useState<number>(25);
-  const [formType, setFormType] = useState<string>('');
+  const newAllPerpetualLoans = useSelector(selectPerpLoansNfts);
 
   const bulkNfts = selectedNfts.map((nft) => {
     if (!nft?.priceBased) {
       return { ...nft, parameters: nft.timeBased, isPriceBased: false };
     } else {
+      const currentNft = newAllPerpetualLoans.find(
+        ({ mint }) => mint === nft.mint,
+      ) as any;
+
+      const ltvPercents = currentNft?.ltv ? currentNft.ltv : 25;
+
       const maxLoanValuePriceBased = (
         parseFloat(nft.valuation) *
         (ltvPercents / 100)
       ).toFixed(3);
 
-      const rawFee = Number(maxLoanValuePriceBased) * 0.01;
-      const isPerpLoan = formType === 'perpetual';
+      const priceBasedFee = Number(maxLoanValuePriceBased) * 0.01;
+      const isPriceBased = currentNft?.formType === 'perpetual' ? true : false;
 
       return {
         ...nft,
-        maxLoanValue: isPerpLoan ? maxLoanValuePriceBased : nft?.maxLoanValue,
+        maxLoanValue: isPriceBased ? maxLoanValuePriceBased : nft?.maxLoanValue,
         parameters: {
           ...nft.priceBased,
-          fee: isPerpLoan ? nft.timeBased.fee : rawFee.toFixed(3),
-          ltvPercents: ltvPercents || 25,
+          fee: isPriceBased ? nft.timeBased.fee : priceBasedFee.toFixed(3),
+          ltvPercents,
         },
-        isPriceBased: isPerpLoan ? true : false,
+        isPriceBased,
       };
     }
   });
+
+  const dispatch = useDispatch();
+
+  const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
+
+  useEffect(() => {
+    dispatch(loansActions.addPerpLoanNft(allPerpetualLoans));
+  }, [dispatch]);
 
   return (
     <>
@@ -84,11 +99,13 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
           sidebarForm={
             <BorrowForm
               onClick={() => setOpenBulk(true)}
-              selectedNft={selectedNfts?.[currentId]}
+              selectedNft={
+                bulkNfts.length
+                  ? bulkNfts?.[currentId]
+                  : selectedNfts?.[currentId]
+              }
               onDeselect={onDeselect}
               isBulkLoan={isBulkLoan}
-              setLtvPercents={setLtvPercents}
-              setFormType={setFormType}
             />
           }
         >

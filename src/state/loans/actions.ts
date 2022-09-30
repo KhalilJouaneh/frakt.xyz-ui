@@ -8,6 +8,8 @@ export const loansTypes = {
   SET_BORROW_NFTS: 'loans/SET_BORROW_NFTS',
   ADD_HIDDEN_BORROW_NFT: 'loans/ADD_HIDDEN_BORROW_NFT',
   ADD_HIDDEN_LOAN_NFT: 'loans/ADD_HIDDEN_LOAN_NFT',
+  ADD_PEPR_LOAN_NFT: 'loans/ADD_PEPR_LOAN_NFT',
+  UPDATE_PEPR_LOAN_NFT: 'loans/UPDATE_PEPR_LOAN_NFT',
 };
 
 export const loansActions = {
@@ -31,5 +33,13 @@ export const loansActions = {
   addHiddenLoanNftMint: createCustomAction(
     loansTypes.ADD_HIDDEN_LOAN_NFT,
     (mint: string) => ({ payload: mint }),
+  ),
+  addPerpLoanNft: createCustomAction(
+    loansTypes.ADD_PEPR_LOAN_NFT,
+    (payload) => ({ payload }),
+  ),
+  updatePerpLoanNft: createCustomAction(
+    loansTypes.UPDATE_PEPR_LOAN_NFT,
+    (payload) => ({ payload }),
   ),
 };

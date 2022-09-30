@@ -55,10 +55,23 @@ const addHiddenLoanNftsReducer = createReducer<string[]>([], {
   ) => [...state, action.payload],
 });
 
+const addPerpLoanNftsReducer = createReducer<string[]>([])
+  .handleAction(loansActions.addPerpLoanNft, (action) => action?.payload || [])
+  .handleAction(loansActions.updatePerpLoanNft, (state, { payload }) => {
+    const found =
+      state.find((oldState) => oldState.mint === payload.mint) !== undefined;
+    return found
+      ? state.map((oldState) =>
+          oldState.mint === payload.mint ? payload : oldState,
+        )
+      : [payload, ...state];
+  });
+
 export default combineReducers({
   loans: setLoansReducer,
   liquidityPools: setLiquidityPoolsReducer,
   borrowNfts: setBorrowNftsReducer,
   hiddenBorrowNfts: addHiddenBorrowNftsReducer,
   hiddenLoanNfts: addHiddenLoanNftsReducer,
+  perpLoansNfts: addPerpLoanNftsReducer,
 });

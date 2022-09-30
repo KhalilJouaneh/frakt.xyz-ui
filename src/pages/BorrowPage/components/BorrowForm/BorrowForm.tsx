@@ -1,7 +1,9 @@
 import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
 import { ShortTermFields } from '../ShortTermFields';
 import { Tabs } from '../../../../components/Tabs';
@@ -15,8 +17,6 @@ interface BorrowFormProps {
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
-  setLtvPercents?: (ltv: number) => void;
-  setFormType?: (tabValue: string) => void;
 }
 
 export enum BorrowFormTabs {
@@ -29,8 +29,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   onDeselect,
   isBulkLoan,
   onClick,
-  setLtvPercents,
-  setFormType,
 }) => {
   const {
     openConfirmModal,
@@ -51,20 +49,24 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (selectedNft?.priceBased) {
+      dispatch(
+        loansActions.updatePerpLoanNft({
+          mint: selectedNft?.mint,
+          ltv: priceBasedLTV,
+          formType: tabValue,
+        }),
+      );
+    }
+  }, [priceBasedLTV, tabValue]);
+
   const borrowValue =
     tabValue === BorrowFormTabs.PERPETUAL
       ? (parseFloat(selectedNft?.valuation) * (priceBasedLTV / 100)).toFixed(3)
       : selectedNft?.timeBased?.loanValue;
-
-  useEffect(() => {
-    setLtvPercents(priceBasedLTV);
-  }, [priceBasedLTV]);
-
-  useEffect(() => {
-    if (selectedNft?.priceBased) {
-      setFormType(tabValue);
-    }
-  }, [tabValue]);
 
   return (
     <>

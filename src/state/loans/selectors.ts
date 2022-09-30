@@ -99,3 +99,6 @@ export const selectLoanNfts: (state) => Loan[] = createSelector(
   (hiddenLoanNfts: string[], loanNfts: Loan[]) =>
     loanNfts?.filter(({ mint }) => !hiddenLoanNfts.includes(mint)) || [],
 );
+
+export const selectPerpLoansNfts: (state: BorrowNft[]) => BorrowNft[] =
+  createSelector([pathOr([], ['loans', 'perpLoansNfts'])], identity);
