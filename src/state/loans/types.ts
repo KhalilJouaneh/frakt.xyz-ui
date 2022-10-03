@@ -91,3 +91,9 @@ export interface Loan {
     creatorWhitelistProof: string;
   };
 }
+
+export interface PerpetualNftsInfo {
+  ltv: number;
+  mint: string;
+  formType: string;
+}

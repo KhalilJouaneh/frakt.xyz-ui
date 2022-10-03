@@ -1,9 +1,9 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { BN, loans, SOL_TOKEN, web3 } from '@frakt-protocol/frakt-sdk';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useDispatch } from 'react-redux';
 import { chunk } from 'lodash';
 
-import { useDispatch } from 'react-redux';
 import { commonActions } from '../../../../state/common/actions';
 import { useConnection } from '../../../../hooks';
 import { notify } from '../../../../utils';
@@ -13,7 +13,7 @@ import { captureSentryError } from '../../../../utils/sentry';
 import { showSolscanLinkNotification } from '../../../../utils/transactions';
 
 type UseSeletedBulkRaw = (props: { rawselectedBulk: any }) => {
-  onSubmit: any;
+  onSubmit: () => Promise<void>;
   onCardClick: (id: number) => void;
   selectedBulk: any;
   setLoadingModalVisible: Dispatch<SetStateAction<boolean>>;

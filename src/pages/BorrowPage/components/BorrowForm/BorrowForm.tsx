@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { loansActions } from '../../../../state/loans/actions';
-import { BorrowNft } from '../../../../state/loans/types';
+import { BorrowNftWithBulk } from '../BorrowNft/BorrowNft';
 import { ShortTermFields } from '../ShortTermFields';
 import { Tabs } from '../../../../components/Tabs';
 import Button from '../../../../components/Button';
@@ -13,23 +13,25 @@ import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
-  selectedNft: BorrowNft;
+  selectedNft: BorrowNftWithBulk;
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
 }
 
-export enum BorrowFormTabs {
+export enum BorrowFormType {
   PERPETUAL = 'perpetual',
   FLIP = 'flip',
 }
 
-export const BorrowForm: FC<BorrowFormProps> = ({
+const BorrowForm: FC<BorrowFormProps> = ({
   selectedNft,
   onDeselect,
   isBulkLoan,
   onClick,
 }) => {
+  const dispatch = useDispatch();
+
   const {
     openConfirmModal,
     confirmModalVisible,
@@ -49,8 +51,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (selectedNft?.priceBased) {
       dispatch(
@@ -64,7 +64,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   }, [priceBasedLTV, tabValue]);
 
   const borrowValue =
-    tabValue === BorrowFormTabs.PERPETUAL
+    tabValue === BorrowFormType.PERPETUAL
       ? (parseFloat(selectedNft?.valuation) * (priceBasedLTV / 100)).toFixed(3)
       : selectedNft?.timeBased?.loanValue;
 
@@ -78,10 +78,10 @@ export const BorrowForm: FC<BorrowFormProps> = ({
           value={tabValue}
           setValue={setTabValue}
         />
-        {tabValue === BorrowFormTabs.FLIP && (
+        {tabValue === BorrowFormType.FLIP && (
           <ShortTermFields nft={selectedNft} />
         )}
-        {tabValue === BorrowFormTabs.PERPETUAL && !priceBasedDisabled && (
+        {tabValue === BorrowFormType.PERPETUAL && !priceBasedDisabled && (
           <LongTermFields
             nft={selectedNft}
             ltv={priceBasedLTV}
@@ -114,3 +114,5 @@ export const BorrowForm: FC<BorrowFormProps> = ({
     </>
   );
 };
+
+export default BorrowForm;

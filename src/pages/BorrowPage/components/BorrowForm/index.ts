@@ -1,2 +1,2 @@
-export { BorrowForm } from './BorrowForm';
+export { default } from './BorrowForm';
 export * from './hooks';

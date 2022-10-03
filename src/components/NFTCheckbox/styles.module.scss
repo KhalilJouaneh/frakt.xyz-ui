@@ -124,12 +124,6 @@
 
   &_checked {
     border: 1px solid var(--black-color);
-    .root__checkbox {
-      background: rgba(0, 0, 0, 0.64);
-      &::before {
-        content: '- ';
-      }
-    }
   }
 }
 

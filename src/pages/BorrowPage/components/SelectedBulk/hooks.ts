@@ -3,6 +3,7 @@ import { sum, map } from 'ramda';
 
 import { useSelectLayout } from '../../../../components/SelectLayout';
 import { BorrowNft } from '../../../../state/loans/types';
+import { useBorrowPage } from '../../hooks';
 
 type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
   selectedBulk: any;
@@ -30,6 +31,28 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
 
   const isDisabled = selectedBulk.length === selectedNfts.length;
+
+  // const { fetchData } = useBorrowPage();
+  // const [nfts, setNfts] = useState<BorrowNft[]>([]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const nfts = await fetchData({ offset: 0, limit: 1000 });
+  //     setNfts(nfts);
+  //   })();
+  // }, []);
+
+  // const mapSelectedNfts = rawselectedBulk.map((item) => {
+  //   return {
+  //     ...item,
+  //     isSelected: true,
+  //   };
+  // });
+
+  // const mints = mapSelectedNfts.map(({ mint }) => mint);
+
+  // const notSelectedNfts = nfts.filter(({ mint }) => !mints.includes(mint));
+  // const allNfts = [...notSelectedNfts, ...mapSelectedNfts];
 
   useEffect(() => {
     setRemovedNft(

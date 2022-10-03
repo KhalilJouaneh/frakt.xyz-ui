@@ -129,7 +129,11 @@ const SelectedBulkRaw: FC<SelectedBulkRawProps> = ({
                   })}
                   {getStatsValue({
                     title: 'Loan to value',
-                    value: `${nft?.parameters?.ltvPercents} %`,
+                    value: `${
+                      nft?.isPriceBased
+                        ? nft?.parameters?.ltvPercents
+                        : nft?.timeBased.ltvPercents
+                    } %`,
                   })}
                   {getStatsValue({
                     title: 'Floor price',

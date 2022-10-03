@@ -15,7 +15,7 @@ import {
 } from 'ramda';
 import { isArray } from 'ramda-adjunct';
 
-import { BorrowNft, LiquidityPool, Loan } from './types';
+import { BorrowNft, LiquidityPool, Loan, PerpetualNftsInfo } from './types';
 
 // const isOwnedByUser = curry((publicKey) =>
 //   publicKey ? propEq('user', publicKey.toBase58()) : false,
@@ -100,5 +100,9 @@ export const selectLoanNfts: (state) => Loan[] = createSelector(
     loanNfts?.filter(({ mint }) => !hiddenLoanNfts.includes(mint)) || [],
 );
 
-export const selectPerpLoansNfts: (state: BorrowNft[]) => BorrowNft[] =
-  createSelector([pathOr([], ['loans', 'perpLoansNfts'])], identity);
+export const selectPerpLoansNfts: (
+  state: PerpetualNftsInfo[],
+) => PerpetualNftsInfo[] = createSelector(
+  [pathOr([], ['loans', 'perpLoansNfts'])],
+  identity,
+);

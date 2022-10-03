@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
 
@@ -9,7 +10,7 @@ import { Tab, useTabs } from '../../../../components/Tabs';
 import { BorrowNft } from '../../../../state/loans/types';
 import { proposeLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
-import { useEffect, useState } from 'react';
+import { BorrowNftWithBulk } from '../BorrowNft/BorrowNft';
 
 export enum FormFieldTypes {
   SHORT_TERM_FIELD = 'shortTermField',
@@ -27,7 +28,7 @@ const getConfirmModalText = (nft: BorrowNft, isPriceBased = false) => {
 
 type UseBorrowForm = (props: {
   onDeselect?: () => void;
-  selectedNft?: BorrowNft;
+  selectedNft?: BorrowNftWithBulk;
 }) => {
   borrowTabs: Tab[];
   openConfirmModal: () => void;
@@ -51,11 +52,15 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const dispatch = useDispatch();
   const connection = useConnection();
 
-  const formType = (selectedNft as any)?.isPriceBased
+  const isPriceBased = selectedNft?.isPriceBased;
+  const defaultTabId = isPriceBased ? 0 : 1;
+
+  const defaultFormType = isPriceBased
     ? FormFieldTypes.LONG_TERM_FIELD
     : FormFieldTypes.SHORT_TERM_FIELD;
 
-  const [formField, setFormField] = useState<FormFieldTypes>(formType);
+  const [formField, setFormField] = useState<FormFieldTypes>(defaultFormType);
+  const [priceBasedLTV, setPriceBasedLTV] = useState<number>(25);
 
   const BORROW_FORM_TABS: Tab[] = [
     {
@@ -69,26 +74,22 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     },
   ];
 
-  const formTId = (selectedNft as any)?.isPriceBased ? 0 : 1;
-
   const {
     tabs: borrowTabs,
     value: tabValue,
     setValue: setTabValue,
   } = useTabs({
     tabs: BORROW_FORM_TABS,
-    defaultValue: BORROW_FORM_TABS[formTId].value,
+    defaultValue: BORROW_FORM_TABS[defaultTabId].value,
   });
 
   useEffect(() => {
-    if ((selectedNft as any)?.isPriceBased) {
+    if (isPriceBased) {
       setTabValue('perpetual');
     } else {
       setTabValue('flip');
     }
   }, [selectedNft]);
-
-  const [priceBasedLTV, setPriceBasedLTV] = useState<number>(25);
 
   useEffect(() => {
     if (!selectedNft?.priceBased) {
@@ -99,7 +100,6 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   }, [selectedNft]);
 
   useEffect(() => {
-    //? Set default value for priceBased LTV
     if (selectedNft?.priceBased) {
       setPriceBasedLTV((selectedNft?.priceBased?.ltvPercents + 10) / 2);
     } else {
@@ -119,7 +119,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     open: openLoadingModal,
   } = useLoadingModal();
 
-  const removeTokenOptimistic = (mint: string) => {
+  const removeTokenOptimistic = (mint: string): void => {
     dispatch(loansActions.addHiddenBorrowNftMint(mint));
   };
 
