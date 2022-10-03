@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
-import { selectPerpLoansNfts } from '../../../../state/loans/selectors';
+import {
+  selectBulkNfts,
+  selectPerpLoansNfts,
+} from '../../../../state/loans/selectors';
 import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
@@ -18,9 +21,9 @@ import {
   useSelectLayout,
 } from '../../../../components/SelectLayout';
 import { useBorrowPage } from '../../hooks';
+import SelectedBulk from '../SelectedBulk';
 import BorrowForm from '../BorrowForm';
 import Icons from '../../../../iconsNew';
-import SelectedBulk from '../SelectedBulk';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -38,8 +41,14 @@ export interface BorrowNftWithBulk extends BorrowNft {
 }
 
 const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
-  const { connected, onDeselect, onMultiSelect, selectedNfts } =
-    useSelectLayout();
+  const dispatch = useDispatch();
+  const {
+    connected,
+    onDeselect,
+    onMultiSelect,
+    selectedNfts,
+    setSelectedNfts,
+  } = useSelectLayout();
 
   const {
     isCloseSidebar,
@@ -53,11 +62,18 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
   const selectedNftId = useSelector(selectSelectedNftId);
+  const bulkNftsRaw = useSelector(selectBulkNfts);
+
+  useEffect(() => {
+    setSelectedNfts(bulkNftsRaw);
+  }, [bulkNftsRaw]);
 
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
   const isBulkLoan = selectedNfts.length > 1;
+
+  console.log(selectedNfts);
 
   const bulkNfts = selectedNfts.map((nft) => {
     if (!nft?.priceBased) {
@@ -89,8 +105,6 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
       } as BorrowNftWithBulk;
     }
   });
-
-  const dispatch = useDispatch();
 
   const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
 

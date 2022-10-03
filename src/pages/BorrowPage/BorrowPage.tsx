@@ -116,6 +116,7 @@ const BorrowPage: FC = () => {
 
       {borrowType === BorrowType.BULK && bulks?.best && (
         <BorrowBulk
+          onBack={() => setBorrowType(BorrowType.SINGLE)}
           onClick={() => setBorrowType(null)}
           value={value}
           bulks={bulks}

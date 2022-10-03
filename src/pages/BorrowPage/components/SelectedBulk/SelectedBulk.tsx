@@ -1,50 +1,45 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
-import NFTCheckbox from '../../../../components/NFTCheckbox';
+import { LoadingModal } from '../../../../components/LoadingModal';
 import Button from '../../../../components/Button';
-import SelectedBulkRaw from '../SelectedBulkRaw';
 import styles from './SelectedBulk.module.scss';
-import { BulkValues } from '../../BorrowPage';
+import { SolanaIcon } from '../../../../icons';
+import { PATHS } from '../../../../constants';
 import { useSeletedBulk } from './hooks';
 import Icons from '../../../../iconsNew';
 
 interface BorrowingBulkProps {
   selectedBulk: any[];
   onClick?: () => void;
+  onBack?: () => void;
 }
 
 const SelectedBulk: FC<BorrowingBulkProps> = ({
   selectedBulk: rawselectedBulk,
   onClick,
+  onBack,
 }) => {
   const {
-    isAssetsMode,
-    setIsAssetsMode,
-    borrowedValue,
-    removedNft,
-    isDisabled,
-    setSelectedBulk,
+    onSubmit,
+    onCardClick,
     selectedBulk,
-    selectedNfts,
+    loadingModalVisible,
+    getLiquidationPrice,
+    activeCardId,
     selectedBulkValue,
-    onMultiSelect,
-    setSelectedNfts,
+    closeLoadingModal,
   } = useSeletedBulk({ rawselectedBulk });
+
+  const isSelectedBulk = selectedBulk?.length;
 
   return (
     <>
-      {!isAssetsMode ? (
-        <SelectedBulkRaw
-          onClick={onClick}
-          onChangeAssetsMode={() => setIsAssetsMode(true)}
-          selectedBulk={selectedBulk}
-          selectedBulkValue={selectedBulkValue}
-        />
-      ) : (
+      {!!isSelectedBulk && (
         <>
           <div
-            onClick={() => setIsAssetsMode(false)}
+            onClick={onClick}
             className={cx(styles.btnBack, styles.btnWithArrow)}
           >
             <Icons.Arrow />
@@ -52,55 +47,155 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           <div className={styles.sidebar}>
             <p className={styles.sidebarTitle}>To borrow</p>
             <p className={styles.sidebarSubtitle}>
-              {borrowedValue?.toFixed(2)} SOL
+              {selectedBulkValue?.toFixed(2)} SOL
             </p>
             <div className={styles.sidebarBtnWrapper}>
               <Button
-                onClick={() => {
-                  setIsAssetsMode(false);
-                  setSelectedBulk(removedNft);
-                  setSelectedNfts([]);
-                }}
+                onClick={onSubmit}
                 type="secondary"
                 className={styles.btn}
-                disabled={isDisabled}
               >
-                View bulk loan
+                Bulk borrow {selectedBulkValue?.toFixed(2)} SOL
+              </Button>
+              <Button
+                onClick={onBack ? onBack : onClick}
+                className={styles.btn}
+              >
+                Change asset
               </Button>
             </div>
           </div>
-          <div className={styles.header}>
-            <div>
-              <h1 className={styles.title}>Tiltle 1</h1>
-              <h2 className={styles.subtitle}>
-                {selectedBulk?.length} loans in bulk
-              </h2>
-            </div>
-          </div>
-          <div className={styles.nftsList}>
-            {selectedBulk.map((nft) => (
-              <NFTCheckbox
-                key={nft.mint}
-                name={nft.name}
-                onClick={() => onMultiSelect(nft)}
-                imageUrl={nft.imageUrl}
-                selected={
-                  !!selectedNfts.find(
-                    (selectedNft) => selectedNft?.mint === nft.mint,
-                  )
-                }
-                isCanStake={
-                  nft.timeBased?.isCanStake || nft.priceBased?.isCanStake
-                }
-                isCanFreeze={nft.isCanFreeze}
-                loanValue={nft?.maxLoanValue}
-              />
-            ))}
-          </div>
         </>
       )}
+
+      <div
+        className={cx(
+          styles.container,
+          !isSelectedBulk && styles.closeContainer,
+        )}
+      >
+        <div className={styles.header}>
+          <div>
+            <h1 className={styles.title}>Tiltle 1</h1>
+            <h2 className={styles.subtitle}>
+              {selectedBulk?.length} loans in bulk
+            </h2>
+          </div>
+        </div>
+
+        {!isSelectedBulk && (
+          <div className={styles.congratsWrapper}>
+            <h3 className={styles.congratsTitle}>
+              Congrats! See your NFTs in My loans
+            </h3>
+            <NavLink to={PATHS.LOANS}>
+              <Button className={styles.congratsBtn} type="secondary">
+                Loans
+              </Button>
+            </NavLink>
+          </div>
+        )}
+
+        {!!isSelectedBulk &&
+          selectedBulk.map((nft, id) => (
+            <div className={styles.cardWrapper} key={id}>
+              <div className={styles.card}>
+                <div className={styles.cardInfo}>
+                  <img className={styles.image} src={nft?.imageUrl} />
+                  <div className={styles.name}>{nft?.name || ''}</div>
+                </div>
+                <div className={styles.cardValues}>
+                  {getStatsValue({
+                    title: 'To borrow',
+                    value: nft?.maxLoanValue,
+                    withIcon: true,
+                    className: styles.rowCardValue,
+                  })}
+                  <div
+                    onClick={() => onCardClick(id)}
+                    className={cx(
+                      activeCardId === id && styles.btnVisible,
+                      styles.btnWithArrow,
+                    )}
+                  >
+                    <Icons.Chevron />
+                  </div>
+                </div>
+              </div>
+              {id === activeCardId && (
+                <div className={styles.hiddenValues}>
+                  {getStatsValue({
+                    title: 'Loan Type',
+                    value: nft?.isPriceBased ? 'Perpetual' : 'Flip',
+                  })}
+                  {getStatsValue({
+                    title: 'Loan to value',
+                    value: `${
+                      nft?.isPriceBased
+                        ? nft?.parameters?.ltvPercents
+                        : nft?.timeBased?.ltvPercents
+                    } %`,
+                  })}
+                  {getStatsValue({
+                    title: 'Floor price',
+                    value: `${nft?.valuation}`,
+                    withIcon: true,
+                  })}
+                  {nft?.isPriceBased &&
+                    getStatsValue({
+                      title: 'Liquidations price',
+                      value: `${getLiquidationPrice(nft)}`,
+                      withIcon: true,
+                    })}
+                  {nft?.isPriceBased &&
+                    getStatsValue({
+                      title: 'Borrow APY',
+                      value: `${nft?.parameters?.borrowAPRPercents?.toFixed(
+                        0,
+                      )} %`,
+                    })}
+                  {getStatsValue({
+                    title: 'Minting fee',
+                    value: `${
+                      nft?.isPriceBased
+                        ? (Number(nft.maxLoanValue) * 0.01).toFixed(3)
+                        : nft.parameters?.fee
+                    } `,
+                    withIcon: true,
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+      </div>
+      <LoadingModal
+        title="Please approve transaction"
+        visible={loadingModalVisible}
+        onCancel={closeLoadingModal}
+      />
     </>
   );
 };
 
 export default SelectedBulk;
+
+const getStatsValue = ({
+  title,
+  value,
+  withIcon,
+  className,
+}: {
+  title: string;
+  value: number | string;
+  withIcon?: boolean;
+  className?: string;
+}) => {
+  return (
+    <div className={cx(styles.cardValue, className)}>
+      <p className={styles.cardTitle}>{title}</p>
+      <p className={styles.cardSubtitle}>
+        {value} {withIcon && <SolanaIcon />}
+      </p>
+    </div>
+  );
+};

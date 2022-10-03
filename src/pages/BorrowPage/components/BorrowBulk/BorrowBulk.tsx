@@ -14,12 +14,13 @@ interface BorrowBulk {
   bulks: BulksType;
   value: string;
   onClick: () => void;
+  onBack: () => void;
 }
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
 
-const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick }) => {
+const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const { connected } = useWallet();
 
   const { best, cheapest, safest } = bulks;
@@ -96,6 +97,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick }) => {
         </>
       ) : (
         <SelectedBulk
+          onBack={onBack}
           onClick={() => setSelectedBulk(null)}
           selectedBulk={selectedBulk}
         />

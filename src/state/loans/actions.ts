@@ -10,6 +10,7 @@ export const loansTypes = {
   ADD_HIDDEN_LOAN_NFT: 'loans/ADD_HIDDEN_LOAN_NFT',
   ADD_PEPR_LOAN_NFT: 'loans/ADD_PEPR_LOAN_NFT',
   UPDATE_PEPR_LOAN_NFT: 'loans/UPDATE_PEPR_LOAN_NFT',
+  SET_BULK_NFTS: 'loans/SET_BULK_NFTS',
 };
 
 export const loansActions = {
@@ -42,4 +43,7 @@ export const loansActions = {
     loansTypes.UPDATE_PEPR_LOAN_NFT,
     (payload) => ({ payload }),
   ),
+  setBulkNfts: createCustomAction(loansTypes.SET_BULK_NFTS, (payload) => ({
+    payload,
+  })),
 };

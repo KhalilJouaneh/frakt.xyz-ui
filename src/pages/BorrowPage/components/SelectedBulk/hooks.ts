@@ -1,86 +1,107 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { loansActions } from './../../../../state/loans/actions';
+import { useState, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useDispatch } from 'react-redux';
 import { sum, map } from 'ramda';
 
-import { useSelectLayout } from '../../../../components/SelectLayout';
-import { BorrowNft } from '../../../../state/loans/types';
-import { useBorrowPage } from '../../hooks';
+import { useLoadingModal } from '../../../../components/LoadingModal';
+import { commonActions } from '../../../../state/common/actions';
+import { proposeBulkLoan } from '../../../../utils/loans';
+import { useConnection } from '../../../../hooks';
 
 type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
-  selectedBulk: any;
-  isAssetsMode: boolean;
-  setIsAssetsMode: Dispatch<SetStateAction<boolean>>;
-  setSelectedBulk: Dispatch<any>;
-  borrowedValue: number;
-  removedNft: BorrowNft[];
-  isDisabled: boolean;
+  getLiquidationPrice: (nft: any) => void;
+  onCardClick: (id: number) => void;
+  onSubmit: () => Promise<void>;
+  closeLoadingModal: () => void;
+  loadingModalVisible: boolean;
   selectedBulkValue: number;
-  selectedNfts: BorrowNft[];
-  onMultiSelect: (nft: BorrowNft) => void;
-  setSelectedNfts: Dispatch<SetStateAction<BorrowNft[]>>;
+  activeCardId: number;
+  selectedBulk: any;
 };
 
 export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
-  const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
-  const [isAssetsMode, setIsAssetsMode] = useState<boolean>(false);
-  const [borrowedValue, setBorrowedValue] = useState<number>(0);
-  const [removedNft, setRemovedNft] = useState<BorrowNft[]>([]);
+  const wallet = useWallet();
+  const connection = useConnection();
+  const dispatch = useDispatch();
 
-  const { onMultiSelect, setSelectedNfts, selectedNfts } = useSelectLayout();
+  const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
+
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
   const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
 
-  const isDisabled = selectedBulk.length === selectedNfts.length;
+  const {
+    visible: loadingModalVisible,
+    close: closeLoadingModal,
+    open: openLoadingModal,
+  } = useLoadingModal();
 
-  // const { fetchData } = useBorrowPage();
-  // const [nfts, setNfts] = useState<BorrowNft[]>([]);
+  const onCardClick = (id: number): void => {
+    if (id === activeCardId) {
+      setActiveCardId(null);
+    } else {
+      setActiveCardId(id);
+    }
+  };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const nfts = await fetchData({ offset: 0, limit: 1000 });
-  //     setNfts(nfts);
-  //   })();
-  // }, []);
-
-  // const mapSelectedNfts = rawselectedBulk.map((item) => {
-  //   return {
-  //     ...item,
-  //     isSelected: true,
-  //   };
-  // });
-
-  // const mints = mapSelectedNfts.map(({ mint }) => mint);
-
-  // const notSelectedNfts = nfts.filter(({ mint }) => !mints.includes(mint));
-  // const allNfts = [...notSelectedNfts, ...mapSelectedNfts];
+  const mapToBorrowNft = rawselectedBulk.map((nft) => {
+    if (!nft?.isPriceBased) {
+      return { ...nft, timeBased: nft.parameters };
+    } else {
+      return { ...nft, timeBased: nft.parameters };
+    }
+  });
 
   useEffect(() => {
-    setRemovedNft(
-      selectedBulk.filter(
-        (selectedBulkMint) =>
-          !selectedNfts.find(
-            (selectedNftMint) => selectedNftMint.mint === selectedBulkMint.mint,
-          ),
-      ),
-    );
-  }, [selectedNfts]);
+    dispatch(loansActions.setBulkNfts(mapToBorrowNft));
+  }, [dispatch]);
 
-  useEffect(() => {
-    const borrowValueSelectedNft = sum(map(maxLoanValue, selectedNfts));
-    setBorrowedValue(selectedBulkValue - borrowValueSelectedNft);
-  }, [selectedNfts]);
+  const getLiquidationPrice = (nft): string => {
+    const { valuation, parameters } = nft;
+    const loanValue = parseFloat(valuation) * (parameters.ltvPercents / 100);
+
+    const liquidationPrice =
+      loanValue + loanValue * (parameters.collaterizationRate / 100);
+    return liquidationPrice.toFixed(3);
+  };
+
+  const showConfetti = (): void => {
+    dispatch(commonActions.setConfetti({ isVisible: true }));
+  };
+
+  const onSubmit = async (): Promise<void> => {
+    try {
+      openLoadingModal();
+
+      const result = await proposeBulkLoan({
+        wallet,
+        connection,
+        selectedBulk,
+      });
+
+      if (!result) {
+        throw new Error('Loan proposing failed');
+      }
+
+      showConfetti();
+      setSelectedBulk([]);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      closeLoadingModal();
+    }
+  };
 
   return {
     selectedBulk,
-    isAssetsMode,
-    setIsAssetsMode,
-    borrowedValue,
-    removedNft,
-    isDisabled,
-    setSelectedBulk,
     selectedBulkValue,
-    selectedNfts,
-    onMultiSelect,
-    setSelectedNfts,
+    onSubmit,
+    onCardClick,
+    loadingModalVisible,
+    getLiquidationPrice,
+    activeCardId,
+    closeLoadingModal,
   };
 };

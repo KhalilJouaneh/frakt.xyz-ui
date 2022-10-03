@@ -55,6 +55,13 @@ const addHiddenLoanNftsReducer = createReducer<string[]>([], {
   ) => [...state, action.payload],
 });
 
+const setBulkNftsReducer = createReducer<BorrowNft[]>(null, {
+  [loansTypes.SET_BULK_NFTS]: (
+    __,
+    action: ReturnType<typeof loansActions.setBulkNfts>,
+  ) => action.payload,
+});
+
 const addPerpLoanNftsReducer = createReducer<string[]>([])
   .handleAction(loansActions.addPerpLoanNft, (action) => action?.payload || [])
   .handleAction(loansActions.updatePerpLoanNft, (state, { payload }) => {
@@ -74,4 +81,5 @@ export default combineReducers({
   hiddenBorrowNfts: addHiddenBorrowNftsReducer,
   hiddenLoanNfts: addHiddenLoanNftsReducer,
   perpLoansNfts: addPerpLoanNftsReducer,
+  bulkNfts: setBulkNftsReducer,
 });
