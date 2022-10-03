@@ -5,7 +5,7 @@
 @import './abstracts/mixins.scss';
 
 body {
-  background: var(--secondary-background);
+  background-color: var(--secondary-background);
   color: var(--secondary-border);
   font: var(--font-text-3);
 }

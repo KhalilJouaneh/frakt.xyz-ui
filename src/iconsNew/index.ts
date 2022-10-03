@@ -18,6 +18,8 @@ import { Raffles, RafflesDark } from './Raffles';
 import { Moon } from './Moon';
 import { Sun } from './Sun';
 import { FRKT } from './FRKT';
+import { Ledger } from './Ledger';
+import { MathWallet } from './MathWallet';
 
 export default {
   Chart,
@@ -50,4 +52,6 @@ export default {
   GithubDark,
   DocsDark,
   FRKT,
+  Ledger,
+  MathWallet,
 };

@@ -1,3 +1,5 @@
+import { FC } from 'react';
+import Icons from '../../iconsNew/';
 import styles from './styles.module.scss';
 
 interface WalletItemProps {
@@ -7,16 +9,20 @@ interface WalletItemProps {
   name: string;
 }
 
-export const WalletItem = ({
+export const WalletItem: FC<WalletItemProps> = ({
   onClick,
   imageSrc,
   imageAlt,
   name,
-}: WalletItemProps): JSX.Element => {
+}) => {
   return (
     <div className={styles.walletItemContainer}>
       <div className={styles.walletItem} onClick={onClick}>
-        <img alt={imageAlt} src={imageSrc} />
+        {name === 'Ledger' && <Icons.Ledger className={styles.icon} />}
+        {name === 'MathWallet' && <Icons.MathWallet className={styles.icon} />}
+        {name !== 'Ledger' && name !== 'MathWallet' && (
+          <img alt={imageAlt} src={imageSrc} />
+        )}
         {name}
       </div>
     </div>

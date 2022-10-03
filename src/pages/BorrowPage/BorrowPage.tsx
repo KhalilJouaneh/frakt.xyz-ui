@@ -1,26 +1,21 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import cx from 'classnames';
 
 import { useSelectLayout, SelectLayout } from '../../components/SelectLayout';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
 import InfinityScroll from '../../components/InfinityScroll';
 import { SearchInput } from '../../components/SearchInput';
-import { commonActions } from '../../state/common/actions';
-import { sendAmplitudeData } from '../../utils/amplitude';
 import NFTCheckbox from '../../components/NFTCheckbox';
 import { BorrowForm } from './components/BorrowForm';
 import { BorrowNft } from '../../state/loans/types';
 import styles from './BorrowPage.module.scss';
-import Button from '../../components/Button';
 import { useBorrowPage } from './hooks';
-import classNames from 'classnames';
 import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
 
 const BorrowPage: FC = () => {
-  const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
 
   const {
@@ -42,7 +37,12 @@ const BorrowPage: FC = () => {
         <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
       }
     >
-      <div className={styles.header}>
+      <div
+        className={cx(
+          styles.header,
+          selectedNfts.length && styles.headerActive,
+        )}
+      >
         <div>
           <h1 className={styles.title}>Borrow money</h1>
           <h2 className={styles.subtitle}>
@@ -81,7 +81,7 @@ const BorrowPage: FC = () => {
         <InfinityScroll
           itemsToShow={nfts.length}
           next={next}
-          wrapperClassName={classNames(
+          wrapperClassName={cx(
             styles.nftsList,
             !selectedNfts.length && styles.nftListActive,
           )}

@@ -9,6 +9,14 @@
   }
 }
 
+.headerActive {
+  padding-right: 302px;
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+}
+
 .title {
   font: var(--font-title-2);
   margin-bottom: 8px;
@@ -89,8 +97,6 @@
   right: 0;
 }
 
-//
-
 .search {
   margin-bottom: 32px;
   max-width: 350px;
@@ -107,12 +113,12 @@
 
 .nftsList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 24px;
   align-items: stretch;
   padding-right: 302px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 767px) {
     padding-right: 0;
   }
 }

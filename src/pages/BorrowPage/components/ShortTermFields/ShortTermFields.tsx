@@ -74,7 +74,7 @@ export const ShortTermFields: FC<ShortTermFields> = ({ nft }) => {
           </p>
         </div>
         <div className={styles.staticValue}>
-          <p className={styles.staticValueTitle}>Fee on {returnPeriodDays}</p>
+          <p className={styles.staticValueTitle}>Fee on {returnPeriodDays}d</p>
           <p className={styles.staticValueData}>
             {(feeOnDayWithDiscount * returnPeriodDays).toFixed(3)}
             <SolanaIcon />
