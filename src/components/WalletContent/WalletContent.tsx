@@ -1,14 +1,14 @@
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useWallet } from '@solana/wallet-adapter-react';
 
+import { selectUser } from '../../state/common/selectors';
+import { commonActions } from '../../state/common/actions';
+import { sendAmplitudeData } from '../../utils/amplitude';
+import CurrentUserTable from '../CurrentUserTable';
+import { useOnClickOutside } from '../../utils';
 import styles from './styles.module.scss';
 import { WalletItem } from './WalletItem';
-import { useWallet } from '@solana/wallet-adapter-react';
-import CurrentUserTable from '../CurrentUserTable';
-import { commonActions } from '../../state/common/actions';
-import { selectUser } from '../../state/common/selectors';
-import { sendAmplitudeData } from '../../utils/amplitude';
-import { useRef } from 'react';
-import { useOnClickOutside } from '../../utils';
 
 interface WalletContentProps {
   className?: string;

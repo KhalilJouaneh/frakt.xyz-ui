@@ -10,6 +10,14 @@
   }
 }
 
+.headerActive {
+  padding-right: 302px;
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+}
+
 .title {
   font: var(--font-title-2);
   margin-bottom: 8px;
@@ -67,6 +75,29 @@
   height: 48px;
 }
 
+.sorting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: var(--gray-color-2);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.filtersDropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+}
+
+.search {
+  margin-bottom: 32px;
+  max-width: 350px;
+}
+
 .input {
   max-width: 404px;
   width: 100%;
@@ -74,12 +105,12 @@
 
 .nftsList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 24px;
   align-items: stretch;
   padding-right: 302px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 767px) {
     padding-right: 0;
   }
 }

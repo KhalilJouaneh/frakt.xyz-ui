@@ -18,32 +18,30 @@
 }
 
 .itemsContainer {
-  max-width: 370px;
-  border: 1px solid var(--primary-border);
+  max-width: 371px;
+  border: 1px solid var(--secondary-border);
   display: grid;
-  grid-template-columns: repeat(3, 104px);
+  grid-template-columns: repeat(3, 113px);
   position: absolute;
-  top: 64px;
-  right: 0;
-  background-color: var(--secondary-background);
+  top: 72px;
+  right: 15px;
+  background-color: var(--primary-background);
+  padding: 16px;
 
-  @media screen and (max-width: 1200px) {
-    right: 15px;
-  }
-
-  @media screen and (max-width: 500px) {
-    top: 50px;
-  }
-
-  @media screen and (max-width: 340px) {
-    grid-template-columns: repeat(2, 105px);
-    max-width: 250px;
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 1px solid var(--primary-text);
+    background-color: var(--primary-text);
+    top: 4px;
+    left: 4px;
+    z-index: -1;
   }
 }
 
 .walletItemContainer {
-  padding-top: 22px;
-  padding-bottom: 22px;
   cursor: pointer;
   transition: background-color 0.1s ease-in;
   position: relative;
@@ -57,25 +55,20 @@
 .walletItem {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  
   align-items: center;
-  height: 60px;
-  font-size: 10px;
-  font-weight: 700;
+  gap: 8px;
+  height: 81px;
+  font: var(--font-btn-middle);
 
   img {
-    max-width: 35px;
-    width: 100%;
+    width: 24px;
+    height: 24px;
   }
 }
 
-.darkIcons {
-  img {
-    svg {
-      fill: red;
-      path {
-        fill: red;
-      }
-    }
+.icon {
+  path {
+    fill: var(--secondary-border);
   }
 }

@@ -5,7 +5,7 @@ import { UserState } from '../../../../state/common/types';
 import { getOwnerAvatar } from '../../../../utils/nameService';
 import { shortenAddress } from '../../../../utils/solanaUtils';
 import { getDiscordAvatarUrl, getDiscordUri } from '../../../../utils';
-import { /* PencilIcon, */ TwitterIcon2 } from '../../../../icons';
+import { /* PencilIcon, */ TwitterIcon2, UserIcon } from '../../../../icons';
 import DiscordIcon from '../../../../icons/DiscordIcon2';
 import { commonActions } from '../../../../state/common/actions';
 // import Button from '../../../../components/Button';
@@ -37,17 +37,8 @@ export const ProfileCard: FC<ProfileCard> = ({
       <div className={styles.userInfo}>
         <h2 className={styles.title}>User info</h2>
         <h3 className={styles.description}>
-          <div
-            className={styles.ownerAvatar}
-            style={{
-              backgroundImage: `url(${
-                avatarUrl ?? getOwnerAvatar(twitterName)
-              })`,
-            }}
-          >
-            {/* <div className={styles.editAvatarIcon}>
-              <PencilIcon />
-            </div> */}
+          <div>
+            <UserIcon className={styles.avatar} url={avatarUrl} />
           </div>
 
           <div className={styles.ownerInfo}>

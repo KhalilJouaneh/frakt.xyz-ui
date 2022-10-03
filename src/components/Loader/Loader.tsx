@@ -64,3 +64,7 @@ export const Loader = ({
     </svg>
   );
 };
+
+export const ModalLoader = ({ className }: LoaderProps) => {
+  return <div className={classNames(styles.load, className)}></div>;
+};

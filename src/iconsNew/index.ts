@@ -20,6 +20,8 @@ import { Sun } from './Sun';
 import { FRKT } from './FRKT';
 import { Arrow } from './Arrow';
 import { Chevron } from './Chevron';
+import { Ledger } from './Ledger';
+import { MathWallet } from './MathWallet';
 
 export default {
   Chart,
@@ -54,4 +56,6 @@ export default {
   Arrow,
   Chevron,
   FRKT,
+  Ledger,
+  MathWallet,
 };
