@@ -89,7 +89,7 @@ const BorrowPage: FC = () => {
           {connected && (
             <div className={styles.wrapper}>
               <div className={styles.block}>
-                <h3 className={styles.blockTitle}>Choose for me</h3>
+                <h3 className={styles.blockTitle}>Pick for me</h3>
                 <p className={styles.blockSubtitle}>I need...</p>
                 <div className={styles.blockContent}>
                   <div className={styles.input}>
