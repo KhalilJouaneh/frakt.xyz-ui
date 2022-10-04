@@ -140,7 +140,12 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
           <div onClick={onClick} className={styles.btnBack}>
             <Icons.Arrow />
           </div>
-          <div className={styles.header}>
+          <div
+            className={classNames(
+              styles.header,
+              selectedNfts.length && styles.headerActive,
+            )}
+          >
             <div>
               <h1 className={styles.title}>Borrow money</h1>
               <h2 className={styles.subtitle}>

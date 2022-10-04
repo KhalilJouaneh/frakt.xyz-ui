@@ -10,14 +10,6 @@
   }
 }
 
-.headerActive {
-  padding-right: 302px;
-
-  @media (max-width: 767px) {
-    padding-right: 0;
-  }
-}
-
 .title {
   font: var(--font-title-2);
   margin-bottom: 8px;
@@ -101,22 +93,6 @@
 .input {
   max-width: 404px;
   width: 100%;
-}
-
-.nftsList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-  gap: 24px;
-  align-items: stretch;
-  padding-right: 302px;
-
-  @media (max-width: 767px) {
-    padding-right: 0;
-  }
-}
-
-.nftListActive {
-  padding-right: 0;
 }
 
 .noSuiableMessageWrapper {
