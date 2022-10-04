@@ -75,7 +75,7 @@ const BorrowPage: FC = () => {
         <AppLayout>
           <div className={styles.header}>
             <div>
-              <h1 className={styles.title}>Borrow money</h1>
+              <h1 className={styles.title}>Borrow SOL</h1>
               <h2 className={styles.subtitle}>
                 Select your NFT to use as a collateral
               </h2>
@@ -89,7 +89,7 @@ const BorrowPage: FC = () => {
           {connected && (
             <div className={styles.wrapper}>
               <div className={styles.block}>
-                <h3 className={styles.blockTitle}>Decide for me</h3>
+                <h3 className={styles.blockTitle}>Choose for me</h3>
                 <p className={styles.blockSubtitle}>I need...</p>
                 <div className={styles.blockContent}>
                   <div className={styles.input}>
@@ -108,24 +108,23 @@ const BorrowPage: FC = () => {
                     className={styles.btn}
                     type="secondary"
                   >
-                    Confirm
+                    {"Let's go"}
                   </Button>
                 </div>
               </div>
               <div className={styles.block}>
-                <h3 className={styles.blockTitle}>Title 2</h3>
-                <p className={styles.blockSubtitle}>
-                  I just want to make a loan
-                </p>
+                <h3 className={styles.blockTitle}>Select NFTs manually</h3>
+                <p className={styles.blockSubtitle}></p>
                 <Button
                   onClick={() => {
                     setBorrowType(BorrowType.SINGLE);
                     dispatch(loansActions.setBulkNfts(null));
+                    dispatch(loansActions.updatePerpLoanNft(null));
                   }}
                   className={styles.btnConfirm}
                   type="secondary"
                 >
-                  Try it now
+                  Select
                 </Button>
               </div>
             </div>
@@ -150,7 +149,7 @@ const BorrowPage: FC = () => {
             <>
               <div className={styles.header}>
                 <div>
-                  <h1 className={styles.title}>Tiltle 1</h1>
+                  <h1 className={styles.title}>Borrowing</h1>
                   <h2 className={styles.subtitle}>I need {value} SOL</h2>
                 </div>
               </div>

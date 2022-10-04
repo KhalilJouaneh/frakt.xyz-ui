@@ -65,7 +65,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
           </div>
           <div className={styles.header}>
             <div>
-              <h1 className={styles.title}>Tiltle 1</h1>
+              <h1 className={styles.title}>Borrowing</h1>
               <h2 className={styles.subtitle}>I need {value} SOL</h2>
             </div>
           </div>

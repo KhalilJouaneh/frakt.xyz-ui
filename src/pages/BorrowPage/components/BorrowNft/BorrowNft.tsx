@@ -100,9 +100,9 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
         priceBased: {
           ...nft.priceBased,
           fee: isPriceBased ? nft.timeBased.fee : priceBasedFee.toFixed(3),
-          ltv: ltvPercents,
+          ltv: currentNft?.ltv ? ltvPercents : nft.priceBased.ltvPercents,
         },
-        isPriceBased,
+        isPriceBased: currentNft?.ltv ? isPriceBased : true,
       } as BorrowNftWithBulk;
     }
   });
@@ -149,7 +149,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
             )}
           >
             <div>
-              <h1 className={styles.title}>Borrow money</h1>
+              <h1 className={styles.title}>Borrow SOL</h1>
               <h2 className={styles.subtitle}>
                 Select your NFT to use as a collateral
               </h2>

@@ -103,6 +103,8 @@
 .nfts {
   @include flex(row, wrap, null, null);
   gap: 8px;
+  overflow: auto;
+  max-height: 360px;
 
   @media screen and (max-width: 1240px) {
     padding-bottom: 16px;

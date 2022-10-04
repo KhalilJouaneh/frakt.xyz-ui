@@ -55,13 +55,13 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                 type="secondary"
                 className={styles.btn}
               >
-                Bulk borrow {selectedBulkValue?.toFixed(2)} SOL
+                Borrow {selectedBulkValue?.toFixed(2)} SOL
               </Button>
               <Button
                 onClick={onBack ? onBack : onClick}
                 className={styles.btn}
               >
-                Change asset
+                Change assets
               </Button>
             </div>
           </div>
@@ -76,7 +76,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
       >
         <div className={styles.header}>
           <div>
-            <h1 className={styles.title}>Tiltle 1</h1>
+            <h1 className={styles.title}>Borrowing</h1>
             <h2 className={styles.subtitle}>
               {selectedBulk?.length} loans in bulk
             </h2>
