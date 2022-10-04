@@ -100,7 +100,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
         priceBased: {
           ...nft.priceBased,
           fee: isPriceBased ? nft.timeBased.fee : priceBasedFee.toFixed(3),
-          ltv: currentNft?.ltv ? ltvPercents : nft.priceBased.ltvPercents,
+          ltv: ltvPercents,
         },
         isPriceBased: currentNft?.ltv ? isPriceBased : true,
       } as BorrowNftWithBulk;
