@@ -9,8 +9,49 @@
 }
 
 .search {
-  margin-bottom: 32px;
   max-width: 350px;
+}
+
+.sortWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .arrowDown,
+  .arrowUp {
+    margin-top: 2px;
+    margin-left: 3px;
+
+    path {
+      stroke: var(--white-color);
+    }
+  }
+
+  .arrowDown {
+    transform: rotate(180deg);
+  }
+}
+
+.sortingSelect {
+  width: unset;
+  margin-left: 8px;
+
+  span {
+    display: flex;
+    color: var(--white-color);
+  }
+}
+
+.sortingSelectContainer {
+  svg {
+    path {
+      stroke: var(--accent-color-1) !important;
+    }
+  }
+
+  .sortName {
+    color: var(--accent-color-1);
+  }
 }
 
 .connectBtn {

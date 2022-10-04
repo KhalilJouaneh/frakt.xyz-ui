@@ -13,6 +13,10 @@ import { useBorrowPage } from './hooks';
 import { commonActions } from '../../state/common/actions';
 import { BorrowNft } from '../../state/loans/types';
 import { sendAmplitudeData } from '../../utils/amplitude';
+import { Controller } from 'react-hook-form';
+import { Select } from '../../components/Select';
+import { FilterFormInputsNames } from './hooks/useBorrowPageFilter';
+import { SORT_VALUES } from './BorrowPage.constants';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -21,21 +25,13 @@ const BorrowPage: FC = () => {
   const dispatch = useDispatch();
   const { connected, onDeselect, onSelect, selectedNfts } = useSelectLayout();
 
-  const {
-    isCloseSidebar,
-    nfts,
-    setSearch,
-    searchItems,
-    search,
-    next,
-    loading,
-  } = useBorrowPage();
+  const { nfts, isLoading, searchQuery, setSearch, next, control } =
+    useBorrowPage();
 
   return (
     <SelectLayout
       selectedNfts={selectedNfts}
       onDeselect={onDeselect}
-      isCloseSidebar={isCloseSidebar}
       sidebarForm={
         <BorrowForm selectedNft={selectedNfts?.[0]} onDeselect={onDeselect} />
       }
@@ -44,15 +40,29 @@ const BorrowPage: FC = () => {
       <h2 className={styles.subtitle}>
         Select your NFT to use as a collateral
       </h2>
-      <SearchInput
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value || '');
-          searchItems(e.target.value || '');
-        }}
-        className={styles.search}
-        placeholder="Search by NFT name"
-      />
+      <div className={styles.sortWrapper}>
+        <SearchInput
+          value={searchQuery}
+          onChange={(e) => setSearch(e.target.value || '')}
+          className={styles.search}
+          placeholder="Search by NFT name"
+        />
+        <Controller
+          control={control}
+          name={FilterFormInputsNames.SORT}
+          render={({ field: { value, name, onChange } }) => (
+            <Select
+              valueContainerClassName={styles.sortingSelectContainer}
+              className={styles.sortingSelect}
+              label="Sort by"
+              options={SORT_VALUES}
+              name={name}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </div>
 
       {!connected && (
         <Button
@@ -67,7 +77,7 @@ const BorrowPage: FC = () => {
         </Button>
       )}
 
-      {connected && !loading && !nfts.length && (
+      {connected && !isLoading && !nfts.length && (
         <div className={styles.noSuiableMessageWrapper}>
           <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
           <LinkWithArrow
@@ -84,7 +94,7 @@ const BorrowPage: FC = () => {
           itemsToShow={nfts.length}
           next={next}
           wrapperClassName={styles.nftsList}
-          isLoading={loading}
+          isLoading={isLoading}
           emptyMessage=""
           customLoader={<p className={styles.loader}>loading your jpegs</p>}
         >
