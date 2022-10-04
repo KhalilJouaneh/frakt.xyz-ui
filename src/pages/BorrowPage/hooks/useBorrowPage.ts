@@ -29,7 +29,7 @@ export const useBorrowPage = (): {
   control: Control<FilterFormFieldsValues>;
 } => {
   const dispatch = useDispatch();
-  const [isClear, setIsClear] = useState(false);
+  const [nextData, setNextData] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [offset, setOffset] = useState<number>(0);
   const [reFetch, setReFetch] = useState<boolean>(false);
@@ -57,11 +57,11 @@ export const useBorrowPage = (): {
       refetchOnWindowFocus: false,
       enabled: connected,
       onSuccess: (data) => {
-        if (isClear) {
-          dispatch(loansActions.setBorrowNfts(data));
-          setIsClear(false);
-        } else {
+        if (nextData) {
           dispatch(loansActions.setBorrowNfts([...nfts, ...data]));
+          setNextData(false);
+        } else {
+          dispatch(loansActions.setBorrowNfts(data));
         }
       },
     },
@@ -69,7 +69,6 @@ export const useBorrowPage = (): {
 
   const clearAndFetch = () => {
     setOffset(0);
-    setIsClear(true);
     setReFetch(true);
   };
 
@@ -84,6 +83,7 @@ export const useBorrowPage = (): {
 
   const next = useCallback((): void => {
     setOffset((prevValue) => prevValue + FETCH_LIMIT);
+    setNextData(true);
     setReFetch(true);
   }, []);
 
