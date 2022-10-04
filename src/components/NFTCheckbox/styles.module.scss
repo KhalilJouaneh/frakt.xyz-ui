@@ -5,7 +5,7 @@
 .badges {
   display: flex;
   align-items: flex-end;
-  padding: 24px;
+  padding: 16px;
   gap: 10px;
   z-index: 1;
 }
@@ -13,12 +13,12 @@
 .badge {
   background-color: var(--light-green-color);
   color: var(--button-text);
-  font: var(--font-text-5);
+  font: var(--font-text-6);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 33px;
-  width: 170px;
+  height: 30px;
+  width: 148px;
 }
 
 .imageShadow {

@@ -42,56 +42,67 @@ const MyLoans: FC = () => {
     { name: 'On grace', value: graceLoansValue?.toFixed(3) },
     { name: 'Bound', value: 0 },
   ];
+
   return (
     <Block className={styles.block}>
       <div className={styles.poolsConainer}>
         <h3 className={styles.title}>My loans</h3>
-        <div className={styles.loansInfoWrapper}>
-          <div className={styles.loansInfo}>
-            <div className={styles.loansValue}>
-              {totalBorrowed.toFixed(3)} <SolanaIcon className={styles.icon} />
-            </div>
-            <p className={styles.subtitle}>Total borrowed</p>
-          </div>
-          <div className={styles.loansInfo}>
-            <div className={styles.loansValue}>
-              {totalDebt.toFixed(3)} <SolanaIcon className={styles.icon} />
-            </div>
-            <p className={styles.subtitle}>Total debt</p>
-          </div>
-        </div>
-        <div className={styles.chartWrapper}>
-          <div className={styles.chart}>
-            <ChartPie
-              rawData={loansInfo}
-              width={192}
-              label={
-                <div className={styles.labelWrapper}>
-                  <p className={styles.labelValue}>{countLoans}</p>
-                  <p className={styles.label}>Loans</p>
+        {userLoans.length ? (
+          <>
+            <div className={styles.loansInfoWrapper}>
+              <div className={styles.loansInfo}>
+                <div className={styles.loansValue}>
+                  {totalBorrowed.toFixed(3)}{' '}
+                  <SolanaIcon className={styles.icon} />
                 </div>
-              }
-            />
-          </div>
-          <div className={styles.chartInfo}>
-            {loansInfo.map(({ name, value }, idx) => (
-              <div key={idx} className={styles.row}>
-                <div className={styles.rowInfo}>
-                  <div
-                    className={styles.dot}
-                    style={{ background: defaultColors[idx] }}
-                  />
-                  <p className={styles.name}>{name}</p>
-                </div>
-                <p className={styles.value}>{value}</p>
+                <p className={styles.subtitle}>Total borrowed</p>
               </div>
-            ))}
+              <div className={styles.loansInfo}>
+                <div className={styles.loansValue}>
+                  {totalDebt.toFixed(3)} <SolanaIcon className={styles.icon} />
+                </div>
+                <p className={styles.subtitle}>Total debt</p>
+              </div>
+            </div>
+            <div className={styles.chartWrapper}>
+              <div className={styles.chart}>
+                <ChartPie
+                  rawData={loansInfo}
+                  width={192}
+                  label={
+                    <div className={styles.labelWrapper}>
+                      <p className={styles.labelValue}>{countLoans}</p>
+                      <p className={styles.label}>Loans</p>
+                    </div>
+                  }
+                />
+              </div>
+              <div className={styles.chartInfo}>
+                {loansInfo.map(({ name, value }, idx) => (
+                  <div key={idx} className={styles.row}>
+                    <div className={styles.rowInfo}>
+                      <div
+                        className={styles.dot}
+                        style={{ background: defaultColors[idx] }}
+                      />
+                      <p className={styles.name}>{name}</p>
+                    </div>
+                    <p className={styles.value}>{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>
+            <p>No loans taken</p>
           </div>
-        </div>
+        )}
       </div>
+
       <NavLink style={{ width: '100%' }} to={PATHS.LOANS}>
         <Button className={styles.btn} type="secondary">
-          Repay
+          {userLoans.length ? 'Repay' : 'Borrow money'}
         </Button>
       </NavLink>
     </Block>

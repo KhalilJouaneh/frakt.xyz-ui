@@ -60,7 +60,10 @@ export const useLoansFiltering: UseLoansFiltering = ({
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
-      [FilterFormInputsNames.SORT]: SORT_VALUES[0],
+      [FilterFormInputsNames.SORT]: {
+        label: <span>Time to repay</span>,
+        value: 'timeToRepay_asc',
+      },
       [FilterFormInputsNames.LOANS_STATUS]: SORT_LOANS_TYPE_VALUES[0],
     },
   });
