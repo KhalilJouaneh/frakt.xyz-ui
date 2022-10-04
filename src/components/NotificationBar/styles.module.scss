@@ -8,6 +8,7 @@
   justify-content: center;
   align-items: center;
   color: black;
+  left: 0;
 }
 
 .notificationBarHide {
@@ -26,11 +27,10 @@
 .close {
   position: absolute;
   right: 12px;
-  background-color: black;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid grey;
+  border: 1px solid var(--secondary-border);;
   overflow: hidden;
   cursor: pointer;
 }

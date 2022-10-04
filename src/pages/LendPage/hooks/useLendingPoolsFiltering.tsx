@@ -50,7 +50,10 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
   const { control, watch, setValue } = useForm({
     defaultValues: {
       [FilterFormInputsNames.SHOW_STAKED]: false,
-      [FilterFormInputsNames.SORT]: SORT_VALUES[0],
+      [FilterFormInputsNames.SORT]: {
+        label: <span>APR</span>,
+        value: 'apr_asc',
+      },
     },
   });
 

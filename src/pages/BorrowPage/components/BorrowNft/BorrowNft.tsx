@@ -94,7 +94,9 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
 
       return {
         ...nft,
-        maxLoanValue: isPriceBased ? maxLoanValuePriceBased : nft?.maxLoanValue,
+        maxLoanValue: isPriceBased
+          ? maxLoanValuePriceBased
+          : nft?.timeBased?.loanValue,
         priceBased: {
           ...nft.priceBased,
           fee: isPriceBased ? nft.timeBased.fee : priceBasedFee.toFixed(3),
