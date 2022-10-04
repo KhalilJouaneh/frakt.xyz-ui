@@ -2,8 +2,6 @@ import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map } from 'ramda';
 
-import { AppLayout } from '../../../../components/Layout/AppLayout';
-import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 import { BulksType, BulkValues } from '../../BorrowPage';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
@@ -16,9 +14,6 @@ interface BorrowBulk {
   onClick: () => void;
   onBack: () => void;
 }
-
-const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
-  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
 
 const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const { connected } = useWallet();
@@ -62,7 +57,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   };
 
   return (
-    <AppLayout>
+    <>
       {!selectedBulk?.length ? (
         <>
           <div onClick={onClick} className={styles.btnBack}>
@@ -74,18 +69,6 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
               <h2 className={styles.subtitle}>I need {value} SOL</h2>
             </div>
           </div>
-
-          {connected && !bulks.best.length && (
-            <div className={styles.noSuiableMessageWrapper}>
-              <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
-              <LinkWithArrow
-                className={styles.acceptedCollectionsLink}
-                label="Check collections accepted for loans"
-                to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
-                externalLink
-              />
-            </div>
-          )}
 
           {connected && !!bulks.best.length && (
             <div className={styles.wrapper}>
@@ -102,7 +85,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
           selectedBulk={selectedBulk}
         />
       )}
-    </AppLayout>
+    </>
   );
 };
 

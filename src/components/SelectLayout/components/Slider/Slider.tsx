@@ -30,7 +30,7 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
   const [currentId, setCurrentId] = useState(selectedNftId);
 
   const isBulkLoan = nfts.length > 1;
-  const id = currentId > nfts.length - 1 ? 0 : currentId;
+  const id = currentId > nfts.length - 1 ? 0 : selectedNftId;
 
   useEffect(() => {
     if (!nfts.length) {

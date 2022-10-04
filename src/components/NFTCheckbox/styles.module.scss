@@ -126,6 +126,9 @@
   &_checked {
     border: 1px solid var(--black-color);
   }
+  &_isBulk {
+    border: 1px solid var(--light-green-color) !important;
+  }
 }
 
 .ltvContent {

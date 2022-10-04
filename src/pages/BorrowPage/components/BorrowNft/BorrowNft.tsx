@@ -24,6 +24,7 @@ import { useBorrowPage } from '../../hooks';
 import SelectedBulk from '../SelectedBulk';
 import BorrowForm from '../BorrowForm';
 import Icons from '../../../../iconsNew';
+import { commonActions } from '../../../../state/common/actions';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -65,7 +66,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const bulkNftsRaw = useSelector(selectBulkNfts);
 
   useEffect(() => {
-    setSelectedNfts(bulkNftsRaw);
+    bulkNftsRaw.length && setSelectedNfts(bulkNftsRaw);
   }, [bulkNftsRaw]);
 
   const [openBulk, setOpenBulk] = useState<boolean>(false);
@@ -73,11 +74,9 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
   const isBulkLoan = selectedNfts.length > 1;
 
-  console.log(selectedNfts);
-
   const bulkNfts = selectedNfts.map((nft) => {
     if (!nft?.priceBased) {
-      return { ...nft, parameters: nft.timeBased };
+      return { ...nft };
     } else {
       const currentNft = perpetualNftsInfo.find(
         ({ mint }) => mint === nft.mint,
@@ -96,15 +95,21 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
       return {
         ...nft,
         maxLoanValue: isPriceBased ? maxLoanValuePriceBased : nft?.maxLoanValue,
-        parameters: {
+        priceBased: {
           ...nft.priceBased,
           fee: isPriceBased ? nft.timeBased.fee : priceBasedFee.toFixed(3),
-          ltvPercents,
+          ltv: ltvPercents,
         },
         isPriceBased,
       } as BorrowNftWithBulk;
     }
   });
+
+  useEffect(() => {
+    if (selectedNfts.length) {
+      dispatch(commonActions.setSelectedNftId({ id: selectedNfts.length - 1 }));
+    }
+  }, [selectedNfts]);
 
   const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
 
@@ -180,7 +185,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
               emptyMessage=""
               customLoader={<p className={styles.loader}>loading your jpegs</p>}
             >
-              {(nfts as BorrowNft[]).map((nft) => {
+              {(nfts as BorrowNft[]).map((nft, idx) => {
                 return (
                   <NFTCheckbox
                     key={nft.mint}

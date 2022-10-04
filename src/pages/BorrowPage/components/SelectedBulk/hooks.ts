@@ -46,24 +46,16 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     }
   };
 
-  const mapToBorrowNft = rawselectedBulk.map((nft) => {
-    if (!nft?.isPriceBased) {
-      return { ...nft, timeBased: nft.parameters };
-    } else {
-      return { ...nft, timeBased: nft.parameters };
-    }
-  });
-
   useEffect(() => {
-    dispatch(loansActions.setBulkNfts(mapToBorrowNft));
+    dispatch(loansActions.setBulkNfts(rawselectedBulk));
   }, [dispatch]);
 
   const getLiquidationPrice = (nft): string => {
-    const { valuation, parameters } = nft;
-    const loanValue = parseFloat(valuation) * (parameters.ltvPercents / 100);
+    const { valuation, priceBased } = nft;
+    const loanValue = parseFloat(valuation) * (priceBased.ltvPercents / 100);
 
     const liquidationPrice =
-      loanValue + loanValue * (parameters.collaterizationRate / 100);
+      loanValue + loanValue * (priceBased.collaterizationRate / 100);
     return liquidationPrice.toFixed(3);
   };
 

@@ -132,7 +132,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                     title: 'Loan to value',
                     value: `${
                       nft?.isPriceBased
-                        ? nft?.parameters?.ltvPercents
+                        ? nft?.priceBased?.ltv || nft?.priceBased?.ltvPercents
                         : nft?.timeBased?.ltvPercents
                     } %`,
                   })}
@@ -150,7 +150,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                   {nft?.isPriceBased &&
                     getStatsValue({
                       title: 'Borrow APY',
-                      value: `${nft?.parameters?.borrowAPRPercents?.toFixed(
+                      value: `${nft?.priceBased?.borrowAPRPercents?.toFixed(
                         0,
                       )} %`,
                     })}
@@ -159,7 +159,12 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                     value: `${
                       nft?.isPriceBased
                         ? (Number(nft.maxLoanValue) * 0.01).toFixed(3)
-                        : nft.parameters?.fee
+                        : (
+                            Number(nft.timeBased?.fee) -
+                            Number(nft.timeBased?.fee) *
+                              (Number(nft.timeBased?.feeDiscountPercents) *
+                                0.01)
+                          ).toFixed(3)
                     } `,
                     withIcon: true,
                   })}

@@ -10,6 +10,10 @@ import BorrowBulk from './components/BorrowBulk';
 import BorrowNft from './components/BorrowNft';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
+import { useDispatch } from 'react-redux';
+import { loansActions } from '../../state/loans/actions';
+import { LinkWithArrow } from '../../components/LinkWithArrow';
+import { Loader } from '../../components/Loader';
 
 enum BorrowType {
   BULK = 'bulk',
@@ -36,21 +40,33 @@ export type BulkValues = {
 
 export type BulksType = { [key in BulksKeys]: BulkValues[] };
 
+const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
+  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
+
 const BorrowPage: FC = () => {
   const { publicKey, connected } = useWallet();
+  const dispatch = useDispatch();
 
   const [borrowType, setBorrowType] = useState<BorrowType>(null);
   const [bulks, setBulks] = useState<BulksType>(null);
   const [value, setValue] = useState<string>('');
 
-  const onSubmit = async (): Promise<void> => {
-    const bulks = await networkRequest({
-      url: `https://${
-        process.env.BACKEND_DOMAIN
-      }/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
-    });
+  const [nftsLoading, setNftsLoading] = useState<boolean>(true);
 
-    setBulks(bulks as BulksType);
+  const onSubmit = async (): Promise<void> => {
+    try {
+      const bulks = await networkRequest({
+        url: `https://${
+          process.env.BACKEND_DOMAIN
+        }/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
+      });
+
+      setBulks(bulks as BulksType);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setNftsLoading(false);
+    }
   };
 
   return (
@@ -102,7 +118,10 @@ const BorrowPage: FC = () => {
                   I just want to make a loan
                 </p>
                 <Button
-                  onClick={() => setBorrowType(BorrowType.SINGLE)}
+                  onClick={() => {
+                    setBorrowType(BorrowType.SINGLE);
+                    dispatch(loansActions.setBulkNfts(null));
+                  }}
                   className={styles.btnConfirm}
                   type="secondary"
                 >
@@ -114,13 +133,42 @@ const BorrowPage: FC = () => {
         </AppLayout>
       )}
 
-      {borrowType === BorrowType.BULK && bulks?.best && (
-        <BorrowBulk
-          onBack={() => setBorrowType(BorrowType.SINGLE)}
-          onClick={() => setBorrowType(null)}
-          value={value}
-          bulks={bulks}
-        />
+      {borrowType === BorrowType.BULK && (
+        <AppLayout>
+          {!!bulks?.best?.length && (
+            <BorrowBulk
+              onBack={() => setBorrowType(BorrowType.SINGLE)}
+              onClick={() => setBorrowType(null)}
+              value={value}
+              bulks={bulks}
+            />
+          )}
+
+          {!!nftsLoading && <Loader size="large" />}
+
+          {!nftsLoading && !bulks?.best?.length && (
+            <>
+              <div className={styles.header}>
+                <div>
+                  <h1 className={styles.title}>Tiltle 1</h1>
+                  <h2 className={styles.subtitle}>I need {value} SOL</h2>
+                </div>
+              </div>
+
+              <div className={styles.noSuiableMessageWrapper}>
+                <p className={styles.noSuiableMessage}>
+                  No suitable NFTs found
+                </p>
+                <LinkWithArrow
+                  className={styles.acceptedCollectionsLink}
+                  label="Check collections accepted for loans"
+                  to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
+                  externalLink
+                />
+              </div>
+            </>
+          )}
+        </AppLayout>
       )}
       {borrowType === BorrowType.SINGLE && (
         <BorrowNft onClick={() => setBorrowType(null)} />
