@@ -54,13 +54,15 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
 
   const isPriceBased = selectedNft?.isPriceBased;
   const defaultTabId = isPriceBased ? 0 : 1;
+  const defaultSliderValue = (selectedNft.priceBased as any)?.ltv;
 
   const defaultFormType = isPriceBased
     ? FormFieldTypes.LONG_TERM_FIELD
     : FormFieldTypes.SHORT_TERM_FIELD;
 
   const [formField, setFormField] = useState<FormFieldTypes>(defaultFormType);
-  const [priceBasedLTV, setPriceBasedLTV] = useState<number>(25);
+  const [priceBasedLTV, setPriceBasedLTV] =
+    useState<number>(defaultSliderValue);
 
   const BORROW_FORM_TABS: Tab[] = [
     {
@@ -101,11 +103,11 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
 
   useEffect(() => {
     if (selectedNft?.priceBased) {
-      setPriceBasedLTV((selectedNft?.priceBased?.ltvPercents + 10) / 2);
+      setPriceBasedLTV(defaultSliderValue);
     } else {
       setPriceBasedLTV(25);
     }
-  }, []);
+  }, [selectedNft]);
 
   const {
     visible: confirmModalVisible,
