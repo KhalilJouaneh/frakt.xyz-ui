@@ -59,6 +59,6 @@ export const selectConfettiVisible = createSelector(
 );
 
 export const selectSelectedNftId = createSelector(
-  [pathOr(null, ['common', 'selectedNftId', 'id'])],
+  [pathOr(0, ['common', 'selectedNftId', 'id'])],
   identity,
 );

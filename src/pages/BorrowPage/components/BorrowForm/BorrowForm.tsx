@@ -1,10 +1,8 @@
-import { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC } from 'react';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
-import { loansActions } from '../../../../state/loans/actions';
-import { BorrowNftWithBulk } from '../BorrowNft/BorrowNft';
+import { BorrowNft } from '../../../../state/loans/types';
 import { ShortTermFields } from '../ShortTermFields';
 import { Tabs } from '../../../../components/Tabs';
 import Button from '../../../../components/Button';
@@ -13,7 +11,7 @@ import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
-  selectedNft: BorrowNftWithBulk;
+  selectedNft: BorrowNft;
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
@@ -30,8 +28,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
   isBulkLoan,
   onClick,
 }) => {
-  const dispatch = useDispatch();
-
   const {
     openConfirmModal,
     confirmModalVisible,
@@ -50,18 +46,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
     onDeselect,
     selectedNft,
   });
-
-  useEffect(() => {
-    if (selectedNft?.priceBased) {
-      dispatch(
-        loansActions.updatePerpLoanNft({
-          mint: selectedNft?.mint,
-          ltv: priceBasedLTV,
-          formType: tabValue,
-        }),
-      );
-    }
-  }, [priceBasedLTV, tabValue]);
 
   const borrowValue =
     tabValue === BorrowFormType.PERPETUAL

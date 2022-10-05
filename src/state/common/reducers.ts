@@ -135,7 +135,7 @@ const setSelectedNftIdReducer = createReducer<SelectedNftIdState>(
       action: ReturnType<typeof commonActions.setSelectedNftId>,
     ) => ({
       ...state,
-      ...action.payload,
+      id: action.id,
     }),
   },
 );

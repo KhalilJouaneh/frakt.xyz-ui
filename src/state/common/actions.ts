@@ -129,6 +129,6 @@ export const commonActions = {
   ),
   setSelectedNftId: createCustomAction(
     commonTypes.SET_SELECTED_NFT_ID,
-    (payload: SelectedNftIdState) => ({ payload }),
+    (id: number) => ({ id }),
   ),
 };
