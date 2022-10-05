@@ -77,20 +77,17 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
           </div>
         )}
 
-        <div className={styles.sortWrapper}>
-          <Button
-            type="tertiary"
-            onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
-          >
-            Filters
-          </Button>
+        <div ref={ref}>
+          <div className={styles.sortWrapper}>
+            <Button
+              type="tertiary"
+              onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
+            >
+              Filters
+            </Button>
 
-          {filtersDropdownVisible && (
-            <div ref={ref}>
-              <FiltersDropdown
-                onCancel={() => setFiltersDropdownVisible(false)}
-                className={styles.filtersDropdown}
-              >
+            {filtersDropdownVisible && (
+              <FiltersDropdown className={styles.filtersDropdown}>
                 <Controller
                   control={control}
                   name={LiquidationsListFormNames.SORT}
@@ -98,7 +95,6 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                     <div className={styles.sortingWrapper}>
                       {SORT_VALUES.map(({ label, value }, idx) => (
                         <div className={styles.sorting} key={idx}>
-                          <p className={styles.label}>{label}</p>
                           <SortOrderButton
                             label={label}
                             setValue={setValue}
@@ -111,9 +107,8 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                   )}
                 />
               </FiltersDropdown>
-            </div>
-          )}
-          {/* <Controller
+            )}
+            {/* <Controller
             control={control}
             name="collections"
             render={({ field: { ref, ...field } }) => (
@@ -128,6 +123,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
               />
             )}
           /> */}
+          </div>
         </div>
       </div>
       {children}

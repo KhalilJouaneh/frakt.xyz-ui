@@ -48,56 +48,54 @@ const LendPage: FC = () => {
           className={styles.searchInput}
           placeholder="Search by name"
         />
-        <div className={styles.filtersWrapper}>
-          <Button
-            type="tertiary"
-            onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
-          >
-            Filters
-          </Button>
+        <div ref={ref}>
+          <div className={styles.filtersWrapper}>
+            <Button
+              type="tertiary"
+              onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
+            >
+              Filters
+            </Button>
 
-          {filtersDropdownVisible && (
-            <div ref={ref}>
-              <FiltersDropdown
-                onCancel={() => setFiltersDropdownVisible(false)}
-                className={styles.filtersDropdown}
-              >
-                {showStakedOnlyToggle && (
+            {filtersDropdownVisible && (
+              <FiltersDropdown className={styles.filtersDropdown}>
+                <div>
+                  {showStakedOnlyToggle && (
+                    <Controller
+                      control={control}
+                      name={InputControlsNames.SHOW_STAKED}
+                      render={({ field: { ref, ...field } }) => (
+                        <Toggle
+                          label="Staked only"
+                          className={styles.toggle}
+                          name={InputControlsNames.SHOW_STAKED}
+                          {...field}
+                        />
+                      )}
+                    />
+                  )}
                   <Controller
                     control={control}
-                    name={InputControlsNames.SHOW_STAKED}
-                    render={({ field: { ref, ...field } }) => (
-                      <Toggle
-                        label="Staked only"
-                        className={styles.toggle}
-                        name={InputControlsNames.SHOW_STAKED}
-                        {...field}
-                      />
+                    name={InputControlsNames.SORT}
+                    render={() => (
+                      <div className={styles.sortingWrapper}>
+                        {SORT_VALUES.map(({ label, value }, idx) => (
+                          <div className={styles.sorting} key={idx}>
+                            <SortOrderButton
+                              label={label}
+                              setValue={setValue}
+                              sort={sort}
+                              value={value}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     )}
                   />
-                )}
-                <Controller
-                  control={control}
-                  name={InputControlsNames.SORT}
-                  render={() => (
-                    <div className={styles.sortingWrapper}>
-                      {SORT_VALUES.map(({ label, value }, idx) => (
-                        <div className={styles.sorting} key={idx}>
-                          <p className={styles.label}>{label}</p>
-                          <SortOrderButton
-                            label={label}
-                            setValue={setValue}
-                            sort={sort}
-                            value={value}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                />
+                </div>
               </FiltersDropdown>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 

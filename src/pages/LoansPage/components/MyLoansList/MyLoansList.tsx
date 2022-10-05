@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,8 @@ import FiltersDropdown from '../../../../components/FiltersDropdown';
 import SortOrderButton from '../../../../components/SortOrderButton';
 import { LoansList } from '../../../WalletPage/components/LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
+import { useOnClickOutside } from '../../../../utils';
+import { Radio } from '../../../../components/Radio';
 import Button from '../../../../components/Button';
 import styles from './MyLoansList.module.scss';
 import {
@@ -17,9 +19,6 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
-import { CollectionDropdown } from '../../../../components/CollectionDropdown';
-import { Radio } from '../../../../components/Radio';
-import { useOnClickOutside } from '../../../../utils';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -69,72 +68,65 @@ export const MyLoansList: FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className={styles.filters}>
-                  <Button
-                    type="tertiary"
-                    onClick={() =>
-                      setFiltersDropdownVisible(!filtersDropdownVisible)
-                    }
-                  >
-                    Filters
-                  </Button>
+                <div ref={ref}>
+                  <div className={styles.filters}>
+                    <Button
+                      type="tertiary"
+                      onClick={() =>
+                        setFiltersDropdownVisible(!filtersDropdownVisible)
+                      }
+                    >
+                      Filters
+                    </Button>
 
-                  {filtersDropdownVisible && (
-                    <div ref={ref}>
-                      <FiltersDropdown
-                        onCancel={() => setFiltersDropdownVisible(false)}
-                        className={styles.filtersDropdown}
-                      >
-                        <div className={styles.controllers}>
-                          <Controller
-                            control={control}
-                            name={FilterFormInputsNames.LOANS_STATUS}
-                            render={() => (
-                              <div className={styles.radioWrapper}>
-                                {SORT_LOANS_TYPE_VALUES.map(
-                                  ({ label, value }, idx) => (
-                                    <div className={styles.sorting} key={idx}>
-                                      <Radio
-                                        checked={
-                                          showLoansStatus.value === value
-                                        }
-                                        label={label.props?.children}
-                                        onClick={() =>
-                                          setValue(
-                                            FilterFormInputsNames.LOANS_STATUS,
-                                            { label, value },
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  ),
-                                )}
-                              </div>
-                            )}
-                          />
-                          <Controller
-                            control={control}
-                            name={FilterFormInputsNames.SORT}
-                            render={() => (
-                              <div className={styles.sortingWrapper}>
-                                {SORT_VALUES.map(({ label, value }, idx) => (
+                    {filtersDropdownVisible && (
+                      <FiltersDropdown className={styles.filtersDropdown}>
+                        <Controller
+                          control={control}
+                          name={FilterFormInputsNames.LOANS_STATUS}
+                          render={() => (
+                            <div className={styles.radioWrapper}>
+                              {SORT_LOANS_TYPE_VALUES.map(
+                                ({ label, value }, idx) => (
                                   <div className={styles.sorting} key={idx}>
-                                    <p className={styles.label}>{label}</p>
-                                    <SortOrderButton
-                                      label={label}
-                                      setValue={setValue}
-                                      sort={sort}
-                                      value={value}
+                                    <Radio
+                                      checked={showLoansStatus.value === value}
+                                      label={label.props?.children}
+                                      onClick={() =>
+                                        setValue(
+                                          FilterFormInputsNames.LOANS_STATUS,
+                                          { label, value },
+                                        )
+                                      }
                                     />
                                   </div>
-                                ))}
-                              </div>
-                            )}
-                          />
+                                ),
+                              )}
+                            </div>
+                          )}
+                        />
+                        <Controller
+                          control={control}
+                          name={FilterFormInputsNames.SORT}
+                          render={() => (
+                            <div className={styles.sortingWrapper}>
+                              {SORT_VALUES.map(({ label, value }, idx) => (
+                                <div className={styles.sorting} key={idx}>
+                                  <SortOrderButton
+                                    label={label}
+                                    setValue={setValue}
+                                    sort={sort}
+                                    value={value}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        />
 
-                          <div className={styles.filters}>
-                            <div className={styles.filtersContent}>
-                              {/* <CollectionDropdown
+                        <div className={styles.filters}>
+                          <div className={styles.filtersContent}>
+                            {/* <CollectionDropdown
                               options={sortValueOption}
                               values={selectedCollections}
                               setValues={(value) =>
@@ -142,7 +134,7 @@ export const MyLoansList: FC = () => {
                               }
                               className={styles.sortingSelect}
                             /> */}
-                              {/* {sortValueOption.map((value, idx) => (
+                            {/* {sortValueOption.map((value, idx) => (
                               <div key={idx}>
                                 <Checkbox
                                   className={styles.checkbox}
@@ -156,12 +148,11 @@ export const MyLoansList: FC = () => {
                                 />
                               </div>
                             ))} */}
-                            </div>
                           </div>
                         </div>
                       </FiltersDropdown>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

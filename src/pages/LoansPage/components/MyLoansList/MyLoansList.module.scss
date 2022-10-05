@@ -121,6 +121,7 @@
   position: absolute;
   top: 45px;
   right: 0;
+  width: 308px;
 
   @media screen and (max-width: 767px) {
     position: fixed;
@@ -153,8 +154,8 @@
 .radioWrapper {
   display: flex;
   flex-direction: column;
-  gap: 9.5px;
-  margin-bottom: 10px;
+  gap: 11px;
+  margin-bottom: 20px;
 
   @media screen and (max-width: 767px) {
     margin-bottom: 15px;
@@ -176,10 +177,6 @@
 
 .toggle {
   min-width: 160px;
-}
-
-.controllers {
-  margin-top: 16px;
 }
 
 .checkbox {

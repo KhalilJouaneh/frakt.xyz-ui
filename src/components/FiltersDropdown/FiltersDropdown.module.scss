@@ -3,15 +3,14 @@
   border: 1px solid var(--secondary-border);
   backdrop-filter: blur(20px);
 
-  z-index: 1;
-  padding: 32px;
-  width: 512px;
+  padding: 16px;
 
   @media screen and (max-width: 767px) {
     border: 0;
     border-top: 1px solid var(--secondary-border);
     padding: 24px;
   }
+  z-index: 10;
 }
 
 .header {

@@ -66,7 +66,7 @@
 
 .sortingWrapper {
   display: flex;
-  gap: 36.5px;
+  gap: 16px;
   flex-wrap: wrap;
 
   @media screen and (max-width: 767px) {
@@ -95,6 +95,7 @@
   position: absolute;
   top: 45px;
   right: 0;
+  width: 352px;
 
   @media screen and (max-width: 767px) {
     position: fixed;

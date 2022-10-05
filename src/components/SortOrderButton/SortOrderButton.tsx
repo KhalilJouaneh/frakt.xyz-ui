@@ -36,14 +36,14 @@ const SortOrderButton: FC<SortOrderButtonProps> = ({
         className={cx(styles.filterBtn, isActiveASC && styles.filterBtnActive)}
         onClick={() => setValue('sort', { label, value: ASC_SORT })}
       >
-        asc <ArrowUp className={styles.icon} />
+        {label} <ArrowUp className={styles.icon} />
       </Button>
       <Button
         type="tertiary"
         className={cx(styles.filterBtn, isActiveDESC && styles.filterBtnActive)}
         onClick={() => setValue('sort', { label, value: DESC_SORT })}
       >
-        dsc <ArrowUp className={cx(styles.icon, styles.arrowDown)} />
+        {label} <ArrowUp className={cx(styles.icon, styles.arrowDown)} />
       </Button>
     </div>
   );
