@@ -1,18 +1,15 @@
 import { FC } from 'react';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { RewardState, useLoans } from './hooks';
+
+import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
 import { caclTimeToRepay } from '../../utils/loans';
+import { RewardState, useLoans } from './hooks';
 import { LoadingModal } from '../LoadingModal';
 import { Loan } from '../../state/loans/types';
+import { SolanaIcon, Timer } from '../../icons';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
-// import Tooltip from '../Tooltip';
 import Button from '../Button';
-
-// import { HEALTH_TOOLTIP_TEXT } from './constants';
-import { PartialRepayModal } from '../../pages/LiquidationsPage/components/PartialRepayModal';
-import { SolanaIcon, Timer } from '../../icons';
 
 interface LoanCardProps {
   loan: Loan;
@@ -32,7 +29,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     transactionsLeft,
   } = useLoans(loan);
 
-  const { imageUrl, name, isGracePeriod, reward } = loan;
+  const { imageUrl, name, isGracePeriod } = loan;
 
   // const rewardAmount = reward?.amount;
 
@@ -45,7 +42,9 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
           })}
         >
           <div
-            className={styles.image}
+            className={classNames(styles.image, {
+              [styles.isGracePeriodImage]: isGracePeriod,
+            })}
             style={{ backgroundImage: `url(${imageUrl})` }}
           />
           <div className={styles.content}>
@@ -143,12 +142,6 @@ const LoanCardValues: FC<{
               <p className={styles.valueTitle} style={{ textAlign: 'right' }}>
                 Borrow interest
               </p>
-              {/* <Tooltip
-                placement="bottom"
-                overlay="The current yearly interest rate paid by borrowers"
-              >
-                <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip> */}
             </div>
             <p className={styles.valueInfo}>{borrowAPRPercents} %</p>
           </div>
@@ -168,9 +161,6 @@ const LoanCardValues: FC<{
         {!isPriceBasedAndGracePeriod && isPriceBased ? (
           <div className={styles.valueWithTooltip}>
             <p className={styles.valueTitle}>Health</p>
-            {/* <Tooltip placement="bottom" overlay={HEALTH_TOOLTIP_TEXT}>
-              <QuestionCircleOutlined className={styles.questionIcon} />
-            </Tooltip> */}
           </div>
         ) : (
           <p className={styles.valueTitle}>Time to return</p>

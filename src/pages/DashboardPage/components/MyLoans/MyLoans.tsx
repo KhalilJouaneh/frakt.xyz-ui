@@ -94,15 +94,13 @@ const MyLoans: FC = () => {
             </div>
           </>
         ) : (
-          <div>
-            <p>No loans taken</p>
-          </div>
+          <p className={styles.emptyMessage}>You have no deposits</p>
         )}
       </div>
 
       <NavLink style={{ width: '100%' }} to={PATHS.LOANS}>
         <Button className={styles.btn} type="secondary">
-          {userLoans.length ? 'Repay' : 'Borrow money'}
+          {userLoans.length ? 'Repay' : 'Borrow SOL'}
         </Button>
       </NavLink>
     </Block>

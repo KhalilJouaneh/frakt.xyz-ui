@@ -22,10 +22,12 @@ const MyDeposit: FC = () => {
   const totalApy =
     sum(map(depositApr, depositedPools)) / depositedPools.length || 0;
 
+  const isDeposited = depositedPools.length;
+
   return (
     <Block className={styles.block}>
       <h3 className={styles.title}>My deposits</h3>
-      {depositedPools.length ? (
+      {isDeposited ? (
         <>
           <div className={styles.loansInfoWrapper}>
             <div className={styles.loansInfo}>
@@ -93,14 +95,12 @@ const MyDeposit: FC = () => {
           </div>
         </>
       ) : (
-        <div className={styles.emptyMessage}>
-          <p>You have no deposits</p>
-        </div>
+        <p className={styles.emptyMessage}>You have no deposits</p>
       )}
 
       <NavLink style={{ width: '100%' }} to={PATHS.LEND}>
         <Button className={styles.btn} type="secondary">
-          Lend
+          {isDeposited ? 'Lend' : 'Refill deposit'}
         </Button>
       </NavLink>
     </Block>

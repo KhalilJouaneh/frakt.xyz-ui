@@ -22,11 +22,16 @@
   }
 }
 
+.isGracePeriodImage {
+  box-shadow: inset 0px 0px 100px var(--orange-color);
+}
+
 .image {
   width: 100%;
   background-color: var(--secondary-background);
   background-size: cover;
   background-repeat: no-repeat;
+
   &::after {
     content: '';
     display: block;
