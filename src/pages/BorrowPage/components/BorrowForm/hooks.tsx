@@ -99,7 +99,11 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   useEffect(() => {
     if (isPriceBased) {
       setTabValue('perpetual');
-    } else {
+    }
+  }, [selectedNft]);
+
+  useEffect(() => {
+    if (!selectedNft.priceBased) {
       setTabValue('flip');
     }
   }, [selectedNft]);
