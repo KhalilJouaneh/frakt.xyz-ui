@@ -8,6 +8,10 @@
   height: 36px;
   width: 100%;
   padding: 6px;
+
+  @media (max-width: 767px) {
+    white-space: nowrap;
+  }
 }
 
 .filterBtnActive {

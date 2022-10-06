@@ -4,7 +4,9 @@ import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
-import FiltersDropdown from '../../../../components/FiltersDropdown';
+import FiltersDropdown, {
+  useFiltersModal,
+} from '../../../../componentsNew/FiltersDropdown';
 import SortOrderButton from '../../../../components/SortOrderButton';
 import { LoansList } from '../../../WalletPage/components/LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
@@ -19,13 +21,12 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
+import FilterCollections from '../../../../componentsNew/FilterCollections';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
 
-  const [selectedCollections, setSelectedCollections] = useState<LoansValue[]>(
-    [],
-  );
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
   const totalDebt = useSelector(selectTotalDebt);
 
@@ -41,11 +42,14 @@ export const MyLoansList: FC = () => {
     selectedCollections,
   });
 
-  const [filtersDropdownVisible, setFiltersDropdownVisible] =
-    useState<boolean>(false);
+  const {
+    visible: filtersModalVisible,
+    close: closeFiltersModal,
+    toggle: toggleFiltersModal,
+  } = useFiltersModal();
 
   const ref = useRef();
-  useOnClickOutside(ref, () => setFiltersDropdownVisible(false));
+  useOnClickOutside(ref, closeFiltersModal);
 
   return (
     <div>
@@ -70,17 +74,15 @@ export const MyLoansList: FC = () => {
                 </div>
                 <div ref={ref}>
                   <div className={styles.filters}>
-                    <Button
-                      type="tertiary"
-                      onClick={() =>
-                        setFiltersDropdownVisible(!filtersDropdownVisible)
-                      }
-                    >
+                    <Button type="tertiary" onClick={toggleFiltersModal}>
                       Filters
                     </Button>
 
-                    {filtersDropdownVisible && (
-                      <FiltersDropdown className={styles.filtersDropdown}>
+                    {filtersModalVisible && (
+                      <FiltersDropdown
+                        onCancel={closeFiltersModal}
+                        className={styles.filtersDropdown}
+                      >
                         <Controller
                           control={control}
                           name={FilterFormInputsNames.LOANS_STATUS}
@@ -105,6 +107,11 @@ export const MyLoansList: FC = () => {
                             </div>
                           )}
                         />
+                        <FilterCollections
+                          setSelectedCollections={setSelectedCollections}
+                          selectedCollections={selectedCollections}
+                          options={sortValueOption}
+                        />
                         <Controller
                           control={control}
                           name={FilterFormInputsNames.SORT}
@@ -123,33 +130,6 @@ export const MyLoansList: FC = () => {
                             </div>
                           )}
                         />
-
-                        <div className={styles.filters}>
-                          <div className={styles.filtersContent}>
-                            {/* <CollectionDropdown
-                              options={sortValueOption}
-                              values={selectedCollections}
-                              setValues={(value) =>
-                                setSelectedCollections(value)
-                              }
-                              className={styles.sortingSelect}
-                            /> */}
-                            {/* {sortValueOption.map((value, idx) => (
-                              <div key={idx}>
-                                <Checkbox
-                                  className={styles.checkbox}
-                                  onChange={() => {
-                                    setSelectedCollections([value]);
-                                  }}
-                                  value={!!selectedCollections.filter(
-                                    ({ value: rawValue }) => rawValue === value.value,
-                                  )}
-                                  label={value.label}
-                                />
-                              </div>
-                            ))} */}
-                          </div>
-                        </div>
                       </FiltersDropdown>
                     )}
                   </div>

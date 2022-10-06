@@ -41,7 +41,7 @@ export enum StatusLoanNames {
 type UseLoansFiltering = ({
   selectedCollections,
 }: {
-  selectedCollections: LoansValue[];
+  selectedCollections: string[];
 }) => {
   control: Control<FilterFormFieldsValues>;
   loans: Loan[];
@@ -71,7 +71,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
   const showLoansStatus = watch(FilterFormInputsNames.LOANS_STATUS);
   const sort = watch(FilterFormInputsNames.SORT);
 
-  const selectedCollectionsName = selectedCollections.map(({ value }) => value);
+  const selectedCollectionsName = selectedCollections.map((value) => value);
 
   const uniqCollections = uniqBy(prop('collectionName'), userLoans);
 

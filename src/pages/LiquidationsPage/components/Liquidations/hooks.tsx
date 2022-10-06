@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
-import { compose, join, pluck, equals } from 'ramda';
+import { equals } from 'ramda';
 
 import { FetchItemsParams } from '../../../../state/liquidations/types';
 import { useDebounce, usePrevious } from '../../../../hooks';
@@ -21,6 +21,7 @@ type UseLiquidationsPage = (
   setSearch: (value?: string) => void;
   setCollections: (value?: []) => void;
   setValue?: any;
+  collections: any;
   sort?: LiquiditionsSortValue;
 };
 
@@ -49,16 +50,14 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const sort = watch(LiquidationsListFormNames.SORT);
   const prevCollections = usePrevious(collections);
 
+  const stringCollection = collections.map((value) => value).join(',');
+
   const fetchItems = (params = {}): void => {
     const query = {
       sortBy,
       sort: sortOrder,
       search: stringRef.current,
-      collections: compose(
-        decodeURIComponent,
-        join(','),
-        pluck('value'),
-      )(collections),
+      collections: stringCollection,
       ...params,
     };
     fetchItemsFunc(query);
@@ -101,6 +100,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
     control,
     setSearch,
     setCollections,
+    collections,
     setValue,
     sort,
   };

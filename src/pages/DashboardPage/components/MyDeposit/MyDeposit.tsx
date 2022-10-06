@@ -93,7 +93,7 @@ const MyDeposit: FC = () => {
           </div>
         </>
       ) : (
-        <div>
+        <div className={styles.emptyMessage}>
           <p>You have no deposits</p>
         </div>
       )}

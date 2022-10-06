@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
@@ -11,7 +11,9 @@ import {
   useLendingPoolsFiltering,
 } from './hooks/useLendingPoolsFiltering';
 import Toggle from '../../components/Toggle';
-import FiltersDropdown from '../../components/FiltersDropdown';
+import FiltersDropdown, {
+  useFiltersModal,
+} from '../../componentsNew/FiltersDropdown';
 import Button from '../../components/Button';
 import SortOrderButton from '../../components/SortOrderButton';
 import { useOnClickOutside } from '../../utils';
@@ -25,11 +27,14 @@ const LendPage: FC = () => {
   const { control, sort, setSearch, pools, setValue, showStakedOnlyToggle } =
     useLendingPoolsFiltering();
 
-  const [filtersDropdownVisible, setFiltersDropdownVisible] =
-    useState<boolean>(false);
+  const {
+    visible: filtersModalVisible,
+    close: closeFiltersModal,
+    toggle: toggleFiltersModal,
+  } = useFiltersModal();
 
   const ref = useRef();
-  useOnClickOutside(ref, () => setFiltersDropdownVisible(false));
+  useOnClickOutside(ref, closeFiltersModal);
 
   return (
     <AppLayout>
@@ -50,15 +55,15 @@ const LendPage: FC = () => {
         />
         <div ref={ref}>
           <div className={styles.filtersWrapper}>
-            <Button
-              type="tertiary"
-              onClick={() => setFiltersDropdownVisible(!filtersDropdownVisible)}
-            >
+            <Button type="tertiary" onClick={toggleFiltersModal}>
               Filters
             </Button>
 
-            {filtersDropdownVisible && (
-              <FiltersDropdown className={styles.filtersDropdown}>
+            {filtersModalVisible && (
+              <FiltersDropdown
+                onCancel={closeFiltersModal}
+                className={styles.filtersDropdown}
+              >
                 <div>
                   {showStakedOnlyToggle && (
                     <Controller
