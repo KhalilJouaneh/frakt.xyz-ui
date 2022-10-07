@@ -85,6 +85,13 @@
   }
 }
 
+.active .label {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    linear-gradient(0deg, #9cff1f, #9cff1f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .label {
   color: var(--primary-text);
 }
@@ -96,7 +103,7 @@
 .active .icon {
   svg {
     path {
-      stroke: var(--light-green-color);
+      stroke: #8cd239;
     }
   }
 }
@@ -104,7 +111,7 @@
 .active .fillIcon {
   svg {
     path {
-      fill: var(--light-green-color);
+      fill: #8cd239;
       stroke: none !important;
     }
   }

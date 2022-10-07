@@ -19,8 +19,7 @@ const Sidebar: FC<SidebarProps> = ({
   sidebarForm,
   isCloseSidebar = false,
 }) => {
-  const { isSidebarVisible, isHeaderHidden, isSidebarCollapsed } =
-    useSidebar(nfts);
+  const { isSidebarVisible, isSidebarCollapsed } = useSidebar(nfts);
 
   return (
     <>
@@ -31,7 +30,6 @@ const Sidebar: FC<SidebarProps> = ({
               styles.sidebarWrapper,
               { [styles.visible]: isSidebarVisible },
               { [styles.collapsed]: isSidebarCollapsed },
-              { [styles.headerHidden]: isHeaderHidden },
             ])}
           >
             <div className={styles.sidebar}>
