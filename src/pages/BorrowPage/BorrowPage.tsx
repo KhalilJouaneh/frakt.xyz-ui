@@ -1,9 +1,7 @@
 import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 
 import { ConnectWalletSection } from '../../components/ConnectWalletSection';
-import { TokenFieldWithBalance } from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { networkRequest } from '../../utils/state';
 import BorrowBulk from './components/BorrowBulk';
@@ -14,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { loansActions } from '../../state/loans/actions';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
 import { Loader } from '../../components/Loader';
+import { Slider } from '../../components/Slider';
 
 enum BorrowType {
   BULK = 'bulk',
@@ -49,7 +48,7 @@ const BorrowPage: FC = () => {
 
   const [borrowType, setBorrowType] = useState<BorrowType>(null);
   const [bulks, setBulks] = useState<BulksType>(null);
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<number>(0);
 
   const [nftsLoading, setNftsLoading] = useState<boolean>(true);
 
@@ -67,6 +66,11 @@ const BorrowPage: FC = () => {
     } finally {
       setNftsLoading(false);
     }
+  };
+
+  const marks = {
+    0: '0%',
+    100: `${100}`,
   };
 
   return (
@@ -92,13 +96,14 @@ const BorrowPage: FC = () => {
                 <h3 className={styles.blockTitle}>Pick for me</h3>
                 <p className={styles.blockSubtitle}>I need...</p>
                 <div className={styles.blockContent}>
-                  <div className={styles.input}>
-                    <TokenFieldWithBalance
-                      value={value}
-                      onValueChange={(e) => setValue(e)}
-                      currentToken={SOL_TOKEN}
-                    />
-                  </div>
+                  <Slider
+                    marks={marks}
+                    className={styles.slider}
+                    value={value}
+                    step={1}
+                    setValue={setValue}
+                    withTooltip
+                  />
                   <Button
                     onClick={() => {
                       onSubmit();

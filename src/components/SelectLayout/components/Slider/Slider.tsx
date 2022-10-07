@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import classNames from 'classnames';
@@ -33,6 +33,12 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
       dispatch(commonActions.setSelectedNftId(idx));
     }
   };
+
+  useEffect(() => {
+    if (nfts.length) {
+      dispatch(commonActions.setSelectedNftId(nfts.length - 1));
+    }
+  }, [nfts]);
 
   const onPrevNft = (idx: number): void => {
     if (idx < 0) {

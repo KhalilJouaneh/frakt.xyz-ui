@@ -10,7 +10,6 @@ import { proposeBulkLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
 
 type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
-  getLiquidationPrice: (nft: any) => void;
   onCardClick: (id: number) => void;
   onSubmit: () => Promise<void>;
   closeLoadingModal: () => void;
@@ -50,15 +49,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     dispatch(loansActions.setBulkNfts(rawselectedBulk));
   }, [dispatch]);
 
-  const getLiquidationPrice = (nft): string => {
-    const { valuation, priceBased } = nft;
-    const loanValue = parseFloat(valuation) * (priceBased.ltvPercents / 100);
-
-    const liquidationPrice =
-      loanValue + loanValue * (priceBased.collaterizationRate / 100);
-    return liquidationPrice.toFixed(3);
-  };
-
   const showConfetti = (): void => {
     dispatch(commonActions.setConfetti({ isVisible: true }));
   };
@@ -92,7 +82,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     onSubmit,
     onCardClick,
     loadingModalVisible,
-    getLiquidationPrice,
     activeCardId,
     closeLoadingModal,
   };

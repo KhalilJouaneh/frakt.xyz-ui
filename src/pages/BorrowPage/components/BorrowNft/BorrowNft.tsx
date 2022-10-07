@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
-import { commonActions } from '../../../../state/common/actions';
 import {
   selectBulkNfts,
   selectPerpLoansNfts,
@@ -100,12 +99,6 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
       };
     }
   });
-
-  useEffect(() => {
-    if (selectedNfts.length) {
-      dispatch(commonActions.setSelectedNftId(selectedNfts.length - 1));
-    }
-  }, [selectedNfts]);
 
   const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
 

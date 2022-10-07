@@ -26,7 +26,6 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
     onCardClick,
     selectedBulk,
     loadingModalVisible,
-    getLiquidationPrice,
     activeCardId,
     selectedBulkValue,
     closeLoadingModal,
@@ -97,81 +96,83 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
         )}
 
         {!!isSelectedBulk &&
-          selectedBulk.map((nft, id) => (
-            <div className={styles.cardWrapper} key={id}>
-              <div className={styles.card}>
-                <div className={styles.cardInfo}>
-                  <img className={styles.image} src={nft?.imageUrl} />
-                  <div className={styles.name}>{nft?.name || ''}</div>
-                </div>
-                <div className={styles.cardValues}>
-                  {getStatsValue({
-                    title: 'To borrow',
-                    value: nft?.maxLoanValue,
-                    withIcon: true,
-                    className: styles.rowCardValue,
-                  })}
-                  <div
-                    onClick={() => onCardClick(id)}
-                    className={cx(
-                      activeCardId === id && styles.btnVisible,
-                      styles.btnWithArrow,
+          selectedBulk.map((nft, id) => {
+            const {
+              imageUrl,
+              name,
+              maxLoanValue,
+              isPriceBased,
+              priceBased,
+              timeBased,
+              valuation,
+            } = nft;
+
+            const loanType = isPriceBased ? 'Perpetual' : 'Flip';
+
+            const timeBasedFee =
+              Number(timeBased.fee) *
+              (Number(timeBased?.feeDiscountPercents) * 0.01);
+
+            const fee = isPriceBased
+              ? Number(maxLoanValue) * 0.01
+              : timeBasedFee;
+
+            const loanToValue = isPriceBased
+              ? priceBased?.ltv || priceBased?.ltvPercents
+              : timeBased?.ltvPercents;
+
+            const BorrowAPY = priceBased?.borrowAPRPercents?.toFixed(0);
+
+            const loanValue =
+              parseFloat(valuation) * (priceBased?.ltvPercents / 100);
+
+            const liquidationsPrice =
+              loanValue + loanValue * (priceBased?.collaterizationRate / 100);
+
+            return (
+              <div className={styles.cardWrapper} key={id}>
+                <div className={styles.card}>
+                  <div className={styles.cardInfo}>
+                    <img className={styles.image} src={imageUrl} />
+                    <div className={styles.name}>{name}</div>
+                  </div>
+                  <div className={styles.cardValues}>
+                    {getStatsValue(
+                      'To borrow',
+                      maxLoanValue,
+                      true,
+                      styles.rowCardValue,
                     )}
-                  >
-                    <Icons.Chevron />
+                    <div
+                      onClick={() => onCardClick(id)}
+                      className={cx(
+                        activeCardId === id && styles.btnVisible,
+                        styles.btnWithArrow,
+                      )}
+                    >
+                      <Icons.Chevron />
+                    </div>
                   </div>
                 </div>
+                {id === activeCardId && (
+                  <div className={styles.hiddenValues}>
+                    {getStatsValue('Loan Type', loanType)}
+                    {getStatsValue('Loan to value', `${loanToValue} %`)}
+                    {getStatsValue('Floor price', `${valuation}`, true)}
+                    {isPriceBased &&
+                      getStatsValue(
+                        'Liquidations price',
+                        `${liquidationsPrice.toFixed(3)}`,
+                        true,
+                      )}
+                    {isPriceBased &&
+                      getStatsValue('Borrow APY', `${BorrowAPY} %`)}
+                    {getStatsValue('fee', `${fee.toFixed(3)}`, true)}
+                  </div>
+                )}
               </div>
-              {id === activeCardId && (
-                <div className={styles.hiddenValues}>
-                  {getStatsValue({
-                    title: 'Loan Type',
-                    value: nft?.isPriceBased ? 'Perpetual' : 'Flip',
-                  })}
-                  {getStatsValue({
-                    title: 'Loan to value',
-                    value: `${
-                      nft?.isPriceBased
-                        ? nft?.priceBased?.ltv || nft?.priceBased?.ltvPercents
-                        : nft?.timeBased?.ltvPercents
-                    } %`,
-                  })}
-                  {getStatsValue({
-                    title: 'Floor price',
-                    value: `${nft?.valuation}`,
-                    withIcon: true,
-                  })}
-                  {nft?.isPriceBased &&
-                    getStatsValue({
-                      title: 'Liquidations price',
-                      value: `${getLiquidationPrice(nft)}`,
-                      withIcon: true,
-                    })}
-                  {nft?.isPriceBased &&
-                    getStatsValue({
-                      title: 'Borrow APY',
-                      value: `${nft?.priceBased?.borrowAPRPercents?.toFixed(
-                        0,
-                      )} %`,
-                    })}
-                  {getStatsValue({
-                    title: 'Minting fee',
-                    value: `${
-                      nft?.isPriceBased
-                        ? (Number(nft.maxLoanValue) * 0.01).toFixed(3)
-                        : (
-                            Number(nft.timeBased?.fee) -
-                            Number(nft.timeBased?.fee) *
-                              (Number(nft.timeBased?.feeDiscountPercents) *
-                                0.01)
-                          ).toFixed(3)
-                    } `,
-                    withIcon: true,
-                  })}
-                </div>
-              )}
-            </div>
-          ))}
+            );
+          })}
       </div>
       <LoadingModal
         title="Please approve transaction"
@@ -184,17 +185,12 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
 
 export default SelectedBulk;
 
-const getStatsValue = ({
-  title,
-  value,
-  withIcon,
-  className,
-}: {
-  title: string;
-  value: number | string;
-  withIcon?: boolean;
-  className?: string;
-}) => {
+const getStatsValue = (
+  title: string,
+  value: number | string,
+  withIcon?: boolean,
+  className?: string,
+) => {
   return (
     <div className={cx(styles.cardValue, className)}>
       <p className={styles.cardTitle}>{title}</p>

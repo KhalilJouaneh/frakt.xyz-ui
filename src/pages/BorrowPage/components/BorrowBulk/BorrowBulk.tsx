@@ -10,7 +10,7 @@ import Icons from '../../../../iconsNew';
 
 interface BorrowBulk {
   bulks: BulksType;
-  value: string;
+  value: number;
   onClick: () => void;
   onBack: () => void;
 }
