@@ -1,17 +1,17 @@
 .wrapper {
   background: var(--primary-background);
   border: 1px solid var(--secondary-border);
-  backdrop-filter: blur(20px);
-
   padding: 16px;
+  z-index: 10;
 
   @media screen and (max-width: 767px) {
     border: 0;
     border-top: 1px solid var(--secondary-border);
     padding: 24px;
   }
-  z-index: 10;
 }
+
+
 
 .header {
   display: flex;

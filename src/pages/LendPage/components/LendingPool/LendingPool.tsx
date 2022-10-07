@@ -96,7 +96,8 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
                 <div className={styles.totalValue}>
                   <p className={styles.title}>Your liquidity</p>
                   <p className={styles.value}>
-                    {userDeposit?.depositAmount.toFixed(2) || 0} <SolanaIcon />
+                    {userDeposit?.depositAmount.toFixed(2) || '0.00'}{' '}
+                    <SolanaIcon />
                   </p>
                 </div>
               </>

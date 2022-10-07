@@ -44,13 +44,16 @@ export const PoolModal: FC<PoolModalProps> = ({
     solWalletBalance,
   } = usePoolModal(liquidityPoolPubkey, visible, depositAmount, onCancel);
 
-  const depositAmountWithFee = Number(solWalletBalance) - 0.02;
+  const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
   const notEnoughDepositError = depositAmount < Number(withdrawValue);
   const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
   const isDisabledDepositBtn =
     Number(depositValue) === 0 || notEnoughBalanceError;
   const isDisabledWithdrawBtn =
     Number(withdrawValue) === 0 || notEnoughDepositError;
+
+  const depositAmountWithFee =
+    rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
 
   return (
     <Modal

@@ -72,6 +72,7 @@
   @media screen and (max-width: 767px) {
     gap: 16px;
     overflow: auto;
+    flex-wrap: nowrap;
 
     &::-webkit-scrollbar {
       height: 0px;

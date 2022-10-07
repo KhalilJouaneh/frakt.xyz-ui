@@ -108,7 +108,7 @@
     left: 0;
     right: 0;
     top: unset;
-    max-height: 200px;
+    max-height: 250px;
     width: 100% !important;
   }
 }
@@ -141,6 +141,13 @@
     margin-bottom: 15px;
     flex-direction: row;
   }
+}
+
+.radioLabel {
+  font: var(--font-text-6);
+  color: var(--primary-border);
+  text-transform: uppercase;
+  margin-bottom: 11px;
 }
 
 .sorting {

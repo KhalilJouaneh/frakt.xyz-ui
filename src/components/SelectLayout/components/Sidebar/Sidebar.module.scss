@@ -3,13 +3,12 @@
   top: 0;
   right: 0;
   height: 100%;
-
   width: 344px;
   background-color: var(--primary-background);
   border-left: 1px solid var(--primary-border);
   z-index: 2;
   transform: translateX(calc(100% + 10px));
-  padding-top: 96px;
+  padding-top: 76px;
 
   &.visible {
     z-index: 3;
@@ -46,10 +45,6 @@
     padding-top: 0px;
     border-top: 1px solid var(--secondary-border);
   }
-}
-
-.headerHidden {
-  padding-top: 0;
 }
 
 .collapsed {

@@ -51,6 +51,7 @@
 .active {
   background: var(--light-green-color-1);
   user-select: none;
+  cursor: default;
 
   & > * {
     cursor: default;

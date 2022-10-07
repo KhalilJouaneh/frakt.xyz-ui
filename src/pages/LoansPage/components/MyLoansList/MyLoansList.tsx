@@ -16,7 +16,6 @@ import Button from '../../../../components/Button';
 import styles from './MyLoansList.module.scss';
 import {
   FilterFormInputsNames,
-  LoansValue,
   SORT_LOANS_TYPE_VALUES,
   SORT_VALUES,
   useLoansFiltering,
@@ -87,24 +86,29 @@ export const MyLoansList: FC = () => {
                           control={control}
                           name={FilterFormInputsNames.LOANS_STATUS}
                           render={() => (
-                            <div className={styles.radioWrapper}>
-                              {SORT_LOANS_TYPE_VALUES.map(
-                                ({ label, value }, idx) => (
-                                  <div className={styles.sorting} key={idx}>
-                                    <Radio
-                                      checked={showLoansStatus.value === value}
-                                      label={label.props?.children}
-                                      onClick={() =>
-                                        setValue(
-                                          FilterFormInputsNames.LOANS_STATUS,
-                                          { label, value },
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                ),
-                              )}
-                            </div>
+                            <>
+                              <p className={styles.radioLabel}>Loan type</p>
+                              <div className={styles.radioWrapper}>
+                                {SORT_LOANS_TYPE_VALUES.map(
+                                  ({ label, value }, idx) => (
+                                    <div className={styles.sorting} key={idx}>
+                                      <Radio
+                                        checked={
+                                          showLoansStatus.value === value
+                                        }
+                                        label={label.props?.children}
+                                        onClick={() =>
+                                          setValue(
+                                            FilterFormInputsNames.LOANS_STATUS,
+                                            { label, value },
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            </>
                           )}
                         />
                         <FilterCollections

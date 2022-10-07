@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { commonActions } from '../../state/common/actions';
-import { HeaderStateProvider } from './headerState';
+import { HeaderStateProvider, useHeaderState } from './headerState';
 import NotificationBar from '../NotificationBar';
 import styles from './styles.module.scss';
 
@@ -15,6 +15,7 @@ interface LayoutProps {
 
 export const Layout: FC<LayoutProps> = ({ children }) => {
   const dispatch = useDispatch();
+  const { onContentScroll } = useHeaderState();
 
   useEffect(() => {
     dispatch(commonActions.setWalletModal({ isVisible: false }));
@@ -22,9 +23,15 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
   }, [location]);
 
   return (
-    <div className={styles.container}>
-      {children}
-      <NotificationBar />
+    <div>
+      <div
+        id="app-content"
+        onScroll={onContentScroll}
+        className={styles.content}
+      >
+        {children}
+        <NotificationBar />
+      </div>
     </div>
   );
 };
