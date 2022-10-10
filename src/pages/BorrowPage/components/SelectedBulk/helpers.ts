@@ -1,3 +1,5 @@
+import { BorrowNft } from '../../../../state/loans/types';
+
 const getPriceBasedValues = (
   nft,
 ): {
@@ -38,10 +40,16 @@ const getPriceBasedValues = (
   };
 };
 
-const getTimeBasedValues = (nft) => {
+const getTimeBasedValues = (nft: BorrowNft) => {
   const { timeBased } = nft;
 
-  const { fee, feeDiscountPercents, ltvPercents } = timeBased;
+  const {
+    fee,
+    feeDiscountPercents,
+    ltvPercents,
+    repayValue,
+    returnPeriodDays,
+  } = timeBased;
 
   const feeDiscountValue = Number(feeDiscountPercents) * 0.01;
 
@@ -50,13 +58,22 @@ const getTimeBasedValues = (nft) => {
   return {
     timeBasedFee: timeBasedfeeWithDiscount.toFixed(3),
     timeBasedLtvPersent: ltvPercents.toFixed(0),
+    feeDiscountPercents,
+    period: returnPeriodDays,
+    repayValue,
   };
 };
 
 export const getSelectedBulkValues = (nft) => {
   const { maxLoanValue: rawMaxLoanValue, isPriceBased } = nft;
 
-  const { timeBasedFee, timeBasedLtvPersent } = getTimeBasedValues(nft);
+  const {
+    timeBasedFee,
+    period,
+    repayValue,
+    timeBasedLtvPersent,
+    feeDiscountPercents,
+  } = getTimeBasedValues(nft);
   const {
     priceBasedLoanValue,
     priceBasedFee,
@@ -80,5 +97,8 @@ export const getSelectedBulkValues = (nft) => {
     loanToValue,
     BorrowAPY,
     liquidationsPrice,
+    feeDiscountPercents,
+    period,
+    repayValue,
   };
 };

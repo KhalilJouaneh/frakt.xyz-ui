@@ -74,6 +74,13 @@ const addPerpLoanNftsReducer = createReducer<string[]>([])
       : [payload, ...state];
   });
 
+const setCurrentNftReducer = createReducer<BorrowNft[]>(null, {
+  [loansTypes.SET_CURRENT_NFT]: (
+    __,
+    action: ReturnType<typeof loansActions.setCurrentNftLoan>,
+  ) => action.payload,
+});
+
 export default combineReducers({
   loans: setLoansReducer,
   liquidityPools: setLiquidityPoolsReducer,
@@ -82,4 +89,5 @@ export default combineReducers({
   hiddenLoanNfts: addHiddenLoanNftsReducer,
   perpLoansNfts: addPerpLoanNftsReducer,
   bulkNfts: setBulkNftsReducer,
+  currentNft: setCurrentNftReducer,
 });

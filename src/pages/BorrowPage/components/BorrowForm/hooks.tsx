@@ -53,7 +53,16 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
 
   const isPriceBased = selectedNft?.isPriceBased;
   const defaultTabId = isPriceBased ? 0 : 1;
-  const defaultSliderValue = (selectedNft.priceBased as any)?.ltv;
+
+  const suggestedLtv = Number(
+    (
+      (selectedNft?.priceBased?.suggestedLoanValue /
+        Number(selectedNft?.valuation)) *
+      100
+    )?.toFixed(0),
+  );
+  const defaultSliderValue =
+    (selectedNft.priceBased as any)?.ltv || suggestedLtv;
 
   const defaultFormType = isPriceBased
     ? FormFieldTypes.LONG_TERM_FIELD

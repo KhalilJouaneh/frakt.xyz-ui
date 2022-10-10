@@ -30,21 +30,9 @@
 }
 
 .hiddenValues {
-  @include flex(row, nowrap, null, center);
+  @include flex(row, wrap, null, center);
   margin-top: 16px;
-  gap: 64px;
-
-  @media screen and (max-width: 1560px) {
-    gap: 40px;
-  }
-
-  @media screen and (max-width: 1440px) {
-    gap: 24px;
-  }
-
-  @media screen and (max-width: 1360px) {
-    gap: 16px;
-  }
+  gap: 16px 32px;
 
   @media screen and (max-width: 1310px) {
     width: 100%;
@@ -54,7 +42,7 @@
 }
 
 .card {
-  @include flex(row, nowrap, space-between, center);
+  @include flex(row, nowrap, space-between, flex-start);
 
   @media screen and (max-width: 1310px) {
     flex-wrap: wrap;
@@ -79,6 +67,7 @@
 
 .name {
   font: var(--font-subtitle-2);
+  max-width: 254px;
 }
 
 .cardInfo {
@@ -95,15 +84,12 @@
 .cardValue {
   @include flex(column, nowrap, null, null);
   gap: 4px;
+  min-width: 170px;
 
   @media screen and (max-width: 1310px) {
     @include flex(row, nowrap, space-between, center);
     width: 100%;
   }
-}
-
-.rowCardValue {
-  @include flex(column, nowrap, null, flex-start);
 }
 
 .cardTitle {
@@ -182,4 +168,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.editMode {
+  color: var(--blue-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--blue-color);
+  font: var(--font-body-small);
+}
+
+.title {
+  font: var(--font-subtitle);
+  font-family: var(--font-family-syne);
+  text-align: center;
+  margin-bottom: 24px;
 }

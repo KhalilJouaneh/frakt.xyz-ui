@@ -10,12 +10,10 @@ import { proposeBulkLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
 
 type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
-  onCardClick: (id: number) => void;
   onSubmit: () => Promise<void>;
   closeLoadingModal: () => void;
   loadingModalVisible: boolean;
   selectedBulkValue: number;
-  activeCardId: number;
   selectedBulk: any;
   feeOnDay: number;
 };
@@ -26,8 +24,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const dispatch = useDispatch();
 
   const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
-
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
 
@@ -49,8 +45,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     }),
   );
 
-  console.log(rawselectedBulk);
-
   const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
 
   const {
@@ -58,14 +52,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     close: closeLoadingModal,
     open: openLoadingModal,
   } = useLoadingModal();
-
-  const onCardClick = (id: number): void => {
-    if (id === activeCardId) {
-      setActiveCardId(null);
-    } else {
-      setActiveCardId(id);
-    }
-  };
 
   useEffect(() => {
     dispatch(loansActions.setBulkNfts(rawselectedBulk));
@@ -102,9 +88,7 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     selectedBulk,
     selectedBulkValue,
     onSubmit,
-    onCardClick,
     loadingModalVisible,
-    activeCardId,
     closeLoadingModal,
     feeOnDay,
   };

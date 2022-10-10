@@ -105,6 +105,11 @@ export const selectBulkNfts: (state: any[]) => any[] = createSelector(
   identity,
 );
 
+export const selectCurrentNft: (state: any[]) => any[] = createSelector(
+  [pathOr([], ['loans', 'currentNft'])],
+  identity,
+);
+
 export const selectPerpLoansNfts: (
   state: PerpetualNftsInfo[],
 ) => PerpetualNftsInfo[] = createSelector(

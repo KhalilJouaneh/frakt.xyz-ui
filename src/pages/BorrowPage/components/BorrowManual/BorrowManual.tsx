@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { selectSelectedNftId } from '../../../../state/common/selectors';
 import {
   selectBulkNfts,
+  selectCurrentNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
 import { LinkWithArrow } from '../../../../components/LinkWithArrow';
@@ -25,6 +26,7 @@ import { BorrowFormType } from '../BorrowForm/BorrowForm';
 import Header from '../Header';
 import { useBorrowNft } from './hooks';
 import { BulkValues } from '../../hooks';
+import { commonActions } from '../../../../state/common/actions';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -60,6 +62,14 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   useEffect(() => {
     bulkNftsRaw.length && setSelectedNfts(bulkNftsRaw);
   }, [bulkNftsRaw]);
+
+  useEffect(() => {
+    if (selectedNfts.length) {
+      dispatch(commonActions.setSelectedNftId(selectedNfts.length - 1));
+    }
+  }, [selectedNfts]);
+
+  const currentNft = useSelector(selectCurrentNft);
 
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
@@ -123,7 +133,11 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
           sidebarForm={
             <BorrowForm
               onClick={() => setOpenBulk(true)}
-              selectedNft={bulkNfts?.[currentId]}
+              selectedNft={
+                (currentNft as any)?.name
+                  ? (currentNft as any)
+                  : bulkNfts?.[currentId]
+              }
               onDeselect={onDeselect}
               isBulkLoan={isBulkLoan}
             />

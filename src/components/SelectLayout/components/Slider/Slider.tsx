@@ -9,6 +9,8 @@ import { BorrowNft } from '../../../../state/loans/types';
 import styles from './Slider.module.scss';
 import Icons from '../../../../iconsNew/';
 import Button from '../../../Button';
+import { selectCurrentNft } from '../../../../state/loans/selectors';
+import { loansActions } from '../../../../state/loans/actions';
 
 interface SliderProps {
   nfts: BorrowNft[];
@@ -21,12 +23,16 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
 
   const selectedNftId = useSelector(selectSelectedNftId);
 
+  const currentNft = useSelector(selectCurrentNft);
+
   const totalNftsId = nfts.length - 1;
 
   const isBulkLoan = nfts.length > 1;
   const id = selectedNftId > totalNftsId ? 0 : selectedNftId;
 
   const onNextNft = (idx: number): void => {
+    dispatch(loansActions.setCurrentNftLoan(null));
+
     if (idx > totalNftsId) {
       dispatch(commonActions.setSelectedNftId(0));
     } else {
@@ -34,13 +40,9 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
     }
   };
 
-  useEffect(() => {
-    if (nfts.length) {
-      dispatch(commonActions.setSelectedNftId(nfts.length - 1));
-    }
-  }, [nfts]);
-
   const onPrevNft = (idx: number): void => {
+    dispatch(loansActions.setCurrentNftLoan(null));
+
     if (idx < 0) {
       dispatch(commonActions.setSelectedNftId(totalNftsId));
     } else {
@@ -50,58 +52,60 @@ export const Slider: FC<SliderProps> = ({ onDeselect, nfts, className }) => {
 
   return (
     <Swiper className={classNames(styles.nftSlider, className)}>
-      {[nfts[id]].map((nft, idx) => (
-        <SwiperSlide key={idx}>
-          <div className={styles.slide}>
-            <div
-              className={styles.image}
-              style={{ backgroundImage: `url(${nft?.imageUrl})` }}
-            >
+      {[(currentNft as any)?.name ? (currentNft as any) : nfts[id]].map(
+        (nft, idx) => (
+          <SwiperSlide key={idx}>
+            <div className={styles.slide}>
+              <div
+                className={styles.image}
+                style={{ backgroundImage: `url(${nft?.imageUrl})` }}
+              >
+                <button
+                  className={styles.removeBtn}
+                  onClick={() => onDeselect(nft)}
+                >
+                  {Icons.Cross()}
+                </button>
+                {isBulkLoan && (
+                  <div className={styles.btnWrapper}>
+                    <Button
+                      className={classNames(styles.btn, styles.rotateLeft)}
+                      type="tertiary"
+                      onClick={() => onPrevNft(selectedNftId - 1)}
+                    >
+                      <Icons.Chevron />
+                    </Button>
+                    <Button
+                      className={classNames(styles.btn, styles.rotateRight)}
+                      type="tertiary"
+                      onClick={() => onNextNft(selectedNftId + 1)}
+                    >
+                      <Icons.Chevron />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <p className={styles.nftName}>{nft?.name}</p>
+            </div>
+
+            <div className={styles.mobileSlide}>
+              <div className={styles.mobileSlideInfo}>
+                <div
+                  className={styles.image}
+                  style={{ backgroundImage: `url(${nft?.imageUrl})` }}
+                />
+                <p className={styles.nftName}>{nft?.name}</p>
+              </div>
               <button
-                className={styles.removeBtn}
+                className={styles.removeBtnMobile}
                 onClick={() => onDeselect(nft)}
               >
                 {Icons.Cross()}
               </button>
-              {isBulkLoan && (
-                <div className={styles.btnWrapper}>
-                  <Button
-                    className={classNames(styles.btn, styles.rotateLeft)}
-                    type="tertiary"
-                    onClick={() => onPrevNft(selectedNftId - 1)}
-                  >
-                    <Icons.Chevron />
-                  </Button>
-                  <Button
-                    className={classNames(styles.btn, styles.rotateRight)}
-                    type="tertiary"
-                    onClick={() => onNextNft(selectedNftId + 1)}
-                  >
-                    <Icons.Chevron />
-                  </Button>
-                </div>
-              )}
             </div>
-            <p className={styles.nftName}>{nft?.name}</p>
-          </div>
-
-          <div className={styles.mobileSlide}>
-            <div className={styles.mobileSlideInfo}>
-              <div
-                className={styles.image}
-                style={{ backgroundImage: `url(${nft?.imageUrl})` }}
-              />
-              <p className={styles.nftName}>{nft?.name}</p>
-            </div>
-            <button
-              className={styles.removeBtnMobile}
-              onClick={() => onDeselect(nft)}
-            >
-              {Icons.Cross()}
-            </button>
-          </div>
-        </SwiperSlide>
-      ))}
+          </SwiperSlide>
+        ),
+      )}
     </Swiper>
   );
 };

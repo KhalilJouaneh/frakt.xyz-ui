@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map, filter } from 'ramda';
 
-import { BulksType, BulkValues } from '../../BorrowPage';
+import { BulksType, BulkValues } from '../../hooks';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
 import SelectedBulk from '../SelectedBulk';

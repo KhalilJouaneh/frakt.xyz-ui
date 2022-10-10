@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { filter } from 'ramda';
+import { useDispatch } from 'react-redux';
+import { sum, map, filter } from 'ramda';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
@@ -11,8 +12,9 @@ import { SolanaIcon } from '../../../../icons';
 import { PATHS } from '../../../../constants';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
-import Icons from '../../../../iconsNew';
 import Header from '../Header';
+import { commonActions } from '../../../../state/common/actions';
+import { loansActions } from '../../../../state/loans/actions';
 interface BorrowingBulkProps {
   selectedBulk: any[];
   onClick?: () => void;
@@ -26,10 +28,8 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
 }) => {
   const {
     onSubmit,
-    onCardClick,
     selectedBulk,
     loadingModalVisible,
-    activeCardId,
     selectedBulkValue,
     closeLoadingModal,
     feeOnDay,
@@ -38,12 +38,30 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
   const isSelectedBulk = !!selectedBulk?.length;
 
   const perpetualLoans = selectedBulk.filter((nft) => {
-    return nft?.priceBased?.isBest || nft?.isPriceBased;
+    return nft?.isPriceBased && nft?.priceBased;
   });
 
   const flipLoans = selectedBulk.filter((nft) => {
     return !nft?.priceBased || !nft?.isPriceBased;
   });
+
+  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+
+  const perpetualLoansValues = perpetualLoans.map(
+    ({ priceBased, valuation }) => {
+      if (priceBased?.ltv) {
+        return Number(valuation) * (priceBased?.ltv / 100);
+      } else {
+        return priceBased?.suggestedLoanValue;
+      }
+    },
+  );
+
+  const priceBasedLoansValue = sum(perpetualLoansValues);
+
+  const timeBasedLoansValue = sum(map(maxLoanValue, flipLoans));
+
+  const totalBorrowed = priceBasedLoansValue + timeBasedLoansValue || 0;
 
   return (
     <>
@@ -52,7 +70,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           onClick={onClick}
           onSubmit={onSubmit}
           onBack={onBack}
-          selectedBulkValue={selectedBulkValue}
+          selectedBulkValue={totalBorrowed}
           feeOnDay={feeOnDay}
         />
       )}
@@ -82,63 +100,28 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           </div>
         )}
 
-        {isSelectedBulk &&
-          selectedBulk.map((nft, id) => {
-            const { imageUrl, name, isPriceBased, valuation } = nft;
-
-            const {
-              loanType,
-              maxLoanValue,
-              fee,
-              loanToValue,
-              BorrowAPY,
-              liquidationsPrice,
-            } = getSelectedBulkValues(nft);
-
-            return (
-              <div className={styles.cardWrapper} key={nft.name}>
-                <div className={styles.card}>
-                  <div className={styles.cardInfo}>
-                    <img className={styles.image} src={imageUrl} />
-                    <div className={styles.name}>{name}</div>
-                  </div>
-                  <div className={styles.cardValues}>
-                    {getStatsValue(
-                      'To borrow',
-                      maxLoanValue,
-                      'number',
-                      styles.rowCardValue,
-                    )}
-                    <div
-                      onClick={() => onCardClick(id)}
-                      className={cx(
-                        activeCardId === id && styles.btnVisible,
-                        styles.btnWithArrow,
-                      )}
-                    >
-                      <Icons.Chevron />
-                    </div>
-                  </div>
-                </div>
-                {id === activeCardId && (
-                  <div className={styles.hiddenValues}>
-                    {getStatsValue('Loan Type', loanType)}
-                    {getStatsValue('Loan to value', loanToValue, 'percent')}
-                    {getStatsValue('Floor price', valuation, 'number')}
-                    {isPriceBased &&
-                      getStatsValue(
-                        'Liquidations price',
-                        liquidationsPrice,
-                        'number',
-                      )}
-                    {isPriceBased &&
-                      getStatsValue('Borrow APY', BorrowAPY, 'percent')}
-                    {getStatsValue('fee', fee, 'number')}
-                  </div>
+        {isSelectedBulk && (
+          <div>
+            {!!perpetualLoans.length && (
+              <>
+                <p className={styles.title}>Perpetual loans</p>
+                {getPriceBasedValues(
+                  perpetualLoans,
+                  'perpetual',
+                  onClick,
+                  onBack,
                 )}
-              </div>
-            );
-          })}
+              </>
+            )}
+
+            {!!flipLoans.length && (
+              <>
+                <p className={styles.title}>Flip loans</p>
+                {getPriceBasedValues(flipLoans, 'flip', onClick, onBack)}
+              </>
+            )}
+          </div>
+        )}
       </div>
       <LoadingModal
         title="Please approve transaction"
@@ -168,4 +151,62 @@ const getStatsValue = (
       </p>
     </div>
   );
+};
+
+const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
+  const dispatch = useDispatch();
+
+  return loans.map((nft, id) => {
+    const { imageUrl, name, valuation } = nft;
+
+    const isPriceBasedLoan = loansType === 'perpetual';
+
+    const {
+      loanType,
+      maxLoanValue,
+      fee,
+      loanToValue,
+      BorrowAPY,
+      liquidationsPrice,
+      feeDiscountPercents,
+      period,
+      repayValue,
+    } = getSelectedBulkValues(nft);
+
+    return (
+      <div className={styles.cardWrapper} key={nft.name}>
+        <div className={styles.card}>
+          <div className={styles.cardInfo}>
+            <img className={styles.image} src={imageUrl} />
+            <div className={styles.name}>{name}</div>
+          </div>
+          <p
+            className={styles.editMode}
+            onClick={() => {
+              dispatch(loansActions.setCurrentNftLoan(nft));
+              dispatch(commonActions.setSelectedNftId(id));
+              onBack ? onBack() : onClick();
+            }}
+          >
+            Edit loan
+          </p>
+        </div>
+        <div className={styles.hiddenValues}>
+          {getStatsValue('Loan Type', loanType)}
+          {!isPriceBasedLoan && getStatsValue('Duration', `${period} DAYS`)}
+          {getStatsValue('Loan to value', loanToValue, 'percent')}
+          {getStatsValue('Floor price', valuation, 'number')}
+          {isPriceBasedLoan &&
+            getStatsValue('Liquidations price', liquidationsPrice, 'number')}
+          {isPriceBasedLoan &&
+            getStatsValue('Borrow APY', BorrowAPY, 'percent')}
+          {getStatsValue('fee', fee, 'number')}
+          {getStatsValue('To borrow', maxLoanValue, 'number')}
+          {!isPriceBasedLoan &&
+            getStatsValue('Holder discount', feeDiscountPercents, 'percent')}
+          {!isPriceBasedLoan && getStatsValue('To repay', repayValue, 'number')}
+        </div>
+      </div>
+    );
+  });
 };
