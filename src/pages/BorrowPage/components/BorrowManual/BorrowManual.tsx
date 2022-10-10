@@ -101,15 +101,11 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
           ...nft,
           maxLoanValue,
           priceBased: { ...priceBased, fee, ltv: ltvPercent },
-          isPriceBased: currentNft?.formType
-            ? isPriceBased
-            : !!priceBased?.ltvPercents,
+          isPriceBased: currentNft?.formType ? isPriceBased : true,
         };
       }
     });
   }, [selectedNfts, perpetualNftsInfo]);
-
-  console.log(bulkNfts);
 
   const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
 

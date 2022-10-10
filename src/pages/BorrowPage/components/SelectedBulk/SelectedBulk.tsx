@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import { filter } from 'ramda';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
@@ -12,7 +13,6 @@ import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
 import Icons from '../../../../iconsNew';
 import Header from '../Header';
-
 interface BorrowingBulkProps {
   selectedBulk: any[];
   onClick?: () => void;
@@ -36,6 +36,14 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
   } = useSeletedBulk({ rawselectedBulk });
 
   const isSelectedBulk = !!selectedBulk?.length;
+
+  const perpetualLoans = selectedBulk.filter((nft) => {
+    return nft?.priceBased?.isBest || nft?.isPriceBased;
+  });
+
+  const flipLoans = selectedBulk.filter((nft) => {
+    return !nft?.priceBased || !nft?.isPriceBased;
+  });
 
   return (
     <>
