@@ -1,29 +1,9 @@
 @import '../../../../scss/abstracts/mixins';
 
-.header {
-  @include flex(row, nowrap, center, center);
-  margin-bottom: 48px;
-
-  @media screen and (max-width: 1023px) {
-    margin-top: 30px;
-    flex-direction: column;
-  }
-}
-
-.title {
-  font: var(--font-title-2);
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.subtitle {
-  font: var(--font-text-1);
-  text-align: center;
-}
-
 .wrapper {
   display: flex;
   gap: 24px;
+  justify-content: center;
 
   @media screen and (max-width: 1240px) {
     flex-direction: column;
@@ -128,27 +108,6 @@
 .btn {
   height: 48px;
   width: 100%;
-}
-
-.btnBack {
-  @include flex(row, nowrap, center, center);
-
-  background-color: var(--primary-background);
-  border: 1px solid var(--primary-border);
-  border-radius: 50%;
-  cursor: pointer;
-
-  position: absolute;
-  top: 110px;
-  left: 32px;
-  height: 40px;
-  width: 40px;
-
-  svg {
-    path {
-      fill: var(--secondary-border);
-    }
-  }
 }
 
 .noSuiableMessageWrapper {

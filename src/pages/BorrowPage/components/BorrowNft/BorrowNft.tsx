@@ -22,8 +22,8 @@ import {
 import { useBorrowPage } from '../../hooks';
 import SelectedBulk from '../SelectedBulk';
 import BorrowForm from '../BorrowForm';
-import Icons from '../../../../iconsNew';
 import { BorrowFormType } from '../BorrowForm/BorrowForm';
+import Header from '../Header';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -65,22 +65,27 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
   const isBulkLoan = selectedNfts.length > 1;
 
-  const bulkNfts = selectedNfts.map((nft) => {
+  const bulkNfts = selectedNfts.map((nft: any) => {
     if (!nft?.priceBased) {
       return { ...nft };
     } else {
       const { valuation, timeBased, priceBased } = nft;
 
       const currentNft = perpetualNftsInfo.find(
-        ({ mint }) => mint === nft.mint,
+        ({ mint }) => mint === nft?.mint,
       );
 
-      const ltv = currentNft?.ltv || 25;
+      const ltv =
+        currentNft?.ltv ||
+        Number(
+          ((priceBased.suggestedLoanValue / valuation) * 100).toFixed(0),
+        ) ||
+        25;
 
       const maxLoanValuePriceBased = (
         parseFloat(valuation) *
         (ltv / 100)
-      ).toFixed(3);
+      )?.toFixed(3);
 
       const isPriceBased = currentNft?.formType === BorrowFormType.PERPETUAL;
 
@@ -122,22 +127,12 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
             />
           }
         >
-          <div onClick={onClick} className={styles.btnBack}>
-            <Icons.Arrow />
-          </div>
-          <div
-            className={classNames(
-              styles.header,
-              selectedNfts.length && styles.headerActive,
-            )}
-          >
-            <div>
-              <h1 className={styles.title}>Borrow SOL</h1>
-              <h2 className={styles.subtitle}>
-                Select your NFT to use as a collateral
-              </h2>
-            </div>
-          </div>
+          <Header
+            onClick={onClick}
+            title="Borrow SOL"
+            subtitle="Select your NFT to use as a collateral"
+            className={selectedNfts.length && styles.headerActive}
+          />
 
           <div className={styles.sortWrapper}>
             <SearchInput
@@ -175,7 +170,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
               emptyMessage=""
               customLoader={<p className={styles.loader}>loading your jpegs</p>}
             >
-              {(nfts as BorrowNft[]).map((nft, idx) => {
+              {(nfts as BorrowNft[]).map((nft) => {
                 return (
                   <NFTCheckbox
                     key={nft.mint}

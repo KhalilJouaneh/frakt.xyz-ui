@@ -17,6 +17,7 @@ type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
   selectedBulkValue: number;
   activeCardId: number;
   selectedBulk: any;
+  feeOnDay: number;
 };
 
 export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
@@ -29,6 +30,27 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+
+  const feeOnDay = sum(
+    rawselectedBulk.map((nft): number => {
+      if (!nft.isPriceBased) {
+        const { timeBased } = nft;
+
+        return Number(timeBased?.fee) / timeBased?.returnPeriodDays;
+      } else {
+        const { priceBased, valuation } = nft;
+
+        const ltv = priceBased?.ltv || priceBased?.ltvPercents;
+
+        const loanValue = parseFloat(valuation) * (ltv / 100);
+
+        return (loanValue * (priceBased.borrowAPRPercents * 0.01)) / 365;
+      }
+    }),
+  );
+
+  console.log(rawselectedBulk);
+
   const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
 
   const {
@@ -84,5 +106,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     loadingModalVisible,
     activeCardId,
     closeLoadingModal,
+    feeOnDay,
   };
 };

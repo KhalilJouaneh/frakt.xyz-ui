@@ -1,26 +1,5 @@
 @import '../../../../scss/abstracts/mixins';
 
-.header {
-  @include flex(row, nowrap, center, center);
-  margin-bottom: 48px;
-
-  @media screen and (max-width: 1023px) {
-    margin-top: 30px;
-    flex-direction: column;
-  }
-}
-
-.title {
-  font: var(--font-title-2);
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.subtitle {
-  font: var(--font-text-1);
-  text-align: center;
-}
-
 .container {
   padding-right: 280px;
 
@@ -157,67 +136,8 @@
   }
 }
 
-.btnBack {
-  position: absolute;
-  top: 110px;
-  left: 32px;
-}
-
 .btnVisible {
   transform: rotate(180deg);
-}
-
-.sidebar {
-  @include flex(column, nowrap, center, center);
-  background-color: var(--primary-background);
-  border-left: 1px solid var(--primary-border);
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 288px;
-  padding: 32px;
-  height: 100vh;
-
-  @media (max-width: 1240px) {
-    border-top: 1px solid var(--primary-border);
-    border-left: 0;
-    padding: 24px;
-    bottom: 0;
-    top: unset;
-    height: 183px;
-    left: 177px;
-    width: calc(100vw - 187px);
-    z-index: 5;
-  }
-  @media (max-width: 767px) {
-    left: unset;
-    border-top: 1px solid var(--secondary-border);
-    width: 100%;
-  }
-}
-
-.sidebarTitle {
-  color: var(--secondary-border);
-  font: var(--font-subtitle-2);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.sidebarSubtitle {
-  color: var(--secondary-border);
-  font: var(--font-text-1);
-  font-size: 32px;
-}
-
-.sidebarBtnWrapper {
-  margin-top: 24px;
-  @include flex(column, nowrap, null, null);
-  gap: 16px;
-  width: 100%;
-
-  @media (max-width: 1240px) {
-    @include flex(row, nowrap, space-between, null);
-  }
 }
 
 .btn {

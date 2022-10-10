@@ -1,5 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { sum, map } from 'ramda';
 
 import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 import { AppLayout } from '../../components/Layout/AppLayout';
@@ -13,6 +14,9 @@ import { loansActions } from '../../state/loans/actions';
 import { LinkWithArrow } from '../../components/LinkWithArrow';
 import { Loader } from '../../components/Loader';
 import { Slider } from '../../components/Slider';
+import Header from './components/Header';
+import NoSuitableNft from './components/NoSuitableNft';
+import { useBorrowPage } from './hooks';
 
 enum BorrowType {
   BULK = 'bulk',
@@ -39,9 +43,6 @@ export type BulkValues = {
 
 export type BulksType = { [key in BulksKeys]: BulkValues[] };
 
-const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
-  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
-
 const BorrowPage: FC = () => {
   const { publicKey, connected } = useWallet();
   const dispatch = useDispatch();
@@ -51,6 +52,19 @@ const BorrowPage: FC = () => {
   const [value, setValue] = useState<number>(0);
 
   const [nftsLoading, setNftsLoading] = useState<boolean>(true);
+
+  const { fetchData } = useBorrowPage();
+  const [nfts, setNfts] = useState<any[]>([]);
+
+  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+  const availableBorrowValue = sum(map(maxLoanValue, nfts)).toFixed(1) || 0;
+
+  useEffect(() => {
+    (async () => {
+      const nfts = await fetchData({ offset: 0, limit: 1000 });
+      setNfts(nfts);
+    })();
+  }, []);
 
   const onSubmit = async (): Promise<void> => {
     try {
@@ -70,21 +84,17 @@ const BorrowPage: FC = () => {
 
   const marks = {
     0: '0%',
-    100: `${100}`,
+    [availableBorrowValue]: `${availableBorrowValue}`,
   };
 
   return (
     <>
       {borrowType === null && (
         <AppLayout>
-          <div className={styles.header}>
-            <div>
-              <h1 className={styles.title}>Borrow SOL</h1>
-              <h2 className={styles.subtitle}>
-                Select your NFT to use as a collateral
-              </h2>
-            </div>
-          </div>
+          <Header
+            title="Borrow SOL"
+            subtitle="Select your NFT to use as a collateral"
+          />
 
           {!connected && (
             <ConnectWalletSection text="Connect your wallet to check ..." />
@@ -101,6 +111,7 @@ const BorrowPage: FC = () => {
                     className={styles.slider}
                     value={value}
                     step={1}
+                    max={Number(availableBorrowValue)}
                     setValue={setValue}
                     withTooltip
                   />
@@ -148,28 +159,12 @@ const BorrowPage: FC = () => {
             />
           )}
 
-          {!!nftsLoading && <Loader size="large" />}
+          {nftsLoading && <Loader size="large" />}
 
           {!nftsLoading && !bulks?.best?.length && (
             <>
-              <div className={styles.header}>
-                <div>
-                  <h1 className={styles.title}>Borrowing</h1>
-                  <h2 className={styles.subtitle}>I need {value} SOL</h2>
-                </div>
-              </div>
-
-              <div className={styles.noSuiableMessageWrapper}>
-                <p className={styles.noSuiableMessage}>
-                  No suitable NFTs found
-                </p>
-                <LinkWithArrow
-                  className={styles.acceptedCollectionsLink}
-                  label="Check collections accepted for loans"
-                  to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
-                  externalLink
-                />
-              </div>
+              <Header title="Borrowing" subtitle={`I need ${value} SOL`} />
+              <NoSuitableNft />
             </>
           )}
         </AppLayout>

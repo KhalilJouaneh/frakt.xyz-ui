@@ -3,12 +3,15 @@ import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { getSelectedBulkValues } from './helpers';
 import Button from '../../../../components/Button';
 import styles from './SelectedBulk.module.scss';
 import { SolanaIcon } from '../../../../icons';
 import { PATHS } from '../../../../constants';
+import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
 import Icons from '../../../../iconsNew';
+import Header from '../Header';
 
 interface BorrowingBulkProps {
   selectedBulk: any[];
@@ -29,42 +32,21 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
     activeCardId,
     selectedBulkValue,
     closeLoadingModal,
+    feeOnDay,
   } = useSeletedBulk({ rawselectedBulk });
 
-  const isSelectedBulk = selectedBulk?.length;
+  const isSelectedBulk = !!selectedBulk?.length;
 
   return (
     <>
-      {!!isSelectedBulk && (
-        <>
-          <div
-            onClick={onClick}
-            className={cx(styles.btnBack, styles.btnWithArrow)}
-          >
-            <Icons.Arrow />
-          </div>
-          <div className={styles.sidebar}>
-            <p className={styles.sidebarTitle}>To borrow</p>
-            <p className={styles.sidebarSubtitle}>
-              {selectedBulkValue?.toFixed(2)} SOL
-            </p>
-            <div className={styles.sidebarBtnWrapper}>
-              <Button
-                onClick={onSubmit}
-                type="secondary"
-                className={styles.btn}
-              >
-                Borrow {selectedBulkValue?.toFixed(2)} SOL
-              </Button>
-              <Button
-                onClick={onBack ? onBack : onClick}
-                className={styles.btn}
-              >
-                Change assets
-              </Button>
-            </div>
-          </div>
-        </>
+      {isSelectedBulk && (
+        <SidebarBulk
+          onClick={onClick}
+          onSubmit={onSubmit}
+          onBack={onBack}
+          selectedBulkValue={selectedBulkValue}
+          feeOnDay={feeOnDay}
+        />
       )}
 
       <div
@@ -73,14 +55,11 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           !isSelectedBulk && styles.closeContainer,
         )}
       >
-        <div className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Borrowing</h1>
-            <h2 className={styles.subtitle}>
-              {selectedBulk?.length} loans in bulk
-            </h2>
-          </div>
-        </div>
+        <Header
+          onClick={onClick}
+          title="Borrowing"
+          subtitle={`${selectedBulk?.length} loans in bulk`}
+        />
 
         {!isSelectedBulk && (
           <div className={styles.congratsWrapper}>
@@ -95,39 +74,18 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           </div>
         )}
 
-        {!!isSelectedBulk &&
+        {isSelectedBulk &&
           selectedBulk.map((nft, id) => {
+            const { imageUrl, name, isPriceBased, valuation } = nft;
+
             const {
-              imageUrl,
-              name,
+              loanType,
               maxLoanValue,
-              isPriceBased,
-              priceBased,
-              timeBased,
-              valuation,
-            } = nft;
-
-            const loanType = isPriceBased ? 'Perpetual' : 'Flip';
-
-            const timeBasedFee =
-              Number(timeBased.fee) *
-              (Number(timeBased?.feeDiscountPercents) * 0.01);
-
-            const fee = isPriceBased
-              ? Number(maxLoanValue) * 0.01
-              : timeBasedFee;
-
-            const loanToValue = isPriceBased
-              ? priceBased?.ltv || priceBased?.ltvPercents
-              : timeBased?.ltvPercents;
-
-            const BorrowAPY = priceBased?.borrowAPRPercents?.toFixed(0);
-
-            const loanValue =
-              parseFloat(valuation) * (priceBased?.ltvPercents / 100);
-
-            const liquidationsPrice =
-              loanValue + loanValue * (priceBased?.collaterizationRate / 100);
+              fee,
+              loanToValue,
+              BorrowAPY,
+              liquidationsPrice,
+            } = getSelectedBulkValues(nft);
 
             return (
               <div className={styles.cardWrapper} key={id}>
@@ -140,7 +98,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                     {getStatsValue(
                       'To borrow',
                       maxLoanValue,
-                      true,
+                      'number',
                       styles.rowCardValue,
                     )}
                     <div
@@ -157,17 +115,17 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                 {id === activeCardId && (
                   <div className={styles.hiddenValues}>
                     {getStatsValue('Loan Type', loanType)}
-                    {getStatsValue('Loan to value', `${loanToValue} %`)}
-                    {getStatsValue('Floor price', `${valuation}`, true)}
+                    {getStatsValue('Loan to value', loanToValue, 'percent')}
+                    {getStatsValue('Floor price', valuation, 'number')}
                     {isPriceBased &&
                       getStatsValue(
                         'Liquidations price',
-                        `${liquidationsPrice.toFixed(3)}`,
-                        true,
+                        liquidationsPrice,
+                        'number',
                       )}
                     {isPriceBased &&
-                      getStatsValue('Borrow APY', `${BorrowAPY} %`)}
-                    {getStatsValue('fee', `${fee.toFixed(3)}`, true)}
+                      getStatsValue('Borrow APY', BorrowAPY, 'percent')}
+                    {getStatsValue('fee', fee, 'number')}
                   </div>
                 )}
               </div>
@@ -188,14 +146,17 @@ export default SelectedBulk;
 const getStatsValue = (
   title: string,
   value: number | string,
-  withIcon?: boolean,
+  type?: 'percent' | 'number',
   className?: string,
 ) => {
+  const number = type === 'number' && <SolanaIcon />;
+  const percent = type === 'percent' && '%';
+
   return (
     <div className={cx(styles.cardValue, className)}>
       <p className={styles.cardTitle}>{title}</p>
       <p className={styles.cardSubtitle}>
-        {value} {withIcon && <SolanaIcon />}
+        {value} {number || percent || null}
       </p>
     </div>
   );

@@ -1,26 +1,5 @@
 @import '../../scss/abstracts/mixins';
 
-.header {
-  @include flex(row, nowrap, center, center);
-  margin-bottom: 48px;
-
-  @media screen and (max-width: 1023px) {
-    margin-top: 30px;
-    flex-direction: column;
-  }
-}
-
-.title {
-  font: var(--font-title-2);
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.subtitle {
-  font: var(--font-text-1);
-  text-align: center;
-}
-
 .wrapper {
   @include flex(column, nowrap, null, center);
   gap: 24px;
@@ -92,21 +71,6 @@
 
 .input {
   width: 100%;
-}
-
-.noSuiableMessageWrapper {
-  color: var(--secondary-border);
-}
-
-.noSuiableMessage {
-  font: var(--font-text-4);
-  margin-bottom: 6px;
-}
-
-.acceptedCollectionsLink {
-  svg path {
-    fill: var(--blue-color);
-  }
 }
 
 .loader {

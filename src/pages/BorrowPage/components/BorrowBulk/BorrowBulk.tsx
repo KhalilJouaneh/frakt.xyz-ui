@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { sum, map } from 'ramda';
+import { sum, map, filter } from 'ramda';
 
 import { BulksType, BulkValues } from '../../BorrowPage';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
 import SelectedBulk from '../SelectedBulk';
-import Icons from '../../../../iconsNew';
+import Header from '../Header';
 
 interface BorrowBulk {
   bulks: BulksType;
@@ -18,23 +18,36 @@ interface BorrowBulk {
 const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const { connected } = useWallet();
 
-  const { best, cheapest, safest } = bulks;
-
   const [selectedBulk, setSelectedBulk] = useState<BulkValues[]>([]);
 
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+  const getTotalValue = (bulk): number => {
+    const priceBased = ({ priceBased }) => priceBased;
+    const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+    const timeBased = ({ isPriceBased }) => !isPriceBased;
+    const suggestedLoanValue = ({ priceBased }) =>
+      priceBased.suggestedLoanValue;
 
-  const bestBulkValue = sum(map(maxLoanValue, best));
-  const cheapestBulkValue = sum(map(maxLoanValue, cheapest));
-  const safestBulkValue = sum(map(maxLoanValue, safest));
+    const priceBasedLoans = filter(priceBased, bulk);
+    const timeBasedLoans = filter(timeBased, bulk);
 
-  const getBulkValues = ({
-    bulk,
-    value,
-  }: {
-    bulk: BulkValues[];
-    value: number;
-  }) => {
+    const priceBasedLoansValue = sum(map(suggestedLoanValue, priceBasedLoans));
+
+    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans));
+
+    return priceBasedLoansValue + timeBasedLoansValue || 0;
+  };
+
+  const bestBulk = bulks?.best || [];
+  const cheapestBulk = bulks?.cheapest || [];
+  const safestBulk = bulks?.safest || [];
+
+  const bestBulkValue = getTotalValue(bestBulk);
+  const cheapestBulkValue = getTotalValue(cheapestBulk);
+  const safestBulkValue = getTotalValue(safestBulk);
+
+  const getBulkValues = (bulk: BulkValues[], value: number) => {
+    if (!bulk.length) return;
+
     return (
       <div className={styles.block}>
         <div>
@@ -60,21 +73,16 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
     <>
       {!selectedBulk?.length ? (
         <>
-          <div onClick={onClick} className={styles.btnBack}>
-            <Icons.Arrow />
-          </div>
-          <div className={styles.header}>
-            <div>
-              <h1 className={styles.title}>Borrowing</h1>
-              <h2 className={styles.subtitle}>I need {value} SOL</h2>
-            </div>
-          </div>
-
+          <Header
+            onClick={onClick}
+            title="Borrowing"
+            subtitle={`I need ${value} SOL`}
+          />
           {connected && !!bulks.best.length && (
             <div className={styles.wrapper}>
-              {getBulkValues({ bulk: best, value: bestBulkValue })}
-              {getBulkValues({ bulk: cheapest, value: cheapestBulkValue })}
-              {getBulkValues({ bulk: safest, value: safestBulkValue })}
+              {getBulkValues(bestBulk, bestBulkValue)}
+              {getBulkValues(cheapestBulk, cheapestBulkValue)}
+              {getBulkValues(safestBulk, safestBulkValue)}
             </div>
           )}
         </>
