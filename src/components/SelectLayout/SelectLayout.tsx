@@ -3,7 +3,6 @@ import { FC } from 'react';
 import Sidebar from './components/Sidebar';
 import { AppLayout } from '../Layout/AppLayout';
 import styles from './SelectLayout.module.scss';
-import { Container } from '../Layout';
 import { BorrowNft } from '../../state/loans/types';
 
 interface SelectLayoutProps {
@@ -28,9 +27,7 @@ export const SelectLayout: FC<SelectLayoutProps> = ({
         sidebarForm={sidebarForm}
         isCloseSidebar={isCloseSidebar}
       />
-      <Container component="main" className={styles.contentWrapper}>
-        <div id="content-reducer">{children}</div>
-      </Container>
+      <div id="content-reducer">{children}</div>
     </AppLayout>
   );
 };

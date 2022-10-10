@@ -86,9 +86,6 @@
 
     --font-h6: 700 18px var(--font-family-syne);
   }
-
-  @media screen and (max-width: 500px) {
-  }
 }
 
 :root[data-theme='dark'] {
@@ -179,8 +176,5 @@
     --font-text-2: 700 16px var(--font-family-syne);
 
     --font-h6: 700 18px var(--font-family-syne);
-  }
-
-  @media screen and (max-width: 500px) {
   }
 }

@@ -24,7 +24,7 @@ const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
         <div className={styles.block}>
           <h3 className={styles.subtitle}>Volume</h3>
           <p className={styles.value}>
-            {lockedNftsInLoans} <SolanaIcon />
+            {lockedNftsInLoans} <SolanaIcon className={styles.icon} />
           </p>
         </div>
         <div className={styles.block}>

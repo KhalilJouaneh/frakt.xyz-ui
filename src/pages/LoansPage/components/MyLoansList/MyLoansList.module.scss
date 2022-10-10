@@ -47,35 +47,14 @@
 
 .filters {
   position: absolute;
-  right: 0;
   top: 0;
-}
-
-.filters {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  right: 0;
 }
 
 .filterBtn {
   display: flex;
   height: 36px;
   min-width: 60px;
-}
-
-.filterBtnActive {
-  color: red;
-}
-
-.filtersContent {
-  display: flex;
-  gap: 30px;
-
-  @media screen and (max-width: 780px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
 }
 
 .sortingSelect {
@@ -121,6 +100,7 @@
   position: absolute;
   top: 45px;
   right: 0;
+  width: 308px;
 
   @media screen and (max-width: 767px) {
     position: fixed;
@@ -128,7 +108,7 @@
     left: 0;
     right: 0;
     top: unset;
-    height: 200px;
+    max-height: 250px;
     width: 100% !important;
   }
 }
@@ -138,6 +118,7 @@
   flex-flow: row wrap;
   gap: 36.5px;
   row-gap: 12px;
+  margin-top: 10px;
 
   @media screen and (max-width: 767px) {
     flex-flow: row nowrap;
@@ -153,13 +134,20 @@
 .radioWrapper {
   display: flex;
   flex-direction: column;
-  gap: 9.5px;
-  margin-bottom: 10px;
+  gap: 11px;
+  margin-bottom: 20px;
 
   @media screen and (max-width: 767px) {
     margin-bottom: 15px;
     flex-direction: row;
   }
+}
+
+.radioLabel {
+  font: var(--font-text-6);
+  color: var(--primary-border);
+  text-transform: uppercase;
+  margin-bottom: 11px;
 }
 
 .sorting {
@@ -176,20 +164,4 @@
 
 .toggle {
   min-width: 160px;
-}
-
-.controllers {
-  margin-top: 16px;
-}
-
-.checkbox {
-  font: var(--font-text-3);
-
-  :global {
-    .ant-checkbox {
-      + span {
-        padding-left: 10px !important;
-      }
-    }
-  }
 }

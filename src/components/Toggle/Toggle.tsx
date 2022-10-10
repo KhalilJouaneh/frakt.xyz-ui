@@ -1,7 +1,8 @@
 import { Switch } from 'antd';
-import classNames from 'classnames';
+import { FC } from 'react';
+import cx from 'classnames';
 
-import styles from './styles.module.scss';
+import styles from './Toggle.module.scss';
 
 interface ToggleProps {
   className?: string;
@@ -12,28 +13,19 @@ interface ToggleProps {
   onChange?: (value: any) => void;
 }
 
-const Toggle = ({
+const Toggle: FC<ToggleProps> = ({
   className = '',
   disabled = false,
   onChange = () => {},
   value = false,
   label = null,
-}: ToggleProps): JSX.Element => (
+}) => (
   <div
-    className={classNames(styles.filterToggle, className)}
+    className={cx(styles.filterToggle, className)}
     onClick={() => onChange(!value)}
   >
     <Switch className={styles.toggle} checked={value} disabled={disabled} />
-    {label && (
-      <p
-        className={classNames([
-          styles.filterToggle__text,
-          { [styles.filterToggle__text_muted]: !value },
-        ])}
-      >
-        {label}
-      </p>
-    )}
+    {label && <p className={styles.filterToggle__text}>{label}</p>}
   </div>
 );
 

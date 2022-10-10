@@ -2,9 +2,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 272px;
+  max-width: 300px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 767px) {
+    max-width: unset;
+    width: 100%;
+    padding: 0 56px;
+  }
+
+  @media (max-width: 550px) {
+    padding: 0 40px;
+  }
 }
 
 .btnWrapper {
@@ -45,12 +55,24 @@
 
     .ant-modal-content {
       border: 1px solid var(--blue-color) !important;
+
+      @media (max-width: 767px) {
+        border: 0 !important;
+        border-top: 1px solid var(--blue-color) !important;
+      }
     }
   }
   @media (max-width: 767px) {
     left: 0;
     right: 0;
-    top: 150px;
+    bottom: 0;
+    margin: 0;
+    max-width: unset;
+    width: 100% !important;
+
+    &::before {
+      display: none;
+    }
   }
 
   &::before {

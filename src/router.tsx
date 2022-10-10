@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import cx from 'classnames';
 
 import { routes } from './constants/routes';
 import Header from './componentsNew/Header';

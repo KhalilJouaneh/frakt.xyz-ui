@@ -3,7 +3,6 @@
   top: 0;
   right: 0;
   height: 100%;
-
   width: 344px;
   background-color: var(--primary-background);
   border-left: 1px solid var(--primary-border);
@@ -46,10 +45,6 @@
     padding-top: 0px;
     border-top: 1px solid var(--secondary-border);
   }
-}
-
-.headerHidden {
-  padding-top: 0;
 }
 
 .collapsed {

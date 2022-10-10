@@ -14,22 +14,24 @@ body {
       .ant-switch-handle {
         width: 39px;
         height: 8px;
-        top: 1px;
-        left: 1px;
+        top: -5px;
+        left: -1px;
       }
       .ant-switch-handle::before {
-        width: 18px;
-        height: 18px;
+        width: 24px;
+        height: 24px;
         background: #fff;
-        border-radius: 32px;
+        border-radius: 100px;
+        border: 1px solid #000;
       }
 
-      width: 37px;
-      height: 20px;
+      width: 35px;
+      height: 16px;
       box-sizing: border-box;
       background-image: unset !important;
       background-color: var(--gray-color-2);
       border-radius: 10px;
+      border: 1px solid #141415;
       margin: 10px 10px 16px 0;
     }
   }
@@ -58,11 +60,6 @@ body {
   &__text {
     font: var(--font-text-8);
     transition: opacity var(--transition-1);
-    font-size: 18px;
     margin-bottom: 5px;
-
-    &_muted {
-      opacity: 0.3;
-    }
   }
 }
