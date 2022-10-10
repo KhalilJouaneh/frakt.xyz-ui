@@ -8,7 +8,7 @@ interface SliderProps {
   value: number;
   setValue?: (nextValue: number) => void;
   className?: string;
-  marks?: { [key: number]: string };
+  marks?: { [key: number]: string | JSX.Element };
   step?: number;
   withTooltip?: boolean;
   max?: number;

@@ -66,7 +66,7 @@ const addPerpLoanNftsReducer = createReducer<string[]>([])
   .handleAction(loansActions.addPerpLoanNft, (action) => action?.payload || [])
   .handleAction(loansActions.updatePerpLoanNft, (state, { payload }) => {
     const found =
-      state.find((oldState) => oldState.mint === payload.mint) !== undefined;
+      state.find((oldState) => oldState?.mint === payload?.mint) !== undefined;
     return found
       ? state.map((oldState) =>
           oldState.mint === payload.mint ? payload : oldState,

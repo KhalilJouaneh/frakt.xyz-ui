@@ -27,6 +27,7 @@
 }
 
 .blockContent {
+  position: relative;
   @include flex(column, nowrap, null, null);
   gap: 24px;
   width: 100%;
@@ -133,6 +134,8 @@
   }
 }
 
+
+
 .slider {
   padding: 0 5px 36px;
   width: 100%;
@@ -155,5 +158,16 @@
         border-top: 6px solid #aeaeb2;
       }
     }
+  }
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+
+  svg {
+    width: 11px;
   }
 }

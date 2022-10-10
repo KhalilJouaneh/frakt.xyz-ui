@@ -8,10 +8,10 @@ import Button from '../../../../components/Button';
 import { SolanaIcon } from '../../../../icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
-import { useBorrowPage } from '../../../BorrowPage';
+import { useBorrowNft } from '../../../BorrowPage/components/BorrowManual';
 
 const AvailableBorrow: FC = () => {
-  const { fetchData } = useBorrowPage();
+  const { fetchData } = useBorrowNft();
   const [nfts, setNfts] = useState<BorrowNft[]>([]);
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;

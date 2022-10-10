@@ -4,13 +4,13 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import {
   FetchData,
   useInfinityScroll,
-} from '../../../components/InfinityScroll';
+} from '../../../../components/InfinityScroll';
 import { useDispatch, useSelector } from 'react-redux';
-import { loansActions } from '../../../state/loans/actions';
-import { BorrowNft } from '../../../state/loans/types';
-import { selectBorrowNfts } from '../../../state/loans/selectors';
+import { loansActions } from '../../../../state/loans/actions';
+import { BorrowNft } from '../../../../state/loans/types';
+import { selectBorrowNfts } from '../../../../state/loans/selectors';
 
-export const useBorrowPage = (): {
+export const useBorrowNft = (): {
   isCloseSidebar: boolean;
   setIsCloseSidebar: Dispatch<SetStateAction<boolean>>;
   nfts: BorrowNft[];

@@ -1,91 +1,35 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { sum, map } from 'ramda';
+import { useDispatch } from 'react-redux';
 
 import { ConnectWalletSection } from '../../components/ConnectWalletSection';
 import { AppLayout } from '../../components/Layout/AppLayout';
-import { networkRequest } from '../../utils/state';
+import { loansActions } from '../../state/loans/actions';
+import NoSuitableNft from './components/NoSuitableNft';
+import { BorrowType, useBorrowPage } from './hooks';
 import BorrowBulk from './components/BorrowBulk';
-import BorrowNft from './components/BorrowNft';
+import BorrowNft from './components/BorrowManual';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
-import { useDispatch } from 'react-redux';
-import { loansActions } from '../../state/loans/actions';
-import { LinkWithArrow } from '../../components/LinkWithArrow';
 import { Loader } from '../../components/Loader';
 import { Slider } from '../../components/Slider';
 import Header from './components/Header';
-import NoSuitableNft from './components/NoSuitableNft';
-import { useBorrowPage } from './hooks';
-
-enum BorrowType {
-  BULK = 'bulk',
-  SINGLE = 'single',
-}
-
-type BulksKeys = 'best' | 'cheapest' | 'safest';
-export type BulkValues = {
-  mint: string;
-  name: string;
-  imageUrl: string;
-  valuation: string;
-  maxLoanValue: string;
-  isCanFreeze: boolean;
-  isPriceBased: boolean;
-  parameters: {
-    suggestedLoanValue: number;
-    liquidityPoolPubkey: string;
-    ltvPercents: number;
-    borrowAPRPercents: number;
-    collaterizationRate: number;
-  };
-};
-
-export type BulksType = { [key in BulksKeys]: BulkValues[] };
 
 const BorrowPage: FC = () => {
-  const { publicKey, connected } = useWallet();
+  const { connected } = useWallet();
   const dispatch = useDispatch();
 
   const [borrowType, setBorrowType] = useState<BorrowType>(null);
-  const [bulks, setBulks] = useState<BulksType>(null);
-  const [value, setValue] = useState<number>(0);
 
-  const [nftsLoading, setNftsLoading] = useState<boolean>(true);
-
-  const { fetchData } = useBorrowPage();
-  const [nfts, setNfts] = useState<any[]>([]);
-
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-  const availableBorrowValue = sum(map(maxLoanValue, nfts)).toFixed(1) || 0;
-
-  useEffect(() => {
-    (async () => {
-      const nfts = await fetchData({ offset: 0, limit: 1000 });
-      setNfts(nfts);
-    })();
-  }, []);
-
-  const onSubmit = async (): Promise<void> => {
-    try {
-      const bulks = await networkRequest({
-        url: `https://${
-          process.env.BACKEND_DOMAIN
-        }/nft/suggest/${publicKey?.toBase58()}?solAmount=${value}`,
-      });
-
-      setBulks(bulks as BulksType);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setNftsLoading(false);
-    }
-  };
-
-  const marks = {
-    0: '0%',
-    [availableBorrowValue]: `${availableBorrowValue}`,
-  };
+  const {
+    marks,
+    bulks,
+    borrowValue,
+    setBorrowValue,
+    loading,
+    availableBorrowValue,
+    onSubmit,
+  } = useBorrowPage();
 
   return (
     <>
@@ -109,10 +53,10 @@ const BorrowPage: FC = () => {
                   <Slider
                     marks={marks}
                     className={styles.slider}
-                    value={value}
+                    value={borrowValue}
                     step={1}
                     max={Number(availableBorrowValue)}
-                    setValue={setValue}
+                    setValue={setBorrowValue}
                     withTooltip
                   />
                   <Button
@@ -120,7 +64,7 @@ const BorrowPage: FC = () => {
                       onSubmit();
                       setBorrowType(BorrowType.BULK);
                     }}
-                    disabled={!value}
+                    disabled={!borrowValue}
                     className={styles.btn}
                     type="secondary"
                   >
@@ -134,8 +78,8 @@ const BorrowPage: FC = () => {
                 <Button
                   onClick={() => {
                     setBorrowType(BorrowType.SINGLE);
-                    dispatch(loansActions.setBulkNfts(null));
-                    dispatch(loansActions.updatePerpLoanNft(null));
+                    dispatch(loansActions.setBulkNfts([]));
+                    dispatch(loansActions.updatePerpLoanNft([]));
                   }}
                   className={styles.btnConfirm}
                   type="secondary"
@@ -154,16 +98,19 @@ const BorrowPage: FC = () => {
             <BorrowBulk
               onBack={() => setBorrowType(BorrowType.SINGLE)}
               onClick={() => setBorrowType(null)}
-              value={value}
+              value={borrowValue}
               bulks={bulks}
             />
           )}
 
-          {nftsLoading && <Loader size="large" />}
+          {loading && <Loader size="large" />}
 
-          {!nftsLoading && !bulks?.best?.length && (
+          {!loading && !bulks?.best?.length && (
             <>
-              <Header title="Borrowing" subtitle={`I need ${value} SOL`} />
+              <Header
+                title="Borrowing"
+                subtitle={`I need ${borrowValue} SOL`}
+              />
               <NoSuitableNft />
             </>
           )}

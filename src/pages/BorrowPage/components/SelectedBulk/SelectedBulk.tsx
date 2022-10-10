@@ -88,7 +88,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
             } = getSelectedBulkValues(nft);
 
             return (
-              <div className={styles.cardWrapper} key={id}>
+              <div className={styles.cardWrapper} key={nft.name}>
                 <div className={styles.card}>
                   <div className={styles.cardInfo}>
                     <img className={styles.image} src={imageUrl} />

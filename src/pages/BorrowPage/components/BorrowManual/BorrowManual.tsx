@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
@@ -14,16 +14,17 @@ import { SearchInput } from '../../../../components/SearchInput';
 import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
-import styles from './BorrowNft.module.scss';
+import styles from './BorrowManual.module.scss';
 import {
   SelectLayout,
   useSelectLayout,
 } from '../../../../components/SelectLayout';
-import { useBorrowPage } from '../../hooks';
 import SelectedBulk from '../SelectedBulk';
 import BorrowForm from '../BorrowForm';
 import { BorrowFormType } from '../BorrowForm/BorrowForm';
 import Header from '../Header';
+import { useBorrowNft } from './hooks';
+import { BulkValues } from '../../hooks';
 
 const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
   'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
@@ -32,7 +33,7 @@ interface BorrowNftProps {
   onClick: () => void;
 }
 
-const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
+const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const dispatch = useDispatch();
   const {
     connected,
@@ -50,7 +51,7 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
     search,
     next,
     loading,
-  } = useBorrowPage();
+  } = useBorrowNft();
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
   const selectedNftId = useSelector(selectSelectedNftId);
@@ -65,45 +66,50 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
   const isBulkLoan = selectedNfts.length > 1;
 
-  const bulkNfts = selectedNfts.map((nft: any) => {
-    if (!nft?.priceBased) {
-      return { ...nft };
-    } else {
-      const { valuation, timeBased, priceBased } = nft;
+  const bulkNfts = useMemo(() => {
+    return selectedNfts.map((nft: BulkValues) => {
+      if (!nft?.priceBased) {
+        return { ...nft };
+      } else {
+        const { valuation, timeBased, priceBased } = nft;
 
-      const currentNft = perpetualNftsInfo.find(
-        ({ mint }) => mint === nft?.mint,
-      );
+        const currentNft = perpetualNftsInfo.find(
+          ({ mint }) => mint === nft?.mint,
+        );
 
-      const ltv =
-        currentNft?.ltv ||
-        Number(
-          ((priceBased.suggestedLoanValue / valuation) * 100).toFixed(0),
-        ) ||
-        25;
+        const valuationNumber = parseFloat(valuation);
 
-      const maxLoanValuePriceBased = (
-        parseFloat(valuation) *
-        (ltv / 100)
-      )?.toFixed(3);
+        const suggestedLtv = Number(
+          ((priceBased.suggestedLoanValue / valuationNumber) * 100).toFixed(0),
+        );
 
-      const isPriceBased = currentNft?.formType === BorrowFormType.PERPETUAL;
+        const ltvPercent: number = currentNft?.ltv || suggestedLtv || 25;
+        const ltvValue = ltvPercent / 100;
 
-      const maxLoanValue = isPriceBased
-        ? maxLoanValuePriceBased
-        : timeBased?.loanValue;
+        const maxLoanValuePriceBased = valuationNumber * ltvValue;
 
-      const priceBasedFee = Number(maxLoanValuePriceBased) * 0.01;
-      const fee = isPriceBased ? timeBased.fee : priceBasedFee.toFixed(3);
+        const isPriceBased = currentNft?.formType === BorrowFormType.PERPETUAL;
 
-      return {
-        ...nft,
-        maxLoanValue,
-        priceBased: { ...priceBased, fee, ltv },
-        isPriceBased: currentNft?.ltv ? isPriceBased : true,
-      };
-    }
-  });
+        const maxLoanValue = isPriceBased
+          ? maxLoanValuePriceBased.toFixed(3)
+          : timeBased?.loanValue;
+
+        const priceBasedFee = maxLoanValuePriceBased * 0.01;
+        const fee = isPriceBased ? timeBased.fee : priceBasedFee.toFixed(3);
+
+        return {
+          ...nft,
+          maxLoanValue,
+          priceBased: { ...priceBased, fee, ltv: ltvPercent },
+          isPriceBased: currentNft?.formType
+            ? isPriceBased
+            : !!priceBased?.ltvPercents,
+        };
+      }
+    });
+  }, [selectedNfts, perpetualNftsInfo]);
+
+  console.log(bulkNfts);
 
   const allPerpetualLoans = selectedNfts.filter(({ priceBased }) => priceBased);
 
@@ -206,4 +212,4 @@ const BorrowNft: FC<BorrowNftProps> = ({ onClick }) => {
   );
 };
 
-export default BorrowNft;
+export default BorrowManual;
