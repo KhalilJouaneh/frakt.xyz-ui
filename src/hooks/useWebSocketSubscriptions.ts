@@ -36,6 +36,8 @@ export const useWebSocketSubscriptions = (): void => {
       } else {
         socket.emit('lending-subscribe', wallet.publicKey);
       }
+    } else {
+      socket.emit('lending-subscribe');
     }
   }, [privatePoolHash, wallet, socket]);
 
