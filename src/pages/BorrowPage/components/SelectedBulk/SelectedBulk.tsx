@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { sum, map, filter } from 'ramda';
+import { sum, map } from 'ramda';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
@@ -13,7 +13,6 @@ import { PATHS } from '../../../../constants';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
 import Header from '../Header';
-import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 interface BorrowingBulkProps {
   selectedBulk: any[];
@@ -30,7 +29,6 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
     onSubmit,
     selectedBulk,
     loadingModalVisible,
-    selectedBulkValue,
     closeLoadingModal,
     feeOnDay,
   } = useSeletedBulk({ rawselectedBulk });
@@ -156,7 +154,7 @@ const getStatsValue = (
 const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
   const dispatch = useDispatch();
 
-  return loans.map((nft, id) => {
+  return loans.map((nft) => {
     const { imageUrl, name, valuation } = nft;
 
     const isPriceBasedLoan = loansType === 'perpetual';
@@ -184,7 +182,6 @@ const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
             className={styles.editMode}
             onClick={() => {
               dispatch(loansActions.setCurrentNftLoan(nft));
-              dispatch(commonActions.setSelectedNftId(id));
               onBack ? onBack() : onClick();
             }}
           >
@@ -193,15 +190,15 @@ const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
         </div>
         <div className={styles.hiddenValues}>
           {getStatsValue('Loan Type', loanType)}
-          {!isPriceBasedLoan && getStatsValue('Duration', `${period} DAYS`)}
           {getStatsValue('Loan to value', loanToValue, 'percent')}
           {getStatsValue('Floor price', valuation, 'number')}
+          {getStatsValue('fee', fee, 'number')}
+          {getStatsValue('To borrow', maxLoanValue, 'number')}
+          {!isPriceBasedLoan && getStatsValue('Duration', `${period} DAYS`)}
           {isPriceBasedLoan &&
             getStatsValue('Liquidations price', liquidationsPrice, 'number')}
           {isPriceBasedLoan &&
             getStatsValue('Borrow APY', BorrowAPY, 'percent')}
-          {getStatsValue('fee', fee, 'number')}
-          {getStatsValue('To borrow', maxLoanValue, 'number')}
           {!isPriceBasedLoan &&
             getStatsValue('Holder discount', feeDiscountPercents, 'percent')}
           {!isPriceBasedLoan && getStatsValue('To repay', repayValue, 'number')}

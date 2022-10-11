@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
@@ -15,6 +15,8 @@ interface BorrowFormProps {
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
+  getLtv: any;
+  getTab: any;
 }
 
 export enum BorrowFormType {
@@ -27,6 +29,8 @@ const BorrowForm: FC<BorrowFormProps> = ({
   onDeselect,
   isBulkLoan,
   onClick,
+  getLtv,
+  getTab,
 }) => {
   const {
     openConfirmModal,
@@ -42,10 +46,16 @@ const BorrowForm: FC<BorrowFormProps> = ({
     borrowTabs,
     tabValue,
     setTabValue,
+    updateCurrentNft,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
   });
+
+  useEffect(() => {
+    getLtv(priceBasedLTV);
+    getTab(tabValue);
+  }, [priceBasedLTV, tabValue]);
 
   const borrowValue =
     tabValue === BorrowFormType.PERPETUAL
@@ -75,7 +85,14 @@ const BorrowForm: FC<BorrowFormProps> = ({
       </div>
       <div className={styles.continueBtnContainer}>
         <Button
-          onClick={isBulkLoan ? onClick : openConfirmModal}
+          onClick={
+            isBulkLoan
+              ? () => {
+                  updateCurrentNft();
+                  onClick();
+                }
+              : openConfirmModal
+          }
           type="secondary"
           className={styles.continueBtn}
         >

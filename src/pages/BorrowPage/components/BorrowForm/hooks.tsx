@@ -44,6 +44,7 @@ type UseBorrowForm = (props: {
   priceBasedDisabled: boolean;
   tabValue: string;
   setTabValue: (value: string) => void;
+  updateCurrentNft: any;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -52,7 +53,6 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const connection = useConnection();
 
   const isPriceBased = selectedNft?.isPriceBased;
-  const defaultTabId = isPriceBased ? 0 : 1;
 
   const suggestedLtv = Number(
     (
@@ -90,10 +90,10 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     setValue: setTabValue,
   } = useTabs({
     tabs: BORROW_FORM_TABS,
-    defaultValue: BORROW_FORM_TABS[defaultTabId].value,
+    defaultValue: BORROW_FORM_TABS[1].value,
   });
 
-  useEffect(() => {
+  const updateCurrentNft = () => {
     if (selectedNft?.priceBased) {
       dispatch(
         loansActions.updatePerpLoanNft({
@@ -103,16 +103,12 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
         }),
       );
     }
-  }, [priceBasedLTV, tabValue]);
+  };
 
   useEffect(() => {
-    if (isPriceBased) {
+    if (isPriceBased && selectedNft.priceBased) {
       setTabValue('perpetual');
-    }
-  }, [selectedNft]);
-
-  useEffect(() => {
-    if (!selectedNft.priceBased) {
+    } else {
       setTabValue('flip');
     }
   }, [selectedNft]);
@@ -120,15 +116,9 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   useEffect(() => {
     if (isPriceBased) {
       setFormField(FormFieldTypes.LONG_TERM_FIELD);
-    } else {
-      setFormField(FormFieldTypes.SHORT_TERM_FIELD);
-    }
-  }, [selectedNft]);
-
-  useEffect(() => {
-    if (isPriceBased) {
       setPriceBasedLTV(defaultSliderValue);
     } else {
+      setFormField(FormFieldTypes.SHORT_TERM_FIELD);
       setPriceBasedLTV(25);
     }
   }, [selectedNft]);
@@ -206,6 +196,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     priceBasedLTV,
     setPriceBasedLTV,
     confirmText,
+    updateCurrentNft,
     priceBasedDisabled: !selectedNft?.priceBased,
   };
 };

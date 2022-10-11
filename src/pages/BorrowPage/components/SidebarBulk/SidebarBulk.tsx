@@ -1,7 +1,8 @@
 import { FC } from 'react';
+
 import Button from '../../../../components/Button';
-import { SolanaIcon } from '../../../../icons';
 import styles from './SidebarBulk.module.scss';
+import { SolanaIcon } from '../../../../icons';
 
 interface SidebarBulkProps {
   onClick: () => void;

@@ -20,6 +20,12 @@ export const useBorrowNft = (): {
   next: () => void;
   search: string;
   fetchData: FetchData<BorrowNft>;
+  onSelect: (nft: BorrowNft) => void;
+  onMultiSelect: (nft: BorrowNft) => void;
+  selectedNfts: BorrowNft[];
+  onDeselect: (nft?: BorrowNft) => void;
+  setSelectedNfts: Dispatch<SetStateAction<BorrowNft[]>>;
+  connected: any;
 } => {
   const [isCloseSidebar, setIsCloseSidebar] = useState<boolean>(false);
   const [nftsLoading, setNftsLoading] = useState<boolean>(true);
@@ -73,6 +79,40 @@ export const useBorrowNft = (): {
     );
   }, [nfts]);
 
+  const [selectedNfts, setSelectedNfts] = useState<BorrowNft[]>([]);
+
+  const onDeselect = (nft?: BorrowNft): void => {
+    if (nft) {
+      setSelectedNfts(
+        selectedNfts.filter((selectedNft) => selectedNft?.mint !== nft.mint),
+      );
+    } else {
+      setSelectedNfts([]);
+    }
+  };
+
+  const onSelect = (nft: BorrowNft): void => {
+    selectedNfts.find((selectedNft) => selectedNft?.mint === nft.mint)
+      ? setSelectedNfts(
+          selectedNfts.filter((selectedNft) => selectedNft?.mint !== nft.mint),
+        )
+      : setSelectedNfts([nft]);
+  };
+
+  const onMultiSelect = (nft: BorrowNft): void => {
+    selectedNfts.find((selectedNft) => selectedNft?.mint === nft.mint)
+      ? setSelectedNfts(
+          selectedNfts.filter((selectedNft) => selectedNft?.mint !== nft.mint),
+        )
+      : setSelectedNfts([...selectedNfts, nft]);
+  };
+
+  useEffect(() => {
+    if (!wallet.connected && selectedNfts.length) {
+      setSelectedNfts([]);
+    }
+  }, [wallet.connected, selectedNfts, setSelectedNfts]);
+
   const loading = nftsLoading;
 
   return {
@@ -85,5 +125,11 @@ export const useBorrowNft = (): {
     searchItems,
     search,
     fetchData,
+    onSelect,
+    onMultiSelect,
+    onDeselect,
+    selectedNfts,
+    setSelectedNfts,
+    connected: wallet.connected,
   };
 };

@@ -25,58 +25,18 @@
     height: 100%;
   }
 
-  &:nth-child(1) {
-    border: 1px solid var(--light-green-color);
-
-    &::before {
-      content: 'Best';
-      color: var(--button-text);
-      background-color: var(--light-green-color);
-      @include flex(row, nowrap, center, center);
-      position: absolute;
-      top: -16px;
-      right: 16px;
-      font: var(--font-text-5);
-      height: 33px;
-      padding: 8px;
-      max-width: 90px;
-    }
-  }
-
-  &:nth-child(2) {
-    border: 1px solid #fff61f;
-
-    &::before {
-      content: 'Сheapest';
-      color: var(--button-text);
-      background-color: #fff61f;
-      @include flex(row, nowrap, center, center);
-      position: absolute;
-      top: -16px;
-      right: 16px;
-      font: var(--font-text-5);
-      height: 33px;
-      padding: 8px;
-      max-width: 90px;
-    }
-  }
-
-  &:nth-child(3) {
-    border: 1px solid #1fc9ff;
-
-    &::before {
-      content: 'Safest';
-      color: var(--button-text);
-      background-color: #1fc9ff;
-      @include flex(row, nowrap, center, center);
-      position: absolute;
-      top: -16px;
-      right: 16px;
-      font: var(--font-text-5);
-      height: 33px;
-      padding: 8px;
-      max-width: 90px;
-    }
+  .badge {
+    color: var(--button-text);
+    cursor: pointer;
+    @include flex(row, nowrap, center, center);
+    border: 1px solid;
+    position: absolute;
+    top: -16px;
+    right: 16px;
+    font: var(--font-text-5);
+    height: 33px;
+    padding: 8px;
+    max-width: 90px;
   }
 }
 

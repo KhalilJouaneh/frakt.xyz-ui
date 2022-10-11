@@ -32,7 +32,12 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
       if (!nft.isPriceBased) {
         const { timeBased } = nft;
 
-        return Number(timeBased?.fee) / timeBased?.returnPeriodDays;
+        const { feeDiscountPercents, fee, returnPeriodDays } = timeBased;
+
+        const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
+        const dayFee = Number(fee) / returnPeriodDays;
+
+        return dayFee - dayFee * feeDiscountPercentsValue;
       } else {
         const { priceBased, valuation } = nft;
 

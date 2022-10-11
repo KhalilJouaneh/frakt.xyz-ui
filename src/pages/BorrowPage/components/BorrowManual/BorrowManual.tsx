@@ -2,13 +2,10 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { selectSelectedNftId } from '../../../../state/common/selectors';
 import {
   selectBulkNfts,
-  selectCurrentNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
-import { LinkWithArrow } from '../../../../components/LinkWithArrow';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
 import { SearchInput } from '../../../../components/SearchInput';
@@ -16,20 +13,14 @@ import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
 import styles from './BorrowManual.module.scss';
-import {
-  SelectLayout,
-  useSelectLayout,
-} from '../../../../components/SelectLayout';
+
 import SelectedBulk from '../SelectedBulk';
-import BorrowForm from '../BorrowForm';
 import { BorrowFormType } from '../BorrowForm/BorrowForm';
 import Header from '../Header';
 import { useBorrowNft } from './hooks';
 import { BulkValues } from '../../hooks';
-import { commonActions } from '../../../../state/common/actions';
-
-const ACCEPTED_FOR_LOANS_COLLECTIONS_LINK =
-  'https://docs.frakt.xyz/frakt/loans/collections-accepted-for-loans';
+import SidebarForm from '../SidebarForm';
+import NoSuitableNft from '../NoSuitableNft';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -37,13 +28,6 @@ interface BorrowNftProps {
 
 const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const dispatch = useDispatch();
-  const {
-    connected,
-    onDeselect,
-    onMultiSelect,
-    selectedNfts,
-    setSelectedNfts,
-  } = useSelectLayout();
 
   const {
     isCloseSidebar,
@@ -53,28 +37,21 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     search,
     next,
     loading,
+    onDeselect,
+    onMultiSelect,
+    selectedNfts,
+    setSelectedNfts,
+    connected,
   } = useBorrowNft();
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
-  const selectedNftId = useSelector(selectSelectedNftId);
   const bulkNftsRaw = useSelector(selectBulkNfts);
 
   useEffect(() => {
     bulkNftsRaw.length && setSelectedNfts(bulkNftsRaw);
   }, [bulkNftsRaw]);
 
-  useEffect(() => {
-    if (selectedNfts.length) {
-      dispatch(commonActions.setSelectedNftId(selectedNfts.length - 1));
-    }
-  }, [selectedNfts]);
-
-  const currentNft = useSelector(selectCurrentNft);
-
   const [openBulk, setOpenBulk] = useState<boolean>(false);
-
-  const currentId = selectedNftId > selectedNfts.length - 1 ? 0 : selectedNftId;
-  const isBulkLoan = selectedNfts.length > 1;
 
   const bulkNfts = useMemo(() => {
     return selectedNfts.map((nft: BulkValues) => {
@@ -124,25 +101,17 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   }, [dispatch]);
 
   return (
-    <>
+    <AppLayout>
       {!openBulk && (
-        <SelectLayout
-          selectedNfts={selectedNfts}
-          onDeselect={onDeselect}
-          isCloseSidebar={isCloseSidebar}
-          sidebarForm={
-            <BorrowForm
-              onClick={() => setOpenBulk(true)}
-              selectedNft={
-                (currentNft as any)?.name
-                  ? (currentNft as any)
-                  : bulkNfts?.[currentId]
-              }
-              onDeselect={onDeselect}
-              isBulkLoan={isBulkLoan}
-            />
-          }
-        >
+        <>
+          <SidebarForm
+            isCloseSidebar={isCloseSidebar}
+            onDeselect={onDeselect}
+            nfts={selectedNfts}
+            bulkNfts={bulkNfts}
+            onOpenBulk={() => setOpenBulk(true)}
+          />
+
           <Header
             onClick={onClick}
             title="Borrow SOL"
@@ -162,17 +131,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             />
           </div>
 
-          {connected && !loading && !nfts.length && (
-            <div className={styles.noSuiableMessageWrapper}>
-              <p className={styles.noSuiableMessage}>No suitable NFTs found</p>
-              <LinkWithArrow
-                className={styles.acceptedCollectionsLink}
-                label="Check collections accepted for loans"
-                to={ACCEPTED_FOR_LOANS_COLLECTIONS_LINK}
-                externalLink
-              />
-            </div>
-          )}
+          {connected && !loading && !nfts.length && <NoSuitableNft />}
 
           {connected && (
             <InfinityScroll
@@ -208,17 +167,15 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
               })}
             </InfinityScroll>
           )}
-        </SelectLayout>
+        </>
       )}
       {openBulk && (
-        <AppLayout>
-          <SelectedBulk
-            onClick={() => setOpenBulk(false)}
-            selectedBulk={bulkNfts}
-          />
-        </AppLayout>
+        <SelectedBulk
+          onClick={() => setOpenBulk(false)}
+          selectedBulk={bulkNfts}
+        />
       )}
-    </>
+    </AppLayout>
   );
 };
 

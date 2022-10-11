@@ -7,6 +7,7 @@ import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
 import SelectedBulk from '../SelectedBulk';
 import Header from '../Header';
+import Tooltip from '../../../../components/Tooltip';
 
 interface BorrowBulk {
   bulks: BulksType;
@@ -45,12 +46,38 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const cheapestBulkValue = getTotalValue(cheapestBulk);
   const safestBulkValue = getTotalValue(safestBulk);
 
-  const getBulkValues = (bulk: BulkValues[], value: number) => {
+  const getBulkValues = (bulk: BulkValues[], value: number, type) => {
     if (!bulk.length) return;
 
+    const badgesInfo = {
+      best: {
+        title: 'Best',
+        text: 'Most appropriate to chosen SOL amount',
+        color: 'var(--light-green-color)',
+      },
+      cheapest: {
+        title: 'Cheapest',
+        text: 'Minimal collateral costs',
+        color: '#fff61f',
+      },
+      safest: {
+        title: 'Safest',
+        text: 'Loans with the best loan to value',
+        color: '#1fc9ff',
+      },
+    };
+
+    const { color, title, text } = badgesInfo[type];
+
     return (
-      <div className={styles.block}>
+      <div className={styles.block} style={{ borderColor: color }}>
         <div>
+          <Tooltip placement="top" trigger="hover" overlay={text}>
+            <div className={styles.badge} style={{ backgroundColor: color }}>
+              {title}
+            </div>
+          </Tooltip>
+
           <h4 className={styles.value}>Borrow {value.toFixed(2)} SOL</h4>
           <div className={styles.nfts}>
             {(bulk || []).map(({ imageUrl }) => (
@@ -80,9 +107,9 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
           />
           {connected && !!bulks.best.length && (
             <div className={styles.wrapper}>
-              {getBulkValues(bestBulk, bestBulkValue)}
-              {getBulkValues(cheapestBulk, cheapestBulkValue)}
-              {getBulkValues(safestBulk, safestBulkValue)}
+              {getBulkValues(bestBulk, bestBulkValue, 'best')}
+              {getBulkValues(cheapestBulk, cheapestBulkValue, 'cheapest')}
+              {getBulkValues(safestBulk, safestBulkValue, 'safest')}
             </div>
           )}
         </>
