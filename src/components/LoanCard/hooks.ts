@@ -94,23 +94,6 @@ export const useLoans = (loan: Loan) => {
       setTransactionsLeft(2);
       openLoadingModal();
 
-      await claimGemFarm({
-        connection,
-        wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.farm,
-        bank: reward?.bank,
-        nftMint: mint,
-        loan: pubkey,
-        isDegod: true,
-        rewardAMint: reward?.rewardAMint,
-        rewardBMint: reward?.rewardBMint,
-        creatorWhitelistProof: reward?.creatorWhitelistProof,
-      });
-
-      setTransactionsLeft(1);
-
       const result = await unstakeGemFarm({
         connection,
         wallet,
@@ -126,6 +109,24 @@ export const useLoans = (loan: Loan) => {
       if (!result) {
         throw new Error('Unstake failed');
       }
+
+      setTransactionsLeft(1);
+
+      await claimGemFarm({
+        connection,
+        wallet,
+        gemFarm: DEGODS_FARM_PUBKEY,
+        gemBank: DEGODS_BANK_PUBKEY,
+        farm: reward?.farm,
+        bank: reward?.bank,
+        nftMint: mint,
+        loan: pubkey,
+        isDegod: true,
+        rewardAMint: reward?.rewardAMint,
+        rewardBMint: reward?.rewardBMint,
+        creatorWhitelistProof: reward?.creatorWhitelistProof,
+      });
+
       return true;
     } catch (error) {
       console.error(error);
