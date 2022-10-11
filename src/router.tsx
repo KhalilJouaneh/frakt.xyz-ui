@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { routes } from './constants/routes';
@@ -9,25 +10,31 @@ import {
   useWebSocketSubscriptions,
 } from './hooks';
 
-export const Router = (): JSX.Element => {
+const InitialCalls: FC = ({ children }) => {
   useAppInit();
   useHealthNotification();
   useConnectionInit();
   useFirebaseNotifications();
   useWebSocketSubscriptions();
 
+  return <>{children}</>;
+};
+
+export const Router = (): JSX.Element => {
   return (
     <BrowserRouter>
-      <Switch>
-        {routes.map(({ exact, path, component: Component }, index) => (
-          <Route
-            key={index}
-            exact={exact}
-            path={path}
-            component={() => <Component />}
-          />
-        ))}
-      </Switch>
+      <InitialCalls>
+        <Switch>
+          {routes.map(({ exact, path, component: Component }, index) => (
+            <Route
+              key={index}
+              exact={exact}
+              path={path}
+              component={() => <Component />}
+            />
+          ))}
+        </Switch>
+      </InitialCalls>
     </BrowserRouter>
   );
 };
