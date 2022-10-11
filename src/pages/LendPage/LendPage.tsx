@@ -13,7 +13,6 @@ import {
   useLendingPoolsFiltering,
 } from './hooks/useLendingPoolsFiltering';
 import Toggle from '../../components/Toggle';
-import { usePrivateLendingPools } from './hooks';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -23,8 +22,6 @@ export enum InputControlsNames {
 const LendPage: FC = () => {
   const { control, setSearch, pools, showStakedOnlyToggle } =
     useLendingPoolsFiltering();
-
-  usePrivateLendingPools();
 
   return (
     <AppLayout>
