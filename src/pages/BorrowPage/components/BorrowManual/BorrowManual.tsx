@@ -115,7 +115,11 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
           <Header
             onClick={onClick}
             title="Borrow SOL"
-            subtitle="Select your NFT to use as a collateral"
+            subtitle={
+              selectedNfts.length > 1
+                ? `${selectedNfts.length} loans in bulk`
+                : 'I just want to make a loan'
+            }
             className={selectedNfts.length && styles.headerActive}
           />
 

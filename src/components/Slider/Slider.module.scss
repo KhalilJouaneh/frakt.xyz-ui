@@ -46,12 +46,10 @@
     .ant-slider:hover .ant-slider-track {
       background-color: var(--light-green-color);
     }
-    .ant-slider:hover .ant-slider-handle {
-      border: var(--border-black-1);
-    }
+
     .ant-slider-handle {
       background-color: var(--light-green-color);
-      border-color: var(--light-green-color);
+      border: 1px solid #000;
       position: relative;
       margin-top: -8px;
       height: 18px;
@@ -60,7 +58,6 @@
       &:focus,
       &:hover {
         box-shadow: unset;
-        border: var(--border-black-1);
       }
     }
     .ant-slider-handle.ant-tooltip-open {

@@ -1,3 +1,4 @@
+import { commonActions } from './../../../../state/common/actions';
 import { useState, useMemo, Dispatch, SetStateAction, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -25,7 +26,7 @@ export const useBorrowNft = (): {
   selectedNfts: BorrowNft[];
   onDeselect: (nft?: BorrowNft) => void;
   setSelectedNfts: Dispatch<SetStateAction<BorrowNft[]>>;
-  connected: any;
+  connected: boolean;
 } => {
   const [isCloseSidebar, setIsCloseSidebar] = useState<boolean>(false);
   const [nftsLoading, setNftsLoading] = useState<boolean>(true);
@@ -99,7 +100,10 @@ export const useBorrowNft = (): {
       : setSelectedNfts([nft]);
   };
 
+  const id = selectedNfts.length - 1 < 0 ? 0 : selectedNfts.length;
+
   const onMultiSelect = (nft: BorrowNft): void => {
+    dispatch(commonActions.setSelectedNftId(id));
     selectedNfts.find((selectedNft) => selectedNft?.mint === nft.mint)
       ? setSelectedNfts(
           selectedNfts.filter((selectedNft) => selectedNft?.mint !== nft.mint),

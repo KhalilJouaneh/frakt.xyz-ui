@@ -10,6 +10,8 @@ import Button from '../../../../components/Button';
 import styles from './SidebarForm.module.scss';
 import Icons from '../../../../iconsNew/';
 import BorrowForm from '../BorrowForm';
+import { commonActions } from '../../../../state/common/actions';
+import { selectSelectedNftId } from '../../../../state/common/selectors';
 
 export interface SidebarFormProps {
   onDeselect?: (nft?: BorrowNft) => void;
@@ -32,17 +34,16 @@ const SidebarForm: FC<SidebarFormProps> = ({
   const totalNftsId = nfts.length - 1;
   const isBulkLoan = nfts.length > 1;
 
-  const currentNft = useSelector(selectCurrentNft);
   const dispatch = useDispatch();
 
-  const [rawId, setId] = useState<number>(0);
+  const rawId = useSelector(selectSelectedNftId);
 
   const id = rawId > totalNftsId ? 0 : rawId;
 
   const [priceBasedLTV, getLtv] = useState<number>(0);
   const [tabValue, getTab] = useState<number>(0);
 
-  const selectedNft = currentNft?.name ? currentNft : bulkNfts?.[id];
+  const selectedNft = bulkNfts?.[id];
 
   const updateCurrentNft = (selectedNft) => {
     if (selectedNft?.priceBased) {
@@ -60,16 +61,15 @@ const SidebarForm: FC<SidebarFormProps> = ({
     updateCurrentNft(selectedNft);
     dispatch(loansActions.setCurrentNftLoan(null));
     if (idx > totalNftsId) {
-      setId(0);
+      dispatch(commonActions.setSelectedNftId(0));
     } else {
-      setId(idx);
+      dispatch(commonActions.setSelectedNftId(idx));
     }
   };
 
   useEffect(() => {
     if (nfts.length) {
       updateCurrentNft(selectedNft);
-      setId(totalNftsId);
     } else {
       dispatch(loansActions.updatePerpLoanNft([]));
       dispatch(loansActions.setCurrentNftLoan(null));
@@ -82,9 +82,9 @@ const SidebarForm: FC<SidebarFormProps> = ({
     dispatch(loansActions.setCurrentNftLoan(null));
 
     if (idx < 0) {
-      setId(totalNftsId);
+      dispatch(commonActions.setSelectedNftId(totalNftsId));
     } else {
-      setId(idx);
+      dispatch(commonActions.setSelectedNftId(idx));
     }
   };
 

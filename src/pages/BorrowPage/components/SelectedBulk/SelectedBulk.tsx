@@ -14,6 +14,7 @@ import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
 import Header from '../Header';
 import { loansActions } from '../../../../state/loans/actions';
+import { commonActions } from '../../../../state/common/actions';
 interface BorrowingBulkProps {
   selectedBulk: any[];
   onClick?: () => void;
@@ -108,6 +109,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
                   'perpetual',
                   onClick,
                   onBack,
+                  rawselectedBulk,
                 )}
               </>
             )}
@@ -115,7 +117,13 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
             {!!flipLoans.length && (
               <>
                 <p className={styles.title}>Flip loans</p>
-                {getPriceBasedValues(flipLoans, 'flip', onClick, onBack)}
+                {getPriceBasedValues(
+                  flipLoans,
+                  'flip',
+                  onClick,
+                  onBack,
+                  rawselectedBulk,
+                )}
               </>
             )}
           </div>
@@ -151,7 +159,19 @@ const getStatsValue = (
   );
 };
 
-const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
+const findIndex = (rawselectedBulk, nft) => {
+  const mints = rawselectedBulk.map(({ mint }) => mint);
+  const index = mints.indexOf(nft.mint);
+  return index;
+};
+
+const getPriceBasedValues = (
+  loans,
+  loansType,
+  onClick,
+  onBack,
+  rawselectedBulk,
+) => {
   const dispatch = useDispatch();
 
   return loans.map((nft) => {
@@ -181,7 +201,9 @@ const getPriceBasedValues = (loans, loansType, onClick, onBack) => {
           <p
             className={styles.editMode}
             onClick={() => {
-              dispatch(loansActions.setCurrentNftLoan(nft));
+              dispatch(
+                commonActions.setSelectedNftId(findIndex(rawselectedBulk, nft)),
+              );
               onBack ? onBack() : onClick();
             }}
           >

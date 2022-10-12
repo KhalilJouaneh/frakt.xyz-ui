@@ -29,7 +29,7 @@
     color: var(--button-text);
     cursor: pointer;
     @include flex(row, nowrap, center, center);
-    border: 1px solid;
+    border: 1px solid transparent;
     position: absolute;
     top: -16px;
     right: 16px;
