@@ -3,6 +3,8 @@
   border: 1px solid var(--secondary-border);
   padding: 16px;
   z-index: 10;
+  box-shadow: rgb(0 0 0 / 1%) 0px 0px 0px,
+    var(--secondary-border) 4px 4px 0px 0px;
 
   @media screen and (max-width: 767px) {
     border: 0;
@@ -10,8 +12,6 @@
     padding: 24px;
   }
 }
-
-
 
 .header {
   display: flex;

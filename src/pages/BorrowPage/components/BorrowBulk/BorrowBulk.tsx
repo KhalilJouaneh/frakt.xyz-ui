@@ -70,29 +70,29 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
     const { color, title, text } = badgesInfo[type];
 
     return (
-      <div className={styles.block} style={{ borderColor: color }}>
-        <div>
-          <Tooltip placement="top" trigger="hover" overlay={text}>
+      <Tooltip placement="top" trigger="hover" overlay={text}>
+        <div className={styles.block} style={{ borderColor: color }}>
+          <div>
             <div className={styles.badge} style={{ backgroundColor: color }}>
               {title}
             </div>
-          </Tooltip>
 
-          <h4 className={styles.value}>Borrow {value.toFixed(2)} SOL</h4>
-          <div className={styles.nfts}>
-            {(bulk || []).map(({ imageUrl }) => (
-              <img key={imageUrl} src={imageUrl} className={styles.icon} />
-            ))}
+            <h4 className={styles.value}>Borrow {value.toFixed(2)} SOL</h4>
+            <div className={styles.nfts}>
+              {(bulk || []).map(({ imageUrl }) => (
+                <img key={imageUrl} src={imageUrl} className={styles.icon} />
+              ))}
+            </div>
           </div>
+          <Button
+            onClick={() => setSelectedBulk(bulk)}
+            type="secondary"
+            className={styles.btn}
+          >
+            Select
+          </Button>
         </div>
-        <Button
-          onClick={() => setSelectedBulk(bulk)}
-          type="secondary"
-          className={styles.btn}
-        >
-          Select
-        </Button>
-      </div>
+      </Tooltip>
     );
   };
 

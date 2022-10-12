@@ -15,8 +15,8 @@ interface BorrowFormProps {
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
-  getLtv: any;
-  getTab: any;
+  getLtv: (ltv: number) => void;
+  getTab: (tab: string) => void;
 }
 
 export enum BorrowFormType {
@@ -111,6 +111,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
+        subtitle="In order to transfer the NFT/s approval is needed"
       />
     </>
   );

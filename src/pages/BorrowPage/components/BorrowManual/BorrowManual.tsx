@@ -88,7 +88,9 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
           ...nft,
           maxLoanValue,
           priceBased: { ...priceBased, fee, ltv: ltvPercent },
-          isPriceBased: currentNft?.formType ? isPriceBased : true,
+          isPriceBased: currentNft?.formType
+            ? isPriceBased
+            : (nft as any)?.isPriceBased,
         };
       }
     });

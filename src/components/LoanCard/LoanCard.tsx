@@ -67,8 +67,9 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
         subtitle={
-          transactionsLeft &&
-          `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+          transactionsLeft
+            ? `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+            : 'In order to transfer the NFT/s approval is needed'
         }
       />
     </>

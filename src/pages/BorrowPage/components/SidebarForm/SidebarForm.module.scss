@@ -81,7 +81,7 @@
 
   @media screen and (max-width: 767px) {
     padding: 0;
-    min-height: 80px;
+    min-height: 120px;
   }
 
   @media screen and (max-width: 767px) {
@@ -104,6 +104,15 @@
     path {
       fill: var(--secondary-border);
     }
+  }
+
+  @media screen and (max-width: 767px) {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%);
+    gap: 10px;
   }
 }
 
@@ -160,6 +169,11 @@
     path {
       stroke: var(--secondary-border);
     }
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 32px;
+    height: 32px;
   }
 }
 

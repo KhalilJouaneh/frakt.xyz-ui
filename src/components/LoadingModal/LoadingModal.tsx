@@ -17,7 +17,7 @@ interface LoadingModalProps {
 export const LoadingModal: FC<LoadingModalProps> = ({
   visible,
   title = 'Please approve all transactions',
-  subtitle = 'In order to transfer the NFT/s approval is needed',
+  subtitle = '',
   onCancel,
   className,
 }) => {

@@ -131,6 +131,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
       </div>
       <LoadingModal
         title="Please approve transaction"
+        subtitle="In order to transfer the NFT/s approval is needed"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
       />
