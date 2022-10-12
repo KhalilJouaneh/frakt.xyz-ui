@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { sum, map, filter } from 'ramda';
 
+import Tooltip from '../../../../components/Tooltip';
 import { BulksType, BulkValues } from '../../hooks';
+import { badgesInfo, useBorrowBulk } from './hooks';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
 import SelectedBulk from '../SelectedBulk';
 import Header from '../Header';
-import Tooltip from '../../../../components/Tooltip';
 
 interface BorrowBulk {
   bulks: BulksType;
@@ -21,22 +21,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
 
   const [selectedBulk, setSelectedBulk] = useState<BulkValues[]>([]);
 
-  const getTotalValue = (bulk): number => {
-    const priceBased = ({ priceBased }) => priceBased;
-    const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-    const timeBased = ({ isPriceBased }) => !isPriceBased;
-    const suggestedLoanValue = ({ priceBased }) =>
-      priceBased.suggestedLoanValue;
-
-    const priceBasedLoans = filter(priceBased, bulk);
-    const timeBasedLoans = filter(timeBased, bulk);
-
-    const priceBasedLoansValue = sum(map(suggestedLoanValue, priceBasedLoans));
-
-    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans));
-
-    return priceBasedLoansValue + timeBasedLoansValue || 0;
-  };
+  const { getTotalValue } = useBorrowBulk();
 
   const bestBulk = bulks?.best || [];
   const cheapestBulk = bulks?.cheapest || [];
@@ -46,26 +31,8 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const cheapestBulkValue = getTotalValue(cheapestBulk);
   const safestBulkValue = getTotalValue(safestBulk);
 
-  const getBulkValues = (bulk: BulkValues[], value: number, type) => {
+  const getBulkValues = (bulk: BulkValues[], value: number, type: string) => {
     if (!bulk.length) return;
-
-    const badgesInfo = {
-      best: {
-        title: 'Best',
-        text: 'Most appropriate to chosen SOL amount',
-        color: 'var(--light-green-color)',
-      },
-      cheapest: {
-        title: 'Cheapest',
-        text: 'Minimal collateral costs',
-        color: '#fff61f',
-      },
-      safest: {
-        title: 'Safest',
-        text: 'Loans with the best loan to value',
-        color: '#1fc9ff',
-      },
-    };
 
     const { color, title, text } = badgesInfo[type];
 

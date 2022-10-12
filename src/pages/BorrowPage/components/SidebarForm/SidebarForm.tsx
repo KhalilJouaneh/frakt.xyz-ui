@@ -1,27 +1,27 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import cx from 'classnames';
 
-import { selectCurrentNft } from '../../../../state/loans/selectors';
+import { selectSelectedNftId } from '../../../../state/common/selectors';
+import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
 import Button from '../../../../components/Button';
 import styles from './SidebarForm.module.scss';
 import Icons from '../../../../iconsNew/';
+import { BulkValues } from '../../hooks';
 import BorrowForm from '../BorrowForm';
-import { commonActions } from '../../../../state/common/actions';
-import { selectSelectedNftId } from '../../../../state/common/selectors';
 
 export interface SidebarFormProps {
   onDeselect?: (nft?: BorrowNft) => void;
   nfts: BorrowNft[];
   isCloseSidebar: boolean;
   className?: string;
-  bulkNfts: any;
+  bulkNfts: BulkValues[];
   onOpenBulk: () => void;
-  setTab: any;
-  setLtv: any;
+  setTab: (tab: string) => void;
+  setLtv: (ltv: number) => void;
 }
 
 const SidebarForm: FC<SidebarFormProps> = ({
@@ -40,9 +40,9 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const dispatch = useDispatch();
 
-  const rawId = useSelector(selectSelectedNftId);
+  const currentNftId = useSelector(selectSelectedNftId);
 
-  const id = rawId > totalNftsId ? 0 : rawId;
+  const id = currentNftId > totalNftsId ? 0 : currentNftId;
 
   const [priceBasedLTV, getLtv] = useState<number>(0);
   const [tabValue, getTab] = useState<string>('');
@@ -68,7 +68,6 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const onNextNft = (idx: number): void => {
     updateCurrentNft(selectedNft);
-    dispatch(loansActions.setCurrentNftLoan(null));
     if (idx > totalNftsId) {
       dispatch(commonActions.setSelectedNftId(0));
     } else {
@@ -76,17 +75,8 @@ const SidebarForm: FC<SidebarFormProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (!nfts.length) {
-      dispatch(loansActions.updatePerpLoanNft([]));
-      dispatch(loansActions.setCurrentNftLoan(null));
-    }
-  }, [nfts.length]);
-
   const onPrevNft = (idx: number): void => {
     updateCurrentNft(selectedNft);
-
-    dispatch(loansActions.setCurrentNftLoan(null));
 
     if (idx < 0) {
       dispatch(commonActions.setSelectedNftId(totalNftsId));
@@ -101,14 +91,14 @@ const SidebarForm: FC<SidebarFormProps> = ({
         <Button
           className={cx(styles.btn, styles.rotateLeft)}
           type="tertiary"
-          onClick={() => onPrevNft(rawId - 1)}
+          onClick={() => onPrevNft(currentNftId - 1)}
         >
           <Icons.Chevron />
         </Button>
         <Button
           className={cx(styles.btn, styles.rotateRight)}
           type="tertiary"
-          onClick={() => onNextNft(rawId + 1)}
+          onClick={() => onNextNft(currentNftId + 1)}
         >
           <Icons.Chevron />
         </Button>

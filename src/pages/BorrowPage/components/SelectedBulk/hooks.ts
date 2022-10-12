@@ -1,21 +1,21 @@
-import { loansActions } from './../../../../state/loans/actions';
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
-import { sum, map } from 'ramda';
 
 import { useLoadingModal } from '../../../../components/LoadingModal';
+import { loansActions } from './../../../../state/loans/actions';
 import { commonActions } from '../../../../state/common/actions';
 import { proposeBulkLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
+import { BulkValues } from '../../hooks';
+import { getFeesOnDay } from './helpers';
 
-type UseSeletedBulk = (props: { rawselectedBulk: any }) => {
+type UseSeletedBulk = (props: { rawselectedBulk: BulkValues[] }) => {
   onSubmit: () => Promise<void>;
   closeLoadingModal: () => void;
   loadingModalVisible: boolean;
-  selectedBulkValue: number;
-  selectedBulk: any;
-  feeOnDay: number;
+  selectedBulk: BulkValues[];
+  feesOnDay: number;
 };
 
 export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
@@ -25,32 +25,7 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
 
   const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
 
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-
-  const feeOnDay = sum(
-    rawselectedBulk.map((nft): number => {
-      if (!nft.isPriceBased) {
-        const { timeBased } = nft;
-
-        const { feeDiscountPercents, fee, returnPeriodDays } = timeBased;
-
-        const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
-        const dayFee = Number(fee) / returnPeriodDays;
-
-        return dayFee - dayFee * feeDiscountPercentsValue;
-      } else {
-        const { priceBased, valuation } = nft;
-
-        const ltv = priceBased?.ltv || priceBased?.ltvPercents;
-
-        const loanValue = parseFloat(valuation) * (ltv / 100);
-
-        return (loanValue * (priceBased.borrowAPRPercents * 0.01)) / 365;
-      }
-    }),
-  );
-
-  const selectedBulkValue = sum(map(maxLoanValue, selectedBulk));
+  const feesOnDay = getFeesOnDay(selectedBulk);
 
   const {
     visible: loadingModalVisible,
@@ -91,10 +66,9 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
 
   return {
     selectedBulk,
-    selectedBulkValue,
     onSubmit,
     loadingModalVisible,
     closeLoadingModal,
-    feeOnDay,
+    feesOnDay,
   };
 };

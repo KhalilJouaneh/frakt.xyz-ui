@@ -79,8 +79,6 @@ const BorrowPage: FC = () => {
                   onClick={() => {
                     setBorrowType(BorrowType.SINGLE);
                     dispatch(loansActions.setBulkNfts([]));
-                    dispatch(loansActions.updatePerpLoanNft([]));
-                    dispatch(loansActions.setCurrentNftLoan(null));
                   }}
                   className={styles.btnConfirm}
                   type="secondary"

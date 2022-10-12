@@ -10,6 +10,7 @@ import { Tab, useTabs } from '../../../../components/Tabs';
 import { BorrowNft } from '../../../../state/loans/types';
 import { proposeLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
+import { BulkValues } from '../../hooks';
 
 export enum FormFieldTypes {
   SHORT_TERM_FIELD = 'shortTermField',
@@ -27,7 +28,7 @@ const getConfirmModalText = (nft: BorrowNft, isPriceBased = false) => {
 
 type UseBorrowForm = (props: {
   onDeselect?: () => void;
-  selectedNft?: any;
+  selectedNft?: BulkValues;
 }) => {
   borrowTabs: Tab[];
   openConfirmModal: () => void;
@@ -54,21 +55,12 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
 
   const isPriceBased = selectedNft?.isPriceBased;
 
-  const suggestedLtv = Number(
-    (
-      (selectedNft?.priceBased?.suggestedLoanValue /
-        Number(selectedNft?.valuation)) *
-      100
-    )?.toFixed(0),
+  const defaultSliderValue = selectedNft.priceBased?.ltv;
+
+  const [formField, setFormField] = useState<FormFieldTypes>(
+    FormFieldTypes.LONG_TERM_FIELD,
   );
-  const defaultSliderValue =
-    (selectedNft.priceBased as any)?.ltv || suggestedLtv;
 
-  const defaultFormType = isPriceBased
-    ? FormFieldTypes.LONG_TERM_FIELD
-    : FormFieldTypes.SHORT_TERM_FIELD;
-
-  const [formField, setFormField] = useState<FormFieldTypes>(defaultFormType);
   const [priceBasedLTV, setPriceBasedLTV] =
     useState<number>(defaultSliderValue);
 
@@ -106,7 +98,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   };
 
   useEffect(() => {
-    if (isPriceBased && selectedNft.priceBased) {
+    if (isPriceBased) {
       setTabValue('perpetual');
     } else {
       setTabValue('flip');
@@ -168,7 +160,6 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
       removeTokenOptimistic(nft.mint);
       onDeselect?.();
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error(error);
     } finally {
       closeConfirmModal();

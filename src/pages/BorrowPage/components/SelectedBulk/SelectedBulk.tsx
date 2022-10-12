@@ -1,22 +1,23 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { sum, map } from 'ramda';
+import { filter } from 'ramda';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
-import { getSelectedBulkValues } from './helpers';
+import { getSelectedBulkValues, getTotalBorrowed } from './helpers';
+import { commonActions } from '../../../../state/common/actions';
 import Button from '../../../../components/Button';
 import styles from './SelectedBulk.module.scss';
 import { SolanaIcon } from '../../../../icons';
 import { PATHS } from '../../../../constants';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
+import { BulkValues } from '../../hooks';
 import Header from '../Header';
-import { loansActions } from '../../../../state/loans/actions';
-import { commonActions } from '../../../../state/common/actions';
+
 interface BorrowingBulkProps {
-  selectedBulk: any[];
+  selectedBulk: BulkValues[];
   onClick?: () => void;
   onBack?: () => void;
 }
@@ -26,41 +27,33 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
   onClick,
   onBack,
 }) => {
+  const dispatch = useDispatch();
+
   const {
     onSubmit,
     selectedBulk,
     loadingModalVisible,
     closeLoadingModal,
-    feeOnDay,
+    feesOnDay,
   } = useSeletedBulk({ rawselectedBulk });
 
   const isSelectedBulk = !!selectedBulk?.length;
 
-  const perpetualLoans = selectedBulk.filter((nft) => {
-    return nft?.isPriceBased && nft?.priceBased;
-  });
+  const isPriceBased = (nft) => nft?.isPriceBased && nft?.priceBased;
+  const isTimeBased = (nft) => !nft?.isPriceBased || !nft?.priceBased;
 
-  const flipLoans = selectedBulk.filter((nft) => {
-    return !nft?.priceBased || !nft?.isPriceBased;
-  });
+  const perpetualLoans = filter(isPriceBased, selectedBulk);
+  const flipLoans = filter(isTimeBased, selectedBulk);
 
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+  const onEditLoan = (nft: BulkValues): void => {
+    const selectedNftsMint = rawselectedBulk.map(({ mint }) => mint);
+    const currentNftId = selectedNftsMint.indexOf(nft.mint);
 
-  const perpetualLoansValues = perpetualLoans.map(
-    ({ priceBased, valuation }) => {
-      if (priceBased?.ltv) {
-        return Number(valuation) * (priceBased?.ltv / 100);
-      } else {
-        return priceBased?.suggestedLoanValue;
-      }
-    },
-  );
+    dispatch(commonActions.setSelectedNftId(currentNftId));
+    onBack ? onBack() : onClick();
+  };
 
-  const priceBasedLoansValue = sum(perpetualLoansValues);
-
-  const timeBasedLoansValue = sum(map(maxLoanValue, flipLoans));
-
-  const totalBorrowed = priceBasedLoansValue + timeBasedLoansValue || 0;
+  const totalBorrowed = getTotalBorrowed(perpetualLoans, flipLoans);
 
   return (
     <>
@@ -70,7 +63,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           onSubmit={onSubmit}
           onBack={onBack}
           selectedBulkValue={totalBorrowed}
-          feeOnDay={feeOnDay}
+          feeOnDay={feesOnDay}
         />
       )}
 
@@ -100,33 +93,13 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
         )}
 
         {isSelectedBulk && (
-          <div>
-            {!!perpetualLoans.length && (
-              <>
-                <p className={styles.title}>Perpetual loans</p>
-                {getPriceBasedValues(
-                  perpetualLoans,
-                  'perpetual',
-                  onClick,
-                  onBack,
-                  rawselectedBulk,
-                )}
-              </>
-            )}
+          <>
+            {!!perpetualLoans.length &&
+              getPriceBasedValues(perpetualLoans, 'perpetual', onEditLoan)}
 
-            {!!flipLoans.length && (
-              <>
-                <p className={styles.title}>Flip loans</p>
-                {getPriceBasedValues(
-                  flipLoans,
-                  'flip',
-                  onClick,
-                  onBack,
-                  rawselectedBulk,
-                )}
-              </>
-            )}
-          </div>
+            {!!flipLoans.length &&
+              getPriceBasedValues(flipLoans, 'flip', onEditLoan)}
+          </>
         )}
       </div>
       <LoadingModal
@@ -160,73 +133,71 @@ const getStatsValue = (
   );
 };
 
-const findIndex = (rawselectedBulk, nft) => {
-  const mints = rawselectedBulk.map(({ mint }) => mint);
-  const index = mints.indexOf(nft.mint);
-  return index;
-};
-
 const getPriceBasedValues = (
-  loans,
-  loansType,
-  onClick,
-  onBack,
-  rawselectedBulk,
+  loans: BulkValues[],
+  loansType: string,
+  onEditLoan: (nft: BulkValues) => void,
 ) => {
-  const dispatch = useDispatch();
+  const isPriceBasedLoan = loansType === 'perpetual';
 
-  return loans.map((nft) => {
-    const { imageUrl, name, valuation } = nft;
+  return (
+    <>
+      <p className={styles.title}>
+        {isPriceBasedLoan ? 'Perpetual loans' : 'Flip loans'}
+      </p>
+      {loans.map((nft) => {
+        const { imageUrl, name, valuation } = nft;
 
-    const isPriceBasedLoan = loansType === 'perpetual';
+        const {
+          loanType,
+          maxLoanValue,
+          fee,
+          loanToValue,
+          BorrowAPY,
+          liquidationsPrice,
+          feeDiscountPercents,
+          period,
+          repayValue,
+        } = getSelectedBulkValues(nft);
 
-    const {
-      loanType,
-      maxLoanValue,
-      fee,
-      loanToValue,
-      BorrowAPY,
-      liquidationsPrice,
-      feeDiscountPercents,
-      period,
-      repayValue,
-    } = getSelectedBulkValues(nft);
-
-    return (
-      <div className={styles.cardWrapper} key={nft.name}>
-        <div className={styles.card}>
-          <div className={styles.cardInfo}>
-            <img className={styles.image} src={imageUrl} />
-            <div className={styles.name}>{name}</div>
+        return (
+          <div className={styles.cardWrapper} key={nft.name}>
+            <div className={styles.card}>
+              <div className={styles.cardInfo}>
+                <img className={styles.image} src={imageUrl} />
+                <div className={styles.name}>{name}</div>
+              </div>
+              <p className={styles.editMode} onClick={() => onEditLoan(nft)}>
+                Edit loan
+              </p>
+            </div>
+            <div className={styles.hiddenValues}>
+              {getStatsValue('Loan Type', loanType)}
+              {getStatsValue('Loan to value', loanToValue, 'percent')}
+              {getStatsValue('Floor price', valuation, 'number')}
+              {getStatsValue('fee', fee, 'number')}
+              {getStatsValue('To borrow', maxLoanValue, 'number')}
+              {!isPriceBasedLoan && getStatsValue('Duration', `${period} DAYS`)}
+              {isPriceBasedLoan &&
+                getStatsValue(
+                  'Liquidations price',
+                  liquidationsPrice,
+                  'number',
+                )}
+              {isPriceBasedLoan &&
+                getStatsValue('Borrow APY', BorrowAPY, 'percent')}
+              {!isPriceBasedLoan &&
+                getStatsValue(
+                  'Holder discount',
+                  feeDiscountPercents,
+                  'percent',
+                )}
+              {!isPriceBasedLoan &&
+                getStatsValue('To repay', repayValue, 'number')}
+            </div>
           </div>
-          <p
-            className={styles.editMode}
-            onClick={() => {
-              dispatch(
-                commonActions.setSelectedNftId(findIndex(rawselectedBulk, nft)),
-              );
-              onBack ? onBack() : onClick();
-            }}
-          >
-            Edit loan
-          </p>
-        </div>
-        <div className={styles.hiddenValues}>
-          {getStatsValue('Loan Type', loanType)}
-          {getStatsValue('Loan to value', loanToValue, 'percent')}
-          {getStatsValue('Floor price', valuation, 'number')}
-          {getStatsValue('fee', fee, 'number')}
-          {getStatsValue('To borrow', maxLoanValue, 'number')}
-          {!isPriceBasedLoan && getStatsValue('Duration', `${period} DAYS`)}
-          {isPriceBasedLoan &&
-            getStatsValue('Liquidations price', liquidationsPrice, 'number')}
-          {isPriceBasedLoan &&
-            getStatsValue('Borrow APY', BorrowAPY, 'percent')}
-          {!isPriceBasedLoan &&
-            getStatsValue('Holder discount', feeDiscountPercents, 'percent')}
-          {!isPriceBasedLoan && getStatsValue('To repay', repayValue, 'number')}
-        </div>
-      </div>
-    );
-  });
+        );
+      })}
+    </>
+  );
 };
