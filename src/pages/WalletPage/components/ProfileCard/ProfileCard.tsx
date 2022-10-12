@@ -5,7 +5,7 @@ import { UserState } from '../../../../state/common/types';
 import { getOwnerAvatar } from '../../../../utils/nameService';
 import { shortenAddress } from '../../../../utils/solanaUtils';
 import { getDiscordAvatarUrl, getDiscordUri } from '../../../../utils';
-import { /* PencilIcon, */ TwitterIcon2 } from '../../../../icons';
+import { /* PencilIcon, */ TwitterIcon2, UserIcon } from '../../../../icons';
 import DiscordIcon from '../../../../icons/DiscordIcon2';
 import { commonActions } from '../../../../state/common/actions';
 // import Button from '../../../../components/Button';
@@ -37,17 +37,8 @@ export const ProfileCard: FC<ProfileCard> = ({
       <div className={styles.userInfo}>
         <h2 className={styles.title}>User info</h2>
         <h3 className={styles.description}>
-          <div
-            className={styles.ownerAvatar}
-            style={{
-              backgroundImage: `url(${
-                avatarUrl ?? getOwnerAvatar(twitterName)
-              })`,
-            }}
-          >
-            {/* <div className={styles.editAvatarIcon}>
-              <PencilIcon />
-            </div> */}
+          <div>
+            <UserIcon className={styles.ownerAvatar} url={avatarUrl} />
           </div>
 
           <div className={styles.ownerInfo}>
@@ -82,35 +73,6 @@ export const ProfileCard: FC<ProfileCard> = ({
           </button>
         )}
       </div>
-
-      {/* <div className={styles.line} /> */}
-
-      {/* <div className={styles.rewardInfo}>
-        <h2 className={styles.title}>Rewards</h2>
-        <div className={styles.scrollContent}>
-          {rewardInfoMock.map(({ amount, symbol }) => (
-            <div className={styles.rewardWrapper} key={amount}>
-              <span>
-                {amount} {symbol}
-              </span>
-              <Button className={styles.btn} type="alternative">
-                Claim rewards
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };
-
-// const rewardInfoMock = [
-//   {
-//     amount: '3454.545',
-//     symbol: 'FRKX',
-//   },
-//   {
-//     amount: '1428.182',
-//     symbol: 'FRKX',
-//   },
-// ];
