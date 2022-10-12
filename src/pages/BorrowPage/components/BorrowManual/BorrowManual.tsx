@@ -21,6 +21,7 @@ import { useBorrowNft } from './hooks';
 import { BulkValues } from '../../hooks';
 import SidebarForm from '../SidebarForm';
 import NoSuitableNft from '../NoSuitableNft';
+import { selectSelectedNftId } from '../../../../state/common/selectors';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -45,6 +46,8 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   } = useBorrowNft();
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
+  console.log(perpetualNftsInfo);
+
   const bulkNftsRaw = useSelector(selectBulkNfts);
 
   useEffect(() => {
@@ -102,6 +105,14 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     dispatch(loansActions.addPerpLoanNft(allPerpetualLoans));
   }, [dispatch]);
 
+  const [tabValue, setTab] = useState<string>('');
+  const [ltv, setLtv] = useState<number>(0);
+
+  const rawId = useSelector(selectSelectedNftId);
+  const totalNftsId = nfts.length - 1;
+
+  const id = rawId > totalNftsId ? 0 : rawId;
+
   return (
     <AppLayout>
       {!openBulk && (
@@ -112,6 +123,8 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             nfts={selectedNfts}
             bulkNfts={bulkNfts}
             onOpenBulk={() => setOpenBulk(true)}
+            setTab={setTab}
+            setLtv={setLtv}
           />
 
           <Header
@@ -155,7 +168,16 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
                 return (
                   <NFTCheckbox
                     key={nft.mint}
-                    onClick={() => onMultiSelect(nft)}
+                    onClick={() => {
+                      dispatch(
+                        loansActions.updatePerpLoanNft({
+                          mint: bulkNfts?.[id]?.mint,
+                          ltv: ltv,
+                          formType: tabValue,
+                        }),
+                      );
+                      onMultiSelect(nft);
+                    }}
                     imageUrl={nft.imageUrl}
                     name={nft.name}
                     selected={

@@ -20,6 +20,8 @@ export interface SidebarFormProps {
   className?: string;
   bulkNfts: any;
   onOpenBulk: () => void;
+  setTab: any;
+  setLtv: any;
 }
 
 const SidebarForm: FC<SidebarFormProps> = ({
@@ -29,6 +31,8 @@ const SidebarForm: FC<SidebarFormProps> = ({
   isCloseSidebar = false,
   bulkNfts,
   onOpenBulk,
+  setTab,
+  setLtv,
 }) => {
   const isSidebarVisible = !!nfts.length;
   const totalNftsId = nfts.length - 1;
@@ -45,7 +49,10 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const selectedNft = bulkNfts?.[id];
 
-  console.log(selectedNft);
+  useEffect(() => {
+    setTab(tabValue);
+    setLtv(priceBasedLTV);
+  }, [tabValue, priceBasedLTV]);
 
   const updateCurrentNft = (selectedNft) => {
     if (selectedNft?.priceBased) {
@@ -70,9 +77,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
   };
 
   useEffect(() => {
-    if (nfts.length) {
-      updateCurrentNft(selectedNft);
-    } else {
+    if (!nfts.length) {
       dispatch(loansActions.updatePerpLoanNft([]));
       dispatch(loansActions.setCurrentNftLoan(null));
     }
