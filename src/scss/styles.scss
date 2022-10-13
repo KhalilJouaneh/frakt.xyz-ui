@@ -74,6 +74,7 @@ h5 {
   .ant-notification-notice {
     background: var(--primary-background);
     width: 400px;
+    box-shadow: unset !important;
 
     @media (max-width: 767px) {
       width: 100%;

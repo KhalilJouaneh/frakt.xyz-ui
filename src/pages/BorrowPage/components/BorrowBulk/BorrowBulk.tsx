@@ -72,7 +72,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
             title="Borrowing"
             subtitle={`I need ${value} SOL`}
           />
-          {connected && !!bulks.best.length && (
+          {connected && !!bestBulk.length && (
             <div className={styles.wrapper}>
               {getBulkValues(bestBulk, bestBulkValue, 'best')}
               {getBulkValues(cheapestBulk, cheapestBulkValue, 'cheapest')}

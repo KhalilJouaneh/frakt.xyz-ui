@@ -36,7 +36,7 @@ const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
           <p className={styles.value}>{paidBackIn24Hours}</p>
         </div>
         <div className={styles.block}>
-          <h3 className={styles.subtitle}>Liquidated</h3>
+          <h3 className={styles.subtitle}>Graced</h3>
           <p className={styles.value}>{liquidatedIn24Hours}</p>
         </div>
       </div>
