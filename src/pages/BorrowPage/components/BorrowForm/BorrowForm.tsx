@@ -17,6 +17,7 @@ interface BorrowFormProps {
   onClick?: () => void;
   getLtv: (ltv: number) => void;
   getTab: (tab: string) => void;
+  totalBorrowed?: number;
 }
 
 export enum BorrowFormType {
@@ -31,6 +32,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
   onClick,
   getLtv,
   getTab,
+  totalBorrowed,
 }) => {
   const {
     openConfirmModal,
@@ -96,7 +98,9 @@ const BorrowForm: FC<BorrowFormProps> = ({
           type="secondary"
           className={styles.continueBtn}
         >
-          {isBulkLoan ? 'View bulk loan' : `Quick borrow ${borrowValue}`}
+          {isBulkLoan
+            ? `View bulk loan ${totalBorrowed.toFixed(2)}  SOL`
+            : `Quick borrow ${borrowValue}`}
         </Button>
       </div>
       <ConfirmModal

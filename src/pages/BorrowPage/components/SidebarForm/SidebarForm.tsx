@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { filter } from 'ramda';
 import cx from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
@@ -12,6 +13,7 @@ import styles from './SidebarForm.module.scss';
 import Icons from '../../../../iconsNew/';
 import { BulkValues } from '../../hooks';
 import BorrowForm from '../BorrowForm';
+import { getTotalBorrowed } from '../SelectedBulk/helpers';
 
 export interface SidebarFormProps {
   onDeselect?: (nft?: BorrowNft) => void;
@@ -46,8 +48,17 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const [priceBasedLTV, getLtv] = useState<number>(0);
   const [tabValue, getTab] = useState<string>('');
+  const [visible, setVisible] = useState<boolean>(false);
 
   const selectedNft = bulkNfts?.[id];
+
+  const isPriceBased = (nft) => nft?.isPriceBased && nft?.priceBased;
+  const isTimeBased = (nft) => !nft?.isPriceBased || !nft?.priceBased;
+
+  const perpetualLoans = filter(isPriceBased, bulkNfts);
+  const flipLoans = filter(isTimeBased, bulkNfts);
+
+  const totalBorrowed = getTotalBorrowed(perpetualLoans, flipLoans);
 
   useEffect(() => {
     setTab(tabValue);
@@ -113,9 +124,35 @@ const SidebarForm: FC<SidebarFormProps> = ({
           className={cx(
             styles.sidebarWrapper,
             isSidebarVisible && styles.visible,
+            visible && styles.collapsedSidebar,
           )}
         >
-          <div className={styles.sidebar}>
+          {isSidebarVisible && (
+            <div className={styles.dropdown}>
+              <Button
+                className={cx(styles.btn, visible && styles.rotateUp)}
+                type="tertiary"
+                onClick={() => setVisible(!visible)}
+              >
+                <Icons.Chevron />
+              </Button>
+            </div>
+          )}
+          <div
+            className={cx(
+              styles.collapsedContent,
+              visible && styles.collapsedContentVisible,
+            )}
+          >
+            <Button
+              onClick={onOpenBulk}
+              type="secondary"
+              className={styles.collapsedBtn}
+            >
+              View bulk loan {totalBorrowed.toFixed(2)} SOL
+            </Button>
+          </div>
+          <div className={cx(styles.sidebar, visible && styles.sidebarHidden)}>
             <Swiper className={cx(styles.nftSlider, className)}>
               {[selectedNft].map((nft, idx) => {
                 return (
@@ -129,7 +166,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                           className={styles.removeBtn}
                           onClick={() => onDeselect(nft)}
                         >
-                          {Icons.Cross()}
+                          <Icons.Trash />
                         </button>
                         {isBulkLoan && <SliderButtons />}
                       </div>
@@ -148,7 +185,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                         className={styles.removeBtnMobile}
                         onClick={() => onDeselect(nft)}
                       >
-                        {Icons.Cross()}
+                        <Icons.Trash />
                       </button>
                       {isBulkLoan && <SliderButtons />}
                     </div>
@@ -164,6 +201,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                 onDeselect={onDeselect}
                 getLtv={getLtv}
                 getTab={getTab}
+                totalBorrowed={totalBorrowed}
               />
             )}
           </div>

@@ -22,6 +22,7 @@ import { Arrow } from './Arrow';
 import { Chevron } from './Chevron';
 import { Ledger } from './Ledger';
 import { MathWallet } from './MathWallet';
+import { Trash } from './Trash';
 
 export default {
   Chart,
@@ -58,4 +59,5 @@ export default {
   FRKT,
   Ledger,
   MathWallet,
+  Trash,
 };

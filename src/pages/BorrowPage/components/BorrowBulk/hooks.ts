@@ -33,12 +33,12 @@ export const badgesInfo = {
   },
   cheapest: {
     title: 'Cheapest',
-    text: 'Minimal collateral costs',
+    text: 'Minimal fees paid',
     color: '#fff61f',
   },
   safest: {
     title: 'Safest',
-    text: 'Loans with the best loan to value',
+    text: 'Loans with lowest loan to value ratio',
     color: '#1fc9ff',
   },
 };

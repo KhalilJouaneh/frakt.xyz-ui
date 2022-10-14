@@ -27,7 +27,6 @@
 }
 
 .blockContent {
-  position: relative;
   @include flex(column, nowrap, null, null);
   gap: 24px;
   width: 100%;
@@ -35,6 +34,10 @@
 
 .toggle {
   min-width: 160px;
+}
+
+.slider {
+  padding: 15px 5px 64px;
 }
 
 .btn {
@@ -71,12 +74,7 @@
 }
 
 .input {
-  width: 100%;
-  padding: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: unset;
+  margin-bottom: 10px;
 }
 
 .nftsList {
@@ -131,33 +129,6 @@
     animation: dots 2s linear infinite;
     width: 16px;
     content: '...';
-  }
-}
-
-
-
-.slider {
-  padding: 0 5px 36px;
-  width: 100%;
-
-  :global {
-    .ant-slider-handle {
-      &::before {
-        content: attr(aria-valuenow) ' SOL';
-        font: var(--font-text-8);
-        background-color: #aeaeb2;
-        font-size: 14px;
-        width: 61px;
-        height: 26px;
-        top: -33px;
-        left: -10px;
-      }
-      &::after {
-        top: -7px;
-        left: 2px;
-        border-top: 6px solid #aeaeb2;
-      }
-    }
   }
 }
 

@@ -3,10 +3,11 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
 
 import { ConnectWalletSection } from '../../components/ConnectWalletSection';
+import { TokenFieldWithBalance } from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { loansActions } from '../../state/loans/actions';
 import NoSuitableNft from './components/NoSuitableNft';
-import { BorrowType, useBorrowPage } from './hooks';
+import { BorrowType, marks, useBorrowPage } from './hooks';
 import BorrowBulk from './components/BorrowBulk';
 import BorrowNft from './components/BorrowManual';
 import styles from './BorrowPage.module.scss';
@@ -14,6 +15,7 @@ import Button from '../../components/Button';
 import { Loader } from '../../components/Loader';
 import { Slider } from '../../components/Slider';
 import Header from './components/Header';
+import { SOL_TOKEN } from '../../utils';
 
 const BorrowPage: FC = () => {
   const { connected } = useWallet();
@@ -22,13 +24,14 @@ const BorrowPage: FC = () => {
   const [borrowType, setBorrowType] = useState<BorrowType>(null);
 
   const {
-    marks,
     bulks,
     borrowValue,
-    setBorrowValue,
     loading,
     availableBorrowValue,
     onSubmit,
+    onBorrowPercentChange,
+    percentValue,
+    onBorrowValueChange,
   } = useBorrowPage();
 
   return (
@@ -50,13 +53,22 @@ const BorrowPage: FC = () => {
                 <h3 className={styles.blockTitle}>Pick for me</h3>
                 <p className={styles.blockSubtitle}>I need...</p>
                 <div className={styles.blockContent}>
-                  <Slider
-                    marks={marks}
-                    className={styles.slider}
+                  <TokenFieldWithBalance
+                    className={styles.input}
                     value={borrowValue}
-                    step={1}
-                    max={Number(availableBorrowValue)}
-                    setValue={setBorrowValue}
+                    onValueChange={onBorrowValueChange}
+                    currentToken={SOL_TOKEN}
+                    label={`Available balance:`}
+                    lpBalance={Number(availableBorrowValue)}
+                    showMaxButton
+                    labelRight
+                  />
+
+                  <Slider
+                    value={percentValue}
+                    setValue={onBorrowPercentChange}
+                    className={styles.slider}
+                    marks={marks}
                     withTooltip
                   />
                   <Button
@@ -97,7 +109,7 @@ const BorrowPage: FC = () => {
             <BorrowBulk
               onBack={() => setBorrowType(BorrowType.SINGLE)}
               onClick={() => setBorrowType(null)}
-              value={borrowValue}
+              value={Number(borrowValue)}
               bulks={bulks}
             />
           )}

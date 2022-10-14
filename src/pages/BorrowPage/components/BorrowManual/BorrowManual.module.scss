@@ -122,12 +122,16 @@
   padding-right: 334px;
 
   @media (max-width: 767px) {
+    gap: 16px;
     padding-right: 0;
+    grid-template-columns: repeat(auto-fill, minmax(163px, 2fr));
+    padding-bottom: 100px;
   }
 }
 
 .nftListActive {
   padding-right: 0;
+  padding-bottom: 0;
 }
 
 .noSuiableMessageWrapper {
