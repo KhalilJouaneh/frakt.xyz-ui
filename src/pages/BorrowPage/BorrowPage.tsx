@@ -38,10 +38,7 @@ const BorrowPage: FC = () => {
     <>
       {borrowType === null && (
         <AppLayout>
-          <Header
-            title="Borrow SOL"
-            subtitle="Select your NFT to use as a collateral"
-          />
+          <Header title="Borrow SOL" subtitle="Choose how you want to borrow" />
 
           {!connected && (
             <ConnectWalletSection text="Connect your wallet to check ..." />

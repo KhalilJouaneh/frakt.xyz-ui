@@ -9,10 +9,11 @@
 }
 
 .root {
-  border-bottom: 1px solid var(--black-color);
-  background: rgba(118, 118, 128, 0.12);
+  background: var(--secondary-background);
   display: flex;
   justify-content: flex-end;
+
+  border-bottom: 1px solid var(--primary-border);
 
   //? Remove arrows from number input
   input[type='number'] {
@@ -29,7 +30,7 @@
 
 .focused {
   .root {
-    border-color: var(--black-color);
+    border-bottom: 1px solid var(--secondary-border);
 
     .useMaxBtn {
       border: 1px solid var(--light-green-color);
