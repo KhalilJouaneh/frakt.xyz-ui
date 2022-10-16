@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -10,7 +11,7 @@ import ConnectWallet from '../ConnectWallet';
 import styles from './styles.module.scss';
 import BurgerMenu from '../../components/BurgerMenu';
 
-export const Header = () => {
+export const Header: FC = () => {
   const visible = useSelector(selectWalletModalVisible);
   const { connected } = useWallet();
 

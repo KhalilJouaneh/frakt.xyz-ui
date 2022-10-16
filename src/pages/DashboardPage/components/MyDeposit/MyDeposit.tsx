@@ -14,15 +14,22 @@ import Block from '../Block';
 const MyDeposit: FC = () => {
   const liquidityPools = useSelector(selectLiquidityPools);
 
-  const depositAmount = ({ userDeposit }) => userDeposit?.depositAmount;
+  const depositAmount = (pool) => pool?.userDeposit?.depositAmount;
   const depositApr = ({ depositApr }) => depositApr;
+  const isPriceBased = ({ isPriceBased }) => isPriceBased;
+  const imageUrl = ({ imageUrl }) => imageUrl[0];
 
-  const depositedPools = filter(depositAmount as any, liquidityPools);
-  const totalLiquidity = sum(map(depositAmount as any, depositedPools));
+  const depositedPools = filter(depositAmount, liquidityPools);
+  const totalLiquidity = sum(map(depositAmount, depositedPools)) || 0;
   const totalApy =
     sum(map(depositApr, depositedPools)) / depositedPools.length || 0;
 
   const isDeposited = depositedPools.length;
+
+  const perpLiquidityPools = filter(isPriceBased, liquidityPools).splice(0, 10);
+  const poolsImages = map(imageUrl, perpLiquidityPools);
+
+  const otherPoolsCount = liquidityPools.length - 9;
 
   return (
     <Block className={styles.block}>
@@ -54,17 +61,14 @@ const MyDeposit: FC = () => {
             </div>
             <div className={styles.table}>
               {depositedPools.map(
-                (
-                  {
-                    name,
-                    depositApr,
-                    userDeposit,
-                    imageUrl,
-                    collectionsAmount,
-                  },
-                  idx,
-                ) => (
-                  <div key={idx} className={styles.tableRow}>
+                ({
+                  name,
+                  depositApr,
+                  userDeposit,
+                  imageUrl,
+                  collectionsAmount,
+                }) => (
+                  <div key={name} className={styles.tableRow}>
                     <div className={styles.tableInfo}>
                       {imageUrl?.length > 1 ? (
                         <div
@@ -95,7 +99,23 @@ const MyDeposit: FC = () => {
           </div>
         </>
       ) : (
-        <p className={styles.emptyMessage}>You have no deposits</p>
+        <div className={styles.emptyContent}>
+          <p className={styles.emptyMessage}>
+            You have no deposits... <br /> But you can explore our offers and
+            choose the best option for your deposit
+          </p>
+          <div className={styles.poolsImagesEmpty}>
+            {poolsImages.map((url) => (
+              <div key={url} className={styles.poolImageEmpty}>
+                <img src={url} />
+                <div className={styles.otherImage}>
+                  <p className={styles.otherImageCount}>+{otherPoolsCount}</p>
+                  <p className={styles.otherImageTitle}>profitable pools</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       <NavLink style={{ width: '100%' }} to={PATHS.LEND}>

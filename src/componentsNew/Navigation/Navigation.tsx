@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { compose, split, nth, tail } from 'ramda';
 import { NavLink } from 'react-router-dom';
@@ -21,7 +22,7 @@ interface MenuItem {
   fillIcon?: boolean;
 }
 
-export const MenuItem = ({
+export const MenuItem: FC<MenuItem> = ({
   label,
   className,
   icon: rawIcon,
@@ -31,7 +32,7 @@ export const MenuItem = ({
   pathname = '',
   href,
   fillIcon,
-}: MenuItem) => {
+}) => {
   const theme: string = useSelector(selectTheme);
   const icon = theme === 'dark' ? iconDark : rawIcon;
 
@@ -85,7 +86,7 @@ export const MenuItem = ({
   );
 };
 
-export const Navigation = () => {
+export const Navigation: FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.navigation}>

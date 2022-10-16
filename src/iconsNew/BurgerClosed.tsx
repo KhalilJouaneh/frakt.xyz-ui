@@ -1,4 +1,6 @@
-export const BurgerClosed = () => (
+import { FC } from 'react';
+
+export const BurgerClosed: FC = () => (
   <svg width="23" height="18" viewBox="0 0 23 18" fill="none">
     <ellipse cx="2.5" cy="2" rx="2" ry="2" fill="black" />
     <path

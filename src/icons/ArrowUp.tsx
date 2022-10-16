@@ -11,7 +11,6 @@ export const ArrowUp = ({
   className,
   width,
   height,
-  fill = 'white',
 }: React.SVGProps<SVGSVGElement>): JSX.Element => (
   <svg
     className={className || ''}

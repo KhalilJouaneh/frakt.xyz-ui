@@ -12,7 +12,7 @@ export interface ConnectButtonProps {
   className?: string;
 }
 
-const ConnectedButton: FC<ConnectButtonProps> = ({ className }) => {
+const ConnectedButton: FC<ConnectButtonProps> = () => {
   const dispatch = useDispatch();
   const { publicKey: walletPubKey } = useWallet();
 

@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { FC } from 'react';
 import styles from './styles.module.scss';
 
 interface LoaderProps {
@@ -6,10 +7,7 @@ interface LoaderProps {
   className?: string;
 }
 
-export const Loader = ({
-  size = 'default',
-  className,
-}: LoaderProps): JSX.Element => {
+export const Loader: FC<LoaderProps> = ({ size = 'default', className }) => {
   return (
     <svg
       style={{}}
@@ -65,6 +63,6 @@ export const Loader = ({
   );
 };
 
-export const ModalLoader = ({ className }: LoaderProps) => {
+export const ModalLoader: FC<LoaderProps> = ({ className }) => {
   return <div className={classNames(styles.load, className)}></div>;
 };

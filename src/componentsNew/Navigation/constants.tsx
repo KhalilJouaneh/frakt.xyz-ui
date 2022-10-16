@@ -1,4 +1,3 @@
-import { selectWalletPublicKey } from '../../state/common/selectors';
 import { PATHS } from '../../constants';
 import Icons from '../../iconsNew';
 

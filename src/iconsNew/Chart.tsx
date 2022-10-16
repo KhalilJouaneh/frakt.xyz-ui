@@ -1,4 +1,6 @@
-export const Chart = () => (
+import { FC } from 'react';
+
+export const Chart: FC = () => (
   <svg
     width="18"
     height="18"

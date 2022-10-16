@@ -1,6 +1,6 @@
 import { useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
-import { withRouter, useParams, useHistory } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { Tab, Tabs, useTabs } from '../../components/Tabs';
 import { ProfileCard } from './components/ProfileCard';

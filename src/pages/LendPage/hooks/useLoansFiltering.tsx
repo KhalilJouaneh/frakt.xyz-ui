@@ -8,7 +8,6 @@ import moment from 'moment';
 import styles from '../components/MyLoansTab/MyLoansTab.module.scss';
 import { selectLoanNfts } from '../../../state/loans/selectors';
 import { caclTimeToRepay } from '../../../utils/loans';
-import { ArrowDownSmallIcon } from '../../../icons';
 import { Loan } from '../../../state/loans/types';
 import { compareNumbers } from '../../../utils';
 

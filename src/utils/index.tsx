@@ -229,7 +229,7 @@ export const compareNumbers = (
   } else if (numberB > numberA) return -1;
 };
 
-export const useOnClickOutside = (ref, handler) => {
+export const useOnClickOutside = (ref, handler): void => {
   useEffect(() => {
     const listener = (event) => {
       if (!ref.current || ref.current.contains(event.target)) {

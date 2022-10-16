@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { sum, map, filter } from 'ramda';
 
 import {
+  selectLiquidityPools,
   selectLoanNfts,
   selectTotalDebt,
 } from '../../../../state/loans/selectors';
@@ -17,17 +18,19 @@ import { PATHS } from '../../../../constants';
 
 const MyLoans: FC = () => {
   const userLoans: Loan[] = useSelector(selectLoanNfts);
+  const liquidityPools = useSelector(selectLiquidityPools);
 
   const loanToValue = ({ loanValue }) => loanValue;
-  const isPriceBased = ({ isPriceBased }) => isPriceBased === true;
-  const isTimeBased = ({ isPriceBased }) => isPriceBased === false;
-  const isGracePeriod = ({ isGracePeriod }) => isGracePeriod === true;
+  const isPriceBased = ({ isPriceBased }) => isPriceBased;
+  const isTimeBased = (loan) => !loan?.isPriceBased;
+  const isGracePeriod = (loan) => loan?.isGracePeriod;
+  const imageUrl = ({ imageUrl }) => imageUrl[0];
 
   const totalDebt = useSelector(selectTotalDebt);
 
   const perpetualLoans = filter(isPriceBased, userLoans);
   const flipLoans = filter(isTimeBased, userLoans);
-  const graceLoans = filter(isGracePeriod as any, userLoans);
+  const graceLoans = filter(isGracePeriod, userLoans);
 
   const perpetualLoansValue = sum(map(loanToValue, perpetualLoans));
   const flipLoansValue = sum(map(loanToValue, flipLoans));
@@ -35,6 +38,12 @@ const MyLoans: FC = () => {
 
   const countLoans = userLoans.length;
   const totalBorrowed = sum(map(loanToValue, userLoans));
+
+  const perpLiquidityPools = filter(isPriceBased, liquidityPools).splice(0, 8);
+  const poolsImages = map(imageUrl, perpLiquidityPools);
+  const flipPool = filter(isTimeBased, liquidityPools);
+
+  const otherPoolsCount = flipPool[0]?.collectionsAmount - 7;
 
   const loansInfo = [
     { name: 'Flip', value: flipLoansValue?.toFixed(3) },
@@ -94,7 +103,27 @@ const MyLoans: FC = () => {
             </div>
           </>
         ) : (
-          <p className={styles.emptyMessage}>You have no deposits</p>
+          <div className={styles.emptyContent}>
+            <p className={styles.emptyMessage}>
+              You have no loans... <br />
+              But we whitelist enough collections for you to collateralizate
+              your loans
+            </p>
+            <p className={styles.emptyMessage}>
+              ...and for DeGods we allow you to claim $DUST
+            </p>
+            <div className={styles.poolsImagesEmpty}>
+              {poolsImages.map((url) => (
+                <div key={url} className={styles.poolImageEmpty}>
+                  <img src={url} />
+                  <div className={styles.otherImage}>
+                    <p className={styles.otherImageCount}>+{otherPoolsCount}</p>
+                    <p className={styles.otherImageTitle}>collections</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 

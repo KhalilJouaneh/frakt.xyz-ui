@@ -11,7 +11,7 @@ const getPriceBasedValues = (
   BorrowAPY: string;
   liquidationsPrice: string;
 } => {
-  const { valuation, priceBased, maxLoanValue, timeBased } = nft;
+  const { valuation, priceBased, maxLoanValue } = nft;
 
   const valuationNumber = parseFloat(valuation);
   const currentLtvPersent = priceBased?.ltv;
