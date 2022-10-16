@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { filter } from 'ramda';
@@ -14,6 +14,7 @@ import Icons from '../../../../iconsNew/';
 import { BulkValues } from '../../hooks';
 import BorrowForm from '../BorrowForm';
 import { getTotalBorrowed } from '../SelectedBulk/helpers';
+import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 
 export interface SidebarFormProps {
   onDeselect?: (nft?: BorrowNft) => void;
@@ -22,8 +23,6 @@ export interface SidebarFormProps {
   className?: string;
   bulkNfts: BulkValues[];
   onOpenBulk: () => void;
-  setTab: (tab: string) => void;
-  setLtv: (ltv: number) => void;
 }
 
 const SidebarForm: FC<SidebarFormProps> = ({
@@ -33,8 +32,6 @@ const SidebarForm: FC<SidebarFormProps> = ({
   isCloseSidebar = false,
   bulkNfts,
   onOpenBulk,
-  setTab,
-  setLtv,
 }) => {
   const isSidebarVisible = !!nfts.length;
   const totalNftsId = nfts.length - 1;
@@ -42,12 +39,12 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const dispatch = useDispatch();
 
+  const currentLoanNft = useSelector(selectCurrentLoanNft) as any;
+
   const currentNftId = useSelector(selectSelectedNftId);
 
   const id = currentNftId > totalNftsId ? 0 : currentNftId;
 
-  const [priceBasedLTV, getLtv] = useState<number>(0);
-  const [tabValue, getTab] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
   const selectedNft = bulkNfts?.[id];
@@ -60,18 +57,13 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const totalBorrowed = getTotalBorrowed(perpetualLoans, flipLoans);
 
-  useEffect(() => {
-    setTab(tabValue);
-    setLtv(priceBasedLTV);
-  }, [tabValue, priceBasedLTV]);
-
   const updateCurrentNft = (selectedNft) => {
     if (selectedNft?.priceBased) {
       dispatch(
         loansActions.updatePerpLoanNft({
-          mint: selectedNft?.mint,
-          ltv: priceBasedLTV,
-          formType: tabValue,
+          mint: currentLoanNft.mint,
+          ltv: currentLoanNft.ltv,
+          formType: currentLoanNft.type,
         }),
       );
     }
@@ -199,8 +191,6 @@ const SidebarForm: FC<SidebarFormProps> = ({
                 selectedNft={selectedNft}
                 isBulkLoan={isBulkLoan}
                 onDeselect={onDeselect}
-                getLtv={getLtv}
-                getTab={getTab}
                 totalBorrowed={totalBorrowed}
               />
             )}

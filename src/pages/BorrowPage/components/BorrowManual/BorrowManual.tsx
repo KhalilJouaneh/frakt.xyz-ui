@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
-import { selectSelectedNftId } from '../../../../state/common/selectors';
 import { SearchInput } from '../../../../components/SearchInput';
 import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
@@ -19,6 +18,7 @@ import { useBorrowNft } from './hooks';
 import Header from '../Header';
 import {
   selectBulkNfts,
+  selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
 
@@ -46,6 +46,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
   const selectedBulkNfts = useSelector(selectBulkNfts);
+  const currentLoanNft = useSelector(selectCurrentLoanNft) as any;
 
   useEffect(() => {
     selectedBulkNfts.length && setSelectedNfts(selectedBulkNfts);
@@ -95,19 +96,11 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     dispatch(loansActions.addPerpLoanNft(allPerpetualLoans));
   }, [dispatch]);
 
-  const [tabValue, setTab] = useState<string>('');
-  const [ltv, setLtv] = useState<number>(0);
-
-  const rawId = useSelector(selectSelectedNftId);
-  const totalNftsId = nfts.length - 1;
-
-  const id = rawId > totalNftsId ? 0 : rawId;
-
   const updateSelectedNft = (): void => {
     const params = {
-      mint: bulkNfts?.[id]?.mint,
-      ltv: ltv,
-      formType: tabValue,
+      mint: currentLoanNft?.mint,
+      ltv: currentLoanNft.ltv,
+      formType: currentLoanNft.type,
     };
 
     dispatch(loansActions.updatePerpLoanNft(params));
@@ -123,8 +116,6 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             nfts={selectedNfts}
             bulkNfts={bulkNfts}
             onOpenBulk={() => setOpenBulk(true)}
-            setTab={setTab}
-            setLtv={setLtv}
           />
 
           <Header

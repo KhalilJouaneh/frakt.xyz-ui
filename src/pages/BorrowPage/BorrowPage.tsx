@@ -81,6 +81,7 @@ const BorrowPage: FC = () => {
                   </Button>
                 </div>
               </div>
+              <div className={styles.separator}>OR</div>
               <div className={styles.block}>
                 <h3 className={styles.blockTitle}>Select NFTs manually</h3>
                 <p className={styles.blockSubtitle}></p>

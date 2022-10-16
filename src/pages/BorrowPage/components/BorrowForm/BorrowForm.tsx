@@ -9,14 +9,14 @@ import Button from '../../../../components/Button';
 import LongTermFields from '../LongTermFields';
 import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
+import { useDispatch } from 'react-redux';
+import { loansActions } from '../../../../state/loans/actions';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
   isBulkLoan?: boolean;
   onDeselect?: () => void;
   onClick?: () => void;
-  getLtv: (ltv: number) => void;
-  getTab: (tab: string) => void;
   totalBorrowed?: number;
 }
 
@@ -30,8 +30,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
   onDeselect,
   isBulkLoan,
   onClick,
-  getLtv,
-  getTab,
   totalBorrowed,
 }) => {
   const {
@@ -54,10 +52,17 @@ const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getLtv(priceBasedLTV);
-    getTab(tabValue);
-  }, [priceBasedLTV, tabValue]);
+    dispatch(
+      loansActions.setCurrentLoanNft({
+        ...selectedNft,
+        ltv: priceBasedLTV,
+        type: tabValue,
+      }),
+    );
+  }, [priceBasedLTV, tabValue, selectedNft]);
 
   const borrowValue =
     tabValue === BorrowFormType.PERPETUAL
