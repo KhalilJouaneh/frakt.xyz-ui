@@ -127,7 +127,10 @@ const MyLoans: FC = () => {
         )}
       </div>
 
-      <NavLink style={{ width: '100%' }} to={PATHS.LOANS}>
+      <NavLink
+        style={{ width: '100%' }}
+        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW}
+      >
         <Button className={styles.btn} type="secondary">
           {userLoans.length ? 'Repay' : 'Borrow SOL'}
         </Button>
