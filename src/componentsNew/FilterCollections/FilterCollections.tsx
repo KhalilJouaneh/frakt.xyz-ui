@@ -38,9 +38,11 @@ const FilterCollections: FC<FilterCollectionsProps> = ({
         <p className={styles.collectionsCounter}>
           Collections: {totalCollections}
         </p>
-        <p onClick={onClearCollections} className={styles.clearCollections}>
-          Clear
-        </p>
+        {totalCollections > 1 && (
+          <p onClick={onClearCollections} className={styles.clearCollections}>
+            Clear
+          </p>
+        )}
       </div>
       <div className={styles.filtersContent}>
         {options.map(({ value }, idx) => (

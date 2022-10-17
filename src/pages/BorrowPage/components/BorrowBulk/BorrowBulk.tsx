@@ -38,7 +38,7 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
 
     return (
       <Tooltip placement="top" trigger="hover" overlay={text}>
-        <div style={{ border: '1px solid var(--primary-border)' }}>
+        <div className={styles.blockWrapper}>
           <div className={styles.block} style={{ borderColor: color }}>
             <div>
               <div className={styles.badge} style={{ backgroundColor: color }}>

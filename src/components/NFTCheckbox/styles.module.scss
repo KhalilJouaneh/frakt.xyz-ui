@@ -1,5 +1,10 @@
 .wrapper {
   height: 100%;
+  border: 1px solid var(--secondary-text);
+
+  &_checked {
+    border: 1px solid var(--black-color);
+  }
 }
 
 .badges {
@@ -62,11 +67,9 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
-  border: 1px solid var(--secondary-text);
   position: relative;
   background: var(--primary-background);
   user-select: none;
-  transition: border-color var(--transition-1), opacity var(--transition-1);
   display: flex;
   flex-direction: column;
 
@@ -139,11 +142,8 @@
     }
   }
 
-  &_checked {
-    border: 1px solid var(--black-color);
-  }
   &_isBulk {
-    border: 1px solid var(--light-green-color) !important;
+    border: 3px solid rgba(25, 242, 0, 1);
   }
 }
 

@@ -99,12 +99,14 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const updateSelectedNft = (): void => {
     const params = {
       mint: currentLoanNft?.mint,
-      ltv: currentLoanNft.ltv,
-      formType: currentLoanNft.type,
+      ltv: currentLoanNft?.ltv,
+      formType: currentLoanNft?.type,
     };
 
     dispatch(loansActions.updatePerpLoanNft(params));
   };
+
+  console.log(currentLoanNft);
 
   return (
     <AppLayout>
@@ -171,6 +173,9 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
                   (selectedNft) => selectedNft?.mint === nft.mint,
                 );
 
+                const isBulk =
+                  selectedNfts.length && currentLoanNft.mint === nft.mint;
+
                 return (
                   <NFTCheckbox
                     key={mint}
@@ -184,6 +189,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
                     isCanStake={isCanStake}
                     isCanFreeze={isCanFreeze}
                     loanValue={maxLoanValue}
+                    isBulk={isBulk}
                   />
                 );
               })}

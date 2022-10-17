@@ -13,6 +13,7 @@ interface NFTCheckboxInterface {
   isCanFreeze?: boolean;
   loanValue?: string;
   isCanStake?: boolean;
+  isBulk?: boolean;
 }
 
 const NFTCheckbox: FC<NFTCheckboxInterface> = ({
@@ -24,13 +25,18 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
   loanValue,
   isCanFreeze,
   isCanStake,
+  isBulk,
 }) => {
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={classNames(styles.wrapper, {
+        [styles.wrapper_checked]: selected,
+      })}
+    >
       <div
         className={classNames([
           styles.root,
-          { [styles.root_checked]: selected },
+          { [styles.root_isBulk]: isBulk },
           className,
         ])}
         onClick={onClick}
