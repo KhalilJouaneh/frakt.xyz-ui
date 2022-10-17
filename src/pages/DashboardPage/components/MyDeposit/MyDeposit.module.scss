@@ -237,6 +237,7 @@
 .poolsImagesEmpty {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 25px;
 
   @media screen and (max-width: 767px) {

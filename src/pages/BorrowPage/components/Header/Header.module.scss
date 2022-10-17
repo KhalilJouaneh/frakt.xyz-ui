@@ -40,4 +40,8 @@
       fill: var(--secondary-border);
     }
   }
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
 }

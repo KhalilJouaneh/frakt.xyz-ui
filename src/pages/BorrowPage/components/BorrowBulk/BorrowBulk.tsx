@@ -38,26 +38,27 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
 
     return (
       <Tooltip placement="top" trigger="hover" overlay={text}>
-        <div className={styles.block} style={{ borderColor: color }}>
-          <div>
-            <div className={styles.badge} style={{ backgroundColor: color }}>
-              {title}
+        <div style={{ border: '1px solid var(--primary-border)' }}>
+          <div className={styles.block} style={{ borderColor: color }}>
+            <div>
+              <div className={styles.badge} style={{ backgroundColor: color }}>
+                {title}
+              </div>
+              <h4 className={styles.value}>Borrow {value.toFixed(2)} SOL</h4>
+              <div className={styles.nfts}>
+                {(bulk || []).map(({ imageUrl }) => (
+                  <img key={imageUrl} src={imageUrl} className={styles.icon} />
+                ))}
+              </div>
             </div>
-
-            <h4 className={styles.value}>Borrow {value.toFixed(2)} SOL</h4>
-            <div className={styles.nfts}>
-              {(bulk || []).map(({ imageUrl }) => (
-                <img key={imageUrl} src={imageUrl} className={styles.icon} />
-              ))}
-            </div>
+            <Button
+              onClick={() => setSelectedBulk(bulk)}
+              type="secondary"
+              className={styles.btn}
+            >
+              Select
+            </Button>
           </div>
-          <Button
-            onClick={() => setSelectedBulk(bulk)}
-            type="secondary"
-            className={styles.btn}
-          >
-            Select
-          </Button>
         </div>
       </Tooltip>
     );

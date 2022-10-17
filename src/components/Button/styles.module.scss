@@ -58,6 +58,10 @@
   border-radius: 100px;
   padding: 8px;
   font: var(--font-text-8);
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
 }
 
 .link {

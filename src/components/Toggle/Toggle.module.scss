@@ -7,6 +7,7 @@ body {
     }
     :global {
       opacity: 1;
+      min-width: 38px;
       .ant-click-animating-node {
         display: none;
       }
@@ -20,26 +21,28 @@ body {
       .ant-switch-handle::before {
         width: 24px;
         height: 24px;
-        background: #fff;
+        background: var(--primary-background);
         border-radius: 100px;
-        border: 1px solid #000;
+        border: 1px solid var(--secondary-text);
       }
 
       width: 35px;
       height: 16px;
       box-sizing: border-box;
       background-image: unset !important;
-      background-color: var(--gray-color-2);
+      background-color: var(--secondary-background);
       border-radius: 10px;
-      border: 1px solid #141415;
+      border: 1px solid var(--secondary-text);
       margin: 10px 10px 16px 0;
     }
   }
 
   .toggle:global.ant-switch-checked {
     background: var(--light-green-color);
+
     .ant-switch-handle {
       transform: translateX(24px);
+      left: calc(100% - 47px) !important;
     }
   }
 
