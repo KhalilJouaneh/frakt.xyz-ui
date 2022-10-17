@@ -107,13 +107,19 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
 
   useEffect(() => {
     if (isPriceBased) {
-      setFormField(FormFieldTypes.LONG_TERM_FIELD);
       setPriceBasedLTV(defaultSliderValue);
     } else {
-      setFormField(FormFieldTypes.SHORT_TERM_FIELD);
       setPriceBasedLTV(25);
     }
   }, [selectedNft]);
+
+  useEffect(() => {
+    if (tabValue !== 'perpetual') {
+      setFormField(FormFieldTypes.SHORT_TERM_FIELD);
+    } else {
+      setFormField(FormFieldTypes.LONG_TERM_FIELD);
+    }
+  }, [selectedNft, tabValue]);
 
   const {
     visible: confirmModalVisible,
