@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { filter } from 'ramda';
+import { sum } from 'ramda';
 import cx from 'classnames';
 
 import { selectSelectedNftId } from '../../../../state/common/selectors';
@@ -49,13 +49,27 @@ const SidebarForm: FC<SidebarFormProps> = ({
 
   const selectedNft = bulkNfts?.[id];
 
-  const isPriceBased = (nft) => nft?.isPriceBased && nft?.priceBased;
-  const isTimeBased = (nft) => !nft?.isPriceBased || !nft?.priceBased;
+  const totalBorrowed = sum(
+    bulkNfts.map((nft) => {
+      if (nft.mint === currentLoanNft.mint) {
+        if (currentLoanNft.type === 'flip') {
+          return Number(currentLoanNft.maxLoanValue);
+        } else {
+          const valuationNumber = parseFloat(currentLoanNft.valuation);
 
-  const perpetualLoans = filter(isPriceBased, bulkNfts);
-  const flipLoans = filter(isTimeBased, bulkNfts);
+          return valuationNumber * (currentLoanNft.ltv / 100);
+        }
+      } else {
+        if (nft?.isPriceBased) {
+          const valuationNumber = parseFloat(nft.valuation);
 
-  const totalBorrowed = getTotalBorrowed(perpetualLoans, flipLoans);
+          return valuationNumber * (nft.priceBased.ltv / 100);
+        } else {
+          return Number(nft.maxLoanValue);
+        }
+      }
+    }),
+  );
 
   const updateCurrentNft = (selectedNft) => {
     if (selectedNft?.priceBased) {

@@ -19,6 +19,10 @@
   justify-content: center;
   height: 30px;
   width: 148px;
+
+  @media (max-width: 768px) {
+    width: 125px;
+  }
 }
 
 .imageShadow {
@@ -48,6 +52,10 @@
   font: var(--font-text-5);
   font-family: var(--font-family-inter);
   text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 }
 
 .root {

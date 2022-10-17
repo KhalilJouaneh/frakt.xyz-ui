@@ -25,8 +25,8 @@ const getPriceBasedValues = (
   const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
   const ltv = currentLtvPersent || suggestedLtvPersent;
 
-  const BorrowAPY = priceBased.borrowAPRPercents;
-  const collaterizationRateValue = priceBased.collaterizationRate / 100;
+  const BorrowAPY = priceBased?.borrowAPRPercents;
+  const collaterizationRateValue = priceBased?.collaterizationRate / 100;
 
   const liquidationsPrice = loanValue + loanValue * collaterizationRateValue;
 
