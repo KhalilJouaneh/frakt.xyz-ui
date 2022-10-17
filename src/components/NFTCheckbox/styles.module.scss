@@ -5,6 +5,10 @@
   &_checked {
     border: 1px solid var(--black-color);
   }
+
+  &:hover {
+    border: 1px solid var(--secondary-border);
+  }
 }
 
 .badges {

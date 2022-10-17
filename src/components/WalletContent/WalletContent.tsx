@@ -14,9 +14,31 @@ interface WalletContentProps {
   className?: string;
 }
 
+export const WalletsItems = () => {
+  const { wallets, select } = useWallet();
+  const dispatch = useDispatch();
+
+  return (
+    <div className={styles.itemsContainer}>
+      {wallets.map(({ adapter }, idx) => (
+        <WalletItem
+          key={idx}
+          onClick={(): void => {
+            select(adapter.name);
+            dispatch(commonActions.setWalletModal({ isVisible: false }));
+          }}
+          imageSrc={adapter.icon}
+          imageAlt={adapter.name}
+          name={adapter.name}
+        />
+      ))}
+    </div>
+  );
+};
+
 const WalletContent = ({ className = '' }: WalletContentProps): JSX.Element => {
   const dispatch = useDispatch();
-  const { wallets, select, connected } = useWallet();
+  const { connected } = useWallet();
   const user = useSelector(selectUser);
 
   const ref = useRef();
@@ -37,20 +59,7 @@ const WalletContent = ({ className = '' }: WalletContentProps): JSX.Element => {
         {connected ? (
           <CurrentUserTable className={styles.itemsContainer} user={user} />
         ) : (
-          <div className={styles.itemsContainer}>
-            {wallets.map(({ adapter }, idx) => (
-              <WalletItem
-                key={idx}
-                onClick={(): void => {
-                  select(adapter.name);
-                  dispatch(commonActions.setWalletModal({ isVisible: false }));
-                }}
-                imageSrc={adapter.icon}
-                imageAlt={adapter.name}
-                name={adapter.name}
-              />
-            ))}
-          </div>
+          <WalletsItems />
         )}
       </div>
     </div>

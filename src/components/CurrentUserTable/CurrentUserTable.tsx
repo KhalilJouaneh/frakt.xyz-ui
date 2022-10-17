@@ -7,16 +7,21 @@ import { sum, filter, map } from 'ramda';
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
 import { SolanaIcon, UserIcon } from '../../icons';
 
-import { getDiscordUri, getDiscordAvatarUrl } from '../../utils';
+import {
+  getDiscordUri,
+  getDiscordAvatarUrl,
+  copyToClipboard,
+} from '../../utils';
 import { PATHS } from '../../constants';
 import { UserState } from '../../state/common/types';
 import DiscordIcon from '../../icons/DiscordIcon2';
 import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
-import Button from '../Button';
 import { networkRequest } from '../../utils/state';
 import { FRKT } from '../../iconsNew/FRKT';
+import { WalletsItems } from '../WalletContent/WalletContent';
+import Icons from '../../iconsNew/';
 
 interface CurrentUserTableProps {
   className?: string;
@@ -68,6 +73,8 @@ const CurrentUserTable = ({
     }
   };
 
+  const [visibleWalletItems, setVisibleWalletItems] = useState<boolean>(false);
+
   useEffect(() => {
     setAmplitudeUserId(publicKey?.toBase58());
   }, [publicKey]);
@@ -88,55 +95,75 @@ const CurrentUserTable = ({
   };
 
   return (
-    <div className={`${className} ${styles.wrapper}`}>
-      <div className={styles.userWrapper}>
-        <UserIcon className={styles.avatar} url={avatarUrl} />
-        <div className={styles.userInfo}>
-          <div className={styles.walletInfo}>
-            <p className={styles.address}>
-              {shortenAddress(`${publicKey || ''}`)}
-            </p>
+    <>
+      {!visibleWalletItems ? (
+        <div className={`${className} ${styles.wrapper}`}>
+          <div className={styles.userWrapper}>
+            <UserIcon className={styles.avatar} url={avatarUrl} />
+            <div className={styles.userInfo}>
+              <div
+                className={styles.walletInfo}
+                onClick={() => copyToClipboard(publicKey?.toBase58())}
+              >
+                <p className={styles.address}>
+                  {shortenAddress(`${publicKey || ''}`)}
+                </p>
+                <Icons.Copy />
+              </div>
+
+              <NavLink
+                onClick={() => sendAmplitudeData('navigation-profile')}
+                to={`${PATHS.PROFILE}/${publicKey.toString()}`}
+                className={styles.myCollectionLink}
+              >
+                My profile
+              </NavLink>
+            </div>
+          </div>
+          <div className={styles.balanceInfo}>
+            {getBalanceValue()}
+            <div className={styles.column}>
+              <p className={styles.columnTitle}>Rewards</p>
+              <p className={styles.columnValue}>
+                {getRewardsValue() || '--'} <FRKT />
+              </p>
+            </div>
           </div>
 
-          <NavLink
-            onClick={() => sendAmplitudeData('navigation-profile')}
-            to={`${PATHS.PROFILE}/${publicKey.toString()}`}
-            className={styles.myCollectionLink}
-          >
-            My profile
-          </NavLink>
+          <div className={styles.separator} />
+
+          <div className={styles.btnWrapperRow}>
+            <div
+              className={styles.btnWrapper}
+              onClick={() => setVisibleWalletItems(true)}
+            >
+              <Icons.ChangeWallet />
+              Change wallet
+            </div>
+            <div className={styles.btnWrapper} onClick={disconnect}>
+              <Icons.SignOut />
+              Sign out
+            </div>
+          </div>
+
+          {!user && (
+            <a
+              href={getDiscordUri(publicKey)}
+              className={styles.discordButton}
+              rel="noopener noreferrer"
+            >
+              <DiscordIcon
+                onClick={() => sendAmplitudeData('navigation-discord')}
+                className={styles.logo}
+              />{' '}
+              Link discord
+            </a>
+          )}
         </div>
-      </div>
-      <div className={styles.balanceInfo}>
-        {getBalanceValue()}
-        <div className={styles.column}>
-          <p className={styles.columnTitle}>Rewards</p>
-          <p className={styles.columnValue}>
-            {getRewardsValue() || '--'} <FRKT />
-          </p>
-        </div>
-      </div>
-      {!user && (
-        <a
-          href={getDiscordUri(publicKey)}
-          className={styles.discordButton}
-          rel="noopener noreferrer"
-        >
-          <DiscordIcon
-            onClick={() => sendAmplitudeData('navigation-discord')}
-            className={styles.logo}
-          />{' '}
-          Link discord
-        </a>
+      ) : (
+        <WalletsItems />
       )}
-      <Button
-        className={styles.disconnectButton}
-        onClick={disconnect}
-        type="secondary"
-      >
-        Disconnect wallet
-      </Button>
-    </div>
+    </>
   );
 };
 

@@ -11,11 +11,16 @@ html body .input {
 
   &:global(.ant-input-affix-wrapper-focused:hover),
   &:global(.ant-input-affix-wrapper-focused) {
-    border-bottom: 1px solid var(--primary-border);
+    border-bottom: 1px solid var(--secondary-border);
+
     :local(.search) {
       svg {
-        color: var(--secondary-text);
+        color: var(--secondary-border);
       }
+    }
+
+    input {
+      color: var(--secondary-border);
     }
   }
 

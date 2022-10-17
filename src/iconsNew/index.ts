@@ -23,6 +23,9 @@ import { Chevron } from './Chevron';
 import { Ledger } from './Ledger';
 import { MathWallet } from './MathWallet';
 import { Trash } from './Trash';
+import { ChangeWallet } from './ChangeWallet';
+import { SignOut } from './SignOut';
+import { Copy } from './Copy';
 
 export default {
   Chart,
@@ -60,4 +63,7 @@ export default {
   Ledger,
   MathWallet,
   Trash,
+  ChangeWallet,
+  SignOut,
+  Copy,
 };
