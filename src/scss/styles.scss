@@ -6,8 +6,14 @@
 
 body {
   background-color: var(--secondary-background);
+  background-image: url(../iconsNew/lightBg.png);
+  background-size: cover;
   color: var(--secondary-border);
   font: var(--font-text-3);
+
+  @media (max-width: 767px) {
+    background-image: url(../iconsNew/tabletBg.png);
+  }
 }
 
 h1,

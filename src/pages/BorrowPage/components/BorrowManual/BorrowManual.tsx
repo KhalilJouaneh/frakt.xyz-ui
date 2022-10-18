@@ -159,7 +159,12 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
               placeholder="Search by name"
             />
             <div ref={ref}>
-              <div className={styles.filters}>
+              <div
+                className={classNames(
+                  styles.filters,
+                  selectedNfts.length && styles.filtersActive,
+                )}
+              >
                 <Button type="tertiary" onClick={toggleFiltersModal}>
                   Filters
                 </Button>
