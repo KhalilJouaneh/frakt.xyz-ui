@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { BorrowNft } from '@frakt-protocol/frakt-sdk';
 import { NavLink } from 'react-router-dom';
 import { sum, map } from 'ramda';
 
@@ -8,27 +7,34 @@ import Button from '../../../../components/Button';
 import { SolanaIcon } from '../../../../icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
-import { useBorrowNft } from '../../../BorrowPage/components/BorrowManual';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const AvailableBorrow: FC = () => {
-  const { fetchData } = useBorrowNft();
-  const [nfts, setNfts] = useState<BorrowNft[]>([]);
+  const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
+  const { publicKey } = useWallet();
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-  const availableBorrowValue = sum(map(maxLoanValue, nfts)) || 0;
+  const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
 
   useEffect(() => {
     (async () => {
-      const nfts = await fetchData({ offset: 0, limit: 1000 });
-      setNfts(nfts);
+      const response = await fetch(
+        `${URL}/meta/${publicKey?.toBase58()}?&limit=${1000}`,
+      );
+      const allNfts = await response.json();
+
+      const availableBorrowValue =
+        sum(map(maxLoanValue, allNfts)).toFixed(2) || '0';
+
+      setAvailableBorrowValue(availableBorrowValue);
     })();
-  }, []);
+  }, [publicKey]);
 
   return (
     <Block className={styles.block}>
       <h3 className={styles.title}>Available to borrow</h3>
       <div className={styles.valueWrapper}>
-        <p className={styles.value}>{availableBorrowValue.toFixed(2)}</p>
+        <p className={styles.value}>{availableBorrowValue}</p>
         <SolanaIcon className={styles.icon} />
       </div>
       <NavLink style={{ width: '100%' }} to={PATHS.BORROW}>

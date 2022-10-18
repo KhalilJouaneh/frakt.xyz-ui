@@ -52,7 +52,7 @@
 
 .nfts {
   @include flex(row, wrap, null, null);
-  gap: 8px;
+  gap: 7px;
   overflow: auto;
   max-height: 360px;
 

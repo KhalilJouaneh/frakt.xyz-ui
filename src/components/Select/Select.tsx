@@ -18,6 +18,7 @@ interface SelectProps {
   onFocus?: FocusEventHandler<HTMLInputElement>;
   label?: string;
   disabled?: boolean;
+  name?: string;
 }
 
 export const Select = ({

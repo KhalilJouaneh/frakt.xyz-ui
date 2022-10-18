@@ -2,7 +2,6 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map } from 'ramda';
 
-import { useBorrowNft } from '../components/BorrowManual/hooks';
 import { networkRequest } from '../../../utils/state';
 import { BorrowNft } from '../../../state/loans/types';
 
@@ -57,7 +56,6 @@ export const useBorrowPage = (): {
 } => {
   const { publicKey } = useWallet();
 
-  const { fetchData } = useBorrowNft();
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
 
   const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
@@ -101,12 +99,12 @@ export const useBorrowPage = (): {
     return value ? value?.toFixed(2) : '0';
   };
 
+  const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
+
   const onSubmit = async (): Promise<void> => {
     try {
       const bulks = await networkRequest({
-        url: `https://${
-          process.env.BACKEND_DOMAIN
-        }/nft/suggest/${publicKey?.toBase58()}?solAmount=${borrowValue}`,
+        url: `${URL}/suggest/${publicKey?.toBase58()}?solAmount=${borrowValue}`,
       });
 
       setBulks(bulks as BulksType);
@@ -119,13 +117,17 @@ export const useBorrowPage = (): {
 
   useEffect(() => {
     (async () => {
-      const allNfts = await fetchData({ offset: 0, limit: 1000 });
+      const response = await fetch(
+        `${URL}/meta/${publicKey?.toBase58()}?&limit=${1000}`,
+      );
+      const allNfts = await response.json();
+
       const availableBorrowValue =
         sum(map(maxLoanValue, allNfts)).toFixed(1) || '0';
 
       setAvailableBorrowValue(availableBorrowValue);
     })();
-  }, []);
+  }, [publicKey]);
 
   return {
     availableBorrowValue,
