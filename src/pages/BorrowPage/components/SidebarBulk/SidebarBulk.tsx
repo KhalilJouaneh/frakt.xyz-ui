@@ -3,6 +3,10 @@ import { FC } from 'react';
 import Button from '../../../../components/Button';
 import styles from './SidebarBulk.module.scss';
 import { SolanaIcon } from '../../../../icons';
+import {
+  ConfirmModal,
+  useConfirmModal,
+} from '../../../../components/ConfirmModal';
 
 interface SidebarBulkProps {
   onClick: () => void;
@@ -19,6 +23,12 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
   onSubmit,
   feeOnDay,
 }) => {
+  const {
+    visible: confirmModalVisible,
+    open: openConfirmModal,
+    close: closeConfirmModal,
+  } = useConfirmModal();
+
   return (
     <>
       <div className={styles.sidebar}>
@@ -46,7 +56,11 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
           </div>
         </div>
         <div className={styles.sidebarBtnWrapper}>
-          <Button onClick={onSubmit} type="secondary" className={styles.btn}>
+          <Button
+            type="secondary"
+            onClick={openConfirmModal}
+            className={styles.btn}
+          >
             Borrow {selectedBulkValue?.toFixed(2)} SOL
           </Button>
           <Button onClick={onBack ? onBack : onClick} className={styles.btn}>
@@ -54,6 +68,16 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
           </Button>
         </div>
       </div>
+      <ConfirmModal
+        visible={confirmModalVisible}
+        onCancel={closeConfirmModal}
+        onSubmit={onSubmit}
+        title="Please confirm"
+        subtitle={`You are about to confirm the transaction to borrow bulk loan.
+          Want to proceed?
+        `}
+        btnAgree="Let's go"
+      />
     </>
   );
 };
