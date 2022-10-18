@@ -34,27 +34,6 @@
 
 .closeModalIcon {
   display: none;
-
-  @media screen and (max-width: 767px) {
-    height: 32px;
-    width: 32px;
-    border: 1px solid var(--primary-border);
-    background: var(--primary-background);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: -1px;
-    cursor: pointer;
-    transition: border-color var(--transition-1);
-  }
-
-  @media screen and (max-width: 550px) {
-    font-size: 18px;
-    height: 35px;
-    width: 35px;
-    display: none;
-  }
 }
 
 .closeIcon {

@@ -103,12 +103,14 @@
   width: 308px;
 
   @media screen and (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     top: unset;
-    max-height: 250px;
     width: 100% !important;
   }
 }
@@ -121,13 +123,8 @@
   margin-top: 10px;
 
   @media screen and (max-width: 767px) {
-    flex-flow: row nowrap;
-    gap: 16px;
-    overflow: auto;
-
-    &::-webkit-scrollbar {
-      height: 0px;
-    }
+    justify-content: center;
+    max-width: 340px;
   }
 }
 
