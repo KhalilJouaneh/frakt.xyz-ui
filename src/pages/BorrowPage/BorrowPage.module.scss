@@ -28,7 +28,6 @@
 
 .blockContent {
   @include flex(column, nowrap, null, null);
-  gap: 24px;
   width: 100%;
 }
 
@@ -37,6 +36,7 @@
 }
 
 .slider {
+  margin-top: 24px;
   padding: 15px 5px 64px;
 }
 
@@ -145,4 +145,13 @@
 .separator {
   font: var(--font-text-2);
   font-size: 32px;
+}
+
+.errors {
+  height: 16px;
+  font: var(--font-text-6);
+  color: var(--red-error-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }

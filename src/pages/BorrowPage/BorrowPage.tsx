@@ -32,6 +32,7 @@ const BorrowPage: FC = () => {
     onBorrowPercentChange,
     percentValue,
     onBorrowValueChange,
+    notEnoughBalanceError,
   } = useBorrowPage();
 
   return (
@@ -58,8 +59,12 @@ const BorrowPage: FC = () => {
                     label={`Available balance:`}
                     lpBalance={Number(availableBorrowValue)}
                     showMaxButton
+                    error={notEnoughBalanceError}
                     labelRight
                   />
+                  <div className={styles.errors}>
+                    {notEnoughBalanceError && <p>Not enough NFTs</p>}
+                  </div>
 
                   <Slider
                     value={percentValue}

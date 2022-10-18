@@ -53,6 +53,7 @@ export const useBorrowPage = (): {
   onBorrowPercentChange: (nextValue: number) => void;
   percentValue: number;
   onBorrowValueChange: (nextValue: string) => void;
+  notEnoughBalanceError: boolean;
 } => {
   const { publicKey } = useWallet();
 
@@ -70,6 +71,9 @@ export const useBorrowPage = (): {
     setBorrowValue(depositValue);
     setPersentValue(nextValue);
   };
+
+  const notEnoughBalanceError =
+    Number(borrowValue) > Number(availableBorrowValue);
 
   const caclPercentOfBalance = (
     nextValue: string,
@@ -139,6 +143,7 @@ export const useBorrowPage = (): {
     onBorrowPercentChange,
     onBorrowValueChange,
     percentValue,
+    notEnoughBalanceError,
   };
 };
 
