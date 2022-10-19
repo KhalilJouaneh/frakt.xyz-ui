@@ -74,6 +74,10 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
       label: 'Flip',
       value: 'flip',
     },
+    {
+      label: 'Bond',
+      value: 'bond',
+    },
   ];
 
   const {

@@ -1,0 +1,109 @@
+.pool {
+  background: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.poolCard {
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1280px) {
+    flex-wrap: wrap;
+    position: relative;
+  }
+}
+
+.tokenInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-grow: 1;
+
+  @media screen and (max-width: 1280px) {
+    align-items: start;
+    flex-direction: column;
+    max-width: 130px;
+    flex-direction: row;
+    max-width: 100%;
+    align-items: center;
+  }
+}
+
+.statsValue {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  @media screen and (max-width: 1280px) {
+    order: 1;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 10px;
+
+    .value {
+      margin-top: 0;
+    }
+  }
+}
+
+.totalValue {
+  min-width: 100px;
+  @media screen and (max-width: 1280px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.title {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font: var(--font-subtitle-2);
+  font-size: 20px;
+  max-width: 215px;
+}
+
+.value {
+  font: var(--font-text-8);
+  margin-top: 4px;
+
+  @media screen and (max-width: 1280px) {
+    font-size: 14px;
+    text-align: right;
+  }
+}
+
+.btn {
+  padding: 0;
+  height: 26px;
+  width: 113px;
+
+  @media screen and (max-width: 1280px) {
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 40px;
+  }
+}
+
+.questionIcon {
+  width: 18px;
+  margin-top: -5px;
+
+  svg {
+    fill: var(--blue-color);
+  }
+}

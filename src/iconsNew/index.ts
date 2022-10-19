@@ -26,6 +26,7 @@ import { Trash } from './Trash';
 import { ChangeWallet } from './ChangeWallet';
 import { SignOut } from './SignOut';
 import { Copy } from './Copy';
+import { Settings } from './Settings';
 
 export default {
   Chart,
@@ -66,4 +67,5 @@ export default {
   ChangeWallet,
   SignOut,
   Copy,
+  Settings,
 };

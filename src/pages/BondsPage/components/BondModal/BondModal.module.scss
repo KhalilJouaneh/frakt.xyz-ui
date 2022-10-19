@@ -1,0 +1,55 @@
+.modal {
+  :global {
+    z-index: 2;
+
+    .ant-modal-body {
+      padding: 32px;
+    }
+  }
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: 1px solid var(--primary-text);
+    background-color: var(--primary-text);
+    top: 4px;
+    left: 4px;
+  }
+}
+
+.bondInfoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bondInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.bondInfoValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--secondary-text);
+  font: var(--font-subtitle);
+
+  svg {
+    width: 20px;
+  }
+}
+
+.bondInfoTitle {
+  color: var(--secondary-border);
+  font: var(--font-text-6);
+}
+
+.btn {
+  margin-top: 16px;
+  height: 48px;
+  width: 100%;
+}

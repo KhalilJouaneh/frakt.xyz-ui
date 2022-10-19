@@ -117,3 +117,22 @@
   flex-direction: column;
   justify-content: flex-end;
 }
+
+.boundsWrapper {
+  border: 1px solid var(--red-color);
+  background-color: rgba(255, 31, 71, 0.1);
+  padding: 16px;
+}
+
+.boundsDesc {
+  font: var(--font-text-8);
+}
+
+.boundsReadMore {
+  border-bottom: 1px solid var(--blue-color);
+  color: var(--blue-color);
+  cursor: pointer;
+  font: var(--font-body-small);
+  margin-top: 16px;
+  width: 85px;
+}

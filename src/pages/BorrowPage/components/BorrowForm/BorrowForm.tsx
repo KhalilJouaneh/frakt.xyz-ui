@@ -11,6 +11,7 @@ import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
 import { useDispatch } from 'react-redux';
 import { loansActions } from '../../../../state/loans/actions';
+import BondField from '../BondField';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
@@ -23,6 +24,7 @@ interface BorrowFormProps {
 export enum BorrowFormType {
   PERPETUAL = 'perpetual',
   FLIP = 'flip',
+  BOND = 'bond',
 }
 
 const BorrowForm: FC<BorrowFormProps> = ({
@@ -89,6 +91,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
             setLtv={setPriceBasedLTV}
           />
         )}
+        {tabValue === BorrowFormType.BOND && <BondField nft={selectedNft} />}
       </div>
       <div className={styles.continueBtnContainer}>
         <Button
