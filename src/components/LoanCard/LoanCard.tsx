@@ -98,65 +98,63 @@ const LoanCardValues: FC<{
 
   return (
     <div className={styles.valuesWrapper}>
-      <div
-        className={classNames(styles.valuesWrapperColumn, {
-          [styles.valuesWrapperRow]: isPriceBased,
-        })}
-      >
-        <div className={styles.valueWrapper}>
-          <p className={styles.valueTitle}>Borrowed</p>
-          <div className={styles.valueInfo}>
-            <p>{loanValue && loanValue.toFixed(2)}</p>
-            <SolanaIcon />
-          </div>
-        </div>
-
-        <div className={styles.valueWrapper}>
-          <p className={styles.valueTitle}>Debt</p>
-          <div className={styles.valueInfo}>
-            <p>
-              {isPriceBased
-                ? liquidationPrice && liquidationPrice.toFixed(2)
-                : liquidationPrice
-                ? liquidationPrice.toFixed(2)
-                : repayValue && repayValue.toFixed(2)}
-            </p>
-            <SolanaIcon />
-          </div>
-        </div>
-      </div>
-
-      {isPriceBased && (
+      <div style={{ minHeight: 110 }}>
         <div className={styles.valuesWrapperRow}>
           <div className={styles.valueWrapper}>
-            <p className={styles.valueTitle}>Liquidation price</p>
+            <p className={styles.valueTitle}>Borrowed</p>
             <div className={styles.valueInfo}>
-              <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
+              <p>{loanValue && loanValue.toFixed(2)}</p>
               <SolanaIcon />
             </div>
           </div>
-          <div
-            className={styles.valueWrapper}
-            style={{ alignItems: 'flex-end' }}
-          >
-            <div className={styles.valueWithTooltip}>
-              <p className={styles.valueTitle} style={{ textAlign: 'right' }}>
-                Borrow interest
+
+          <div className={styles.valueWrapper}>
+            <p className={styles.valueTitle}>Debt</p>
+            <div className={styles.valueInfo}>
+              <p>
+                {isPriceBased
+                  ? liquidationPrice && liquidationPrice.toFixed(2)
+                  : liquidationPrice
+                  ? liquidationPrice.toFixed(2)
+                  : repayValue && repayValue.toFixed(2)}
               </p>
+              <SolanaIcon />
             </div>
-            <p className={styles.valueInfo}>{borrowAPRPercents} %</p>
           </div>
         </div>
-      )}
 
-      {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
-        <div className={styles.reward}>
-          <p className={styles.valueTitle}>Rewards</p>
-          <p>
-            {rewardAmount} {reward?.token}
-          </p>
-        </div>
-      )}
+        {isPriceBased && (
+          <div style={{ marginTop: 16 }} className={styles.valuesWrapperRow}>
+            <div className={styles.valueWrapper}>
+              <p className={styles.valueTitle}>Liquidation price</p>
+              <div className={styles.valueInfo}>
+                <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
+                <SolanaIcon />
+              </div>
+            </div>
+            <div
+              className={styles.valueWrapper}
+              style={{ alignItems: 'flex-end' }}
+            >
+              <div className={styles.valueWithTooltip}>
+                <p className={styles.valueTitle} style={{ textAlign: 'right' }}>
+                  Borrow interest
+                </p>
+              </div>
+              <p className={styles.valueInfo}>{borrowAPRPercents} %</p>
+            </div>
+          </div>
+        )}
+
+        {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+          <div className={styles.reward}>
+            <p className={styles.valueTitle}>Rewards</p>
+            <p>
+              {rewardAmount} {reward?.token}
+            </p>
+          </div>
+        )}
+      </div>
 
       <div className={styles.valueWrapper}>
         {!isPriceBasedAndGracePeriod && isPriceBased ? (

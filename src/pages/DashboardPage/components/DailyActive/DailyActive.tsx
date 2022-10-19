@@ -11,7 +11,7 @@ interface DailyStatsProps {
 
 const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
   const {
-    lockedNftsInLoans,
+    dailyVolume,
     issuedIn24Hours,
     paidBackIn24Hours,
     liquidatedIn24Hours,
@@ -24,7 +24,7 @@ const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
         <div className={styles.block}>
           <h3 className={styles.subtitle}>Volume</h3>
           <p className={styles.value}>
-            {lockedNftsInLoans} <SolanaIcon className={styles.icon} />
+            {dailyVolume?.toFixed(0)} <SolanaIcon className={styles.icon} />
           </p>
         </div>
         <div className={styles.block}>
