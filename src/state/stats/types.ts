@@ -13,6 +13,7 @@ export interface DailyActivity {
   issuedIn24Hours: number;
   paidBackIn24Hours: number;
   liquidatedIn24Hours: number;
+  dailyVolume: number;
 }
 
 export interface LastLoans {
