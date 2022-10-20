@@ -8,9 +8,23 @@ import { SolanaIcon } from '../../../../icons';
 import styles from './BondPool.module.scss';
 import BondModal from '../BondModal';
 import mockImage from './mockImage.png';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { commonActions } from '../../../../state/common/actions';
+import { useDispatch } from 'react-redux';
 
 const BondPool: FC = () => {
+  const { connected } = useWallet();
+  const dispatch = useDispatch();
+
   const [bondModalVisible, setBondModalVisible] = useState<boolean>(false);
+
+  const openBondModal = () => {
+    if (!connected) {
+      dispatch(commonActions.setWalletModal({ isVisible: true }));
+    } else {
+      setBondModalVisible(true);
+    }
+  };
   return (
     <>
       <div className={styles.pool}>
@@ -65,7 +79,7 @@ const BondPool: FC = () => {
               className={styles.btn}
               type="secondary"
               onClick={() => {
-                setBondModalVisible(true);
+                openBondModal();
                 sendAmplitudeData('bonds-deposit');
               }}
             >
