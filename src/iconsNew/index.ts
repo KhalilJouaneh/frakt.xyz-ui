@@ -27,6 +27,7 @@ import { ChangeWallet } from './ChangeWallet';
 import { SignOut } from './SignOut';
 import { Copy } from './Copy';
 import { Settings } from './Settings';
+import { Bonds, BondsDark } from './Bonds';
 
 export default {
   Chart,
@@ -68,4 +69,6 @@ export default {
   SignOut,
   Copy,
   Settings,
+  Bonds,
+  BondsDark,
 };

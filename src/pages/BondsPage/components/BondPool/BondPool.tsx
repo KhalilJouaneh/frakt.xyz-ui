@@ -7,6 +7,7 @@ import Button from '../../../../components/Button';
 import { SolanaIcon } from '../../../../icons';
 import styles from './BondPool.module.scss';
 import BondModal from '../BondModal';
+import mockImage from './mockImage.png';
 
 const BondPool: FC = () => {
   const [bondModalVisible, setBondModalVisible] = useState<boolean>(false);
@@ -15,12 +16,20 @@ const BondPool: FC = () => {
       <div className={styles.pool}>
         <div className={styles.poolCard}>
           <div className={styles.tokenInfo}>
-            {/* <LiquidityPoolImage liquidityPool={liquidityPool} /> */}
+            <img src={mockImage} className={styles.image} />
             <div className={styles.subtitle}>Solana Monkey Business</div>
           </div>
           <div className={styles.statsValue}>
             <div className={styles.totalValue}>
-              <p className={styles.title}>Yield</p>
+              <p className={styles.title}>
+                Yield
+                <Tooltip
+                  placement="bottom"
+                  overlay="Yearly rewards based on the current utilization rate and borrow interest"
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </p>
               <p className={styles.value}>180 %</p>
             </div>
             <div className={styles.totalValue}>
@@ -60,7 +69,7 @@ const BondPool: FC = () => {
                 sendAmplitudeData('bonds-deposit');
               }}
             >
-              Deposit
+              Bond for $SMB
             </Button>
           </div>
         </div>

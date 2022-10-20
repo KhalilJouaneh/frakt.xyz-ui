@@ -9,6 +9,18 @@
   }
 }
 
+.pools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 32px;
+
+  @media screen and (max-width: 767px) {
+    gap: 16px;
+    padding-top: 24px;
+  }
+}
+
 .searchInput {
   max-width: 173px;
   margin-right: 20px;

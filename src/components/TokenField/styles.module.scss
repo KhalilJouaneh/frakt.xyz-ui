@@ -161,16 +161,25 @@ body input.valueInput {
 }
 
 .label {
-  margin-bottom: 16px;
+  margin-bottom: 11px;
   font: var(--font-text-6);
   text-transform: uppercase;
   transition: var(--transition-1);
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
 
   span {
-    color: var(--black-color);
     font: var(--font-text-8);
+    color: var(--secondary-border);
   }
+}
+
+.labelFlex {
+  width: 100%;
 }
 
 .labelWrapper {

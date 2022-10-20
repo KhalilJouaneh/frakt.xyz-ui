@@ -23,7 +23,7 @@ const BondsPage: FC = () => {
 
   return (
     <AppLayout>
-      <Header title="Bonds" subtitle={'I just want to make a loan'} />
+      <Header title="Bonds" subtitle="description" />
       <div className={styles.sortWrapper}>
         <SearchInput
           className={styles.searchInput}
@@ -46,7 +46,16 @@ const BondsPage: FC = () => {
           </div>
         </div>
       </div>
-      <BondsPool />
+      <div className={styles.pools}>
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+        <BondsPool />
+      </div>
     </AppLayout>
   );
 };

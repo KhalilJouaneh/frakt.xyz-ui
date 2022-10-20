@@ -5,6 +5,12 @@
     .ant-modal-body {
       padding: 32px;
     }
+
+    @media screen and (max-width: 767px) {
+      .ant-modal-body {
+        padding: 24px;
+      }
+    }
   }
   &::before {
     content: '';
@@ -18,20 +24,20 @@
   }
 }
 
-.bondInfoWrapper {
+.wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.bondInfo {
+.content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
 
-.bondInfoValue {
+.value {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -43,13 +49,119 @@
   }
 }
 
-.bondInfoTitle {
+.title {
   color: var(--secondary-border);
   font: var(--font-text-6);
+}
+
+body .input {
+  height: 48px;
+
+  @media screen and (max-width: 1024px) {
+    input {
+      height: 40px;
+    }
+
+    height: 40px;
+  }
 }
 
 .btn {
   margin-top: 16px;
   height: 48px;
   width: 100%;
+
+  @media screen and (max-width: 767px) {
+    height: 40px;
+  }
+}
+
+.closeModalSection {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background: var(--primary-background);
+  border-radius: 30px;
+  position: absolute;
+  top: -64px;
+  right: 0;
+
+  @media screen and (max-width: 1023px) {
+    height: 32px;
+    top: -48px;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 24px;
+    top: -38px;
+  }
+}
+.closeModalIcon {
+  height: 40px;
+  width: 40px;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-background);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -1px;
+  cursor: pointer;
+
+  @media screen and (max-width: 1024px) {
+    height: 32px;
+    width: 32px;
+  }
+  @media screen and (max-width: 767px) {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.closeIcon {
+  width: 12px;
+
+  stroke: var(--secondary-border);
+
+  rect {
+    fill: var(--secondary-border);
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 10px;
+  }
+}
+.infoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 9.5px;
+  margin-top: 50px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoTitle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.infoValue {
+  color: var(--secondary-border);
+  font: var(--font-text-8);
+}
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
+  }
 }

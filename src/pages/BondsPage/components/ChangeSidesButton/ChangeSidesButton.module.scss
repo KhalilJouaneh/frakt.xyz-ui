@@ -3,16 +3,17 @@
   margin: 0 auto;
   width: 48px;
   height: 48px;
-  background: var(--accent-color-1);
-  border: unset;
+  border: 1px solid var(--light-green-color);
+  background-color: var(--light-green-color-2);
   cursor: pointer;
   transition: background var(--transition-1);
+  margin: 42px auto 16px;
 
   &:hover {
-    background: var(--accent-color-3);
+    background-color: var(--light-green-color-1);
   }
 
-  svg {
-    transform: rotate(90deg);
+  @media screen and (max-width: 767px) {
+    margin: 32px auto 16px;
   }
 }

@@ -158,6 +158,9 @@
   gap: 10px;
 }
 .valueTitle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: var(--secondary-text);
   font: var(--font-text-6);
   margin-bottom: 4px;
@@ -183,10 +186,9 @@
 }
 
 .questionIcon {
-  width: 18px;
-  margin-top: -5px;
-
   svg {
     fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
   }
 }

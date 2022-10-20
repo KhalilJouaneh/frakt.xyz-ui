@@ -44,11 +44,11 @@
 }
 
 .questionIcon {
-  width: 18px;
-  margin-top: -4px;
-
+  margin-top: -2px;
   svg {
     fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
   }
 }
 
