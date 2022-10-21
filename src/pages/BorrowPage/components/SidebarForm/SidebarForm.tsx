@@ -13,7 +13,6 @@ import styles from './SidebarForm.module.scss';
 import Icons from '../../../../iconsNew/';
 import { BulkValues } from '../../hooks';
 import BorrowForm from '../BorrowForm';
-import { getTotalBorrowed } from '../SelectedBulk/helpers';
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 
 export interface SidebarFormProps {

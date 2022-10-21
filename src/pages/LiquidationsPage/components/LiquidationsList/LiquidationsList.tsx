@@ -1,10 +1,8 @@
 import { FC, ReactNode, useRef } from 'react';
-import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import FilterCollections from '../../../../componentsNew/FilterCollections';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
-import SortOrderButton from '../../../../components/SortOrderButton';
 import { SearchInput } from '../../../../components/SearchInput';
 import { LiquidationsListFormNames } from '../../model';
 import styles from './LiquidationsList.module.scss';
@@ -24,6 +22,7 @@ import {
   selectRaffleCollectionsDropdownData,
   selectGraceCollectionsDropdownData,
 } from '../../../../state/liquidations/selectors';
+import SortControl from '../../../../componentsNew/SortControl';
 
 interface LiquidationsListProps {
   children: ReactNode;
@@ -99,23 +98,12 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                     options={SORT_COLLECTIONS_VALUES}
                   />
                 )}
-                <Controller
+                <SortControl
                   control={control}
                   name={LiquidationsListFormNames.SORT}
-                  render={() => (
-                    <div className={styles.sortingWrapper}>
-                      {SORT_VALUES.map(({ label, value }, idx) => (
-                        <div className={styles.sorting} key={idx}>
-                          <SortOrderButton
-                            label={label}
-                            setValue={setValue}
-                            sort={sort}
-                            value={value}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  options={SORT_VALUES}
+                  sort={sort}
+                  setValue={setValue}
                 />
               </FiltersDropdown>
             )}

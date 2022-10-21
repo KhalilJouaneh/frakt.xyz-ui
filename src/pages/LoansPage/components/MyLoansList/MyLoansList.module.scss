@@ -115,44 +115,6 @@
   }
 }
 
-.sortingWrapper {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 36.5px;
-  row-gap: 12px;
-  margin-top: 10px;
-
-  @media screen and (max-width: 767px) {
-    justify-content: center;
-    max-width: 340px;
-  }
-}
-
-.radioWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  margin-bottom: 20px;
-
-  @media screen and (max-width: 767px) {
-    margin-bottom: 15px;
-    flex-direction: row;
-  }
-}
-
-.radioLabel {
-  font: var(--font-text-6);
-  color: var(--primary-border);
-  text-transform: uppercase;
-  margin-bottom: 11px;
-}
-
-.sorting {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .label {
   color: var(--secondary-text);
   font: var(--font-text-6);

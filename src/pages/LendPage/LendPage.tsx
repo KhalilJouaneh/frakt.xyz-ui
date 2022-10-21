@@ -15,8 +15,8 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '../../componentsNew/FiltersDropdown';
 import Button from '../../components/Button';
-import SortOrderButton from '../../components/SortOrderButton';
 import { useOnClickOutside } from '../../utils';
+import SortControl from '../../componentsNew/SortControl';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -79,23 +79,12 @@ const LendPage: FC = () => {
                       )}
                     />
                   )}
-                  <Controller
+                  <SortControl
                     control={control}
                     name={InputControlsNames.SORT}
-                    render={() => (
-                      <div className={styles.sortingWrapper}>
-                        {SORT_VALUES.map(({ label, value }, idx) => (
-                          <div className={styles.sorting} key={idx}>
-                            <SortOrderButton
-                              label={label}
-                              setValue={setValue}
-                              sort={sort}
-                              value={value}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    options={SORT_VALUES}
+                    sort={sort}
+                    setValue={setValue}
                   />
                 </div>
               </FiltersDropdown>

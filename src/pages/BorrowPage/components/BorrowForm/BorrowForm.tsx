@@ -1,7 +1,9 @@
 import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
 import { ShortTermFields } from '../ShortTermFields';
 import { Tabs } from '../../../../components/Tabs';
@@ -9,8 +11,6 @@ import Button from '../../../../components/Button';
 import LongTermFields from '../LongTermFields';
 import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
-import { useDispatch } from 'react-redux';
-import { loansActions } from '../../../../state/loans/actions';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;

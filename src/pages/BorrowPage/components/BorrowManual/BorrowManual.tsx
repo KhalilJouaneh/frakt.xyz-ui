@@ -1,11 +1,10 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Controller } from 'react-hook-form';
-import classNames from 'classnames';
+import cx from 'classnames';
 
+import { useBorrowPageFilter } from '../../hooks/useBorrowPageFilter';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
-import { SearchInput } from '../../../../components/SearchInput';
 import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
 import { BorrowNft } from '../../../../state/loans/types';
@@ -22,17 +21,7 @@ import {
   selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
-import {
-  FilterFormInputsNames,
-  SORT_VALUES,
-  useBorrowPageFilter,
-} from '../../hooks/useBorrowPageFilter';
-import SortOrderButton from '../../../../components/SortOrderButton';
-import FiltersDropdown, {
-  useFiltersModal,
-} from '../../../../componentsNew/FiltersDropdown';
-import { useOnClickOutside } from '../../../../utils';
-import Button from '../../../../components/Button';
+import Sort from '../Sort';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -41,12 +30,11 @@ interface BorrowNftProps {
 const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const dispatch = useDispatch();
 
-  const { sort, setValue, control } = useBorrowPageFilter();
+  const { sort } = useBorrowPageFilter();
 
   const {
     isCloseSidebar,
     nfts,
-    setSearch,
     next,
     onDeselect,
     onMultiSelect,
@@ -54,7 +42,6 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     setSelectedNfts,
     connected,
     isLoading,
-    searchQuery,
   } = useBorrowNft({ sort });
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
@@ -119,15 +106,6 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     dispatch(loansActions.updatePerpLoanNft(params));
   };
 
-  const {
-    visible: filtersModalVisible,
-    close: closeFiltersModal,
-    toggle: toggleFiltersModal,
-  } = useFiltersModal();
-
-  const ref = useRef();
-  useOnClickOutside(ref, closeFiltersModal);
-
   return (
     <AppLayout>
       {!openBulk && (
@@ -151,51 +129,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             className={selectedNfts.length && styles.headerActive}
           />
 
-          <div className={styles.sortWrapper}>
-            <SearchInput
-              value={searchQuery}
-              onChange={(e) => setSearch(e.target.value || '')}
-              className={styles.searchInput}
-              placeholder="Search by name"
-            />
-            <div ref={ref}>
-              <div
-                className={classNames(
-                  styles.filters,
-                  selectedNfts.length && styles.filtersActive,
-                )}
-              >
-                <Button type="tertiary" onClick={toggleFiltersModal}>
-                  Filters
-                </Button>
-                {filtersModalVisible && (
-                  <FiltersDropdown
-                    onCancel={closeFiltersModal}
-                    className={styles.filtersDropdown}
-                  >
-                    <Controller
-                      control={control}
-                      name={FilterFormInputsNames.SORT}
-                      render={() => (
-                        <div className={styles.sortingWrapper}>
-                          {SORT_VALUES.map(({ label, value }, idx) => (
-                            <div className={styles.sorting} key={idx}>
-                              <SortOrderButton
-                                label={label}
-                                setValue={setValue}
-                                sort={sort}
-                                value={value}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    />
-                  </FiltersDropdown>
-                )}
-              </div>
-            </div>
-          </div>
+          <Sort />
 
           {connected && !isLoading && !nfts.length && <NoSuitableNft />}
 
@@ -203,7 +137,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             <InfinityScroll
               itemsToShow={nfts.length}
               next={next}
-              wrapperClassName={classNames(
+              wrapperClassName={cx(
                 styles.nftsList,
                 !selectedNfts.length && styles.nftListActive,
               )}

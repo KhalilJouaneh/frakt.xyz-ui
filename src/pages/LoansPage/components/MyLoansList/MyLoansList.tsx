@@ -1,17 +1,14 @@
 import { FC, useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
-import SortOrderButton from '../../../../components/SortOrderButton';
 import { LoansList } from '../../../WalletPage/components/LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
 import { useOnClickOutside } from '../../../../utils';
-import { Radio } from '../../../../components/Radio';
 import Button from '../../../../components/Button';
 import styles from './MyLoansList.module.scss';
 import {
@@ -21,6 +18,8 @@ import {
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
 import FilterCollections from '../../../../componentsNew/FilterCollections';
+import SortControl from '../../../../componentsNew/SortControl';
+import RadioControl from '../../../../componentsNew/RadioControl';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -82,57 +81,25 @@ export const MyLoansList: FC = () => {
                         onCancel={closeFiltersModal}
                         className={styles.filtersDropdown}
                       >
-                        <Controller
+                        <RadioControl
                           control={control}
                           name={FilterFormInputsNames.LOANS_STATUS}
-                          render={() => (
-                            <>
-                              <p className={styles.radioLabel}>Loan type</p>
-                              <div className={styles.radioWrapper}>
-                                {SORT_LOANS_TYPE_VALUES.map(
-                                  ({ label, value }, idx) => (
-                                    <div className={styles.sorting} key={idx}>
-                                      <Radio
-                                        checked={
-                                          showLoansStatus.value === value
-                                        }
-                                        label={label.props?.children}
-                                        onClick={() =>
-                                          setValue(
-                                            FilterFormInputsNames.LOANS_STATUS,
-                                            { label, value },
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  ),
-                                )}
-                              </div>
-                            </>
-                          )}
+                          checkedValue={showLoansStatus.value}
+                          options={SORT_LOANS_TYPE_VALUES}
+                          title="Loan type"
+                          setValue={setValue}
                         />
                         <FilterCollections
                           setSelectedCollections={setSelectedCollections}
                           selectedCollections={selectedCollections}
                           options={sortValueOption}
                         />
-                        <Controller
+                        <SortControl
                           control={control}
                           name={FilterFormInputsNames.SORT}
-                          render={() => (
-                            <div className={styles.sortingWrapper}>
-                              {SORT_VALUES.map(({ label, value }, idx) => (
-                                <div className={styles.sorting} key={idx}>
-                                  <SortOrderButton
-                                    label={label}
-                                    setValue={setValue}
-                                    sort={sort}
-                                    value={value}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          )}
+                          options={SORT_VALUES}
+                          sort={sort}
+                          setValue={setValue}
                         />
                       </FiltersDropdown>
                     )}
