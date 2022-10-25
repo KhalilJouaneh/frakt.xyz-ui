@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
@@ -10,7 +10,7 @@ import Button from '../../../../components/Button';
 import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
 import LoansFields from '../LoanFields';
-import { useLoanFields } from '../LoanFields/hooks';
+import { getRisk, useLoanFields } from '../LoanFields/hooks';
 import { Slider } from '../../../../components/Slider';
 
 interface BorrowFormProps {
@@ -45,47 +45,32 @@ const BorrowForm: FC<BorrowFormProps> = ({
     selectValue,
     setSelectValue,
     updateCurrentNft,
+    solLoanValue,
+    setSolLoanValue,
+    sliderValue,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
   });
 
-  const {
-    marks,
-    maxLoanValueNumber,
-    minLoanValueNumber,
-    solLoanValue,
-    setSolLoanValue,
-    ltv,
-  } = useLoanFields(selectedNft);
+  const { marks, maxLoanValueNumber, minLoanValueNumber, averageLoanValue } =
+    useLoanFields(selectedNft, solLoanValue);
 
   const dispatch = useDispatch();
+  const ltv = (solLoanValue / parseFloat(selectedNft.valuation)) * 100;
 
-  console.log(solLoanValue);
+  const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
 
   useEffect(() => {
     dispatch(
       loansActions.setCurrentLoanNft({
         ...selectedNft,
-        solLoanValue: solLoanValue,
+        solLoanValue,
         ltv,
         type: selectValue,
       }),
     );
   }, [solLoanValue, selectValue, selectedNft]);
-
-  const isPriceBasedType = selectValue === 'perpetual';
-
-  const sliderValue = isPriceBasedType ? solLoanValue : maxLoanValueNumber;
-  const defaultSliderValue = (selectedNft as any)?.solLoanValue;
-
-  useEffect(() => {
-    if (defaultSliderValue) {
-      setSolLoanValue(defaultSliderValue || 0);
-    } else {
-      setSolLoanValue(sliderValue);
-    }
-  }, [selectedNft]);
 
   const borrowValue =
     selectValue === BorrowFormType.PERPETUAL
@@ -112,11 +97,16 @@ const BorrowForm: FC<BorrowFormProps> = ({
             setValue={setSolLoanValue}
             min={minLoanValueNumber}
             max={maxLoanValueNumber}
-            disabled={!isPriceBasedType}
           />
         </div>
 
-        <LoansFields nft={selectedNft} loanTypeValue={selectValue} />
+        <LoansFields
+          risk={risk}
+          ltv={ltv}
+          nft={selectedNft}
+          loanTypeValue={selectValue}
+          solLoanValue={solLoanValue}
+        />
       </div>
       <div className={styles.continueBtnContainer}>
         <Button

@@ -1,19 +1,18 @@
-import { useState } from 'react';
 import { BorrowNft } from '../../../../state/loans/types';
 
-export const useLoanFields = (nft: BorrowNft) => {
+export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
   const { valuation, timeBased } = nft;
 
   const valuationNumber = parseFloat(valuation);
   const maxLoanValueNumber = valuationNumber * (timeBased.ltvPercents / 100);
   const minLoanValueNumber = valuationNumber / 10;
 
-  const [solLoanValue, setSolLoanValue] = useState<number>(0);
-
   const marks: { [key: number]: string | JSX.Element } = {
     [minLoanValueNumber]: `${minLoanValueNumber.toFixed(2)} SOL`,
     [maxLoanValueNumber]: `${maxLoanValueNumber.toFixed(2)} SOL`,
   };
+
+  const averageLoanValue = (maxLoanValueNumber + minLoanValueNumber) / 2;
 
   const loanTypeOptions = [
     {
@@ -45,9 +44,8 @@ export const useLoanFields = (nft: BorrowNft) => {
     minLoanValueNumber,
     liquidationPrice,
     liquidationDrop,
-    solLoanValue,
-    setSolLoanValue,
     loanTypeOptions,
+    averageLoanValue,
     ltv,
   };
 };
@@ -58,7 +56,7 @@ export enum Risk {
   High = 'High',
 }
 
-const getRisk = ({
+export const getRisk = ({
   LTV,
   limits,
 }: {

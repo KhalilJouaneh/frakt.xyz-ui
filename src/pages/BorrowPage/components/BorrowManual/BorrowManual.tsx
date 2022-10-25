@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { find, propEq } from 'ramda';
 import cx from 'classnames';
 
 import { useBorrowPageFilter } from '../../hooks/useBorrowPageFilter';
@@ -58,35 +59,23 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     return selectedNfts.map((nft: BulkValues) => {
       if (!nft?.priceBased) return { ...nft };
 
-      const { valuation, timeBased, priceBased } = nft;
-
-      const currentNft = perpetualNftsInfo.find(
-        ({ mint }) => mint === nft?.mint,
-      );
-
+      const { valuation, priceBased, mint } = nft;
       const valuationNumber = parseFloat(valuation);
 
-      const suggestedLtv = parseFloat(
-        ((priceBased.suggestedLoanValue / valuationNumber) * 100).toFixed(0),
-      );
+      const currentNft = find(propEq('mint', mint))(perpetualNftsInfo) as any;
 
-      const ltvPercent: number = currentNft?.ltv || suggestedLtv || 25;
-      const ltvValue = ltvPercent / 100;
+      const suggestedLtv =
+        (priceBased.suggestedLoanValue / valuationNumber) * 100;
 
-      const maxLoanValuePriceBased = valuationNumber * ltvValue;
+      const ltv = currentNft?.ltv || suggestedLtv || 25;
 
-      const isPriceBased = currentNft?.formType === BorrowFormType.PERPETUAL;
-
-      const maxLoanValue = isPriceBased
-        ? maxLoanValuePriceBased.toFixed(3)
-        : timeBased?.loanValue;
+      const isPriceBased = currentNft?.type === BorrowFormType.PERPETUAL;
 
       return {
         ...nft,
-        maxLoanValue,
-        solLoanValue: currentNft?.solLoanValue || currentLoanNft?.solLoanValue,
-        priceBased: { ...priceBased, ltv: ltvPercent },
-        isPriceBased: currentNft?.formType ? isPriceBased : nft?.isPriceBased,
+        solLoanValue: currentNft?.solLoanValue || priceBased.suggestedLoanValue,
+        priceBased: { ...priceBased, ltv },
+        isPriceBased: currentNft?.type ? isPriceBased : nft?.isPriceBased,
       };
     });
   }, [selectedNfts, perpetualNftsInfo]);
@@ -98,14 +87,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   }, [dispatch]);
 
   const updateSelectedNft = (): void => {
-    const params = {
-      mint: currentLoanNft?.mint,
-      solLoanValue: currentLoanNft?.solLoanValue,
-      ltv: currentLoanNft?.ltv,
-      formType: currentLoanNft?.type,
-    };
-
-    dispatch(loansActions.updatePerpLoanNft(params));
+    dispatch(loansActions.updatePerpLoanNft({ ...currentLoanNft }));
   };
 
   return (
@@ -117,7 +99,10 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             onDeselect={onDeselect}
             nfts={selectedNfts}
             bulkNfts={bulkNfts}
-            onOpenBulk={() => setOpenBulk(true)}
+            onOpenBulk={() => {
+              updateSelectedNft();
+              setOpenBulk(true);
+            }}
           />
 
           <Header
@@ -189,7 +174,9 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
       )}
       {openBulk && (
         <SelectedBulk
-          onClick={() => setOpenBulk(false)}
+          onClick={() => {
+            setOpenBulk(false);
+          }}
           selectedBulk={bulkNfts}
         />
       )}

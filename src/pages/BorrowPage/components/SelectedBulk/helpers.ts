@@ -75,24 +75,23 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
   } = getTimeBasedValues(nft);
 
   const {
-    priceBasedLoanValue,
     priceBasedFee,
+    priceBasedLoanValue,
     priceBasedLtvPersent,
     BorrowAPY,
     liquidationsPrice,
   } = getPriceBasedValues(nft);
 
-  const loanType = isPriceBased ? 'Perpetual' : 'Flip';
-
-  const maxLoanValue = isPriceBased ? priceBasedLoanValue : rawMaxLoanValue;
+  const loanValue = isPriceBased
+    ? nft?.solLoanValue || priceBasedLoanValue
+    : rawMaxLoanValue;
 
   const fee = isPriceBased ? priceBasedFee : timeBasedFee;
 
   const loanToValue = isPriceBased ? priceBasedLtvPersent : timeBasedLtvPersent;
 
   return {
-    loanType,
-    maxLoanValue,
+    maxLoanValue: Number(loanValue)?.toFixed(3),
     fee,
     loanToValue,
     BorrowAPY,
@@ -134,7 +133,7 @@ export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
     const loanValueNumber = parseFloat(timeBased.loanValue);
 
     if (isPriceBased) {
-      return (nft as any).solLoanValue;
+      return (nft as any).solLoanValue || nft.priceBased?.suggestedLoanValue;
     } else {
       return loanValueNumber;
     }

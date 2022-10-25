@@ -17,7 +17,7 @@ import Header from '../Header';
 
 interface BorrowingBulkProps {
   selectedBulk: BulkValues[];
-  onClick?: () => void;
+  onClick?: any;
   onBack?: () => void;
 }
 

@@ -6,18 +6,30 @@ import { BorrowNft } from '../../../../state/loans/types';
 import Tooltip from '../../../../components/Tooltip';
 import { SolanaIcon } from '../../../../icons';
 import styles from './LoanFields.module.scss';
-import { Risk, useLoanFields } from './hooks';
-import { feeOnDayByType } from './helpers';
+import { Risk } from './hooks';
+import { feeOnDayByType, getLiquidationValues } from './helpers';
 
 interface LoansFieldsProps {
   nft: BorrowNft;
   loanTypeValue: string;
+  risk: Risk;
+  solLoanValue: number;
+  ltv: number;
 }
 
-const LoansFields: FC<LoansFieldsProps> = ({ nft, loanTypeValue }) => {
+const LoansFields: FC<LoansFieldsProps> = ({
+  nft,
+  loanTypeValue,
+  risk,
+  ltv,
+  solLoanValue,
+}) => {
   const { valuation } = nft;
 
-  const { risk, liquidationPrice, liquidationDrop, ltv } = useLoanFields(nft);
+  const { liquidationPrice, liquidationDrop } = getLiquidationValues(
+    nft,
+    solLoanValue,
+  );
 
   const isPriceBasedType = loanTypeValue === 'perpetual';
 
@@ -32,7 +44,7 @@ const LoansFields: FC<LoansFieldsProps> = ({ nft, loanTypeValue }) => {
         </div>
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>LTV</p>
-          <p className={styles.staticValueData}>{ltv.toFixed(0)} %</p>
+          <p className={styles.staticValueData}>{ltv?.toFixed(0)} %</p>
         </div>
         {isPriceBasedType && (
           <div className={styles.staticValue}>
@@ -44,7 +56,8 @@ const LoansFields: FC<LoansFieldsProps> = ({ nft, loanTypeValue }) => {
                 [styles.lowLoanRisk]: risk === Risk.Low,
               })}
             >
-              {liquidationPrice.toFixed(3)} SOL (-{liquidationDrop.toFixed()}%)
+              {liquidationPrice?.toFixed(3)} SOL (-{liquidationDrop?.toFixed()}
+              %)
               <Tooltip
                 placement="bottom"
                 trigger="hover"

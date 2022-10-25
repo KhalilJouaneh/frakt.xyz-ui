@@ -44,3 +44,19 @@ export const feeOnDayByType = ({ nft, loanTypeValue }) => {
     return feeOnDayForPriceBased(nft);
   }
 };
+
+export const getLiquidationValues = (nft, solLoanValue) => {
+  const collaterizationRateValue = nft?.priceBased?.collaterizationRate / 100;
+  const valuationNumber = parseFloat(nft.valuation);
+
+  const liquidationPrice =
+    solLoanValue + solLoanValue * collaterizationRateValue;
+
+  const liquidationDrop =
+    ((valuationNumber - liquidationPrice) / valuationNumber) * 100;
+
+  return {
+    liquidationPrice,
+    liquidationDrop,
+  };
+};

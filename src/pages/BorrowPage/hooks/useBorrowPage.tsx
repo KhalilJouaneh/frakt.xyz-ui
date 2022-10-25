@@ -20,6 +20,7 @@ export interface BulkValues extends BorrowNft {
   maxLoanValue: string;
   isCanFreeze: boolean;
   isPriceBased?: boolean;
+  solLoanValue?: number;
   timeBased: {
     returnPeriodDays: number;
     ltvPercents: number;

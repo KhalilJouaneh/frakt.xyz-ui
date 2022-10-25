@@ -96,5 +96,5 @@ export interface PerpetualNftsInfo {
   solLoanValue: number;
   ltv: number;
   mint: string;
-  formType: string;
+  type: string;
 }
