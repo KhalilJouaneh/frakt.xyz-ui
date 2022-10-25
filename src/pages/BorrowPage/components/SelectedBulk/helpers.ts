@@ -1,4 +1,4 @@
-import { sum, map } from 'ramda';
+import { sum } from 'ramda';
 
 import { BulkValues } from '../../hooks';
 
@@ -128,27 +128,17 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
   );
 };
 
-export const getTotalBorrowed = (
-  perpetualLoans: BulkValues[],
-  flipLoans: BulkValues[],
-): number => {
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
+  const bulksValues = selectedBulk.map((nft) => {
+    const { timeBased, isPriceBased } = nft;
+    const loanValueNumber = parseFloat(timeBased.loanValue);
 
-  const perpetualLoansValues = perpetualLoans.map(
-    ({ priceBased, valuation }) => {
-      const valuationNumber = parseFloat(valuation);
-      const ltv = priceBased?.ltv;
+    if (isPriceBased) {
+      return (nft as any).solLoanValue;
+    } else {
+      return loanValueNumber;
+    }
+  });
 
-      if (ltv) {
-        return valuationNumber * (ltv / 100);
-      } else {
-        return priceBased?.suggestedLoanValue;
-      }
-    },
-  );
-
-  const priceBasedLoansValue = sum(perpetualLoansValues);
-  const timeBasedLoansValue = sum(map(maxLoanValue, flipLoans));
-
-  return priceBasedLoansValue + timeBasedLoansValue || 0;
+  return sum(bulksValues);
 };

@@ -13,6 +13,7 @@ interface SliderProps {
   withTooltip?: boolean;
   max?: number;
   min?: number;
+  disabled?: boolean;
 }
 
 export const Slider: FC<SliderProps> = ({
@@ -24,6 +25,7 @@ export const Slider: FC<SliderProps> = ({
   withTooltip,
   max,
   min,
+  disabled,
 }) => {
   return (
     <div
@@ -41,6 +43,7 @@ export const Slider: FC<SliderProps> = ({
         step={step}
         max={max}
         min={min}
+        disabled={disabled}
       />
     </div>
   );

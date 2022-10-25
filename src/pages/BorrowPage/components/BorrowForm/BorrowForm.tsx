@@ -5,12 +5,13 @@ import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
-import { ShortTermFields } from '../ShortTermFields';
-import { Tabs } from '../../../../components/Tabs';
+import Select from '../../../../componentsNew/Select';
 import Button from '../../../../components/Button';
-import LongTermFields from '../LongTermFields';
 import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
+import LoansFields from '../LoanFields';
+import { useLoanFields } from '../LoanFields/hooks';
+import { Slider } from '../../../../components/Slider';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
@@ -39,56 +40,83 @@ const BorrowForm: FC<BorrowFormProps> = ({
     loadingModalVisible,
     closeLoadingModal,
     onSubmit,
-    priceBasedLTV,
-    setPriceBasedLTV,
     confirmText,
-    priceBasedDisabled,
-    borrowTabs,
-    tabValue,
-    setTabValue,
+    selectOptions,
+    selectValue,
+    setSelectValue,
     updateCurrentNft,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
   });
 
+  const {
+    marks,
+    maxLoanValueNumber,
+    minLoanValueNumber,
+    solLoanValue,
+    setSolLoanValue,
+    ltv,
+  } = useLoanFields(selectedNft);
+
   const dispatch = useDispatch();
+
+  console.log(solLoanValue);
 
   useEffect(() => {
     dispatch(
       loansActions.setCurrentLoanNft({
         ...selectedNft,
-        ltv: priceBasedLTV,
-        type: tabValue,
+        solLoanValue: solLoanValue,
+        ltv,
+        type: selectValue,
       }),
     );
-  }, [priceBasedLTV, tabValue, selectedNft]);
+  }, [solLoanValue, selectValue, selectedNft]);
+
+  const isPriceBasedType = selectValue === 'perpetual';
+
+  const sliderValue = isPriceBasedType ? solLoanValue : maxLoanValueNumber;
+  const defaultSliderValue = (selectedNft as any)?.solLoanValue;
+
+  useEffect(() => {
+    if (defaultSliderValue) {
+      setSolLoanValue(defaultSliderValue || 0);
+    } else {
+      setSolLoanValue(sliderValue);
+    }
+  }, [selectedNft]);
 
   const borrowValue =
-    tabValue === BorrowFormType.PERPETUAL
-      ? (parseFloat(selectedNft?.valuation) * (priceBasedLTV / 100)).toFixed(3)
+    selectValue === BorrowFormType.PERPETUAL
+      ? solLoanValue.toFixed(3)
       : selectedNft?.timeBased?.loanValue;
 
   return (
     <>
       <div className={styles.details}>
-        <p className={styles.detailsTitle}>Loan Type</p>
-        <Tabs
-          className={styles.tabs}
-          tabs={borrowTabs}
-          value={tabValue}
-          setValue={setTabValue}
+        <Select
+          setValue={(e: any) => setSelectValue(e.target.value)}
+          options={selectOptions}
+          value={selectValue}
         />
-        {tabValue === BorrowFormType.FLIP && (
-          <ShortTermFields nft={selectedNft} />
-        )}
-        {tabValue === BorrowFormType.PERPETUAL && !priceBasedDisabled && (
-          <LongTermFields
-            nft={selectedNft}
-            ltv={priceBasedLTV}
-            setLtv={setPriceBasedLTV}
+        <div className={styles.sliderWrapper}>
+          <p className={styles.sliderLabel}>
+            loan to value: {sliderValue.toFixed(2)} SOL{' '}
+          </p>
+          <Slider
+            marks={marks}
+            className={styles.slider}
+            value={sliderValue}
+            step={0.1}
+            setValue={setSolLoanValue}
+            min={minLoanValueNumber}
+            max={maxLoanValueNumber}
+            disabled={!isPriceBasedType}
           />
-        )}
+        </div>
+
+        <LoansFields nft={selectedNft} loanTypeValue={selectValue} />
       </div>
       <div className={styles.continueBtnContainer}>
         <Button

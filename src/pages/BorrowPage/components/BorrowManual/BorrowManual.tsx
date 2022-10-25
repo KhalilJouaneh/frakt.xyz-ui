@@ -84,6 +84,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
       return {
         ...nft,
         maxLoanValue,
+        solLoanValue: currentNft?.solLoanValue || currentLoanNft?.solLoanValue,
         priceBased: { ...priceBased, ltv: ltvPercent },
         isPriceBased: currentNft?.formType ? isPriceBased : nft?.isPriceBased,
       };
@@ -99,6 +100,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const updateSelectedNft = (): void => {
     const params = {
       mint: currentLoanNft?.mint,
+      solLoanValue: currentLoanNft?.solLoanValue,
       ltv: currentLoanNft?.ltv,
       formType: currentLoanNft?.type,
     };
