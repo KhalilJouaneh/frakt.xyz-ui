@@ -42,6 +42,8 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
     setSelectedNfts,
     connected,
     isLoading,
+    setSearch,
+    searchQuery,
   } = useBorrowNft({ sort });
 
   const perpetualNftsInfo = useSelector(selectPerpLoansNfts);
@@ -129,7 +131,11 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             className={selectedNfts.length && styles.headerActive}
           />
 
-          <Sort />
+          <Sort
+            searchQuery={searchQuery}
+            setSearch={setSearch}
+            selectedNfts={selectedNfts}
+          />
 
           {connected && !isLoading && !nfts.length && <NoSuitableNft />}
 

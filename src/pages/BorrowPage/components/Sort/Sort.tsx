@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import cx from 'classnames';
 
 import { SearchInput } from '../../../../components/SearchInput';
@@ -15,8 +15,15 @@ import {
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
+import { BorrowNft } from '../../../../state/loans/types';
 
-const Sort = () => {
+interface SortProps {
+  searchQuery: string;
+  setSearch: (searchQuery: string) => void;
+  selectedNfts: BorrowNft[];
+}
+
+const Sort: FC<SortProps> = ({ searchQuery, setSearch, selectedNfts }) => {
   const {
     visible: filtersModalVisible,
     close: closeFiltersModal,
@@ -24,8 +31,6 @@ const Sort = () => {
   } = useFiltersModal();
 
   const { sort, setValue, control } = useBorrowPageFilter();
-
-  const { setSearch, selectedNfts, searchQuery } = useBorrowNft({ sort });
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
