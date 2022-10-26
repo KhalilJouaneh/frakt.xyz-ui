@@ -5,7 +5,6 @@ import { SearchInput } from '../../../../components/SearchInput';
 import SortControl from '../../../../componentsNew/SortControl';
 import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';
-import { useBorrowNft } from '../BorrowManual';
 import styles from './SortNfts.module.scss';
 import {
   FilterFormInputsNames,
@@ -15,11 +14,12 @@ import {
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
+import { BorrowNft } from '../../../../state/loans/types';
 
 interface SortNftsProps {
-  searchQuery: any;
+  searchQuery: string;
   setSearch: any;
-  selectedNfts: any;
+  selectedNfts: BorrowNft;
 }
 
 const SortNfts: FC<SortNftsProps> = ({

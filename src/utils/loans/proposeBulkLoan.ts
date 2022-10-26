@@ -25,19 +25,18 @@ export const proposeBulkLoan: ProposeLoan = async ({
 
   try {
     for (let index = 0; index < selectedBulk.length; index++) {
-      const {
-        mint,
-        valuation: rawValuation,
-        isPriceBased,
-        priceBased,
-        timeBased,
-      } = selectedBulk[index];
+      const { mint, valuation, isPriceBased, priceBased, timeBased } =
+        selectedBulk[index];
 
-      const valuation = parseFloat(rawValuation);
-      const proposedNftPrice = valuation * 10 ** SOL_TOKEN.decimals;
+      const valuationNumber = parseFloat(valuation);
+
+      const suggestedLoanValue = priceBased?.suggestedLoanValue;
+      const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
+
+      const proposedNftPrice = valuationNumber * 10 ** SOL_TOKEN.decimals;
 
       const loanToValue = isPriceBased
-        ? priceBased?.ltv
+        ? priceBased?.ltv || suggestedLtvPersent
         : timeBased.ltvPercents;
 
       const { ix, loan } = await loans.proposeLoanIx({
