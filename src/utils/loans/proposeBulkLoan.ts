@@ -28,16 +28,17 @@ export const proposeBulkLoan: ProposeLoan = async ({
       const {
         mint,
         valuation: rawValuation,
-        parameters,
         isPriceBased,
+        priceBased,
+        timeBased,
       } = selectedBulk[index];
 
       const valuation = parseFloat(rawValuation);
       const proposedNftPrice = valuation * 10 ** SOL_TOKEN.decimals;
 
       const loanToValue = isPriceBased
-        ? (parameters?.ltvPercents + 10) / 2
-        : parameters?.ltvPercents;
+        ? priceBased?.ltv
+        : timeBased.ltvPercents;
 
       const { ix, loan } = await loans.proposeLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
