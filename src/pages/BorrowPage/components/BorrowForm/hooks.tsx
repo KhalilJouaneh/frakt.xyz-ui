@@ -36,13 +36,11 @@ type UseBorrowForm = (props: {
   closeLoadingModal: () => void;
   onSubmit: (nft: BorrowNft) => void;
   confirmText: string;
-  priceBasedDisabled: boolean;
   selectValue: string;
   setSelectValue: (value: string) => void;
   updateCurrentNft: () => void;
   solLoanValue: number;
   setSolLoanValue: (value: number) => void;
-  sliderValue: number;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -66,11 +64,9 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   });
 
   const [solLoanValue, setSolLoanValue] = useState<number>(0);
-  const isPriceBasedType = selectValue === 'perpetual';
 
   const defaultSliderValue =
     (selectedNft as any)?.solLoanValue || averageLoanValue;
-  const sliderValue = isPriceBasedType ? solLoanValue : maxLoanValueNumber;
 
   const updateCurrentNft = () => {
     if (selectedNft?.priceBased) {
@@ -85,10 +81,18 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   };
 
   useEffect(() => {
+    dispatch(
+      loansActions.setCurrentLoanNft({
+        ...selectedNft,
+        solLoanValue,
+        type: selectValue,
+      }),
+    );
+  }, [solLoanValue, selectValue, selectedNft]);
+
+  useEffect(() => {
     if (defaultSliderValue) {
       setSolLoanValue(defaultSliderValue || 0);
-    } else {
-      setSolLoanValue(sliderValue);
     }
   }, [selectedNft]);
 
@@ -121,15 +125,13 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   };
 
   const onSubmit = async (nft: BorrowNft) => {
-    const { mint, timeBased, valuation } = nft;
+    const { mint, valuation } = nft;
 
-    const timeBasedLtv = timeBased.ltvPercents;
     const valuationNumber = parseFloat(valuation);
 
-    const priceBasedLTV = currentLoanNft.ltv;
+    const loanToValue = (currentLoanNft.solLoanValue / valuationNumber) * 100;
 
-    const loanToValue =
-      currentLoanNft.type === 'perpetual' ? priceBasedLTV : timeBasedLtv;
+    const isPriceBased = currentLoanNft.type === 'perpetual';
 
     try {
       closeConfirmModal();
@@ -175,7 +177,5 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
-    sliderValue,
-    priceBasedDisabled: !selectedNft?.priceBased,
   };
 };

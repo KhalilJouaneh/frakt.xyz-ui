@@ -1,9 +1,7 @@
-import { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC } from 'react';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
-import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
 import Select from '../../../../componentsNew/Select';
 import Button from '../../../../components/Button';
@@ -47,7 +45,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
-    sliderValue,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
@@ -56,26 +53,11 @@ const BorrowForm: FC<BorrowFormProps> = ({
   const { marks, maxLoanValueNumber, minLoanValueNumber, averageLoanValue } =
     useLoanFields(selectedNft, solLoanValue);
 
-  const dispatch = useDispatch();
   const ltv = (solLoanValue / parseFloat(selectedNft.valuation)) * 100;
 
   const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
 
-  useEffect(() => {
-    dispatch(
-      loansActions.setCurrentLoanNft({
-        ...selectedNft,
-        solLoanValue,
-        ltv,
-        type: selectValue,
-      }),
-    );
-  }, [solLoanValue, selectValue, selectedNft]);
-
-  const borrowValue =
-    selectValue === BorrowFormType.PERPETUAL
-      ? solLoanValue.toFixed(3)
-      : selectedNft?.timeBased?.loanValue;
+  const borrowValue = solLoanValue.toFixed(3);
 
   return (
     <>
@@ -87,12 +69,12 @@ const BorrowForm: FC<BorrowFormProps> = ({
         />
         <div className={styles.sliderWrapper}>
           <p className={styles.sliderLabel}>
-            loan to value: {sliderValue.toFixed(2)} SOL{' '}
+            loan to value: {solLoanValue.toFixed(2)} SOL{' '}
           </p>
           <Slider
             marks={marks}
             className={styles.slider}
-            value={sliderValue}
+            value={solLoanValue}
             step={0.1}
             setValue={setSolLoanValue}
             min={minLoanValueNumber}

@@ -14,15 +14,16 @@ const getPriceBasedValues = (
   const { valuation, priceBased, maxLoanValue } = nft;
 
   const valuationNumber = parseFloat(valuation);
-  const currentLtvPersent = priceBased?.ltv;
   const suggestedLoanValue = priceBased?.suggestedLoanValue;
+
+  const currentLtvPersent = (nft?.solLoanValue / valuationNumber) * 100;
+  const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
 
   const currentLoanValue = (valuationNumber * currentLtvPersent) / 100;
   const loanValue = currentLoanValue || suggestedLoanValue;
 
   const fee = Number(maxLoanValue) * 0.01;
 
-  const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
   const ltv = currentLtvPersent || suggestedLtvPersent;
 
   const BorrowAPY = priceBased?.borrowAPRPercents;
@@ -40,7 +41,8 @@ const getPriceBasedValues = (
 };
 
 const getTimeBasedValues = (nft: BulkValues) => {
-  const { timeBased } = nft;
+  const { timeBased, valuation } = nft;
+  const valuationNumber = parseFloat(valuation);
 
   const {
     fee,
@@ -48,23 +50,30 @@ const getTimeBasedValues = (nft: BulkValues) => {
     ltvPercents,
     repayValue,
     returnPeriodDays,
+    loanValue: rawLoanValue,
   } = timeBased;
+
+  const loanValue = nft?.solLoanValue || rawLoanValue;
 
   const feeDiscountValue = Number(feeDiscountPercents) * 0.01;
 
   const timeBasedfeeWithDiscount = Number(fee) - Number(fee) * feeDiscountValue;
+  const ltv = nft?.solLoanValue
+    ? (nft.solLoanValue / valuationNumber) * 100
+    : ltvPercents;
 
   return {
     timeBasedFee: timeBasedfeeWithDiscount.toFixed(3),
-    timeBasedLtvPersent: ltvPercents.toFixed(0),
+    timeBasedLtvPersent: ltv?.toFixed(0),
     feeDiscountPercents,
     period: returnPeriodDays,
     repayValue,
+    loanValue,
   };
 };
 
 export const getSelectedBulkValues = (nft: BulkValues) => {
-  const { maxLoanValue: rawMaxLoanValue, isPriceBased } = nft;
+  const { isPriceBased } = nft;
 
   const {
     timeBasedFee,
@@ -72,6 +81,7 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
     repayValue,
     timeBasedLtvPersent,
     feeDiscountPercents,
+    loanValue: rawMaxLoanValue,
   } = getTimeBasedValues(nft);
 
   const {
@@ -133,7 +143,7 @@ export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
     const loanValueNumber = parseFloat(timeBased.loanValue);
 
     if (isPriceBased) {
-      return (nft as any).solLoanValue || nft.priceBased?.suggestedLoanValue;
+      return nft.solLoanValue || nft.priceBased?.suggestedLoanValue;
     } else {
       return loanValueNumber;
     }

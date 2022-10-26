@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import cx from 'classnames';
 
 import { SearchInput } from '../../../../components/SearchInput';
@@ -6,7 +6,7 @@ import SortControl from '../../../../componentsNew/SortControl';
 import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';
 import { useBorrowNft } from '../BorrowManual';
-import styles from './Sort.module.scss';
+import styles from './SortNfts.module.scss';
 import {
   FilterFormInputsNames,
   SORT_VALUES,
@@ -16,7 +16,17 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
 
-const Sort = () => {
+interface SortNftsProps {
+  searchQuery: any;
+  setSearch: any;
+  selectedNfts: any;
+}
+
+const SortNfts: FC<SortNftsProps> = ({
+  searchQuery,
+  setSearch,
+  selectedNfts,
+}) => {
   const {
     visible: filtersModalVisible,
     close: closeFiltersModal,
@@ -24,8 +34,6 @@ const Sort = () => {
   } = useFiltersModal();
 
   const { sort, setValue, control } = useBorrowPageFilter();
-
-  const { setSearch, selectedNfts, searchQuery } = useBorrowNft({ sort });
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
@@ -68,4 +76,4 @@ const Sort = () => {
   );
 };
 
-export default Sort;
+export default SortNfts;
