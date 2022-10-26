@@ -19,7 +19,7 @@ import { BorrowNft } from '../../../../state/loans/types';
 interface SortNftsProps {
   searchQuery: string;
   setSearch: any;
-  selectedNfts: BorrowNft;
+  selectedNfts: BorrowNft[];
 }
 
 const SortNfts: FC<SortNftsProps> = ({
