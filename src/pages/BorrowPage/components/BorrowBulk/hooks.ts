@@ -15,7 +15,8 @@ export const useBorrowBulk = (): {
     const priceBasedLoans = filter(priceBased, bulk);
     const timeBasedLoans = filter(timeBased, bulk);
 
-    const priceBasedLoansValue = sum(map(suggestedLoanValue, priceBasedLoans));
+    const priceBasedLoansValue =
+      sum(map(suggestedLoanValue, priceBasedLoans)) || 0;
 
     const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans));
 
