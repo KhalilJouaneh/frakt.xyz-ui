@@ -6,7 +6,7 @@ export const useBorrowBulk = (): {
   getTotalValue: (bulk: BulkValues[]) => number;
 } => {
   const getTotalValue = (bulk): number => {
-    const priceBased = ({ priceBased }) => priceBased;
+    const priceBased = ({ isPriceBased }) => isPriceBased;
     const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
     const timeBased = ({ isPriceBased }) => !isPriceBased;
     const suggestedLoanValue = ({ priceBased }) =>

@@ -35,6 +35,8 @@ const BorrowPage: FC = () => {
     notEnoughBalanceError,
   } = useBorrowPage();
 
+  const isBulkExist = !!bulks?.best?.length || !!bulks?.max?.length;
+
   return (
     <>
       {borrowType === null && (
@@ -57,7 +59,7 @@ const BorrowPage: FC = () => {
                     onValueChange={onBorrowValueChange}
                     currentToken={SOL_TOKEN}
                     label={`Available balance:`}
-                    lpBalance={Number(availableBorrowValue)}
+                    lpBalance={Number(availableBorrowValue?.toFixed(2))}
                     showMaxButton
                     error={notEnoughBalanceError}
                     labelRight
@@ -108,7 +110,7 @@ const BorrowPage: FC = () => {
 
       {borrowType === BorrowType.BULK && (
         <AppLayout>
-          {!!bulks?.best?.length && (
+          {isBulkExist && (
             <BorrowBulk
               onBack={() => setBorrowType(BorrowType.SINGLE)}
               onClick={() => setBorrowType(null)}
@@ -119,7 +121,7 @@ const BorrowPage: FC = () => {
 
           {loading && <Loader size="large" />}
 
-          {!loading && !bulks?.best?.length && (
+          {!loading && !isBulkExist && (
             <>
               <Header
                 title="Borrowing"

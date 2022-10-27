@@ -26,10 +26,14 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const bestBulk = bulks?.best || [];
   const cheapestBulk = bulks?.cheapest || [];
   const safestBulk = bulks?.safest || [];
+  const maxBulk = bulks?.max || [];
 
   const bestBulkValue = getTotalValue(bestBulk);
   const cheapestBulkValue = getTotalValue(cheapestBulk);
   const safestBulkValue = getTotalValue(safestBulk);
+  const maxBulkValue = getTotalValue(maxBulk);
+
+  const isBulkExist = !!bestBulk?.length || !!maxBulk?.length;
 
   const getBulkValues = (bulk: BulkValues[], value: number, type: string) => {
     if (!bulk.length) return;
@@ -71,13 +75,14 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
           <Header
             onClick={onClick}
             title="Borrowing"
-            subtitle={`I need ${value} SOL`}
+            subtitle={`I need ${value.toFixed(2)} SOL`}
           />
-          {connected && !!bestBulk.length && (
+          {connected && isBulkExist && (
             <div className={styles.wrapper}>
               {getBulkValues(bestBulk, bestBulkValue, 'best')}
               {getBulkValues(cheapestBulk, cheapestBulkValue, 'cheapest')}
               {getBulkValues(safestBulk, safestBulkValue, 'safest')}
+              {getBulkValues(maxBulk, maxBulkValue, 'best')}
             </div>
           )}
         </>

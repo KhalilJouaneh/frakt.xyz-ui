@@ -10,7 +10,7 @@ export enum BorrowType {
   SINGLE = 'single',
 }
 
-type BulksKeys = 'best' | 'cheapest' | 'safest';
+type BulksKeys = 'best' | 'cheapest' | 'safest' | 'max';
 
 export interface BulkValues extends BorrowNft {
   mint: string;
@@ -44,7 +44,7 @@ export interface BulkValues extends BorrowNft {
 export type BulksType = { [key in BulksKeys]: BulkValues[] };
 
 export const useBorrowPage = (): {
-  availableBorrowValue: string | number;
+  availableBorrowValue: number;
   onSubmit: () => Promise<void>;
   loading: boolean;
   bulks: BulksType;
@@ -59,7 +59,7 @@ export const useBorrowPage = (): {
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
 
-  const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
+  const [availableBorrowValue, setAvailableBorrowValue] = useState<number>(0);
   const [bulks, setBulks] = useState<BulksType>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [borrowValue, setBorrowValue] = useState<string>('');
@@ -73,7 +73,7 @@ export const useBorrowPage = (): {
   };
 
   const notEnoughBalanceError =
-    Number(borrowValue) > Number(availableBorrowValue);
+    Number(borrowValue) > Number(availableBorrowValue.toFixed(2));
 
   const caclPercentOfBalance = (
     nextValue: string,
@@ -106,9 +106,11 @@ export const useBorrowPage = (): {
   const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
 
   const onSubmit = async (): Promise<void> => {
+    const totalValue = percentValue > 99.5 ? availableBorrowValue : borrowValue;
+
     try {
       const bulks = await networkRequest({
-        url: `${URL}/suggest/${publicKey?.toBase58()}?solAmount=${borrowValue}`,
+        url: `${URL}/suggest/${publicKey?.toBase58()}?solAmount=${totalValue}`,
       });
 
       setBulks(bulks as BulksType);
@@ -126,8 +128,7 @@ export const useBorrowPage = (): {
       );
       const allNfts = await response.json();
 
-      const availableBorrowValue =
-        sum(map(maxLoanValue, allNfts)).toFixed(1) || '0';
+      const availableBorrowValue = sum(map(maxLoanValue, allNfts)) || 0;
 
       setAvailableBorrowValue(availableBorrowValue);
     })();
