@@ -18,9 +18,9 @@ export const useBorrowBulk = (): {
     const priceBasedLoansValue =
       sum(map(suggestedLoanValue, priceBasedLoans)) || 0;
 
-    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans));
+    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans)) || 0;
 
-    return priceBasedLoansValue + timeBasedLoansValue || 0;
+    return priceBasedLoansValue + timeBasedLoansValue;
   };
 
   return { getTotalValue };
