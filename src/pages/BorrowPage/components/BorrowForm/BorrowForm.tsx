@@ -1,15 +1,17 @@
 import { FC } from 'react';
+import { Controller } from 'react-hook-form';
 
-import { ConfirmModal } from '../../../../components/ConfirmModal';
+import { FilterFormInputsNames } from '../../hooks/useBorrowPageFilter';
 import { LoadingModal } from '../../../../components/LoadingModal';
+import { ConfirmModal } from '../../../../components/ConfirmModal';
+import { getRisk, useLoanFields } from '../LoanFields/hooks';
 import { BorrowNft } from '../../../../state/loans/types';
-import Select from '../../../../componentsNew/Select';
+import { Slider } from '../../../../components/Slider';
+import { Select } from '../../../../components/Select';
 import Button from '../../../../components/Button';
 import styles from './BorrowForm.module.scss';
 import { useBorrowForm } from './hooks';
 import LoansFields from '../LoanFields';
-import { getRisk, useLoanFields } from '../LoanFields/hooks';
-import { Slider } from '../../../../components/Slider';
 
 interface BorrowFormProps {
   selectedNft: BorrowNft;
@@ -41,10 +43,10 @@ const BorrowForm: FC<BorrowFormProps> = ({
     confirmText,
     selectOptions,
     selectValue,
-    setSelectValue,
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
+    control,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
@@ -62,14 +64,22 @@ const BorrowForm: FC<BorrowFormProps> = ({
   return (
     <>
       <div className={styles.details}>
-        <Select
-          setValue={(e: any) => setSelectValue(e.target.value)}
-          options={selectOptions}
-          value={selectValue}
+        <p className={styles.detailsTitle}>Duration</p>
+        <Controller
+          control={control}
+          name={FilterFormInputsNames.SORT}
+          render={({ field: { value, name, onChange } }) => (
+            <Select
+              options={selectOptions}
+              name={name}
+              value={value}
+              onChange={onChange}
+            />
+          )}
         />
         <div className={styles.sliderWrapper}>
           <p className={styles.sliderLabel}>
-            loan to value: {solLoanValue.toFixed(2)} SOL{' '}
+            To borrow: {solLoanValue.toFixed(2)} SOL{' '}
           </p>
           <Slider
             marks={marks}
@@ -81,7 +91,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
             max={maxLoanValueNumber}
           />
         </div>
-
         <LoansFields
           risk={risk}
           ltv={ltv}

@@ -13,14 +13,6 @@
   }
 }
 
-.tabs {
-  display: flex;
-
-  button {
-    height: 32px;
-  }
-}
-
 .detailsTitle {
   color: var(--gray-color-2);
   font: var(--font-text-6);
@@ -70,7 +62,11 @@
   padding: 0 5px;
   :global {
     .ant-slider-mark-text:first-child {
-      left: 10px !important;
+      left: 25px !important;
+    }
+    .ant-slider-mark-text:last-child {
+      left: 90.5% !important;
+      width: 100px;
     }
   }
 }

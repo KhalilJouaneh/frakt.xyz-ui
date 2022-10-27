@@ -33,7 +33,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
 
   const isPriceBasedType = loanTypeValue === 'perpetual';
 
-  const { feeOnDay, fee } = feeOnDayByType({ nft, loanTypeValue });
+  const { feeOnDay, fee } = feeOnDayByType({ nft, loanTypeValue, ltv });
 
   return (
     <div className={styles.fieldWrapper}>

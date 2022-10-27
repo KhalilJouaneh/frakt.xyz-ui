@@ -16,11 +16,11 @@ export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
 
   const loanTypeOptions = [
     {
-      label: `${timeBased.returnPeriodDays} day`,
+      label: `${timeBased.returnPeriodDays} days`,
       value: 'flip',
     },
     {
-      label: 'perpetual',
+      label: 'Perpetual',
       value: 'perpetual',
       disabled: !nft?.priceBased,
     },

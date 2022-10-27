@@ -2,53 +2,46 @@ import ReactSelect from 'react-select';
 import classNames from 'classnames';
 
 import styles from './styles.module.scss';
-import { FocusEventHandler } from 'react';
+import { FC } from 'react';
 
-interface Option {
-  label: JSX.Element | string;
-  value: unknown;
+export interface SelectOptions {
+  label: string;
+  value: string;
+  disabled?: boolean;
+  event?: string;
 }
 
 interface SelectProps {
-  options: Option[];
+  options: SelectOptions[];
   className?: string;
-  valueContainerClassName?: string;
-  onChange?: () => void;
-  value?: Option;
-  onFocus?: FocusEventHandler<HTMLInputElement>;
-  label?: string;
+  onChange?: (value: any) => void;
+  value?: any;
   disabled?: boolean;
   name?: string;
 }
 
-export const Select = ({
+export const Select: FC<SelectProps> = ({
   className = '',
-  valueContainerClassName = '',
-  label,
-  onFocus,
   disabled,
   ...props
-}: SelectProps): JSX.Element => {
-  const ValueContainer = (valueContainerProps: any) => (
-    <span
-      className={classNames(styles.valueContainer, valueContainerClassName)}
-    >
-      {label && <span className={styles.label}>{label}</span>}
-      <span className={styles.value}>
-        {valueContainerProps.getValue()?.[0]?.label}
+}) => {
+  const ValueContainer = (valueContainerProps: any) => {
+    const label = valueContainerProps.getValue()?.[0]?.label;
+
+    return (
+      <span className={styles.valueContainer}>
+        <span className={styles.value}>{label}</span>
+        <div className={styles.input}>{valueContainerProps.children[1]}</div>
       </span>
-      <div className={styles.input}>{valueContainerProps.children[1]}</div>
-    </span>
-  );
+    );
+  };
 
   return (
     <ReactSelect
       {...props}
       isSearchable={false}
       components={{ ValueContainer }}
-      maxMenuHeight={500}
       className={classNames(styles.select, className)}
-      onFocus={onFocus}
       isDisabled={disabled}
       classNamePrefix="custom-select"
     />

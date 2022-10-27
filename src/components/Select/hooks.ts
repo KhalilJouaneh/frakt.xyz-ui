@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { SelectOptions } from './Select';
 
 type UseSelect = (props: {

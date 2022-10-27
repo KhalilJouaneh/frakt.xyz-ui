@@ -7,6 +7,7 @@ export const feeOnDayForTimeBased = (
   feeOnDay: number;
 } => {
   const { returnPeriodDays, fee, feeDiscountPercents } = nft.timeBased;
+  console.log(nft);
 
   const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
 
@@ -35,13 +36,13 @@ export const feeOnDayForPriceBased = (
   return { feeOnDay, fee: upfrontFee };
 };
 
-export const feeOnDayByType = ({ nft, loanTypeValue }) => {
+export const feeOnDayByType = ({ nft, loanTypeValue, ltv }) => {
   const isPriceBasedType = loanTypeValue === 'perpetual';
 
   if (isPriceBasedType) {
-    return feeOnDayForPriceBased(nft, 40);
+    return feeOnDayForPriceBased(nft, ltv);
   } else {
-    return feeOnDayForPriceBased(nft);
+    return feeOnDayForTimeBased(nft);
   }
 };
 

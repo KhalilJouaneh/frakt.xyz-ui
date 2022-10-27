@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Control, useForm } from 'react-hook-form';
 
+import { FilterFormInputsNames } from '../../hooks/useBorrowPageFilter';
+import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
-import { Tab } from '../../../../components/Tabs';
+import { useSelect } from '../../../../components/Select/hooks';
+import { SelectOptions } from '../../../../components/Select';
 import { BorrowNft } from '../../../../state/loans/types';
 import { proposeLoan } from '../../../../utils/loans';
-import { useConnection } from '../../../../hooks';
-import { BulkValues } from '../../hooks';
-import { useSelect } from '../../../../componentsNew/Select/hooks';
 import { useLoanFields } from '../LoanFields/hooks';
-import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
+import { useConnection } from '../../../../hooks';
+import { Tab } from '../../../../components/Tabs';
+import { BulkValues } from '../../hooks';
 
-const getConfirmModalText = (nft: BorrowNft, isPriceBased = false) => {
+const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
   const { name, timeBased } = nft;
 
   const confirmShortTermText = `You are about to use ${name} as collateral for an instant loan of ${timeBased.repayValue} SOL (incl. interest rate if applicable) that you commit to repay in full within ${timeBased.returnPeriodDays} days. Proceed?`;
@@ -38,9 +41,11 @@ type UseBorrowForm = (props: {
   confirmText: string;
   selectValue: string;
   setSelectValue: (value: string) => void;
+  setSolLoanValue: (value: number) => void;
   updateCurrentNft: () => void;
   solLoanValue: number;
-  setSolLoanValue: (value: number) => void;
+  control: Control<{ sort: SelectOptions }, any>;
+  selectedValue: any;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -51,8 +56,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const currentLoanNft = useSelector(selectCurrentLoanNft) as any;
   const isPriceBased = selectedNft?.isPriceBased;
 
-  const { loanTypeOptions, averageLoanValue, maxLoanValueNumber } =
-    useLoanFields(selectedNft);
+  const { loanTypeOptions, averageLoanValue } = useLoanFields(selectedNft);
 
   const {
     options: selectOptions,
@@ -63,18 +67,34 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     defaultValue: loanTypeOptions[!isPriceBased ? 0 : 1].value,
   });
 
+  const { control, watch } = useForm({
+    defaultValues: {
+      [FilterFormInputsNames.SORT]: selectOptions[0],
+    },
+  });
+
+  const { value: selectedValue } = watch(FilterFormInputsNames.SORT);
+
+  useEffect(() => {
+    setSelectValue(selectedValue);
+  }, [selectedValue]);
+
   const [solLoanValue, setSolLoanValue] = useState<number>(0);
 
   const defaultSliderValue =
     (selectedNft as any)?.solLoanValue || averageLoanValue;
+
+  const updateParams = {
+    solLoanValue,
+    type: selectValue,
+  };
 
   const updateCurrentNft = () => {
     if (selectedNft?.priceBased) {
       dispatch(
         loansActions.updatePerpLoanNft({
           mint: selectedNft?.mint,
-          solLoanValue: selectedNft?.solLoanValue,
-          type: selectValue,
+          ...updateParams,
         }),
       );
     }
@@ -84,8 +104,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     dispatch(
       loansActions.setCurrentLoanNft({
         ...selectedNft,
-        solLoanValue,
-        type: selectValue,
+        ...updateParams,
       }),
     );
   }, [solLoanValue, selectValue, selectedNft]);
@@ -177,5 +196,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
+    control,
+    selectedValue,
   };
 };
