@@ -20,7 +20,10 @@ const getPriceBasedValues = (
   const currentLoanValue = (valuationNumber * currentLtvPersent) / 100;
   const loanValue = currentLoanValue || suggestedLoanValue;
 
-  const fee = Number(maxLoanValue) * 0.01;
+  const isPriceBased = (nft?.priceBased as any).isBest;
+
+  const suggestedFee = priceBased?.suggestedLoanValue * 0.01;
+  const fee = (isPriceBased && suggestedFee) || Number(maxLoanValue) * 0.01;
 
   const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
   const ltv = currentLtvPersent || suggestedLtvPersent;
@@ -89,6 +92,8 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
   const fee = isPriceBased ? priceBasedFee : timeBasedFee;
 
   const loanToValue = isPriceBased ? priceBasedLtvPersent : timeBasedLtvPersent;
+
+  console.log(nft);
 
   return {
     loanType,
