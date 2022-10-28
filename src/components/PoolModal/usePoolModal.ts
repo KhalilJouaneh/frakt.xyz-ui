@@ -20,6 +20,7 @@ export enum InputControlsNames {
 export enum TabsNames {
   DEPOSIT = 'deposit',
   WITHDRAW = 'withdraw',
+  SWAP = 'swap',
 }
 
 export type FormFieldValues = {
@@ -28,16 +29,15 @@ export type FormFieldValues = {
   [InputControlsNames.PERCENT_VALUE]: number;
 };
 
-export const usePoolModal = (
-  liquidityPoolPubkey: string,
-  visible: string,
-  depositAmount: number,
-  onCancel: () => void,
-): {
+export const usePoolModal = ({
+  visible,
+  depositAmount,
+}: {
+  visible?: string;
+  depositAmount: number;
+}): {
   depositValue: string;
   withdrawValue: string;
-  depositLiquidity: () => void;
-  unstakeLiquidity: () => void;
   poolTabs: Tab[];
   tabValue: string;
   setTabValue: (value: string) => void;
@@ -48,8 +48,6 @@ export const usePoolModal = (
   percentValue: number;
   solWalletBalance: string;
 } => {
-  const wallet = useWallet();
-  const connection = useConnection();
   const { watch, register, setValue } = useForm({
     defaultValues: {
       [InputControlsNames.DEPOSIT_VALUE]: '',
@@ -68,6 +66,10 @@ export const usePoolModal = (
     {
       label: 'Deposit',
       value: 'deposit',
+    },
+    {
+      label: 'Swap',
+      value: 'swap',
     },
     {
       label: 'Withdraw',
@@ -145,6 +147,33 @@ export const usePoolModal = (
     return value ? value?.toFixed(2) : '0';
   };
 
+  return {
+    depositValue,
+    withdrawValue,
+    poolTabs,
+    tabValue,
+    setTabValue,
+    percentValue,
+    onDepositValueChange,
+    onWithdrawValueChange,
+    onWithdrawPercentChange,
+    onDepositPercentChange,
+    solWalletBalance,
+  };
+};
+
+export const useDepositTxn = ({
+  onCancel,
+  liquidityPoolPubkey,
+  depositValue,
+  withdrawValue,
+}): {
+  depositLiquidity: () => void;
+  unstakeLiquidity: () => void;
+} => {
+  const wallet = useWallet();
+  const connection = useConnection();
+
   const depositLiquidity = async (): Promise<void> => {
     const amount = Number(depositValue) * 1e9;
 
@@ -171,27 +200,24 @@ export const usePoolModal = (
     onCancel();
   };
 
-  return {
-    depositValue,
-    withdrawValue,
-    depositLiquidity,
-    unstakeLiquidity,
-    poolTabs,
-    tabValue,
-    setTabValue,
-    percentValue,
-    onDepositValueChange,
-    onWithdrawValueChange,
-    onWithdrawPercentChange,
-    onDepositPercentChange,
-    solWalletBalance,
-  };
+  return { depositLiquidity, unstakeLiquidity };
 };
 
-export const marks = {
+export const marks: { [key: number]: string | JSX.Element } = {
   0: '0 %',
   25: '25 %',
   50: '50 %',
   75: '75 %',
   100: '100 %',
 };
+
+export const riskTabs = [
+  {
+    label: 'Medium Risk',
+    value: 'medium',
+  },
+  {
+    label: 'high Risk',
+    value: 'high',
+  },
+];

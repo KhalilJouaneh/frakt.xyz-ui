@@ -1,6 +1,5 @@
-import { SOL_TOKEN, TokenInfo } from '@frakt-protocol/frakt-sdk';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useState } from 'react';
+import { SOL_TOKEN, TokenInfo } from '@frakt-protocol/frakt-sdk';
 import { Control, useForm } from 'react-hook-form';
 
 export enum InputControlsNames {
@@ -17,7 +16,7 @@ export type FormFieldValues = {
   [InputControlsNames.PAY_VALUE]: string;
 };
 
-export const useBondModal = (): {
+export const useSwapForm = (): {
   control: Control<FormFieldValues>;
   onPayTokenChange: (nextToken: TokenInfo) => void;
   onReceiveTokenChange: (nextToken: TokenInfo) => void;
@@ -27,9 +26,7 @@ export const useBondModal = (): {
   slippage: string;
   setSlippage: (nextValue: string) => void;
 } => {
-  const { connected } = useWallet();
-
-  const { control, watch, register, setValue } = useForm({
+  const { control, watch, setValue } = useForm({
     defaultValues: {
       [InputControlsNames.RECEIVE_TOKEN]: null,
       [InputControlsNames.PAY_VALUE]: '',

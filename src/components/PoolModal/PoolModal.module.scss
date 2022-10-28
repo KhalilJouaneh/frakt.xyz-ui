@@ -1,11 +1,3 @@
-.btn {
-  width: 100%;
-  padding: 0;
-  font: var(--font-body-small);
-  justify-content: center;
-  height: 48px;
-}
-
 .modal {
   :global {
     z-index: 2;
@@ -25,6 +17,58 @@
     top: 4px;
     left: 4px;
   }
+}
+
+.riskTabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.riskTab {
+  width: 204px;
+  min-height: 350px;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.riskTabInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.riskTabTitle {
+  color: var(--secondary-border);
+  font: var(--font-subtitle-2);
+}
+
+.riskTabInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.riskTabValue {
+  color: var(--secondary-border);
+  font: var(--font-text-8);
+}
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.wrapper {
+  display: flex;
 }
 
 .content {
@@ -54,10 +98,6 @@
     height: 24px;
     top: -38px;
   }
-}
-
-.slider {
-  padding: 15px 5px 64px;
 }
 
 .closeModalIcon {
@@ -93,66 +133,5 @@
 
   @media screen and (max-width: 1024px) {
     width: 10px;
-  }
-}
-
-.info {
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-transform: uppercase;
-}
-
-.infoTitle {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-}
-
-.infoValue {
-  color: var(--primary-text);
-  font: var(--font-text-8);
-}
-
-.input {
-  margin-bottom: 10px;
-}
-
-.errors {
-  height: 16px;
-  font: var(--font-text-6);
-  color: var(--red-error-color);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.boundsWrapper {
-  border: 1px solid var(--red-color);
-  background-color: rgba(255, 31, 71, 0.1);
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.boundsDesc {
-  color: var(--secondary-border);
-  font: var(--font-text-8);
-}
-
-.boundsReadMore {
-  border-bottom: 1px solid var(--blue-color);
-  color: var(--blue-color);
-  cursor: pointer;
-  font: var(--font-body-small);
-  margin-top: 16px;
-  width: 85px;
-
-  @media screen and (max-width: 1024px) {
-    font-size: 14px;
-    width: 75px;
-  }
-
-  @media screen and (max-width: 767px) {
-    margin-top: 8px;
   }
 }

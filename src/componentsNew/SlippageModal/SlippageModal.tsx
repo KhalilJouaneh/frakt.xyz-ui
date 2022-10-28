@@ -1,18 +1,18 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 
-import NumericInput from '../../../../../components/NumericInput';
-import { useOnClickOutside } from '../../../../../utils';
-import Button from '../../../../../components/Button';
-import styles from './SettingsModal.module.scss';
-import Icons from '../../../../../iconsNew';
+import NumericInput from '../../components/NumericInput';
+import { useOnClickOutside } from '../../utils';
+import Button from '../../components/Button';
+import styles from './SlippageModal.module.scss';
+import Icons from '../../iconsNew';
 
-interface SettingsModalProps {
+interface SlippageModalProps {
   slippage: string;
   setSlippage: (nextSlippage: string) => void;
 }
 
-const SettingsModal: FC<SettingsModalProps> = ({ slippage, setSlippage }) => {
+const SlippageModal: FC<SlippageModalProps> = ({ slippage, setSlippage }) => {
   const [invalidSlippageError, setInvalidSlippageError] = useState<string>('');
   const [mayFailError, setMayFailError] = useState<string>('');
 
@@ -113,4 +113,4 @@ const SettingsModal: FC<SettingsModalProps> = ({ slippage, setSlippage }) => {
   );
 };
 
-export default SettingsModal;
+export default SlippageModal;

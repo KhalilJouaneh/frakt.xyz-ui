@@ -1,16 +1,20 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
-import { marks, TabsNames, usePoolModal } from './usePoolModal';
-import { TokenFieldWithBalance } from '../TokenField';
+import {
+  riskTabs,
+  TabsNames,
+  useDepositTxn,
+  usePoolModal,
+} from './usePoolModal';
+import SwapForm from '../../componentsNew/SwapModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
-import { SOL_TOKEN } from '../../utils';
-import { Slider } from '../Slider';
-import { Modal } from '../Modal';
-import Button from '../Button';
+import WithdrawTab from './WithdrawTab';
+import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
-import { sendAmplitudeData } from '../../utils/amplitude';
-import Toggle from '../Toggle';
+import { Modal } from '../Modal';
+import Tooltip from '../Tooltip';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface PoolModalProps {
   visible: string;
@@ -29,41 +33,22 @@ export const PoolModal: FC<PoolModalProps> = ({
   utilizationRate,
   liquidityPoolPubkey,
 }) => {
-  const {
-    withdrawValue,
+  const { withdrawValue, depositValue, poolTabs, tabValue, setTabValue } =
+    usePoolModal({ visible, depositAmount });
+
+  const { depositLiquidity, unstakeLiquidity } = useDepositTxn({
+    liquidityPoolPubkey,
     depositValue,
-    depositLiquidity,
-    unstakeLiquidity,
-    poolTabs,
-    tabValue,
-    setTabValue,
-    percentValue,
-    onDepositValueChange,
-    onDepositPercentChange,
-    onWithdrawValueChange,
-    onWithdrawPercentChange,
-    solWalletBalance,
-  } = usePoolModal(liquidityPoolPubkey, visible, depositAmount, onCancel);
-
-  const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
-  const notEnoughDepositError = depositAmount < Number(withdrawValue);
-  const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
-  const isDisabledDepositBtn =
-    Number(depositValue) === 0 || notEnoughBalanceError;
-  const isDisabledWithdrawBtn =
-    Number(withdrawValue) === 0 || notEnoughDepositError;
-
-  const depositAmountWithFee =
-    rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
-
-  const [isBoundMode, setIsBoundMode] = useState<boolean>(false);
+    withdrawValue,
+    onCancel,
+  });
 
   return (
     <Modal
       visible={!!visible}
       centered
       onCancel={onCancel}
-      width={500}
+      width={716}
       footer={false}
       closable={false}
       className={styles.modal}
@@ -73,102 +58,70 @@ export const PoolModal: FC<PoolModalProps> = ({
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
-      <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
-      {tabValue === TabsNames.DEPOSIT && (
-        <div className={styles.content}>
-          <div className={styles.boundsWrapper}>
-            <Toggle
-              label="Buy bonds"
-              onChange={() => setIsBoundMode(!isBoundMode)}
-              value={isBoundMode}
-            />
-            <p className={styles.boundsDesc}>
-              {`I'm okay with recieveing defaulted NFTs of these collections
-              (selector dropdown) instead of deposit in exchange for higher
-              yields. (180% APY)`}
-            </p>
-            <p className={styles.boundsReadMore}>Read more</p>
+      <div className={styles.wrapper}>
+        <div className={styles.riskTabs}>
+          <div className={styles.riskTab}>
+            <p className={styles.riskTabTitle}>Medium Risk</p>
+            <div className={styles.riskTabInfoWrapper}>
+              <p className={styles.riskTabInfo}>
+                Deposit yield
+                <Tooltip
+                  placement="top"
+                  trigger="hover"
+                  overlay="The maximum difference between your estimated price and execution price."
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </p>
+              <p className={styles.riskTabValue}>28 %</p>
+            </div>
+            <div className={styles.riskTabInfoWrapper}>
+              <p className={styles.riskTabTitle}>Your deposit</p>
+              <p className={styles.riskTabValue}>123,023.32 SOL</p>
+            </div>
           </div>
-          <TokenFieldWithBalance
-            className={styles.input}
-            value={depositValue}
-            onValueChange={onDepositValueChange}
-            currentToken={SOL_TOKEN}
-            label={`BALANCE:`}
-            lpBalance={Number(depositAmountWithFee.toFixed(2))}
-            error={notEnoughBalanceError}
-            showMaxButton
-            labelRight
-          />
-          <div className={styles.errors}>
-            {notEnoughBalanceError && <p>Not enough SOL</p>}
+          <div className={styles.riskTab}>
+            <p className={styles.riskTabTitle}>High Risk</p>
+            <div className={styles.riskTabInfoWrapper}>
+              <p className={styles.riskTabInfo}>
+                Deposti yield
+                <Tooltip
+                  placement="top"
+                  trigger="hover"
+                  overlay="The maximum difference between your estimated price and execution price."
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </p>
+              <p className={styles.riskTabValue}>28 %</p>
+            </div>
+            <div className={styles.riskTabInfoWrapper}>
+              <p className={styles.riskTabInfo}>Your Deposit</p>
+              <p className={styles.riskTabValue}>123,023.32 SOL</p>
+            </div>
           </div>
-          <Slider
-            value={percentValue}
-            setValue={solWalletBalance && onDepositPercentChange}
-            className={styles.slider}
-            marks={marks}
-            withTooltip
-            step={1}
-          />
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>Deposit yield</span>
-            <span className={styles.infoValue}>{apr.toFixed(2)} %</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>Utilization rate</span>
-            <span className={styles.infoValue}>
-              {(utilizationRate || 0).toFixed(2)} %
-            </span>
-          </div>
-          <Button
-            onClick={() => {
-              depositLiquidity();
-              sendAmplitudeData('loans-confirm-deposit');
-            }}
-            className={styles.btn}
-            type="secondary"
-            disabled={isDisabledDepositBtn}
-          >
-            Deposit
-          </Button>
         </div>
-      )}
-      {tabValue === TabsNames.WITHDRAW && (
-        <div className={styles.content}>
-          <TokenFieldWithBalance
-            value={withdrawValue}
-            onValueChange={onWithdrawValueChange}
-            currentToken={SOL_TOKEN}
-            label={`Your deposit:`}
-            lpBalance={depositAmount}
-            error={notEnoughDepositError}
-            className={styles.input}
-            showMaxButton
-            labelRight
-          />
-          <div className={styles.errors}>
-            {notEnoughDepositError && <p>Not enough SOL</p>}
+        <div>
+          <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
+          <div className={styles.content}>
+            {tabValue === TabsNames.DEPOSIT && (
+              <DepositTab
+                depositAmount={depositAmount}
+                utilizationRate={utilizationRate}
+                onSubmit={depositLiquidity}
+                apr={apr}
+              />
+            )}
+            {tabValue === TabsNames.SWAP && <SwapForm />}
+            {tabValue === TabsNames.WITHDRAW && (
+              <WithdrawTab
+                onSubmit={unstakeLiquidity}
+                depositAmount={depositAmount}
+              />
+            )}
           </div>
-          <Slider
-            value={percentValue}
-            setValue={depositAmount && onWithdrawPercentChange}
-            className={styles.slider}
-            marks={marks}
-            withTooltip
-            step={1}
-          />
-
-          <Button
-            onClick={unstakeLiquidity}
-            className={styles.btn}
-            type="secondary"
-            disabled={isDisabledWithdrawBtn}
-          >
-            Confirm
-          </Button>
         </div>
-      )}
+      </div>
     </Modal>
   );
 };
