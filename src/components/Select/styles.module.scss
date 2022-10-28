@@ -3,12 +3,13 @@
   cursor: pointer;
   font: var(--font-text-8);
   color: var(--secondary-border);
-  border-bottom: 1px solid var(--primary-border);
+
   :global {
     .custom-select__control {
       background-color: var(--secondary-background);
       border: 0;
       border-radius: 0;
+      border-bottom: 1px solid var(--primary-border);
 
       cursor: pointer;
       flex-wrap: nowrap;
@@ -20,12 +21,14 @@
       @media screen and (max-width: 550px) {
         justify-content: flex-start;
       }
+
       &:hover {
-        border-bottom: 1px solid var(--secondary-border);
+        border-color: var(--secondary-border);
       }
     }
     .custom-select__control--is-focused {
       box-shadow: none;
+      border: 0;
       border-bottom: 1px solid var(--secondary-border);
     }
     .custom-select__menu {
