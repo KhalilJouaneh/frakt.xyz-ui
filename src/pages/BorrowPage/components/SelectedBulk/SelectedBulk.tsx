@@ -157,9 +157,8 @@ const getPriceBasedValues = (
           feeDiscountPercents,
           period,
           repayValue,
+          fee,
         } = getSelectedBulkValues(nft);
-
-        const fee = (Number(maxLoanValue) * 0.01).toFixed(3);
 
         return (
           <div className={styles.cardWrapper} key={nft.name}>

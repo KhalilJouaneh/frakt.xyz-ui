@@ -89,7 +89,9 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
 
   const maxLoanValue = isPriceBased ? priceBasedLoanValue : rawMaxLoanValue;
 
-  const fee = isPriceBased ? priceBasedFee : timeBasedFee;
+  const fee = isPriceBased
+    ? (Number(maxLoanValue) * 0.01).toFixed(3)
+    : timeBasedFee;
 
   const loanToValue = isPriceBased ? priceBasedLtvPersent : timeBasedLtvPersent;
 
