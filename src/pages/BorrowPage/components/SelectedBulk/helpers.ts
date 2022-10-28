@@ -122,8 +122,11 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
         return dayFee - dayFee * feeDiscountPercentsValue;
       } else {
         const { priceBased, valuation } = nft;
+        const suggestedLtvPersent =
+          (priceBased?.suggestedLoanValue / parseFloat(valuation)) * 100;
 
-        const ltv = priceBased?.ltv || priceBased?.ltvPercents;
+        const ltv =
+          priceBased?.ltv || suggestedLtvPersent || priceBased?.ltvPercents;
 
         const loanValue = parseFloat(valuation) * (ltv / 100);
 
