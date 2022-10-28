@@ -6,6 +6,7 @@ import { TabsNames, useDepositTxn, usePoolModal } from './usePoolModal';
 import SwapForm from '../../componentsNew/SwapModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
+import DepositHigh from './DepositHigh';
 import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
@@ -19,6 +20,11 @@ interface PoolModalProps {
   depositAmount: number;
   utilizationRate: number;
   liquidityPoolPubkey: string;
+}
+
+enum RiskTabsNames {
+  HIGH = 'high',
+  MEDIUM = 'medium',
 }
 
 export const PoolModal: FC<PoolModalProps> = ({
@@ -39,7 +45,9 @@ export const PoolModal: FC<PoolModalProps> = ({
     onCancel,
   });
 
-  const [riskTabType, setRiskTabType] = useState('high');
+  const [riskTabType, setRiskTabType] = useState<RiskTabsNames>(
+    RiskTabsNames.MEDIUM,
+  );
 
   return (
     <Modal
@@ -59,10 +67,10 @@ export const PoolModal: FC<PoolModalProps> = ({
       <div className={styles.wrapper}>
         <div className={styles.riskTabs}>
           <div
-            onClick={() => setRiskTabType('medium')}
+            onClick={() => setRiskTabType(RiskTabsNames.MEDIUM)}
             className={cx(
               styles.riskTab,
-              riskTabType === 'medium' && styles.riskTabActive,
+              riskTabType === RiskTabsNames.MEDIUM && styles.riskTabActive,
             )}
           >
             <p className={styles.riskTabTitle}>Medium Risk</p>
@@ -81,10 +89,10 @@ export const PoolModal: FC<PoolModalProps> = ({
             </div>
           </div>
           <div
-            onClick={() => setRiskTabType('high')}
+            onClick={() => setRiskTabType(RiskTabsNames.HIGH)}
             className={cx(
               styles.riskTab,
-              riskTabType === 'high' && styles.riskTabActive,
+              riskTabType === RiskTabsNames.HIGH && styles.riskTabActive,
             )}
           >
             <p className={styles.riskTabTitle}>High Risk</p>
@@ -106,14 +114,24 @@ export const PoolModal: FC<PoolModalProps> = ({
         <div className={styles.poolTabs}>
           <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
           <div className={styles.content}>
-            {tabValue === TabsNames.DEPOSIT && riskTabType === 'high' && (
-              <DepositTab
-                depositAmount={depositAmount}
-                utilizationRate={utilizationRate}
-                onSubmit={depositLiquidity}
-                apr={apr}
-              />
-            )}
+            {tabValue === TabsNames.DEPOSIT &&
+              riskTabType === RiskTabsNames.HIGH && (
+                <DepositHigh
+                  depositAmount={depositAmount}
+                  utilizationRate={utilizationRate}
+                  onSubmit={depositLiquidity}
+                  apr={apr}
+                />
+              )}
+            {tabValue === TabsNames.DEPOSIT &&
+              riskTabType === RiskTabsNames.MEDIUM && (
+                <DepositTab
+                  depositAmount={depositAmount}
+                  utilizationRate={utilizationRate}
+                  onSubmit={depositLiquidity}
+                  apr={apr}
+                />
+              )}
             {tabValue === TabsNames.SWAP && <SwapForm />}
             {tabValue === TabsNames.WITHDRAW && (
               <WithdrawTab
