@@ -1,11 +1,8 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import cx from 'classnames';
 
-import {
-  riskTabs,
-  TabsNames,
-  useDepositTxn,
-  usePoolModal,
-} from './usePoolModal';
+import { TabsNames, useDepositTxn, usePoolModal } from './usePoolModal';
 import SwapForm from '../../componentsNew/SwapModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
@@ -14,7 +11,6 @@ import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
 import { Modal } from '../Modal';
 import Tooltip from '../Tooltip';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface PoolModalProps {
   visible: string;
@@ -43,6 +39,8 @@ export const PoolModal: FC<PoolModalProps> = ({
     onCancel,
   });
 
+  const [riskTabType, setRiskTabType] = useState('high');
+
   return (
     <Modal
       visible={!!visible}
@@ -60,36 +58,40 @@ export const PoolModal: FC<PoolModalProps> = ({
       </div>
       <div className={styles.wrapper}>
         <div className={styles.riskTabs}>
-          <div className={styles.riskTab}>
+          <div
+            onClick={() => setRiskTabType('medium')}
+            className={cx(
+              styles.riskTab,
+              riskTabType === 'medium' && styles.riskTabActive,
+            )}
+          >
             <p className={styles.riskTabTitle}>Medium Risk</p>
             <div className={styles.riskTabInfoWrapper}>
               <p className={styles.riskTabInfo}>
                 Deposit yield
-                <Tooltip
-                  placement="top"
-                  trigger="hover"
-                  overlay="The maximum difference between your estimated price and execution price."
-                >
+                <Tooltip placement="top" trigger="hover" overlay="Tooltip">
                   <QuestionCircleOutlined className={styles.questionIcon} />
                 </Tooltip>
               </p>
               <p className={styles.riskTabValue}>28 %</p>
             </div>
             <div className={styles.riskTabInfoWrapper}>
-              <p className={styles.riskTabTitle}>Your deposit</p>
+              <p className={styles.riskTabInfo}>Your deposit</p>
               <p className={styles.riskTabValue}>123,023.32 SOL</p>
             </div>
           </div>
-          <div className={styles.riskTab}>
+          <div
+            onClick={() => setRiskTabType('high')}
+            className={cx(
+              styles.riskTab,
+              riskTabType === 'high' && styles.riskTabActive,
+            )}
+          >
             <p className={styles.riskTabTitle}>High Risk</p>
             <div className={styles.riskTabInfoWrapper}>
               <p className={styles.riskTabInfo}>
                 Deposti yield
-                <Tooltip
-                  placement="top"
-                  trigger="hover"
-                  overlay="The maximum difference between your estimated price and execution price."
-                >
+                <Tooltip placement="top" trigger="hover" overlay="Tooltip">
                   <QuestionCircleOutlined className={styles.questionIcon} />
                 </Tooltip>
               </p>
@@ -101,10 +103,10 @@ export const PoolModal: FC<PoolModalProps> = ({
             </div>
           </div>
         </div>
-        <div>
+        <div className={styles.poolTabs}>
           <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
           <div className={styles.content}>
-            {tabValue === TabsNames.DEPOSIT && (
+            {tabValue === TabsNames.DEPOSIT && riskTabType === 'high' && (
               <DepositTab
                 depositAmount={depositAmount}
                 utilizationRate={utilizationRate}

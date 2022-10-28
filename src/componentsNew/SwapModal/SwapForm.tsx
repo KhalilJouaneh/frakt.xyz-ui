@@ -28,7 +28,7 @@ const SwapForm: FC = () => {
   const solWalletBalance = getCorrectSolWalletBalance(solBalanceValue);
 
   return (
-    <div>
+    <>
       <SlippageModal slippage={slippage} setSlippage={setSlippage} />
       <Controller
         control={control}
@@ -106,7 +106,7 @@ const SwapForm: FC = () => {
       <Button className={styles.btn} type="secondary">
         Swap
       </Button>
-    </div>
+    </>
   );
 };
 
