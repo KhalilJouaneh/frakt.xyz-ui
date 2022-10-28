@@ -4,10 +4,15 @@
 }
 
 .fieldDesc {
+  color: var(--secondary-border);
   font: var(--font-text-8);
   font-size: 14px;
   padding-top: 8px;
   text-align: center;
+}
+
+.valueFieldValue {
+  margin-right: 5px;
 }
 
 .staticValue {
@@ -20,15 +25,33 @@
   font: var(--font-text-5);
   text-transform: uppercase;
 
-  &::after {
-    content: '';
-    flex-grow: 1;
-    height: 1px;
-    display: block;
-    background: var(--color-gray-4);
-    order: 2;
+  // &::after {
+  //   content: '';
+  //   flex-grow: 1;
+  //   height: 1px;
+  //   display: block;
+  //   background: var(--color-gray-4);
+  //   order: 2;
+  // }
+}
+
+.tooltipWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+  order: 3;
+}
+
+.questionIcon {
+  margin-top: -2px;
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
   }
 }
+
 .staticValueAccent {
   color: var(--secondary-border);
 }
@@ -36,7 +59,7 @@
 .staticValueWrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 28px;
+  padding-top: 20px;
   gap: 8px;
 }
 
@@ -52,33 +75,8 @@
     max-width: unset;
   }
 }
-
 .staticValueData {
   color: var(--secondary-border);
   font: var(--font-text-8);
   order: 3;
 }
-
-.highLoanRisk {
-  color: #ff6666;
-}
-
-.mediumLoanRisk {
-  color: #ddb834;
-}
-
-.lowLoanRisk {
-  color: #83d6a4;
-}
-
-.questionIcon {
-  margin-top: -2px;
-  margin-left: 5px;
-
-  svg {
-    fill: var(--blue-color);
-    width: 18px;
-    height: 18px;
-  }
-}
-

@@ -5,3 +5,4 @@ export { default as LendPage } from './LendPage';
 export { default as LiquidationsPage } from './LiquidationsPage';
 export { default as LoansPage } from './LoansPage';
 export { default as BorrowPage } from './BorrowPage';
+export { default as BondsPage } from './BondsPage';

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { marks, TabsNames, usePoolModal } from './usePoolModal';
 import { TokenFieldWithBalance } from '../TokenField';
@@ -10,6 +10,7 @@ import { Modal } from '../Modal';
 import Button from '../Button';
 import { Tabs } from '../Tabs';
 import { sendAmplitudeData } from '../../utils/amplitude';
+import Toggle from '../Toggle';
 
 interface PoolModalProps {
   visible: string;
@@ -55,6 +56,8 @@ export const PoolModal: FC<PoolModalProps> = ({
   const depositAmountWithFee =
     rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
 
+  const [isBoundMode, setIsBoundMode] = useState<boolean>(false);
+
   return (
     <Modal
       visible={!!visible}
@@ -73,6 +76,19 @@ export const PoolModal: FC<PoolModalProps> = ({
       <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
       {tabValue === TabsNames.DEPOSIT && (
         <div className={styles.content}>
+          <div className={styles.boundsWrapper}>
+            <Toggle
+              label="Buy bonds"
+              onChange={() => setIsBoundMode(!isBoundMode)}
+              value={isBoundMode}
+            />
+            <p className={styles.boundsDesc}>
+              {`I'm okay with recieveing defaulted NFTs of these collections
+              (selector dropdown) instead of deposit in exchange for higher
+              yields. (180% APY)`}
+            </p>
+            <p className={styles.boundsReadMore}>Read more</p>
+          </div>
           <TokenFieldWithBalance
             className={styles.input}
             value={depositValue}

@@ -24,10 +24,6 @@
   flex-grow: 1;
 
   @media screen and (max-width: 1380px) {
-    align-items: start;
-    flex-direction: column;
-    max-width: 130px;
-    flex-direction: row;
     max-width: 100%;
     align-items: center;
   }
@@ -82,6 +78,9 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
@@ -172,9 +171,9 @@
 }
 
 .questionIcon {
-  width: 18px;
-
   svg {
     fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
   }
 }

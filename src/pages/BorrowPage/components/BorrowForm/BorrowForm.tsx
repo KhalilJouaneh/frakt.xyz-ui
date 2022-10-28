@@ -24,6 +24,7 @@ interface BorrowFormProps {
 export enum BorrowFormType {
   PERPETUAL = 'perpetual',
   FLIP = 'flip',
+  BOND = 'bond',
 }
 
 const BorrowForm: FC<BorrowFormProps> = ({
@@ -52,8 +53,10 @@ const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
-  const { marks, maxLoanValueNumber, minLoanValueNumber, averageLoanValue } =
-    useLoanFields(selectedNft, solLoanValue);
+  const { marks, maxLoanValueNumber, minLoanValueNumber } = useLoanFields(
+    selectedNft,
+    solLoanValue,
+  );
 
   const ltv = (solLoanValue / parseFloat(selectedNft.valuation)) * 100;
 
