@@ -1,27 +1,25 @@
 import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import cx from 'classnames';
 
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { getSelectedBulkValues, getTotalBorrowed } from './helpers';
 import { commonActions } from '../../../../state/common/actions';
-import Button from '../../../../components/Button';
 import styles from './SelectedBulk.module.scss';
 import { SolanaIcon } from '../../../../icons';
-import { PATHS } from '../../../../constants';
+import SuccessLoan from '../SuccessLoan';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
 import { BulkValues } from '../../hooks';
 import Header from '../Header';
 
-interface BorrowingBulkProps {
+interface SelectedBulkProps {
   selectedBulk: BulkValues[];
-  onClick?: any;
+  onClick?: () => void;
   onBack?: () => void;
 }
 
-const SelectedBulk: FC<BorrowingBulkProps> = ({
+const SelectedBulk: FC<SelectedBulkProps> = ({
   selectedBulk: rawselectedBulk,
   onClick,
   onBack,
@@ -72,18 +70,7 @@ const SelectedBulk: FC<BorrowingBulkProps> = ({
           subtitle={`${selectedBulk?.length} loans in bulk`}
         />
 
-        {!isSelectedBulk && (
-          <div className={styles.congratsWrapper}>
-            <h3 className={styles.congratsTitle}>
-              Congrats! See your NFTs in My loans
-            </h3>
-            <NavLink to={PATHS.LOANS}>
-              <Button className={styles.congratsBtn} type="secondary">
-                Loans
-              </Button>
-            </NavLink>
-          </div>
-        )}
+        {!isSelectedBulk && <SuccessLoan />}
 
         {isSelectedBulk && getPriceBasedValues(rawselectedBulk, onEditLoan)}
       </div>

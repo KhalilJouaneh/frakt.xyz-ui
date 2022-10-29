@@ -152,28 +152,6 @@
   }
 }
 
-.congratsWrapper {
-  padding-top: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.congratsTitle {
-  font: var(--font-text-1);
-  margin-bottom: 12px;
-  text-align: center;
-}
-
-.congratsBtn {
-  width: 222px;
-  height: 48px;
-  padding: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .editMode {
   color: var(--blue-color);
   cursor: pointer;

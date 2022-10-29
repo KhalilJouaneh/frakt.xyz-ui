@@ -3,11 +3,11 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { SOL_TOKEN } from '@frakt-protocol/frakt-sdk';
 import { Controller } from 'react-hook-form';
 
-import ChangeSidesButton from '../../pages/BondsPage/components/ChangeSidesButton';
 import { getSolBalanceValue, getCorrectSolWalletBalance } from '../../utils';
 import { TokenFieldWithBalance } from '../../components/TokenField';
 import { InputControlsNames, useSwapForm } from './hooks';
 import { useNativeAccount } from '../../utils/accounts';
+import ChangeSidesButton from './ChangeSidesButton';
 import Tooltip from '../../components/Tooltip';
 import SlippageModal from '../SlippageModal';
 import styles from './SwapForm.module.scss';
