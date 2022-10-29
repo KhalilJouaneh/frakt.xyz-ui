@@ -64,7 +64,7 @@ const LongTermFields: FC<ShortTermFields> = ({ nft, ltv, setLtv }) => {
         for health.
       </p>
       <div className={styles.sliderWrapper}>
-        <p className={styles.sliderLabel}>loan to value: {ltv}% </p>
+        <p className={styles.sliderLabel}>loan to value: {ltv?.toFixed(0)}% </p>
         <Slider
           marks={marks}
           className={styles.slider}

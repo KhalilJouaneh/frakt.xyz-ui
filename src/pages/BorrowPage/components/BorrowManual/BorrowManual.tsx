@@ -68,9 +68,8 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
 
       const valuationNumber = parseFloat(valuation);
 
-      const suggestedLtv = parseFloat(
-        ((priceBased.suggestedLoanValue / valuationNumber) * 100).toFixed(0),
-      );
+      const suggestedLtv =
+        (priceBased.suggestedLoanValue / valuationNumber) * 100;
 
       const ltvPercent: number = currentNft?.ltv || suggestedLtv || 25;
       const ltvValue = ltvPercent / 100;
