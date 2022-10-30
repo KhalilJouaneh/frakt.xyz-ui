@@ -44,8 +44,6 @@ type UseBorrowForm = (props: {
   setSolLoanValue: (value: number) => void;
   updateCurrentNft: () => void;
   solLoanValue: number;
-  control: Control<{ sort: SelectOptions }, any>;
-  selectedValue: any;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -67,22 +65,9 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     defaultValue: loanTypeOptions[!isPriceBased ? 0 : 1].value,
   });
 
-  const { control, watch } = useForm({
-    defaultValues: {
-      [FilterFormInputsNames.SORT]: selectOptions[0],
-    },
-  });
-
-  const { value: selectedValue } = watch(FilterFormInputsNames.SORT);
-
-  useEffect(() => {
-    setSelectValue(selectedValue);
-  }, [selectedValue]);
-
   const [solLoanValue, setSolLoanValue] = useState<number>(0);
 
-  const defaultSliderValue =
-    (selectedNft as any)?.solLoanValue || averageLoanValue;
+  const defaultSliderValue = selectedNft?.solLoanValue || averageLoanValue;
 
   const updateParams = {
     solLoanValue,
@@ -196,7 +181,5 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
-    control,
-    selectedValue,
   };
 };

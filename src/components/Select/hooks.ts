@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { find, propEq } from 'ramda';
+
 import { SelectOptions } from './Select';
 
 type UseSelect = (props: {
@@ -14,10 +16,12 @@ type UseSelect = (props: {
 export const useSelect: UseSelect = ({ options, defaultValue }) => {
   const [value, setValue] = useState<string>(defaultValue);
 
+  const activeTab =
+    (find(propEq('value', value))(options) as SelectOptions) || null;
+
   return {
     options,
-    activeTab:
-      options.find(({ value: SelectValue }) => value === SelectValue) || null,
+    activeTab,
     value,
     setValue,
   };

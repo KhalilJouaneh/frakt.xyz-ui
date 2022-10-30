@@ -47,7 +47,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
     updateCurrentNft,
     solLoanValue,
     setSolLoanValue,
-    control,
+    setSelectValue,
   } = useBorrowForm({
     onDeselect,
     selectedNft,
@@ -62,27 +62,21 @@ const BorrowForm: FC<BorrowFormProps> = ({
 
   const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
 
-  const borrowValue = solLoanValue.toFixed(3);
+  const borrowValue = solLoanValue?.toFixed(3);
 
   return (
     <>
       <div className={styles.details}>
         <p className={styles.detailsTitle}>Duration</p>
-        <Controller
-          control={control}
-          name={FilterFormInputsNames.SORT}
-          render={({ field: { value, name, onChange } }) => (
-            <Select
-              options={selectOptions}
-              name={name}
-              value={value}
-              onChange={onChange}
-            />
-          )}
+        <Select
+          options={selectOptions}
+          value={selectValue}
+          onChange={({ value }) => setSelectValue(value)}
+          defaultValue={selectOptions[0]}
         />
         <div className={styles.sliderWrapper}>
           <p className={styles.sliderLabel}>
-            To borrow: {solLoanValue.toFixed(2)} SOL{' '}
+            To borrow: {solLoanValue?.toFixed(2)} SOL{' '}
           </p>
           <Slider
             marks={marks}

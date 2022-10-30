@@ -1,4 +1,5 @@
 import ReactSelect from 'react-select';
+import { find, propEq } from 'ramda';
 import classNames from 'classnames';
 
 import styles from './styles.module.scss';
@@ -18,19 +19,23 @@ interface SelectProps {
   value?: any;
   disabled?: boolean;
   name?: string;
+  defaultValue?: SelectOptions;
 }
 
 export const Select: FC<SelectProps> = ({
   className = '',
   disabled,
+  defaultValue,
+  value,
+  options,
   ...props
 }) => {
   const ValueContainer = (valueContainerProps: any) => {
-    const label = valueContainerProps.getValue()?.[0]?.label;
+    const label = find(propEq('value', value))(options) as SelectOptions;
 
     return (
       <span className={styles.valueContainer}>
-        <span className={styles.value}>{label}</span>
+        <span>{label?.label}</span>
         <div className={styles.input}>{valueContainerProps.children[1]}</div>
       </span>
     );
@@ -44,6 +49,8 @@ export const Select: FC<SelectProps> = ({
       className={classNames(styles.select, className)}
       isDisabled={disabled}
       classNamePrefix="custom-select"
+      defaultValue={defaultValue}
+      options={options}
     />
   );
 };

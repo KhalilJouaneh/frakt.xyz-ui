@@ -1,4 +1,5 @@
 import { BorrowNft } from '../../../../state/loans/types';
+import { getLiquidationValues } from './helpers';
 
 export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
   const { valuation, timeBased } = nft;
@@ -26,15 +27,13 @@ export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
     },
   ];
 
-  const ltv = (solLoanValue / parseFloat(valuation)) * 100;
-
-  const liquidationPrice =
-    solLoanValue + solLoanValue * (nft?.priceBased?.collaterizationRate / 100);
-
-  const liquidationDrop =
-    ((parseFloat(valuation) - liquidationPrice) / parseFloat(valuation)) * 100;
-
+  const ltv = (solLoanValue / valuationNumber) * 100;
   const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
+
+  const { liquidationPrice, liquidationDrop } = getLiquidationValues(
+    nft,
+    solLoanValue,
+  );
 
   return {
     risk,

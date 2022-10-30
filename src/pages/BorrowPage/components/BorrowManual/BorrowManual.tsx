@@ -63,13 +63,16 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
       ) as any;
 
       const isPriceBased = currentNft?.type === 'perpetual';
+      const currentLoanValue = currentNft?.solLoanValue;
+      const suggestedLoanValue = nft?.priceBased?.suggestedLoanValue;
+      const maxLoanValue = nft?.timeBased?.loanValue;
+
+      const solLoanValue =
+        currentLoanValue || suggestedLoanValue || maxLoanValue;
 
       return {
         ...nft,
-        solLoanValue:
-          currentNft?.solLoanValue ||
-          nft?.priceBased?.suggestedLoanValue ||
-          Number(nft.timeBased.loanValue),
+        solLoanValue: Number(solLoanValue),
         isPriceBased: currentNft?.type ? isPriceBased : nft?.isPriceBased,
       };
     });
@@ -141,12 +144,10 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
                 const isCanStake =
                   timeBased?.isCanStake || nft.priceBased?.isCanStake;
 
-                const selected = !!selectedNfts.find(
-                  (selectedNft) => selectedNft?.mint === nft.mint,
-                );
+                const selected = find(propEq('mint', mint))(selectedNfts);
 
                 const isBulk =
-                  selectedNfts.length && currentLoanNft.mint === nft.mint;
+                  selectedNfts.length && currentLoanNft.mint === mint;
 
                 return (
                   <NFTCheckbox
@@ -157,7 +158,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
                     }}
                     imageUrl={imageUrl}
                     name={name}
-                    selected={selected}
+                    selected={!!selected}
                     isCanStake={isCanStake}
                     isCanFreeze={isCanFreeze}
                     loanValue={maxLoanValue}
