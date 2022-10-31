@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { FC, useEffect, useState } from 'react';
 import cx from 'classnames';
 
 import { TabsNames, useDepositTxn, usePoolModal } from './usePoolModal';
+import RiskTabs, { RiskTabsNames } from './RiskTabs';
 import SwapForm from '../../componentsNew/SwapModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
@@ -11,7 +11,6 @@ import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
 import { Modal } from '../Modal';
-import Tooltip from '../Tooltip';
 
 interface PoolModalProps {
   visible: string;
@@ -20,11 +19,6 @@ interface PoolModalProps {
   depositAmount: number;
   utilizationRate: number;
   liquidityPoolPubkey: string;
-}
-
-enum RiskTabsNames {
-  HIGH = 'high',
-  MEDIUM = 'medium',
 }
 
 export const PoolModal: FC<PoolModalProps> = ({
@@ -49,6 +43,12 @@ export const PoolModal: FC<PoolModalProps> = ({
     RiskTabsNames.MEDIUM,
   );
 
+  const [mobileVisible, setMobileVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMobileVisible(false);
+  }, [visible]);
+
   return (
     <Modal
       visible={!!visible}
@@ -64,53 +64,12 @@ export const PoolModal: FC<PoolModalProps> = ({
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
-      <div className={styles.wrapper}>
-        <div className={styles.riskTabs}>
-          <div
-            onClick={() => setRiskTabType(RiskTabsNames.MEDIUM)}
-            className={cx(
-              styles.riskTab,
-              riskTabType === RiskTabsNames.MEDIUM && styles.riskTabActive,
-            )}
-          >
-            <p className={styles.riskTabTitle}>Medium Risk</p>
-            <div className={styles.riskTabInfoWrapper}>
-              <p className={styles.riskTabInfo}>
-                Deposit yield
-                <Tooltip placement="top" trigger="hover" overlay="Tooltip">
-                  <QuestionCircleOutlined className={styles.questionIcon} />
-                </Tooltip>
-              </p>
-              <p className={styles.riskTabValue}>28 %</p>
-            </div>
-            <div className={styles.riskTabInfoWrapper}>
-              <p className={styles.riskTabInfo}>Your deposit</p>
-              <p className={styles.riskTabValue}>123,023.32 SOL</p>
-            </div>
-          </div>
-          <div
-            onClick={() => setRiskTabType(RiskTabsNames.HIGH)}
-            className={cx(
-              styles.riskTab,
-              riskTabType === RiskTabsNames.HIGH && styles.riskTabActive,
-            )}
-          >
-            <p className={styles.riskTabTitle}>High Risk</p>
-            <div className={styles.riskTabInfoWrapper}>
-              <p className={styles.riskTabInfo}>
-                Deposti yield
-                <Tooltip placement="top" trigger="hover" overlay="Tooltip">
-                  <QuestionCircleOutlined className={styles.questionIcon} />
-                </Tooltip>
-              </p>
-              <p className={styles.riskTabValue}>28 %</p>
-            </div>
-            <div className={styles.riskTabInfoWrapper}>
-              <p className={styles.riskTabInfo}>Your Deposit</p>
-              <p className={styles.riskTabValue}>123,023.32 SOL</p>
-            </div>
-          </div>
-        </div>
+      <div className={cx(styles.wrapper, mobileVisible && styles.mobileModal)}>
+        <RiskTabs
+          onClick={setRiskTabType}
+          type={riskTabType}
+          className={styles.tabs}
+        />
         <div className={styles.poolTabs}>
           <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
           <div className={styles.content}>
@@ -142,6 +101,15 @@ export const PoolModal: FC<PoolModalProps> = ({
           </div>
         </div>
       </div>
+      {!mobileVisible && (
+        <div className={styles.mobileWrapper}>
+          <RiskTabs
+            setMobileVisible={setMobileVisible}
+            onClick={setRiskTabType}
+            type={riskTabType}
+          />
+        </div>
+      )}
     </Modal>
   );
 };

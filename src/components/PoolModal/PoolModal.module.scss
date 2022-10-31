@@ -2,6 +2,10 @@
   :global {
     z-index: 2;
 
+    @media (max-width: 767px) {
+      max-width: calc(100vw - 40px) !important;
+    }
+
     .ant-modal-body {
       padding: 0;
       margin: -1px;
@@ -19,58 +23,22 @@
   }
 }
 
-.riskTabs {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.tabs {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.mobileWrapper {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
 }
 
 .poolTabs {
   width: 100%;
-}
-
-.riskTab {
-  cursor: pointer;
-  background-color: var(--secondary-background);
-  border: 1px solid var(--primary-text);
-  width: 204px;
-  min-height: 350px;
-  padding: 16px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
-}
-
-.riskTabActive {
-  background-color: transparent;
-  border: 0;
-}
-
-.riskTabInfoWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.riskTabTitle {
-  color: var(--secondary-border);
-  font: var(--font-subtitle-2);
-}
-
-.riskTabInfo {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-transform: uppercase;
-}
-
-.riskTabValue {
-  color: var(--secondary-border);
-  font: var(--font-text-8);
 }
 
 .questionIcon {
@@ -83,15 +51,24 @@
 
 .wrapper {
   display: flex;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.mobileModal {
+  display: flex;
 }
 
 .content {
   padding: 32px;
-  max-height: 643px;
   height: 100%;
+  max-height: 595px;
 
   @media screen and (max-width: 767px) {
     padding: 24px;
+    height: unset;
   }
 }
 
