@@ -8,6 +8,7 @@ import { SOL_TOKEN } from '../../../utils';
 import { Select } from '../../Select';
 import { Slider } from '../../Slider';
 import Button from '../../Button';
+import { useSelect } from '../../Select/hooks';
 
 interface DepositHighProps {
   utilizationRate: number;
@@ -29,6 +30,11 @@ const DepositHigh: FC<DepositHighProps> = ({
     solWalletBalance,
   } = usePoolModal({ depositAmount });
 
+  const durationOptions = [
+    { label: '7 Days', value: '7' },
+    { label: '14 Days', value: '14' },
+  ];
+
   const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
 
   const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
@@ -38,6 +44,15 @@ const DepositHigh: FC<DepositHighProps> = ({
 
   const depositAmountWithFee =
     rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
+
+  const {
+    options: selectOptions,
+    value: selectValue,
+    setValue: setSelectValue,
+  } = useSelect({
+    options: durationOptions,
+    defaultValue: durationOptions[0].value,
+  });
 
   return (
     <div className={styles.wrapper}>
@@ -66,12 +81,14 @@ const DepositHigh: FC<DepositHighProps> = ({
         />
         <div className={styles.selectWrapper}>
           <div className={styles.selectContent}>
-            <p className={styles.selectLabel}>APY</p>
-            <Select options={[{ label: 'APY', value: 'apy' }]} />
-          </div>
-          <div className={styles.selectContent}>
-            <p className={styles.selectLabel}>Duration</p>
-            <Select options={[{ label: '7 Days', value: '7' }]} />
+            <p className={styles.selectLabel}>Loans Duration</p>
+            <Select
+              className={styles.select}
+              options={selectOptions}
+              value={selectValue}
+              onChange={({ value }) => setSelectValue(value)}
+              defaultValue={selectOptions[0]}
+            />
           </div>
         </div>
         <TokenFieldWithBalance

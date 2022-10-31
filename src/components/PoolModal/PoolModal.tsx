@@ -11,6 +11,7 @@ import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
 import { Modal } from '../Modal';
+import Icons from '../../iconsNew';
 
 interface PoolModalProps {
   visible: string;
@@ -64,6 +65,11 @@ export const PoolModal: FC<PoolModalProps> = ({
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
+      {mobileVisible && (
+        <div onClick={() => setMobileVisible(false)} className={styles.btnBack}>
+          <Icons.Arrow />
+        </div>
+      )}
       <div className={cx(styles.wrapper, mobileVisible && styles.mobileModal)}>
         <RiskTabs
           onClick={setRiskTabType}

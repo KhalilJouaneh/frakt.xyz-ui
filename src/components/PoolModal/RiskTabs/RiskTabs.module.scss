@@ -8,7 +8,7 @@
   cursor: pointer;
   background-color: var(--secondary-background);
   border: 1px solid var(--primary-text);
-  width: 204px;
+  width: 206px;
   min-height: 322px;
   padding: 16px;
   display: flex;
@@ -25,7 +25,8 @@
 
 .riskTabActive {
   background-color: transparent;
-  border: 0;
+  border-color: transparent;
+  cursor: default;
 }
 
 .riskTabInfoWrapper {

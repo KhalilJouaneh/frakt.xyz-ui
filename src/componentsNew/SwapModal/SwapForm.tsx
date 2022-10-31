@@ -28,40 +28,42 @@ const SwapForm: FC = () => {
   const solWalletBalance = getCorrectSolWalletBalance(solBalanceValue);
 
   return (
-    <>
-      <SlippageModal slippage={slippage} setSlippage={setSlippage} />
-      <Controller
-        control={control}
-        name={InputControlsNames.PAY_VALUE}
-        render={({ field: { onChange, value } }) => (
-          <TokenFieldWithBalance
-            className={styles.input}
-            value={value}
-            onValueChange={onChange}
-            tokensList={[SOL_TOKEN]}
-            currentToken={payToken}
-            label="Pay"
-            lpBalance={Number(solWalletBalance)}
-            showMaxButton
-          />
-        )}
-      />
-      <ChangeSidesButton onClick={changeSides} />
-      <Controller
-        control={control}
-        name={InputControlsNames.RECEIVE_VALUE}
-        render={({ field: { onChange, value } }) => (
-          <TokenFieldWithBalance
-            className={styles.input}
-            value={value}
-            onValueChange={onChange}
-            currentToken={receiveToken}
-            tokensList={[SOL_TOKEN]}
-            label="Receive"
-            disabled
-          />
-        )}
-      />
+    <div className={styles.container}>
+      <div>
+        <SlippageModal slippage={slippage} setSlippage={setSlippage} />
+        <Controller
+          control={control}
+          name={InputControlsNames.PAY_VALUE}
+          render={({ field: { onChange, value } }) => (
+            <TokenFieldWithBalance
+              className={styles.input}
+              value={value}
+              onValueChange={onChange}
+              tokensList={[SOL_TOKEN]}
+              currentToken={payToken}
+              label="Pay"
+              lpBalance={Number(solWalletBalance)}
+              showMaxButton
+            />
+          )}
+        />
+        <ChangeSidesButton onClick={changeSides} />
+        <Controller
+          control={control}
+          name={InputControlsNames.RECEIVE_VALUE}
+          render={({ field: { onChange, value } }) => (
+            <TokenFieldWithBalance
+              className={styles.input}
+              value={value}
+              onValueChange={onChange}
+              currentToken={receiveToken}
+              tokensList={[SOL_TOKEN]}
+              label="Receive"
+              disabled
+            />
+          )}
+        />
+      </div>
       <div className={styles.infoWrapper}>
         <div className={styles.info}>
           <span className={styles.infoTitle}>
@@ -106,7 +108,7 @@ const SwapForm: FC = () => {
       <Button className={styles.btn} type="secondary">
         Swap
       </Button>
-    </>
+    </div>
   );
 };
 

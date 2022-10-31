@@ -35,8 +35,16 @@
   font: var(--font-text-8);
 }
 
-.input {
+body .input {
   margin-bottom: 10px;
+
+  @media screen and (max-width: 767px) {
+    input {
+      height: 40px;
+    }
+
+    height: 40px;
+  }
 }
 
 .errors {
@@ -67,4 +75,16 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
+}
+
+.select {
+  :global {
+    .custom-select__control {
+      min-height: 48px !important;
+
+      @media (max-width: 767px) {
+        min-height: 40px !important;
+      }
+    }
+  }
 }
