@@ -118,14 +118,16 @@ const getPriceBasedValues = (
 
         const {
           maxLoanValue,
-          fee,
           loanToValue,
           BorrowAPY,
           liquidationsPrice,
           feeDiscountPercents,
           period,
           repayValue,
+          fee,
         } = getSelectedBulkValues(nft);
+
+        const feeName = isPriceBasedLoan ? 'Upfront fee' : 'fee';
 
         return (
           <div className={styles.cardWrapper} key={nft.name}>
@@ -141,7 +143,7 @@ const getPriceBasedValues = (
             <div className={styles.hiddenValues}>
               {getStatsValue('Loan to value', loanToValue, 'percent')}
               {getStatsValue('Floor price', valuation, 'number')}
-              {getStatsValue('fee', fee, 'number')}
+              {getStatsValue(feeName, fee, 'number')}
               {getStatsValue('To borrow', maxLoanValue, 'number')}
               {getStatsValue(
                 'Duration',

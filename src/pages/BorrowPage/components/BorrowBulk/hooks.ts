@@ -6,7 +6,7 @@ export const useBorrowBulk = (): {
   getTotalValue: (bulk: BulkValues[]) => number;
 } => {
   const getTotalValue = (bulk): number => {
-    const priceBased = ({ priceBased }) => priceBased;
+    const priceBased = ({ isPriceBased }) => isPriceBased;
     const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
     const timeBased = ({ isPriceBased }) => !isPriceBased;
     const suggestedLoanValue = ({ priceBased }) =>
@@ -15,11 +15,12 @@ export const useBorrowBulk = (): {
     const priceBasedLoans = filter(priceBased, bulk);
     const timeBasedLoans = filter(timeBased, bulk);
 
-    const priceBasedLoansValue = sum(map(suggestedLoanValue, priceBasedLoans));
+    const priceBasedLoansValue =
+      sum(map(suggestedLoanValue, priceBasedLoans)) || 0;
 
-    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans));
+    const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans)) || 0;
 
-    return priceBasedLoansValue + timeBasedLoansValue || 0;
+    return priceBasedLoansValue + timeBasedLoansValue;
   };
 
   return { getTotalValue };

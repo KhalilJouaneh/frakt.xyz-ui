@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { FilterFormInputsNames } from '../../hooks/useBorrowPageFilter';
@@ -63,7 +63,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
   const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
 
   const borrowValue = solLoanValue?.toFixed(3);
-
   return (
     <>
       <div className={styles.details}>
@@ -73,6 +72,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
           value={selectValue}
           onChange={({ value }) => setSelectValue(value)}
           defaultValue={selectOptions[0]}
+          disabled={!selectedNft.priceBased}
         />
         <div className={styles.sliderWrapper}>
           <p className={styles.sliderLabel}>

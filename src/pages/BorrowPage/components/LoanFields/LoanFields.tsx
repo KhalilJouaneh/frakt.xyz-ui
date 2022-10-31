@@ -24,7 +24,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
   ltv,
   solLoanValue,
 }) => {
-  const { valuation } = nft;
+  const { valuation, timeBased } = nft;
 
   const { liquidationPrice, liquidationDrop } = getLiquidationValues(
     nft,
@@ -75,18 +75,33 @@ const LoansFields: FC<LoansFieldsProps> = ({
             {feeOnDay.toFixed(3)} <SolanaIcon />
           </p>
         </div>
-        <div className={styles.staticValue}>
-          <p className={styles.staticValueTitle}>Fee on 7d</p>
-          <p className={styles.staticValueData}>
-            {(feeOnDay * 7).toFixed(3)} <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.staticValue}>
-          <p className={styles.staticValueTitle}>Fee on 30d</p>
-          <p className={styles.staticValueData}>
-            {(feeOnDay * 30).toFixed(3)} <SolanaIcon />
-          </p>
-        </div>
+        {isPriceBasedType ? (
+          <div className={styles.staticValue}>
+            <p className={styles.staticValueTitle}>Fee on 7d</p>
+            <p className={styles.staticValueData}>
+              {(feeOnDay * 7).toFixed(3)} <SolanaIcon />
+            </p>
+          </div>
+        ) : (
+          <div className={styles.staticValue}>
+            <p className={styles.staticValueTitle}>
+              Fee on {timeBased.returnPeriodDays}d
+            </p>
+            <p className={styles.staticValueData}>
+              {(feeOnDay * timeBased.returnPeriodDays).toFixed(3)}{' '}
+              <SolanaIcon />
+            </p>
+          </div>
+        )}
+
+        {isPriceBasedType && (
+          <div className={styles.staticValue}>
+            <p className={styles.staticValueTitle}>Fee on 30d</p>
+            <p className={styles.staticValueData}>
+              {(feeOnDay * 30).toFixed(3)} <SolanaIcon />
+            </p>
+          </div>
+        )}
         {isPriceBasedType && (
           <div className={cx(styles.staticValue)}>
             <p className={styles.staticValueTitle}>Fee on 1Y</p>
@@ -103,7 +118,9 @@ const LoansFields: FC<LoansFieldsProps> = ({
           </div>
         )}
         <div className={styles.staticValue}>
-          <p className={styles.staticValueTitle}>Upfront fee</p>
+          <p className={styles.staticValueTitle}>
+            {isPriceBasedType ? 'Upfront fee' : 'Fee'}
+          </p>
           <p className={styles.staticValueData}>
             {fee.toFixed(3)} <SolanaIcon />
           </p>

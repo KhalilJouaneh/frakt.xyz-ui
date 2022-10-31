@@ -17,14 +17,17 @@ const getPriceBasedValues = (
   const suggestedLoanValue = priceBased?.suggestedLoanValue;
 
   const currentLtvPersent = (nft?.solLoanValue / valuationNumber) * 100;
-  const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
 
   const currentLoanValue = (valuationNumber * currentLtvPersent) / 100;
   const loanValue = currentLoanValue || suggestedLoanValue;
 
-  const fee = Number(maxLoanValue) * 0.01;
+  const isPriceBased = (nft?.priceBased as any)?.isBest;
 
-  const ltv = currentLtvPersent || suggestedLtvPersent;
+  const suggestedFee = priceBased?.suggestedLoanValue * 0.01;
+  const fee = (isPriceBased && suggestedFee) || Number(maxLoanValue) * 0.01;
+
+  const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
+  const ltv = currentLtvPersent || parseFloat(suggestedLtvPersent.toFixed(0));
 
   const BorrowAPY = priceBased?.borrowAPRPercents;
   const collaterizationRateValue = priceBased?.collaterizationRate / 100;
@@ -85,7 +88,6 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
   } = getTimeBasedValues(nft);
 
   const {
-    priceBasedFee,
     priceBasedLoanValue,
     priceBasedLtvPersent,
     BorrowAPY,
@@ -96,7 +98,9 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
     ? nft?.solLoanValue || priceBasedLoanValue
     : rawMaxLoanValue;
 
-  const fee = isPriceBased ? priceBasedFee : timeBasedFee;
+  const fee = isPriceBased
+    ? (Number(loanValue) * 0.01).toFixed(3)
+    : timeBasedFee;
 
   const loanToValue = isPriceBased ? priceBasedLtvPersent : timeBasedLtvPersent;
 
@@ -126,8 +130,11 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
         return dayFee - dayFee * feeDiscountPercentsValue;
       } else {
         const { priceBased, valuation } = nft;
+        const suggestedLtvPersent =
+          (priceBased?.suggestedLoanValue / parseFloat(valuation)) * 100;
 
-        const ltv = priceBased?.ltv || priceBased?.ltvPercents;
+        const ltv =
+          priceBased?.ltv || suggestedLtvPersent || priceBased?.ltvPercents;
 
         const loanValue = parseFloat(valuation) * (ltv / 100);
 
