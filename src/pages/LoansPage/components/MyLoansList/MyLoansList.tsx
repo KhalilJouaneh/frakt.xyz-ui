@@ -13,13 +13,11 @@ import Button from '../../../../components/Button';
 import styles from './MyLoansList.module.scss';
 import {
   FilterFormInputsNames,
-  SORT_LOANS_TYPE_VALUES,
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
 import FilterCollections from '../../../../componentsNew/FilterCollections';
 import SortControl from '../../../../componentsNew/SortControl';
-import RadioControl from '../../../../componentsNew/RadioControl';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
@@ -28,17 +26,10 @@ export const MyLoansList: FC = () => {
 
   const totalDebt = useSelector(selectTotalDebt);
 
-  const {
-    control,
-    loans,
-    totalBorrowed,
-    showLoansStatus,
-    sortValueOption,
-    sort,
-    setValue,
-  } = useLoansFiltering({
-    selectedCollections,
-  });
+  const { control, loans, totalBorrowed, sortValueOption, sort, setValue } =
+    useLoansFiltering({
+      selectedCollections,
+    });
 
   const {
     visible: filtersModalVisible,
@@ -81,14 +72,6 @@ export const MyLoansList: FC = () => {
                         onCancel={closeFiltersModal}
                         className={styles.filtersDropdown}
                       >
-                        <RadioControl
-                          control={control}
-                          name={FilterFormInputsNames.LOANS_STATUS}
-                          checkedValue={showLoansStatus.value}
-                          options={SORT_LOANS_TYPE_VALUES}
-                          title="Loan type"
-                          setValue={setValue}
-                        />
                         <FilterCollections
                           setSelectedCollections={setSelectedCollections}
                           selectedCollections={selectedCollections}

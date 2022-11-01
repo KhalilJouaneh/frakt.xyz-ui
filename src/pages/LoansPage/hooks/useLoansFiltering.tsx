@@ -12,7 +12,6 @@ import { compareNumbers } from '../../../utils';
 
 type FilterFormFieldsValues = {
   [FilterFormInputsNames.SORT]: LoansValue;
-  [FilterFormInputsNames.LOANS_STATUS]: LoansValue;
 };
 
 export type LoansValue = {
@@ -22,7 +21,6 @@ export type LoansValue = {
 
 export enum FilterFormInputsNames {
   SORT = 'sort',
-  LOANS_STATUS = 'loansStatus',
 }
 
 enum SortField {
@@ -30,12 +28,6 @@ enum SortField {
   TIME_TO_REPAY = 'timeToRepay',
   HEALTH = 'health',
   CREATION = 'creation',
-}
-
-export enum StatusLoanNames {
-  SHOW_ALL_LOANS = 'showAllLoans',
-  SHOW_PRICE_BASED_LOANS = 'showPriceBasedLoans',
-  SHOW_TIME_BASED_LOANS = 'showTimeBasedLoans',
 }
 
 type UseLoansFiltering = ({
@@ -49,7 +41,6 @@ type UseLoansFiltering = ({
   sortValueOption: LoansValue[];
   sort: LoansValue;
   setValue: any;
-  showLoansStatus: LoansValue;
 };
 
 export const useLoansFiltering: UseLoansFiltering = ({
@@ -64,11 +55,9 @@ export const useLoansFiltering: UseLoansFiltering = ({
         label: <span>Time to repay</span>,
         value: 'timeToRepay_asc',
       },
-      [FilterFormInputsNames.LOANS_STATUS]: SORT_LOANS_TYPE_VALUES[0],
     },
   });
 
-  const showLoansStatus = watch(FilterFormInputsNames.LOANS_STATUS);
   const sort = watch(FilterFormInputsNames.SORT);
 
   const selectedCollectionsName = selectedCollections.map((value) => value);
@@ -96,28 +85,11 @@ export const useLoansFiltering: UseLoansFiltering = ({
           const selectedCollections =
             selectedCollectionsName.includes(collectionName);
 
-          const state = showLoansStatus.value;
-
-          const showAllLoans = state === StatusLoanNames.SHOW_ALL_LOANS;
-
-          const showPriceBasedLoans =
-            state === StatusLoanNames.SHOW_PRICE_BASED_LOANS;
-
-          const showTimeBasedLoans =
-            state === StatusLoanNames.SHOW_TIME_BASED_LOANS;
-
-          const removePriceBased =
-            !showPriceBasedLoans && loan.isPriceBased && !showAllLoans;
-
-          const removeTimeBased =
-            !showTimeBasedLoans && !loan.isPriceBased && !showAllLoans;
-
           const showSelectedCollection = selectedCollectionsName.length
             ? !selectedCollections
             : false;
 
-          if (removePriceBased || removeTimeBased || showSelectedCollection)
-            return false;
+          if (showSelectedCollection) return false;
 
           return nftName;
         })
@@ -168,7 +140,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
         });
     }
     return [];
-  }, [userLoans, sort, showLoansStatus, selectedCollectionsName]);
+  }, [userLoans, sort, selectedCollectionsName]);
 
   const totalBorrowed = sum(map(({ loanValue }) => loanValue, filteredLoans));
 
@@ -180,24 +152,8 @@ export const useLoansFiltering: UseLoansFiltering = ({
     sortValueOption,
     sort,
     setValue,
-    showLoansStatus,
   };
 };
-
-export const SORT_LOANS_TYPE_VALUES: LoansValue[] = [
-  {
-    label: <span>All</span>,
-    value: 'showAllLoans',
-  },
-  {
-    label: <span>Perpetual</span>,
-    value: 'showPriceBasedLoans',
-  },
-  {
-    label: <span>Flip</span>,
-    value: 'showTimeBasedLoans',
-  },
-];
 
 export const SORT_VALUES = [
   {
