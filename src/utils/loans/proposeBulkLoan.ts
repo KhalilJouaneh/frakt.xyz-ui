@@ -25,7 +25,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
 
   try {
     for (let index = 0; index < selectedBulk.length; index++) {
-      const { mint, valuation, isPriceBased, priceBased, timeBased } =
+      const { mint, valuation, isPriceBased, priceBased, solLoanValue } =
         selectedBulk[index];
 
       const valuationNumber = parseFloat(valuation);
@@ -33,11 +33,11 @@ export const proposeBulkLoan: ProposeLoan = async ({
       const suggestedLoanValue = priceBased?.suggestedLoanValue;
       const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
 
+      const rawLoanToValue = (solLoanValue / valuationNumber) * 100;
+
       const proposedNftPrice = valuationNumber * 10 ** SOL_TOKEN.decimals;
 
-      const loanToValue = isPriceBased
-        ? priceBased?.ltv || suggestedLtvPersent
-        : timeBased.ltvPercents;
+      const loanToValue = rawLoanToValue || suggestedLtvPersent;
 
       const { ix, loan } = await loans.proposeLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
