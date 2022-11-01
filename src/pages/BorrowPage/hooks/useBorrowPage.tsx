@@ -107,7 +107,8 @@ export const useBorrowPage = (): {
   const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
 
   const onSubmit = async (): Promise<void> => {
-    const totalValue = percentValue > 99.5 ? availableBorrowValue : borrowValue;
+    const totalValue =
+      percentValue > 99.5 ? Math.ceil(availableBorrowValue) : borrowValue;
 
     try {
       const bulks = await networkRequest({
