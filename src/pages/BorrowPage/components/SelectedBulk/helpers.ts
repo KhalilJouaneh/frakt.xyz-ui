@@ -146,14 +146,12 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
 
 export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
   const bulksValues = selectedBulk.map((nft) => {
-    const { timeBased, isPriceBased } = nft;
+    const { timeBased } = nft;
     const loanValueNumber = parseFloat(timeBased.loanValue);
 
-    if (isPriceBased) {
-      return nft.solLoanValue || nft.priceBased?.suggestedLoanValue;
-    } else {
-      return loanValueNumber;
-    }
+    return (
+      nft?.solLoanValue || nft.priceBased?.suggestedLoanValue || loanValueNumber
+    );
   });
 
   return sum(bulksValues);

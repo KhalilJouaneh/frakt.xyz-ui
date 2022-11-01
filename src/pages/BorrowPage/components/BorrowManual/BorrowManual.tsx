@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { find, propEq } from 'ramda';
 import cx from 'classnames';
 
-import { useBorrowPageFilter } from '../../hooks/useBorrowPageFilter';
+import { defaultSortValues, SortValue } from '../../hooks/useBorrowPageFilter';
 import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
 import { loansActions } from '../../../../state/loans/actions';
@@ -15,13 +15,13 @@ import SelectedBulk from '../SelectedBulk';
 import { BulkValues } from '../../hooks';
 import SidebarForm from '../SidebarForm';
 import { useBorrowNft } from './hooks';
+import SortNfts from '../SortNfts';
 import Header from '../Header';
 import {
   selectBulkNfts,
   selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
-import SortNfts from '../SortNfts';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -30,7 +30,7 @@ interface BorrowNftProps {
 const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const dispatch = useDispatch();
 
-  const { sort } = useBorrowPageFilter();
+  const [sort, setSortValue] = useState<SortValue>(defaultSortValues);
 
   const {
     isCloseSidebar,
@@ -116,6 +116,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
             searchQuery={searchQuery}
             setSearch={setSearch}
             selectedNfts={selectedNfts}
+            setSortValue={setSortValue}
           />
 
           {connected && !isLoading && !nfts.length && <NoSuitableNft />}

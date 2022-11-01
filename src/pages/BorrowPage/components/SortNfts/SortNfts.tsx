@@ -1,31 +1,34 @@
-import { FC, useRef } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
 import cx from 'classnames';
 
 import { SearchInput } from '../../../../components/SearchInput';
 import SortControl from '../../../../componentsNew/SortControl';
 import { useOnClickOutside } from '../../../../utils';
+import { BorrowNft } from '../../../../state/loans/types';
 import Button from '../../../../components/Button';
 import styles from './SortNfts.module.scss';
 import {
   FilterFormInputsNames,
+  SortValue,
   SORT_VALUES,
   useBorrowPageFilter,
-} from '../../hooks/useBorrowPageFilter';
+} from '../../hooks';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
-import { BorrowNft } from '../../../../state/loans/types';
 
 interface SortNftsProps {
   searchQuery: string;
-  setSearch: any;
+  setSearch: (searchQuery: string) => void;
   selectedNfts: BorrowNft[];
+  setSortValue: Dispatch<SetStateAction<SortValue>>;
 }
 
 const SortNfts: FC<SortNftsProps> = ({
   searchQuery,
   setSearch,
   selectedNfts,
+  setSortValue,
 }) => {
   const {
     visible: filtersModalVisible,
@@ -37,6 +40,10 @@ const SortNfts: FC<SortNftsProps> = ({
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
+
+  useEffect(() => {
+    setSortValue(sort);
+  }, [sort]);
 
   return (
     <div className={styles.sortWrapper}>

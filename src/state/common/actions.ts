@@ -8,7 +8,6 @@ import {
   WalletModalState,
   SolanaHealthState,
   ConfettiState,
-  SelectedNftIdState,
 } from './types';
 
 export const commonTypes = {

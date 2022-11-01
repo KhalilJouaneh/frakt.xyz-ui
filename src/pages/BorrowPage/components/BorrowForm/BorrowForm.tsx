@@ -1,7 +1,5 @@
-import { FC, useMemo } from 'react';
-import { Controller } from 'react-hook-form';
+import { FC } from 'react';
 
-import { FilterFormInputsNames } from '../../hooks/useBorrowPageFilter';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { getRisk, useLoanFields } from '../LoanFields/hooks';

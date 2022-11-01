@@ -21,7 +21,12 @@ export const SORT_VALUES = [
   },
 ];
 
-type SortValue = {
+export const defaultSortValues = {
+  label: <span>Name</span>,
+  value: 'name_asc',
+};
+
+export type SortValue = {
   label: JSX.Element;
   value: string;
 };
@@ -35,10 +40,7 @@ type UseBorrowPageFilter = () => {
 export const useBorrowPageFilter: UseBorrowPageFilter = () => {
   const { control, watch, setValue } = useForm({
     defaultValues: {
-      [FilterFormInputsNames.SORT]: {
-        label: <span>Name</span>,
-        value: 'name_asc',
-      },
+      [FilterFormInputsNames.SORT]: defaultSortValues,
     },
   });
 

@@ -1,4 +1,3 @@
-import { commonActions } from './../../../../state/common/actions';
 import {
   useState,
   Dispatch,
@@ -8,21 +7,22 @@ import {
   useCallback,
   useRef,
 } from 'react';
-
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { selectBorrowNfts } from '../../../../state/loans/selectors';
+import { commonActions } from './../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import { BorrowNft } from '../../../../state/loans/types';
-import { selectBorrowNfts } from '../../../../state/loans/selectors';
 import { useDebounce } from '../../../../hooks';
-import { FETCH_LIMIT } from '../../hooks/useBorrowPageFilter';
+import { SortValue } from './../../hooks';
+import { FETCH_LIMIT } from '../../hooks';
 
 export const useBorrowNft = ({
   sort,
 }: {
-  sort: any;
+  sort: SortValue;
 }): {
   nfts: BorrowNft[];
   isLoading: boolean;
