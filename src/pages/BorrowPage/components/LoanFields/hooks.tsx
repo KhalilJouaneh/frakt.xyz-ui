@@ -1,19 +1,28 @@
 import { BorrowNft } from '../../../../state/loans/types';
 import { getLiquidationValues } from './helpers';
 
-export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
+export const useLoanFields = (
+  nft: BorrowNft,
+  solLoanValue?: number,
+  selectValue?: string,
+) => {
   const { valuation, timeBased } = nft;
 
   const valuationNumber = parseFloat(valuation);
-  const maxLoanValueNumber = valuationNumber * (timeBased.ltvPercents / 100);
+  const maxLoanValueNumber = valuationNumber * (timeBased?.ltvPercents / 100);
+  const maxLoanPriceValueNumber =
+    valuationNumber * (nft?.priceBased?.ltvPercents / 100);
   const minLoanValueNumber = valuationNumber / 10;
+
+  const maxLoanValue =
+    selectValue === 'flip' ? maxLoanValueNumber : maxLoanPriceValueNumber;
 
   const marks: { [key: number]: string | JSX.Element } = {
     [minLoanValueNumber]: `${minLoanValueNumber.toFixed(2)} SOL`,
-    [maxLoanValueNumber]: `${maxLoanValueNumber.toFixed(2)} SOL`,
+    [maxLoanValue]: `${maxLoanValue.toFixed(2)} SOL`,
   };
 
-  const averageLoanValue = (maxLoanValueNumber + minLoanValueNumber) / 2;
+  const averageLoanValue = (maxLoanValue + minLoanValueNumber) / 2;
 
   const loanTypeOptions = [
     {
@@ -27,24 +36,19 @@ export const useLoanFields = (nft: BorrowNft, solLoanValue?: number) => {
     },
   ];
 
-  const ltv = (solLoanValue / valuationNumber) * 100;
-  const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
-
   const { liquidationPrice, liquidationDrop } = getLiquidationValues(
     nft,
     solLoanValue,
   );
 
   return {
-    risk,
     marks,
-    maxLoanValueNumber,
+    maxLoanValue,
     minLoanValueNumber,
     liquidationPrice,
     liquidationDrop,
     loanTypeOptions,
     averageLoanValue,
-    ltv,
   };
 };
 

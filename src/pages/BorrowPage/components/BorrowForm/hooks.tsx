@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -62,9 +62,21 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     defaultValue: loanTypeOptions[!isPriceBased ? 0 : 1].value,
   });
 
-  const [solLoanValue, setSolLoanValue] = useState<number>(0);
-
+  const [loanValue, setSolLoanValue] = useState<number>(0);
   const defaultSliderValue = selectedNft?.solLoanValue || averageLoanValue;
+
+  const priceBasedLtv = selectedNft?.priceBased?.ltvPercents / 100;
+  const valuationNumber = parseFloat(selectedNft.valuation);
+
+  const priceBasedLoanValue = valuationNumber * priceBasedLtv;
+
+  const solLoanValue = useMemo(() => {
+    if (currentLoanNft.type !== 'flip') {
+      return loanValue > priceBasedLoanValue ? priceBasedLoanValue : loanValue;
+    } else {
+      return loanValue;
+    }
+  }, [loanValue, currentLoanNft]);
 
   const updateParams = {
     solLoanValue,

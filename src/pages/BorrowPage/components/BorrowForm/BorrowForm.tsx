@@ -51,9 +51,10 @@ const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
-  const { marks, maxLoanValueNumber, minLoanValueNumber } = useLoanFields(
+  const { marks, maxLoanValue, minLoanValueNumber } = useLoanFields(
     selectedNft,
     solLoanValue,
+    selectValue,
   );
 
   const ltv = (solLoanValue / parseFloat(selectedNft.valuation)) * 100;
@@ -83,7 +84,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
             step={0.1}
             setValue={setSolLoanValue}
             min={minLoanValueNumber}
-            max={maxLoanValueNumber}
+            max={maxLoanValue}
           />
         </div>
         <LoansFields
