@@ -50,3 +50,15 @@
     padding-right: 0;
   }
 }
+
+.filtersDropdown {
+  right: 334px;
+
+  @media (max-width: 870px) {
+    right: 210px;
+  }
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+}

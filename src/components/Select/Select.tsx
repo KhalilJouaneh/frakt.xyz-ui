@@ -44,6 +44,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <ReactSelect
       {...props}
+      value={options.filter((option) => option.value === value)}
       isSearchable={false}
       components={{ ValueContainer }}
       className={classNames(styles.select, className)}

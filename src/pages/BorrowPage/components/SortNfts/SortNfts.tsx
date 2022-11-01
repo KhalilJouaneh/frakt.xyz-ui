@@ -66,7 +66,10 @@ const SortNfts: FC<SortNftsProps> = ({
           {filtersModalVisible && (
             <FiltersDropdown
               onCancel={closeFiltersModal}
-              className={styles.filtersDropdown}
+              className={cx(
+                styles.filtersDropdown,
+                selectedNfts.length && styles.filtersDropdown,
+              )}
             >
               <SortControl
                 control={control}
