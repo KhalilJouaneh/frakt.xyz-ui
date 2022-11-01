@@ -41,6 +41,7 @@
 }
 
 .staticValueTitle {
+  display: flex;
   color: var(--secondary-text);
   font: var(--font-text-6);
   font-size: 12px;
@@ -72,13 +73,12 @@
 }
 
 .questionIcon {
-  margin-top: -2px;
   margin-left: 5px;
 
   svg {
     fill: var(--blue-color);
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
   }
 }
 

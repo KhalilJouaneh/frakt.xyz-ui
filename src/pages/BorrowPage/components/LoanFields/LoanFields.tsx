@@ -48,7 +48,16 @@ const LoansFields: FC<LoansFieldsProps> = ({
         </div>
         {isPriceBasedType && (
           <div className={styles.staticValue}>
-            <p className={styles.staticValueTitle}>liquidation price</p>
+            <p className={styles.staticValueTitle}>
+              liquidation price
+              <Tooltip
+                placement="bottom"
+                trigger="hover"
+                overlay="How much the NFT price needs to drop for your loan to get liquidated"
+              >
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+            </p>
             <p
               className={cx(styles.staticValueData, {
                 [styles.highLoanRisk]: risk === Risk.High,
@@ -58,13 +67,6 @@ const LoansFields: FC<LoansFieldsProps> = ({
             >
               {liquidationPrice?.toFixed(3)} SOL (-{liquidationDrop?.toFixed()}
               %)
-              <Tooltip
-                placement="bottom"
-                trigger="hover"
-                overlay="How much the NFT price needs to drop for your loan to get liquidated"
-              >
-                <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip>
             </p>
           </div>
         )}
@@ -104,9 +106,8 @@ const LoansFields: FC<LoansFieldsProps> = ({
         )}
         {isPriceBasedType && (
           <div className={cx(styles.staticValue)}>
-            <p className={styles.staticValueTitle}>Fee on 1Y</p>
-            <p className={styles.staticValueData}>
-              {(feeOnDay * 365).toFixed(3)} <SolanaIcon />
+            <p className={styles.staticValueTitle}>
+              Fee on 1Y
               <Tooltip
                 placement="bottom"
                 trigger="hover"
@@ -114,6 +115,9 @@ const LoansFields: FC<LoansFieldsProps> = ({
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
+            </p>
+            <p className={styles.staticValueData}>
+              {(feeOnDay * 365).toFixed(3)} <SolanaIcon />
             </p>
           </div>
         )}
