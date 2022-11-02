@@ -103,7 +103,8 @@ export const useLoansFiltering: UseLoansFiltering = ({
           }
 
           if (sortField === SortField.TIME_TO_REPAY) {
-            if (loanA.isPriceBased) return;
+            if (loanA.isPriceBased) return 1;
+            if (loanB.isPriceBased) return -1;
 
             const { expiredAtUnix: timeToRepayA } = caclTimeToRepay(loanA);
 
@@ -117,7 +118,8 @@ export const useLoansFiltering: UseLoansFiltering = ({
           }
 
           if (sortField === SortField.HEALTH) {
-            if (!loanA.isPriceBased) return;
+            if (!loanA.health) return 1;
+            if (!loanB.health) return -1;
 
             return compareNumbers(
               loanA.health,
