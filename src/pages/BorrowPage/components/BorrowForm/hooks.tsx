@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
-import { Tab, useTabs } from '../../../../components/Tabs';
+import { useSelect } from '../../../../components/Select/hooks';
 import { BorrowNft } from '../../../../state/loans/types';
 import { proposeLoan } from '../../../../utils/loans';
+import { useLoanFields } from '../LoanFields/hooks';
 import { useConnection } from '../../../../hooks';
+import { Tab } from '../../../../components/Tabs';
 import { BulkValues } from '../../hooks';
 
-export enum FormFieldTypes {
-  SHORT_TERM_FIELD = 'shortTermField',
-  LONG_TERM_FIELD = 'longTermField',
-}
-
-const getConfirmModalText = (nft: BorrowNft, isPriceBased = false) => {
+const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
   const { name, timeBased } = nft;
 
   const confirmShortTermText = `You are about to use ${name} as collateral for an instant loan of ${timeBased.repayValue} SOL (incl. interest rate if applicable) that you commit to repay in full within ${timeBased.returnPeriodDays} days. Proceed?`;
@@ -30,22 +28,19 @@ type UseBorrowForm = (props: {
   onDeselect?: () => void;
   selectedNft?: BulkValues;
 }) => {
-  borrowTabs: Tab[];
+  selectOptions: Tab[];
   openConfirmModal: () => void;
   confirmModalVisible: boolean;
   closeConfirmModal: () => void;
   loadingModalVisible: boolean;
   closeLoadingModal: () => void;
   onSubmit: (nft: BorrowNft) => void;
-  formField: FormFieldTypes;
-  setFormField: (nextFormField: FormFieldTypes) => void;
-  priceBasedLTV: number;
-  setPriceBasedLTV: (nextValue: number) => void;
   confirmText: string;
-  priceBasedDisabled: boolean;
-  tabValue: string;
-  setTabValue: (value: string) => void;
-  updateCurrentNft: any;
+  selectValue: string;
+  setSelectValue: (value: string) => void;
+  setSolLoanValue: (value: number) => void;
+  updateCurrentNft: () => void;
+  solLoanValue: number;
 };
 
 export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
@@ -53,73 +48,74 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const dispatch = useDispatch();
   const connection = useConnection();
 
+  const currentLoanNft = useSelector(selectCurrentLoanNft) as any;
   const isPriceBased = selectedNft?.isPriceBased;
 
-  const defaultSliderValue = selectedNft.priceBased?.ltv;
-
-  const [formField, setFormField] = useState<FormFieldTypes>(
-    FormFieldTypes.LONG_TERM_FIELD,
-  );
-
-  const [priceBasedLTV, setPriceBasedLTV] =
-    useState<number>(defaultSliderValue);
-
-  const BORROW_FORM_TABS: Tab[] = [
-    {
-      label: 'Perpetual',
-      value: 'perpetual',
-      disabled: !selectedNft?.priceBased,
-    },
-    {
-      label: 'Flip',
-      value: 'flip',
-    },
-  ];
+  const { loanTypeOptions, averageLoanValue } = useLoanFields(selectedNft);
 
   const {
-    tabs: borrowTabs,
-    value: tabValue,
-    setValue: setTabValue,
-  } = useTabs({
-    tabs: BORROW_FORM_TABS,
-    defaultValue: BORROW_FORM_TABS[1].value,
+    options: selectOptions,
+    value: selectValue,
+    setValue: setSelectValue,
+  } = useSelect({
+    options: loanTypeOptions,
+    defaultValue: loanTypeOptions[!isPriceBased ? 0 : 1].value,
   });
+
+  const [loanValue, setSolLoanValue] = useState<number>(0);
+  const defaultSliderValue = selectedNft?.solLoanValue || averageLoanValue;
+
+  const priceBasedLtv = selectedNft?.priceBased?.ltvPercents / 100;
+  const valuationNumber = parseFloat(selectedNft.valuation);
+
+  const priceBasedLoanValue = valuationNumber * priceBasedLtv;
+
+  const solLoanValue = useMemo(() => {
+    if (currentLoanNft.type !== 'flip') {
+      return loanValue > priceBasedLoanValue ? priceBasedLoanValue : loanValue;
+    } else {
+      return loanValue;
+    }
+  }, [loanValue, currentLoanNft]);
+
+  const updateParams = {
+    solLoanValue,
+    type: selectValue,
+  };
 
   const updateCurrentNft = () => {
     if (selectedNft?.priceBased) {
       dispatch(
         loansActions.updatePerpLoanNft({
           mint: selectedNft?.mint,
-          ltv: priceBasedLTV,
-          formType: tabValue,
+          ...updateParams,
         }),
       );
     }
   };
 
   useEffect(() => {
-    if (isPriceBased) {
-      setTabValue('perpetual');
-    } else {
-      setTabValue('flip');
+    dispatch(
+      loansActions.setCurrentLoanNft({
+        ...selectedNft,
+        ...updateParams,
+      }),
+    );
+  }, [solLoanValue, selectValue, selectedNft]);
+
+  useEffect(() => {
+    if (defaultSliderValue) {
+      setSolLoanValue(defaultSliderValue || 0);
     }
   }, [selectedNft]);
 
   useEffect(() => {
     if (isPriceBased) {
-      setPriceBasedLTV(defaultSliderValue);
+      setSelectValue('perpetual');
     } else {
-      setPriceBasedLTV(25);
+      setSelectValue('flip');
     }
   }, [selectedNft]);
-
-  useEffect(() => {
-    if (tabValue !== 'perpetual') {
-      setFormField(FormFieldTypes.SHORT_TERM_FIELD);
-    } else {
-      setFormField(FormFieldTypes.LONG_TERM_FIELD);
-    }
-  }, [selectedNft, tabValue]);
 
   const {
     visible: confirmModalVisible,
@@ -142,28 +138,33 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   };
 
   const onSubmit = async (nft: BorrowNft) => {
+    const { mint, valuation } = nft;
+
+    const valuationNumber = parseFloat(valuation);
+
+    const loanToValue = (currentLoanNft.solLoanValue / valuationNumber) * 100;
+
+    const isPriceBased = currentLoanNft.type === 'perpetual';
+
     try {
       closeConfirmModal();
       openLoadingModal();
 
       const result = await proposeLoan({
-        nftMint: nft?.mint,
+        nftMint: mint,
         connection,
         wallet,
-        valuation: parseFloat(nft?.valuation),
-        isPriceBased: formField === FormFieldTypes.LONG_TERM_FIELD,
+        valuation: valuationNumber,
+        isPriceBased,
         onApprove: showConfetti,
-        loanToValue:
-          formField === FormFieldTypes.LONG_TERM_FIELD
-            ? priceBasedLTV
-            : nft.timeBased.ltvPercents,
+        loanToValue,
       });
 
       if (!result) {
         throw new Error('Loan proposing failed');
       }
 
-      removeTokenOptimistic(nft.mint);
+      removeTokenOptimistic(mint);
       onDeselect?.();
     } catch (error) {
       console.error(error);
@@ -173,27 +174,21 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     }
   };
 
-  const confirmText = getConfirmModalText(
-    selectedNft,
-    formField === FormFieldTypes.LONG_TERM_FIELD,
-  );
+  const confirmText = getConfirmModalText(selectedNft, isPriceBased);
 
   return {
-    borrowTabs,
-    tabValue,
-    setTabValue,
+    selectOptions,
+    selectValue,
+    setSelectValue,
     openConfirmModal,
     confirmModalVisible,
     closeConfirmModal,
     loadingModalVisible,
     closeLoadingModal,
     onSubmit,
-    formField,
-    setFormField,
-    priceBasedLTV,
-    setPriceBasedLTV,
     confirmText,
     updateCurrentNft,
-    priceBasedDisabled: !selectedNft?.priceBased,
+    solLoanValue,
+    setSolLoanValue,
   };
 };

@@ -1,0 +1,29 @@
+.wrapper {
+  border: 1px solid var(--red-color);
+  background-color: rgba(255, 31, 71, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  color: var(--secondary-border);
+  font: var(--font-text-8);
+}
+
+.subtitle {
+  border-bottom: 1px solid var(--blue-color);
+  color: var(--blue-color);
+  cursor: pointer;
+  font: var(--font-body-small);
+  margin-top: 16px;
+  width: 85px;
+
+  @media screen and (max-width: 1024px) {
+    font-size: 14px;
+    width: 75px;
+  }
+
+  @media screen and (max-width: 767px) {
+    margin-top: 8px;
+  }
+}

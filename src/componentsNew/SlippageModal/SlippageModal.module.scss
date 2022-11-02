@@ -1,0 +1,94 @@
+.modal {
+  background: var(--primary-background);
+  border: 1px solid var(--secondary-border);
+  padding: 16px;
+  z-index: 3;
+  box-shadow: rgb(0 0 0 / 1%) 0px 0px 0px,
+    var(--secondary-border) 4px 4px 0px 0px;
+
+  width: 243px;
+
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  gap: 8px;
+  cursor: pointer;
+  font: var(--font-body-small);
+  color: var(--secondary-border);
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+  position: relative;
+  background-color: var(--secondary-background);
+
+  &::before {
+    content: '%';
+    color: var(--secondary-text);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 1px;
+    bottom: 1px;
+    font-size: 24px;
+    padding: 12.5px 16px;
+    padding-left: 0;
+    height: calc(100% - 2px);
+    font: var(--font-text-4);
+    z-index: 2;
+  }
+}
+
+.slippage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input {
+  position: relative;
+  width: calc(100% - 50px);
+  height: 48px;
+  border: 0 !important;
+}
+
+.slippageInputs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn {
+  width: 56px;
+  cursor: pointer;
+}
+
+.btnActive {
+  border-color: var(--secondary-border);
+  background: var(--light-green-color);
+  pointer-events: none;
+  color: #000;
+}
+
+.slippageErrors {
+  padding-top: 12px;
+  color: var(--red-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

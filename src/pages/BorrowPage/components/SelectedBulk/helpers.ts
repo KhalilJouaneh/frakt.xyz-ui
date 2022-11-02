@@ -1,4 +1,4 @@
-import { sum, map } from 'ramda';
+import { sum } from 'ramda';
 
 import { BulkValues } from '../../hooks';
 
@@ -14,8 +14,9 @@ const getPriceBasedValues = (
   const { valuation, priceBased, maxLoanValue } = nft;
 
   const valuationNumber = parseFloat(valuation);
-  const currentLtvPersent = priceBased?.ltv;
   const suggestedLoanValue = priceBased?.suggestedLoanValue;
+
+  const currentLtvPersent = (nft?.solLoanValue / valuationNumber) * 100;
 
   const currentLoanValue = (valuationNumber * currentLtvPersent) / 100;
   const loanValue = currentLoanValue || suggestedLoanValue;
@@ -43,7 +44,8 @@ const getPriceBasedValues = (
 };
 
 const getTimeBasedValues = (nft: BulkValues) => {
-  const { timeBased } = nft;
+  const { timeBased, valuation } = nft;
+  const valuationNumber = parseFloat(valuation);
 
   const {
     fee,
@@ -51,23 +53,30 @@ const getTimeBasedValues = (nft: BulkValues) => {
     ltvPercents,
     repayValue,
     returnPeriodDays,
+    loanValue: rawLoanValue,
   } = timeBased;
+
+  const loanValue = nft?.solLoanValue || rawLoanValue;
 
   const feeDiscountValue = Number(feeDiscountPercents) * 0.01;
 
   const timeBasedfeeWithDiscount = Number(fee) - Number(fee) * feeDiscountValue;
+  const ltv = nft?.solLoanValue
+    ? (nft.solLoanValue / valuationNumber) * 100
+    : ltvPercents;
 
   return {
     timeBasedFee: timeBasedfeeWithDiscount.toFixed(3),
-    timeBasedLtvPersent: ltvPercents.toFixed(0),
+    timeBasedLtvPersent: ltv?.toFixed(0),
     feeDiscountPercents,
     period: returnPeriodDays,
     repayValue,
+    loanValue,
   };
 };
 
 export const getSelectedBulkValues = (nft: BulkValues) => {
-  const { maxLoanValue: rawMaxLoanValue, isPriceBased } = nft;
+  const { isPriceBased } = nft;
 
   const {
     timeBasedFee,
@@ -75,29 +84,28 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
     repayValue,
     timeBasedLtvPersent,
     feeDiscountPercents,
+    loanValue: rawMaxLoanValue,
   } = getTimeBasedValues(nft);
 
   const {
     priceBasedLoanValue,
-    priceBasedFee,
     priceBasedLtvPersent,
     BorrowAPY,
     liquidationsPrice,
   } = getPriceBasedValues(nft);
 
-  const loanType = isPriceBased ? 'Perpetual' : 'Flip';
-
-  const maxLoanValue = isPriceBased ? priceBasedLoanValue : rawMaxLoanValue;
+  const loanValue = isPriceBased
+    ? nft?.solLoanValue || priceBasedLoanValue
+    : rawMaxLoanValue;
 
   const fee = isPriceBased
-    ? (Number(maxLoanValue) * 0.01).toFixed(3)
+    ? (Number(loanValue) * 0.01).toFixed(3)
     : timeBasedFee;
 
   const loanToValue = isPriceBased ? priceBasedLtvPersent : timeBasedLtvPersent;
 
   return {
-    loanType,
-    maxLoanValue,
+    maxLoanValue: Number(loanValue)?.toFixed(3),
     fee,
     loanToValue,
     BorrowAPY,
@@ -136,27 +144,15 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
   );
 };
 
-export const getTotalBorrowed = (
-  perpetualLoans: BulkValues[],
-  flipLoans: BulkValues[],
-): number => {
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
+  const bulksValues = selectedBulk.map((nft) => {
+    const { timeBased } = nft;
+    const loanValueNumber = parseFloat(timeBased.loanValue);
 
-  const perpetualLoansValues = perpetualLoans.map(
-    ({ priceBased, valuation }) => {
-      const valuationNumber = parseFloat(valuation);
-      const ltv = priceBased?.ltv;
+    return (
+      nft?.solLoanValue || nft.priceBased?.suggestedLoanValue || loanValueNumber
+    );
+  });
 
-      if (ltv) {
-        return valuationNumber * (ltv / 100);
-      } else {
-        return priceBased?.suggestedLoanValue;
-      }
-    },
-  );
-
-  const priceBasedLoansValue = sum(perpetualLoansValues);
-  const timeBasedLoansValue = sum(map(maxLoanValue, flipLoans));
-
-  return priceBasedLoansValue + timeBasedLoansValue || 0;
+  return sum(bulksValues);
 };

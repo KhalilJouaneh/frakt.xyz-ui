@@ -1,29 +1,35 @@
-import { FC, useRef } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
 import cx from 'classnames';
 
 import { SearchInput } from '../../../../components/SearchInput';
 import SortControl from '../../../../componentsNew/SortControl';
 import { useOnClickOutside } from '../../../../utils';
+import { BorrowNft } from '../../../../state/loans/types';
 import Button from '../../../../components/Button';
-import { useBorrowNft } from '../BorrowManual';
-import styles from './Sort.module.scss';
+import styles from './SortNfts.module.scss';
 import {
   FilterFormInputsNames,
+  SortValue,
   SORT_VALUES,
   useBorrowPageFilter,
-} from '../../hooks/useBorrowPageFilter';
+} from '../../hooks';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
-import { BorrowNft } from '../../../../state/loans/types';
 
-interface SortProps {
+interface SortNftsProps {
   searchQuery: string;
   setSearch: (searchQuery: string) => void;
   selectedNfts: BorrowNft[];
+  setSortValue: Dispatch<SetStateAction<SortValue>>;
 }
 
-const Sort: FC<SortProps> = ({ searchQuery, setSearch, selectedNfts }) => {
+const SortNfts: FC<SortNftsProps> = ({
+  searchQuery,
+  setSearch,
+  selectedNfts,
+  setSortValue,
+}) => {
   const {
     visible: filtersModalVisible,
     close: closeFiltersModal,
@@ -34,6 +40,10 @@ const Sort: FC<SortProps> = ({ searchQuery, setSearch, selectedNfts }) => {
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
+
+  useEffect(() => {
+    setSortValue(sort);
+  }, [sort]);
 
   return (
     <div className={styles.sortWrapper}>
@@ -56,7 +66,10 @@ const Sort: FC<SortProps> = ({ searchQuery, setSearch, selectedNfts }) => {
           {filtersModalVisible && (
             <FiltersDropdown
               onCancel={closeFiltersModal}
-              className={styles.filtersDropdown}
+              className={cx(
+                styles.filtersDropdown,
+                selectedNfts.length && styles.filtersDropdownActive,
+              )}
             >
               <SortControl
                 control={control}
@@ -73,4 +86,4 @@ const Sort: FC<SortProps> = ({ searchQuery, setSearch, selectedNfts }) => {
   );
 };
 
-export default Sort;
+export default SortNfts;

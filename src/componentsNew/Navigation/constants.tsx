@@ -55,14 +55,7 @@ export const NAVIGATION_LINKS = [
     icon: Icons.Borrow,
     iconDark: Icons.BorrowDark,
   },
-  {
-    pathname: PATHS.LOANS,
-    to: PATHS.LOANS,
-    label: 'My Loans',
-    event: 'navigation-loans',
-    icon: Icons.MyLoans,
-    iconDark: Icons.MyLoansDark,
-  },
+
   {
     pathname: PATHS.LEND,
     to: PATHS.LEND,
@@ -79,6 +72,22 @@ export const NAVIGATION_LINKS = [
     icon: Icons.Raffles,
     iconDark: Icons.RafflesDark,
     fillIcon: true,
+  },
+  {
+    pathname: PATHS.LOANS,
+    to: PATHS.LOANS,
+    label: 'My loans',
+    event: 'navigation-loans',
+    icon: Icons.MyLoans,
+    iconDark: Icons.MyLoansDark,
+  },
+  {
+    pathname: PATHS.BONDS,
+    to: PATHS.BONDS,
+    label: 'My bonds',
+    event: 'navigation-bonds',
+    icon: Icons.Bonds,
+    iconDark: Icons.BondsDark,
   },
   {
     pathname: PATHS.ROOT,

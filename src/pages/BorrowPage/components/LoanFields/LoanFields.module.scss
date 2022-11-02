@@ -10,20 +10,6 @@
   text-align: center;
 }
 
-.sliderWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 16px 0;
-}
-
-.sliderLabel {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-align: center;
-  text-transform: uppercase;
-}
-
 .staticValue {
   display: flex;
   justify-content: space-between;
@@ -50,11 +36,12 @@
 .staticValueWrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
+  padding-top: 28px;
   gap: 8px;
 }
 
 .staticValueTitle {
+  display: flex;
   color: var(--secondary-text);
   font: var(--font-text-6);
   font-size: 12px;
@@ -90,14 +77,8 @@
 
   svg {
     fill: var(--blue-color);
+    width: 14px;
+    height: 14px;
   }
 }
 
-.slider {
-  padding: 0 5px;
-  :global {
-    .ant-slider-mark-text:first-child {
-      left: 10px !important;
-    }
-  }
-}

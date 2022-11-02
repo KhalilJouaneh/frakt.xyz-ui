@@ -59,8 +59,18 @@ const TokenField: FC<TokenFieldProps> = ({
         )}
       >
         {!!label && (
-          <div className={styles.label}>
-            {label} {lpBalance && <span>{lpBalance} SOL</span>}
+          <div
+            className={classNames(
+              styles.label,
+              !labelRight && styles.labelFlex,
+            )}
+          >
+            {label}
+            {!!lpBalance && (
+              <span>
+                {lpBalance} {currentToken?.symbol}
+              </span>
+            )}
           </div>
         )}
       </div>

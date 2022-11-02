@@ -1,15 +1,17 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import cx from 'classnames';
 
-import { marks, TabsNames, usePoolModal } from './usePoolModal';
-import { TokenFieldWithBalance } from '../TokenField';
+import { TabsNames, useDepositTxn, usePoolModal } from './usePoolModal';
+import RiskTabs, { RiskTabsNames } from './RiskTabs';
+import SwapForm from '../../componentsNew/SwapModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
-import { SOL_TOKEN } from '../../utils';
-import { Slider } from '../Slider';
-import { Modal } from '../Modal';
-import Button from '../Button';
+import DepositHigh from './DepositHigh';
+import WithdrawTab from './WithdrawTab';
+import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
-import { sendAmplitudeData } from '../../utils/amplitude';
+import { Modal } from '../Modal';
+import Icons from '../../iconsNew';
 
 interface PoolModalProps {
   visible: string;
@@ -28,39 +30,32 @@ export const PoolModal: FC<PoolModalProps> = ({
   utilizationRate,
   liquidityPoolPubkey,
 }) => {
-  const {
-    withdrawValue,
+  const { withdrawValue, depositValue, poolTabs, tabValue, setTabValue } =
+    usePoolModal({ visible, depositAmount });
+
+  const { depositLiquidity, unstakeLiquidity } = useDepositTxn({
+    liquidityPoolPubkey,
     depositValue,
-    depositLiquidity,
-    unstakeLiquidity,
-    poolTabs,
-    tabValue,
-    setTabValue,
-    percentValue,
-    onDepositValueChange,
-    onDepositPercentChange,
-    onWithdrawValueChange,
-    onWithdrawPercentChange,
-    solWalletBalance,
-  } = usePoolModal(liquidityPoolPubkey, visible, depositAmount, onCancel);
+    withdrawValue,
+    onCancel,
+  });
 
-  const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
-  const notEnoughDepositError = depositAmount < Number(withdrawValue);
-  const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
-  const isDisabledDepositBtn =
-    Number(depositValue) === 0 || notEnoughBalanceError;
-  const isDisabledWithdrawBtn =
-    Number(withdrawValue) === 0 || notEnoughDepositError;
+  const [riskTabType, setRiskTabType] = useState<RiskTabsNames>(
+    RiskTabsNames.MEDIUM,
+  );
 
-  const depositAmountWithFee =
-    rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
+  const [mobileVisible, setMobileVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMobileVisible(false);
+  }, [visible]);
 
   return (
     <Modal
       visible={!!visible}
       centered
       onCancel={onCancel}
-      width={500}
+      width={716}
       footer={false}
       closable={false}
       className={styles.modal}
@@ -70,87 +65,55 @@ export const PoolModal: FC<PoolModalProps> = ({
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
-      <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
-      {tabValue === TabsNames.DEPOSIT && (
-        <div className={styles.content}>
-          <TokenFieldWithBalance
-            className={styles.input}
-            value={depositValue}
-            onValueChange={onDepositValueChange}
-            currentToken={SOL_TOKEN}
-            label={`BALANCE:`}
-            lpBalance={Number(depositAmountWithFee.toFixed(2))}
-            error={notEnoughBalanceError}
-            showMaxButton
-            labelRight
-          />
-          <div className={styles.errors}>
-            {notEnoughBalanceError && <p>Not enough SOL</p>}
-          </div>
-          <Slider
-            value={percentValue}
-            setValue={solWalletBalance && onDepositPercentChange}
-            className={styles.slider}
-            marks={marks}
-            withTooltip
-            step={1}
-          />
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>Deposit yield</span>
-            <span className={styles.infoValue}>{apr.toFixed(2)} %</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>Utilization rate</span>
-            <span className={styles.infoValue}>
-              {(utilizationRate || 0).toFixed(2)} %
-            </span>
-          </div>
-          <Button
-            onClick={() => {
-              depositLiquidity();
-              sendAmplitudeData('loans-confirm-deposit');
-            }}
-            className={styles.btn}
-            type="secondary"
-            disabled={isDisabledDepositBtn}
-          >
-            Deposit
-          </Button>
+      {mobileVisible && (
+        <div onClick={() => setMobileVisible(false)} className={styles.btnBack}>
+          <Icons.Arrow />
         </div>
       )}
-      {tabValue === TabsNames.WITHDRAW && (
-        <div className={styles.content}>
-          <TokenFieldWithBalance
-            value={withdrawValue}
-            onValueChange={onWithdrawValueChange}
-            currentToken={SOL_TOKEN}
-            label={`Your deposit:`}
-            lpBalance={depositAmount}
-            error={notEnoughDepositError}
-            className={styles.input}
-            showMaxButton
-            labelRight
-          />
-          <div className={styles.errors}>
-            {notEnoughDepositError && <p>Not enough SOL</p>}
+      <div className={cx(styles.wrapper, mobileVisible && styles.mobileModal)}>
+        <RiskTabs
+          onClick={setRiskTabType}
+          type={riskTabType}
+          className={styles.tabs}
+        />
+        <div className={styles.poolTabs}>
+          <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
+          <div className={styles.content}>
+            {tabValue === TabsNames.DEPOSIT &&
+              riskTabType === RiskTabsNames.HIGH && (
+                <DepositHigh
+                  depositAmount={depositAmount}
+                  utilizationRate={utilizationRate}
+                  onSubmit={depositLiquidity}
+                  apr={apr}
+                />
+              )}
+            {tabValue === TabsNames.DEPOSIT &&
+              riskTabType === RiskTabsNames.MEDIUM && (
+                <DepositTab
+                  depositAmount={depositAmount}
+                  utilizationRate={utilizationRate}
+                  onSubmit={depositLiquidity}
+                  apr={apr}
+                />
+              )}
+            {tabValue === TabsNames.SWAP && <SwapForm />}
+            {tabValue === TabsNames.WITHDRAW && (
+              <WithdrawTab
+                onSubmit={unstakeLiquidity}
+                depositAmount={depositAmount}
+              />
+            )}
           </div>
-          <Slider
-            value={percentValue}
-            setValue={depositAmount && onWithdrawPercentChange}
-            className={styles.slider}
-            marks={marks}
-            withTooltip
-            step={1}
+        </div>
+      </div>
+      {!mobileVisible && (
+        <div className={styles.mobileWrapper}>
+          <RiskTabs
+            setMobileVisible={setMobileVisible}
+            onClick={setRiskTabType}
+            type={riskTabType}
           />
-
-          <Button
-            onClick={unstakeLiquidity}
-            className={styles.btn}
-            type="secondary"
-            disabled={isDisabledWithdrawBtn}
-          >
-            Confirm
-          </Button>
         </div>
       )}
     </Modal>

@@ -3,9 +3,22 @@
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 20px 0;
-  position: relative;
-  width: 100%;
-  flex-shrink: 0;
+
+  @media screen and (max-width: 1023px) {
+    margin-bottom: 0;
+  }
+}
+
+.pools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 32px;
+
+  @media screen and (max-width: 767px) {
+    gap: 16px;
+    padding-top: 24px;
+  }
 }
 
 .searchInput {
@@ -18,11 +31,19 @@
   }
 }
 
+.filtersWrapper {
+  position: relative;
+
+  @media screen and (max-width: 767px) {
+    position: initial;
+  }
+}
+
 .filtersDropdown {
   position: absolute;
   top: 45px;
   right: 0;
-  width: 308px;
+  width: 236px;
 
   @media screen and (max-width: 767px) {
     display: flex;
@@ -34,19 +55,5 @@
     right: 0;
     top: unset;
     width: 100% !important;
-  }
-}
-
-.filters {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.filtersActive {
-  padding-right: 334px;
-
-  @media (max-width: 767px) {
-    padding-right: 0;
   }
 }

@@ -1,9 +1,9 @@
 body .input {
-  font-size: 18px;
+  font: var(--font-text-4);
   border-radius: 0;
   padding: 10px 16px;
   height: 48px;
-  color: var(--black-color);
+  color: var(--secondary-border);
 
   @media screen and (max-width: 375px) {
     height: 42px;

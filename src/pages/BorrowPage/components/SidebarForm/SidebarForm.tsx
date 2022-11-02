@@ -51,21 +51,9 @@ const SidebarForm: FC<SidebarFormProps> = ({
   const totalBorrowed = sum(
     bulkNfts.map((nft) => {
       if (nft.mint === currentLoanNft.mint) {
-        if (currentLoanNft.type === 'flip') {
-          return Number(currentLoanNft.maxLoanValue);
-        } else {
-          const valuationNumber = parseFloat(currentLoanNft.valuation);
-
-          return valuationNumber * (currentLoanNft.ltv / 100);
-        }
+        return currentLoanNft.solLoanValue;
       } else {
-        if (nft?.isPriceBased) {
-          const valuationNumber = parseFloat(nft.valuation);
-
-          return valuationNumber * (nft.priceBased.ltv / 100);
-        } else {
-          return Number(nft.maxLoanValue);
-        }
+        return nft?.solLoanValue;
       }
     }),
   );
@@ -75,8 +63,9 @@ const SidebarForm: FC<SidebarFormProps> = ({
       dispatch(
         loansActions.updatePerpLoanNft({
           mint: currentLoanNft.mint,
+          solLoanValue: currentLoanNft.solLoanValue,
           ltv: currentLoanNft.ltv,
-          formType: currentLoanNft.type,
+          type: currentLoanNft.type,
         }),
       );
     }
