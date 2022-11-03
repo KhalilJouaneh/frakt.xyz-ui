@@ -11,7 +11,6 @@ import NFTCheckbox from '../../../../components/NFTCheckbox';
 import styles from './BorrowManual.module.scss';
 import NoSuitableNft from '../NoSuitableNft';
 import SelectedBulk from '../SelectedBulk';
-import { BorrowNftBulk } from '../../hooks';
 import SidebarForm from '../SidebarForm';
 import { useBorrowNft } from './hooks';
 import SortNfts from '../SortNfts';
@@ -21,7 +20,7 @@ import {
   selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
-import { BorrowNft } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
 
 interface BorrowNftProps {
   onClick: () => void;

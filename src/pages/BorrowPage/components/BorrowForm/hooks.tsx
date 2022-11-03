@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BorrowNft } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
 
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
@@ -13,7 +13,6 @@ import { proposeLoan } from '../../../../utils/loans';
 import { useLoanFields } from '../LoanFields/hooks';
 import { useConnection } from '../../../../hooks';
 import { Tab } from '../../../../components/Tabs';
-import { BorrowNftBulk } from '../../hooks';
 
 const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
   const { name, timeBased } = nft;

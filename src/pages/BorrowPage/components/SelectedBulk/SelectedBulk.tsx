@@ -10,8 +10,8 @@ import { SolanaIcon } from '../../../../icons';
 import SuccessLoan from '../SuccessLoan';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
-import { BorrowNftBulk } from '../../hooks';
 import Header from '../Header';
+import { BorrowNftBulk } from '@frakt/api/nft';
 
 interface SelectedBulkProps {
   selectedBulk: BorrowNftBulk[];

@@ -1,6 +1,6 @@
 import { sum } from 'ramda';
 
-import { BorrowNftBulk } from '../../hooks';
+import { BorrowNftBulk } from '@frakt/api/nft';
 
 const getPriceBasedValues = (
   nft: BorrowNftBulk,

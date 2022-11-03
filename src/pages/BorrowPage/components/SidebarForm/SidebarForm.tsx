@@ -4,14 +4,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { sum } from 'ramda';
 import cx from 'classnames';
 
-import { BorrowNft } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
 import { selectSelectedNftId } from '../../../../state/common/selectors';
 import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import Button from '../../../../components/Button';
 import styles from './SidebarForm.module.scss';
 import Icons from '../../../../iconsNew/';
-import { BorrowNftBulk } from '../../hooks';
 import BorrowForm from '../BorrowForm';
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 
