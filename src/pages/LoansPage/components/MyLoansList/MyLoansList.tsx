@@ -6,7 +6,7 @@ import { ConnectWalletSection } from '../../../../components/ConnectWalletSectio
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
-import { LoansList } from '../../../WalletPage/components/LoansList';
+import { LoansList } from '../LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
 import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';

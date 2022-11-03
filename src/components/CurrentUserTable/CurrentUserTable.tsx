@@ -110,14 +110,6 @@ const CurrentUserTable = ({
                 </p>
                 <Icons.Copy />
               </div>
-
-              <NavLink
-                onClick={() => sendAmplitudeData('navigation-profile')}
-                to={`${PATHS.PROFILE}/${publicKey.toString()}`}
-                className={styles.myCollectionLink}
-              >
-                My profile
-              </NavLink>
             </div>
           </div>
           <div className={styles.balanceInfo}>
