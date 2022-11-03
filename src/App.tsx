@@ -1,4 +1,4 @@
-//? Comment to trigger vercel env build
+//? Comment to trigger vercel env build 2
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   LedgerWalletAdapter,

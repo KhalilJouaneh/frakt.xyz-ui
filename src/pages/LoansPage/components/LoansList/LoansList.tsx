@@ -16,7 +16,7 @@ interface LoansListProps {
 }
 
 export const LoansList: FC<LoansListProps> = ({ className, loans }) => {
-  const { itemsToShow, next } = useFakeInfinityScroll(12);
+  const { itemsToShow, next } = useFakeInfinityScroll(48);
   const loading: boolean = useSelector(selectUserLoansPending);
 
   return (
