@@ -4,7 +4,6 @@ import { PATHS } from './paths';
 import {
   Page404,
   HomePage,
-  WalletPage,
   LendPage,
   LiquidationsPage,
   LoansPage,
@@ -49,12 +48,6 @@ export const routes: Route[] = [
     path: PATHS.ROOT,
     component: HomePage,
   },
-  {
-    exact: true,
-    path: `${PATHS.PROFILE}${PATHS.WALLET_PUBKEY}`,
-    component: WalletPage as any,
-  },
-
   {
     exact: true,
     path: PATHS.PAGE_404,
