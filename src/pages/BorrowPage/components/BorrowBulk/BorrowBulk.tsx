@@ -2,15 +2,15 @@ import { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 import Tooltip from '../../../../components/Tooltip';
-import { BulksType, BulkValues } from '../../hooks';
 import { badgesInfo, useBorrowBulk } from './hooks';
 import Button from '../../../../components/Button';
 import styles from './BorrowBulk.module.scss';
 import SelectedBulk from '../SelectedBulk';
 import Header from '../Header';
+import { BorrowNftBulk, BulkSuggestion } from '@frakt/api/nft';
 
 interface BorrowBulk {
-  bulks: BulksType;
+  bulks: BulkSuggestion;
   value: number;
   onClick: () => void;
   onBack: () => void;
@@ -19,14 +19,14 @@ interface BorrowBulk {
 const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
   const { connected } = useWallet();
 
-  const [selectedBulk, setSelectedBulk] = useState<BulkValues[]>([]);
+  const [selectedBulk, setSelectedBulk] = useState<BorrowNftBulk[]>([]);
 
   const { getTotalValue } = useBorrowBulk();
 
-  const bestBulk = bulks?.best || [];
-  const cheapestBulk = bulks?.cheapest || [];
-  const safestBulk = bulks?.safest || [];
-  const maxBulk = bulks?.max || [];
+  const bestBulk = bulks?.best ?? [];
+  const cheapestBulk = bulks?.cheapest ?? [];
+  const safestBulk = bulks?.safest ?? [];
+  const maxBulk = bulks?.max ?? [];
 
   const bestBulkValue = getTotalValue(bestBulk);
   const cheapestBulkValue = getTotalValue(cheapestBulk);
@@ -35,7 +35,11 @@ const BorrowBulk: FC<BorrowBulk> = ({ bulks, value, onClick, onBack }) => {
 
   const isBulkExist = !!bestBulk?.length || !!maxBulk?.length;
 
-  const getBulkValues = (bulk: BulkValues[], value: number, type: string) => {
+  const getBulkValues = (
+    bulk: BorrowNftBulk[],
+    value: number,
+    type: string,
+  ) => {
     if (!bulk.length) return;
 
     const { color, title, text } = badgesInfo[type];

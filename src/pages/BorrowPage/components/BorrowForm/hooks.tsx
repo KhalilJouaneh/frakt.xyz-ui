@@ -13,7 +13,7 @@ import { proposeLoan } from '../../../../utils/loans';
 import { useLoanFields } from '../LoanFields/hooks';
 import { useConnection } from '../../../../hooks';
 import { Tab } from '../../../../components/Tabs';
-import { BulkValues } from '../../hooks';
+import { BorrowNftBulk } from '../../hooks';
 
 const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
   const { name, timeBased } = nft;
@@ -26,7 +26,7 @@ const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
 
 type UseBorrowForm = (props: {
   onDeselect?: () => void;
-  selectedNft?: BulkValues;
+  selectedNft?: BorrowNftBulk;
 }) => {
   selectOptions: Tab[];
   openConfirmModal: () => void;

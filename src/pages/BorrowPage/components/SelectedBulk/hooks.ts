@@ -7,14 +7,14 @@ import { loansActions } from './../../../../state/loans/actions';
 import { commonActions } from '../../../../state/common/actions';
 import { proposeBulkLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
-import { BulkValues } from '../../hooks';
+import { BorrowNftBulk } from '../../hooks';
 import { getFeesOnDay } from './helpers';
 
-type UseSeletedBulk = (props: { rawselectedBulk: BulkValues[] }) => {
+type UseSeletedBulk = (props: { rawselectedBulk: BorrowNftBulk[] }) => {
   onSubmit: () => Promise<void>;
   closeLoadingModal: () => void;
   loadingModalVisible: boolean;
-  selectedBulk: BulkValues[];
+  selectedBulk: BorrowNftBulk[];
   feesOnDay: number;
 };
 

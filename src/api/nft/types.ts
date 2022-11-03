@@ -23,3 +23,28 @@ export interface BorrowNft {
     isCanStake: boolean;
   };
 }
+
+export interface BorrowNftBulk extends BorrowNft {
+  solLoanValue?: number;
+  isPriceBased?: boolean;
+  priceBased?: {
+    liquidityPoolPubkey: string;
+    ltvPercents: number;
+    borrowAPRPercents: number;
+    collaterizationRate: number;
+    isCanStake: boolean;
+    ltv?: number;
+    suggestedLoanValue?: number;
+  };
+}
+
+export enum BulkTypes {
+  best = 'best',
+  cheapest = 'cheapest',
+  safest = 'safest',
+  max = 'max',
+}
+
+export type BulkSuggestion = {
+  [key in BulkTypes]?: BorrowNftBulk[];
+};

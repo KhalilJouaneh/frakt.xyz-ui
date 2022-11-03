@@ -11,7 +11,7 @@ import NFTCheckbox from '../../../../components/NFTCheckbox';
 import styles from './BorrowManual.module.scss';
 import NoSuitableNft from '../NoSuitableNft';
 import SelectedBulk from '../SelectedBulk';
-import { BulkValues } from '../../hooks';
+import { BorrowNftBulk } from '../../hooks';
 import SidebarForm from '../SidebarForm';
 import { useBorrowNft } from './hooks';
 import SortNfts from '../SortNfts';
@@ -57,7 +57,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
   const bulkNfts = useMemo(() => {
-    return selectedNfts.map((nft: BulkValues) => {
+    return selectedNfts.map((nft: BorrowNftBulk) => {
       const currentNft = find(propEq('mint', nft.mint))(
         perpetualNftsInfo,
       ) as any;
