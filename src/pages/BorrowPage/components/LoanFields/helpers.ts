@@ -1,4 +1,4 @@
-import { BorrowNft } from './../../../../state/loans/types';
+import { BorrowNft } from '@frakt/api/nft';
 
 export const feeOnDayForTimeBased = (
   nft: BorrowNft,

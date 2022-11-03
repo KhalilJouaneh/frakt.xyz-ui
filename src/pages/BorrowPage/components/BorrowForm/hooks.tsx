@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch, useSelector } from 'react-redux';
+import { BorrowNft } from '@frakt/api/nft';
 
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
@@ -8,7 +9,6 @@ import { useLoadingModal } from '../../../../components/LoadingModal';
 import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import { useSelect } from '../../../../components/Select/hooks';
-import { BorrowNft } from '../../../../state/loans/types';
 import { proposeLoan } from '../../../../utils/loans';
 import { useLoanFields } from '../LoanFields/hooks';
 import { useConnection } from '../../../../hooks';

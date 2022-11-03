@@ -15,7 +15,8 @@ import {
 } from 'ramda';
 import { isArray } from 'ramda-adjunct';
 
-import { BorrowNft, LiquidityPool, Loan, PerpetualNftsInfo } from './types';
+import { LiquidityPool, Loan, PerpetualNftsInfo } from './types';
+import { BorrowNft } from '@frakt/api/nft';
 
 // const isOwnedByUser = curry((publicKey) =>
 //   publicKey ? propEq('user', publicKey.toBase58()) : false,

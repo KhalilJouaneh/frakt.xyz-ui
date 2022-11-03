@@ -8,23 +8,24 @@ import { SolanaIcon } from '../../../../icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { fetchWalletBorrowNfts } from '@frakt/api/nft';
 
 const AvailableBorrow: FC = () => {
   const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
   const { publicKey } = useWallet();
 
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-  const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `${URL}/meta/${publicKey?.toBase58()}?&limit=${1000}`,
-      );
-      const allNfts = await response.json();
+      const walletNfts = await fetchWalletBorrowNfts({
+        publicKey,
+        limit: 1000,
+        offset: 0,
+      });
 
       const availableBorrowValue =
-        sum(map(maxLoanValue, allNfts)).toFixed(2) || '0';
+        sum(map(maxLoanValue, walletNfts)).toFixed(2) || '0';
 
       setAvailableBorrowValue(availableBorrowValue);
     })();

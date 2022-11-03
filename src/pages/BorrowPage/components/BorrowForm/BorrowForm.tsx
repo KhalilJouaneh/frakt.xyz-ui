@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
+import { BorrowNft } from '@frakt/api/nft';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { getRisk, useLoanFields } from '../LoanFields/hooks';
-import { BorrowNft } from '../../../../state/loans/types';
 import { Slider } from '../../../../components/Slider';
 import { Select } from '../../../../components/Select';
 import Button from '../../../../components/Button';

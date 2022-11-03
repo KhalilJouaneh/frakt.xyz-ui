@@ -3,7 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map } from 'ramda';
 
 import { networkRequest } from '../../../utils/state';
-import { BorrowNft } from '../../../state/loans/types';
+import { fetchWalletBorrowNfts, BorrowNft } from '@frakt/api/nft';
 
 export enum BorrowType {
   BULK = 'bulk',
@@ -117,7 +117,7 @@ export const useBorrowPage = (): {
 
       setBulks(bulks as BulksType);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -125,12 +125,13 @@ export const useBorrowPage = (): {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `${URL}/meta/${publicKey?.toBase58()}?&limit=${1000}`,
-      );
-      const allNfts = await response.json();
+      const walletNfts = await fetchWalletBorrowNfts({
+        publicKey,
+        limit: 1000,
+        offset: 0,
+      });
 
-      const availableBorrowValue = sum(map(maxLoanValue, allNfts)) || 0;
+      const availableBorrowValue = sum(map(maxLoanValue, walletNfts)) || 0;
 
       setAvailableBorrowValue(availableBorrowValue);
     })();

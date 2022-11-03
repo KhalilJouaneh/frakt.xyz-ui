@@ -1,4 +1,4 @@
-import { BorrowNft } from '../../../../state/loans/types';
+import { BorrowNft } from '@frakt/api/nft';
 import { getLiquidationValues } from './helpers';
 
 export const useLoanFields = (

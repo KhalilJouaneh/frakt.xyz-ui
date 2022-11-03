@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
-import { BorrowNft } from '../../../../state/loans/types';
+import { BorrowNft } from '@frakt/api/nft';
 import Tooltip from '../../../../components/Tooltip';
 import { SolanaIcon } from '../../../../icons';
 import styles from './LoanFields.module.scss';
