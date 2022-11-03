@@ -98,6 +98,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
+    alias: {
+      '@frakt': path.resolve(__dirname, 'src/'),
+    },
     fallback: {
       os: require.resolve('os-browserify/browser'),
       crypto: require.resolve('crypto-browserify'),
