@@ -5,17 +5,17 @@ export const useBorrowBulk = (): {
   getTotalValue: (bulk: BorrowNftBulk[]) => number;
 } => {
   const getTotalValue = (bulk: BorrowNftBulk[]): number => {
-    const priceBased = ({ isPriceBased }) => isPriceBased;
+    const priceBased = (nft: BorrowNftBulk) => nft?.isPriceBased;
+    const timeBased = (nft: BorrowNftBulk) => !nft?.isPriceBased;
     const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-    const timeBased = ({ isPriceBased }) => !isPriceBased;
-    const suggestedLoanValue = ({ priceBased }) =>
-      priceBased.suggestedLoanValue;
+    const suggestedLoanValue = (nft: BorrowNftBulk) =>
+      nft?.priceBased.suggestedLoanValue;
 
-    const priceBasedLoans: BorrowNftBulk[] = filter(priceBased, bulk as any);
-    const timeBasedLoans: BorrowNftBulk[] = filter(timeBased, bulk as any);
+    const priceBasedLoans: BorrowNftBulk[] = filter(priceBased, bulk);
+    const timeBasedLoans: BorrowNftBulk[] = filter(timeBased, bulk);
 
     const priceBasedLoansValue =
-      sum(map(suggestedLoanValue, priceBasedLoans as any)) || 0;
+      sum(map(suggestedLoanValue, priceBasedLoans)) || 0;
 
     const timeBasedLoansValue = sum(map(maxLoanValue, timeBasedLoans)) || 0;
 
