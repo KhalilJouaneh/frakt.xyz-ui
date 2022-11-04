@@ -127,15 +127,15 @@ export const SORT_VALUES_WITH_GRACE = [
 
 export const LIQUIDATIONS_TABS: Tab[] = [
   {
-    label: 'Ongoing raffles',
+    label: 'Ongoing',
     value: 'liquidations',
   },
   {
-    label: 'Grace List',
+    label: 'Upcoming',
     value: 'grace',
   },
   {
-    label: 'Raffles I won',
+    label: 'History',
     value: 'raffles',
   },
 ];

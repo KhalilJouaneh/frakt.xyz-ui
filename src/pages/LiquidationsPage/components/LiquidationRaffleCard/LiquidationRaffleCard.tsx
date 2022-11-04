@@ -5,11 +5,12 @@ import classNames from 'classnames';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import Button from '../../../../components/Button';
-import { SolanaIcon } from '../../../../icons';
+import { SolanaIcon, Timer } from '../../../../icons';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
 import { selectTxRaffleTryStatus } from '../../../../state/liquidations/selectors';
 import { useOnFulfilled } from '../../../../hooks';
 import styles from './LiquidationRaffleCard.module.scss';
+import Icons from '../../../../iconsNew';
 
 const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
   data,
@@ -23,6 +24,8 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
     setIsLoading(false);
   });
 
+  const [ticketCount, setTicketCount] = useState<number>(0);
+
   const handleClick = () => {
     setTryId(data.nftMint);
   };
@@ -31,6 +34,14 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
     setTryId(null);
     setIsLoading(true);
     dispatch(liquidationsActions.txRaffleTry(data));
+  };
+
+  const incrementCounter = (): void => {
+    setTicketCount(ticketCount + 1);
+  };
+
+  const decrementCounter = (): void => {
+    setTicketCount(ticketCount - 1);
   };
 
   return (
@@ -55,15 +66,34 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
             <SolanaIcon />
           </p>
         </div>
-        <Button
-          type="secondary"
-          className={styles.btn}
-          onClick={handleClick}
-          disabled={disabled}
-        >
-          Try by 0 ticket
-        </Button>
+        <div className={styles.totalValue}>
+          <p className={styles.subtitle}>Duration</p>
+          <div className={styles.wrapper}>
+            <Timer />
+            <div className={styles.countdown}>9m : 46s</div>
+          </div>
+        </div>
       </div>
+      <div className={styles.ticketsWrapper}>
+        <p className={styles.subtitle}>Tickets</p>
+        <div className={styles.ticketsInfo}>
+          <div className={styles.counter} onClick={decrementCounter}>
+            <Icons.Minus />
+          </div>
+          <div className={styles.counterValue}>{ticketCount}</div>
+          <div className={styles.counter} onClick={incrementCounter}>
+            <Icons.Plus />
+          </div>
+        </div>
+      </div>
+      <Button
+        type="secondary"
+        className={styles.btn}
+        onClick={handleClick}
+        disabled={disabled}
+      >
+        {disabled ? 'Try by 0 ticket' : 'Participate'}
+      </Button>
       <ConfirmModal
         visible={tryId}
         onCancel={() => setTryId(null)}

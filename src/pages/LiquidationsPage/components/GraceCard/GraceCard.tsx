@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import classNames from 'classnames';
-
-import styles from './GraceCard.module.scss';
+import cx from 'classnames';
 import moment from 'moment';
+
 import { SolanaIcon, Timer } from '../../../../icons';
 import { useCountdown } from '../../../../hooks';
+import styles from './GraceCard.module.scss';
 
 const GraceCard: FC<{ data }> = ({ data }) => {
   const { timeLeft } = useCountdown(moment(data.expiredAt).unix());
@@ -16,7 +16,7 @@ const GraceCard: FC<{ data }> = ({ data }) => {
         <p className={styles.nftName}>{data.nftName}</p>
       </div>
       <div className={styles.statsValue}>
-        <div className={classNames(styles.totalValue, styles.opacity)}>
+        <div className={cx(styles.totalValue, styles.opacity)}>
           <p className={styles.subtitle}>Floor price</p>
           <p className={styles.value}>
             {`${data.valuation}`}
@@ -33,19 +33,13 @@ const GraceCard: FC<{ data }> = ({ data }) => {
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>Grace period</p>
           <div className={styles.wrapper}>
-            <Timer className={styles.icon} />
+            <Timer />
             <div>
               <div className={styles.countdown}>
                 {timeLeft.days}d<p>:</p>
                 {timeLeft.hours}h<p>:</p>
                 {timeLeft.minutes}m
               </div>
-              {/* <div className={styles.timeProgressWrapper}>
-                <div
-                  className={styles.timeProgress}
-                  style={{ width: `${80}%` }}
-                />
-              </div> */}
             </div>
           </div>
         </div>

@@ -1,27 +1,49 @@
 .card {
-  align-items: center;
   background: var(--primary-background);
-  border: 1px solid var(--primary-border);
-  border-radius: 10px;
+  border: 3px solid transparent;
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  margin-bottom: 20px;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+}
 
-  @media screen and (max-width: 767px) {
-    align-items: unset;
-    flex-direction: column;
-  }
+.cardWinner {
+  border-color: #ffce1f;
+}
+
+.cardWrapper {
+  border: 1px solid var(--primary-border);
+}
+
+.winner {
+  border: 1px solid #ffce1f;
+  display: flex;
+  align-items: center;
+}
+
+.winner > .value {
+  padding: 0 7px;
+}
+
+.winnerBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffce1f;
+  font: var(--font-text-5);
+  height: 25px;
+  width: 50px;
 }
 
 .nftInfo {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .nftName {
-  font: var(--font-text-2);
+  font: var(--font-subtitle-2);
 }
 
 .nftImage {
@@ -36,47 +58,31 @@
 }
 
 .value {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   font: var(--font-text-8);
-  padding-top: 10px;
+
+  svg {
+    width: 11px;
+    height: 10px;
+  }
 }
 
 .opacity {
-  color: var(--color-gray-4);
+  opacity: 0.5;
 }
 
 .statsValue {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
-
-  @media screen and (max-width: 767px) {
-    flex-direction: column;
-    gap: 0;
-
-    .value {
-      padding-top: 0;
-    }
-  }
-}
-
-.btn {
-  padding: 0;
-  justify-content: center;
-  height: 48px;
-  width: 117px;
-
-  @media screen and (max-width: 767px) {
-    margin-top: 10px;
-    width: 100%;
-  }
+  gap: 11.5px;
 }
 
 .totalValue {
-  @media screen and (max-width: 767px) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 10px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }

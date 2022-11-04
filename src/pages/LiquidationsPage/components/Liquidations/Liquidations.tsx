@@ -139,8 +139,8 @@ const Liquidations: FC = () => {
               dispatch(liquidationsActions.fetchRaffleList(params))
             }
           >
-            {raffleList.length ? (
-              raffleList.map((item) => (
+            {graceList.length ? (
+              graceList.map((item) => (
                 <LiquidationRaffleCard
                   key={item.nftMint}
                   data={item}
@@ -171,13 +171,13 @@ const Liquidations: FC = () => {
         </LiquidationsList>
       )}
       {tabValue === LiquidationsTabsNames.RAFFLES &&
-        (wonRaffleList.length ? (
+        (graceList.length ? (
           <LiquidationsList
             fetchItemsFunc={(params) =>
               dispatch(liquidationsActions.updateWonRaffleList(params))
             }
           >
-            {wonRaffleList.map((item) => (
+            {graceList.map((item) => (
               <WonRaffleCard key={item.nftMint} data={item} />
             ))}
           </LiquidationsList>

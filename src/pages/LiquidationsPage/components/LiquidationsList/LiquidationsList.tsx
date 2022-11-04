@@ -99,7 +99,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
           </div>
         </div>
       </div>
-      {children}
+      <div className={styles.rafflesList}>{children}</div>
     </>
   );
 };

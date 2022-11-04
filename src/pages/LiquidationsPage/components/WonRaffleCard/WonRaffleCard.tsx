@@ -1,13 +1,9 @@
 import { FC, useState } from 'react';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
-import Tooltip from '../../../../components/Tooltip';
-import Button from '../../../../components/Button';
-import { useNativeAccount } from '../../../../utils/accounts';
 import { selectTxLiquidateStatus } from '../../../../state/liquidations/selectors';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
 import { useOnFulfilled } from '../../../../hooks';
@@ -22,56 +18,44 @@ const WonRaffleCard: FC<{ data }> = ({ data }) => {
     setIsLoading(false);
   });
 
-  const { account } = useNativeAccount();
-  const balance = (account?.lamports || 0) / LAMPORTS_PER_SOL;
-  const hasBalanceDeficit = data.paybackPriceWithGrace > balance;
-
-  const handleClick = () => {
-    setTryId(data.nftMint);
-  };
-
   const handleSumit = () => {
     setTryId(null);
     setIsLoading(true);
     dispatch(liquidationsActions.txLiquidate(data));
   };
 
+  const isWinner = true;
+
   return (
-    <div className={styles.card}>
-      <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={data.nftImageUrl} />
-        <div>
+    <div className={styles.cardWrapper}>
+      <div className={cx(styles.card, isWinner && styles.cardWinner)}>
+        <div className={styles.nftInfo}>
+          <img className={styles.nftImage} src={data.nftImageUrl} />
           <p className={styles.nftName}>{data.nftName}</p>
         </div>
-      </div>
-
-      <div className={styles.statsValue}>
-        <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>{`${data.nftFloorPrice} SOL`}</p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>{`${data.paybackPriceWithGrace} SOL`}</p>
-        </div>
-        {hasBalanceDeficit ? (
-          <Tooltip placement="top" overlay="Not enough SOL">
-            <div>
-              <Button
-                type="secondary"
-                className={styles.btn}
-                onClick={handleClick}
-                disabled
-              >
-                Liquidate
-              </Button>
+        <div className={styles.statsValue}>
+          <div className={cx(styles.totalValue, styles.opacity)}>
+            <p className={styles.subtitle}>Floor price</p>
+            <p className={styles.value}>{`${data.nftFloorPrice} SOL`}</p>
+          </div>
+          <div className={styles.totalValue}>
+            <p className={styles.subtitle}>liquidation price</p>
+            <p
+              className={styles.value}
+            >{`${data.paybackPriceWithGrace} SOL`}</p>
+          </div>
+          <div className={styles.totalValue}>
+            <p className={styles.subtitle}>Winner</p>
+            <div className={styles.winner}>
+              <div className={styles.winnerBadge}>You!</div>
+              <p className={styles.value}>H2aF...WrnH</p>
             </div>
-          </Tooltip>
-        ) : (
-          <Button type="secondary" className={styles.btn} onClick={handleClick}>
-            Liquidate
-          </Button>
-        )}
+          </div>
+          <div className={styles.totalValue}>
+            <p className={styles.subtitle}>Ended</p>
+            <p className={styles.value}>8 min ago</p>
+          </div>
+        </div>
       </div>
       <ConfirmModal
         visible={tryId}

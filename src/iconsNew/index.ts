@@ -29,6 +29,8 @@ import { Copy } from './Copy';
 import { Settings } from './Settings';
 import { Bonds, BondsDark } from './Bonds';
 import { Ticket } from './Ticket';
+import { Minus } from './Minus';
+import { Plus } from './Plus';
 
 export default {
   Chart,
@@ -73,4 +75,6 @@ export default {
   Bonds,
   BondsDark,
   Ticket,
+  Minus,
+  Plus,
 };
