@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import FilterCollections from '../../../../componentsNew/FilterCollections';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
-import { SearchInput } from '../../../../components/SearchInput';
 import { LiquidationsListFormNames } from '../../model';
 import styles from './LiquidationsList.module.scss';
 import { TicketsCounter } from '../TicketsCounter';
@@ -37,7 +36,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   fetchItemsFunc,
   isGraceList,
 }) => {
-  const { control, setSearch, setValue, collections, sort, setCollections } =
+  const { control, setValue, collections, sort, setCollections } =
     useLiquidationsPage(fetchItemsFunc, isGraceList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
@@ -69,17 +68,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   return (
     <>
       <div className={styles.searchWrapper}>
-        <SearchInput
-          onChange={(event) => setSearch(event.target.value || '')}
-          className={styles.searchInput}
-          placeholder="Search by name"
-        />
-        {withRafflesInfo && (
-          <div className={styles.rafflesInfo}>
-            <TicketsCounter tickets={lotteryTickets.quantity} />
-          </div>
-        )}
-
+        <TicketsCounter tickets={lotteryTickets.quantity} />
         <div ref={ref}>
           <div className={styles.sortWrapper}>
             <Button type="tertiary" onClick={toggleFiltersModal}>

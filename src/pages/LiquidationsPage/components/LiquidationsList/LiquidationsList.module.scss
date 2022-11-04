@@ -2,89 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 32px;
-  margin-bottom: 20px;
+  padding: 24px 0;
   width: 100%;
-  flex-wrap: wrap;
-}
-
-.wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.searchInput {
-  max-width: 173px;
-  margin-right: 20px;
-}
-
-.searchIcon {
-  margin-right: 5px;
-
-  svg {
-    width: 14px;
-  }
-}
-
-.sortingSelect {
-  :global {
-    .custom-select__control {
-      @media screen and (max-width: 550px) {
-        justify-content: flex-end;
-      }
-    }
-  }
-  span {
-    color: var(--white-color);
-  }
 }
 
 .sortWrapper {
   position: relative;
-  width: 180px;
-  display: flex;
-  flex-direction: row-reverse;
-
-  @media screen and (max-width: 767px) {
-    width: unset;
-  }
-}
-
-.rafflesInfo {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-
-  @media screen and (max-width: 767px) {
-    order: -1;
-    width: 100%;
-    justify-content: center;
-    padding-bottom: 24px;
-  }
-}
-
-.sortingWrapper {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-
-  @media screen and (max-width: 767px) {
-    justify-content: center;
-    max-width: 340px;
-  }
-}
-
-.sorting {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.label {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-transform: uppercase;
 }
 
 .filtersDropdown {

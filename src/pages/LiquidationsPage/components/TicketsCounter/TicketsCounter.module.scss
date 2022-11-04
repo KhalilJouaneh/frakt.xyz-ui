@@ -1,21 +1,39 @@
 .ticket {
   display: flex;
-  flex-flow: column;
   align-items: center;
+  gap: 16px;
 }
 
 .title {
-  color: var(--gray-color-2);
-  font: var(--font-text-5);
+  color: var(--secondary-border);
+  font: var(--font-text-7);
   text-transform: uppercase;
 }
 
 .value {
-  font: var(--font-text-8);
-  color: var(--black-color);
+  font: var(--font-subtitle);
+  color: var(--primary-border);
 
-    @media screen and (max-width: 510px) {
-      font-size: 15px;
-    }
+  @media screen and (max-width: 510px) {
+    font-size: 15px;
+  }
 }
 
+.ticketIcon {
+  background-color: var(--secondary-background);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+
+  svg > path {
+    fill: var(--secondary-border);
+  }
+}
+
+.ticketInfo {
+  display: flex;
+  flex-direction: column-reverse;
+}

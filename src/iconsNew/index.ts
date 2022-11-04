@@ -28,6 +28,7 @@ import { SignOut } from './SignOut';
 import { Copy } from './Copy';
 import { Settings } from './Settings';
 import { Bonds, BondsDark } from './Bonds';
+import { Ticket } from './Ticket';
 
 export default {
   Chart,
@@ -71,4 +72,5 @@ export default {
   Settings,
   Bonds,
   BondsDark,
+  Ticket,
 };
