@@ -1,6 +1,7 @@
+import { BorrowNft } from '@frakt/api/nft';
 import { createCustomAction } from 'typesafe-actions';
 
-import { BorrowNft, LiquidityPool, Loan } from './types';
+import { LiquidityPool, Loan } from './types';
 
 export const loansTypes = {
   SET_LOANS: 'loans/SET_LOANS',

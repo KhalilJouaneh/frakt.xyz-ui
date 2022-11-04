@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const Webpack = require('webpack')
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-const ReactRefreshTypeScript = require('react-refresh-typescript')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
+const Webpack = require('webpack');
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
-require('dotenv').config({ path: './.env' })
-require('dotenv').config({ path: './.env.local' })
+require('dotenv').config({ path: './.env' });
+require('dotenv').config({ path: './.env.local' });
 
 module.exports = {
   mode: 'development',
   entry: {
-    index: './src/index.tsx'
+    index: './src/index.tsx',
   },
   devServer: {
     static: './public',
@@ -18,8 +19,8 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
     client: {
-      overlay: true
-    }
+      overlay: true,
+    },
   },
   devtool: 'source-map',
   module: {
@@ -32,47 +33,47 @@ module.exports = {
             loader: require.resolve('ts-loader'),
             options: {
               getCustomTransformers: () => ({
-                before: [ReactRefreshTypeScript()].filter(Boolean)
+                before: [ReactRefreshTypeScript()].filter(Boolean),
               }),
-              transpileOnly: true
-            }
-          }
-        ]
+              transpileOnly: true,
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
-            loader: 'css-modules-typescript-loader'
+            loader: 'css-modules-typescript-loader',
           },
           {
             loader: 'css-loader',
             options: {
-              modules: true
-            }
+              modules: true,
+            },
           },
           {
-            loader: 'sass-loader'
-          }
-        ]
+            loader: 'sass-loader',
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
-            loader: 'css-loader'
-          }
-        ]
+            loader: 'css-loader',
+          },
+        ],
       },
       {
         test: /\.(png|jpg|jpeg|gif|ico|webp)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
       },
       {
         test: /\.svg$/,
@@ -83,36 +84,43 @@ module.exports = {
               limit: 10000,
             },
           },
-        ]
+        ],
       },
       {
         test: /.mjs$/,
         include: /node_modules/,
         type: 'javascript/auto',
-      }
-    ]
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+    ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
+    alias: {
+      '@frakt': path.resolve(__dirname, 'src/'),
+    },
     fallback: {
-      "os": require.resolve("os-browserify/browser"),
-      "crypto": require.resolve("crypto-browserify"),
-      "stream": require.resolve("stream-browserify")
-    }
+      os: require.resolve('os-browserify/browser'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      process: false,
+    },
   },
   plugins: [
     new ReactRefreshPlugin(),
-    new HTMLWebpackPlugin({ 
+    new HTMLWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico',
       filename: 'index.html',
       manifest: './public/manifest.json',
     }),
     new Webpack.ProvidePlugin({
-      process: 'process/browser'
+      process: 'process/browser',
     }),
     new Webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env)
-    })
-  ]
-}
+      'process.env': JSON.stringify(process.env),
+    }),
+  ],
+};

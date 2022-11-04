@@ -14,10 +14,10 @@ import { useQuery } from '@tanstack/react-query';
 import { selectBorrowNfts } from '../../../../state/loans/selectors';
 import { commonActions } from './../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
-import { BorrowNft } from '../../../../state/loans/types';
 import { useDebounce } from '../../../../hooks';
 import { SortValue } from './../../hooks';
 import { FETCH_LIMIT } from '../../hooks';
+import { BorrowNft } from '@frakt/api/nft';
 
 export const useBorrowNft = ({
   sort,

@@ -1,9 +1,9 @@
 import { sum } from 'ramda';
 
-import { BulkValues } from '../../hooks';
+import { BorrowNftBulk } from '@frakt/api/nft';
 
 const getPriceBasedValues = (
-  nft: BulkValues,
+  nft: BorrowNftBulk,
 ): {
   priceBasedLoanValue: string;
   priceBasedFee: string;
@@ -43,7 +43,7 @@ const getPriceBasedValues = (
   };
 };
 
-const getTimeBasedValues = (nft: BulkValues) => {
+const getTimeBasedValues = (nft: BorrowNftBulk) => {
   const { timeBased, valuation } = nft;
   const valuationNumber = parseFloat(valuation);
 
@@ -75,7 +75,7 @@ const getTimeBasedValues = (nft: BulkValues) => {
   };
 };
 
-export const getSelectedBulkValues = (nft: BulkValues) => {
+export const getSelectedBulkValues = (nft: BorrowNftBulk) => {
   const { isPriceBased } = nft;
 
   const {
@@ -116,7 +116,7 @@ export const getSelectedBulkValues = (nft: BulkValues) => {
   };
 };
 
-export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
+export const getFeesOnDay = (selectedBulk: BorrowNftBulk[]): number => {
   return sum(
     selectedBulk.map((nft): number => {
       if (!nft.isPriceBased) {
@@ -144,7 +144,7 @@ export const getFeesOnDay = (selectedBulk: BulkValues[]): number => {
   );
 };
 
-export const getTotalBorrowed = (selectedBulk: BulkValues[]): number => {
+export const getTotalBorrowed = (selectedBulk: BorrowNftBulk[]): number => {
   const bulksValues = selectedBulk.map((nft) => {
     const { timeBased } = nft;
     const loanValueNumber = parseFloat(timeBased.loanValue);

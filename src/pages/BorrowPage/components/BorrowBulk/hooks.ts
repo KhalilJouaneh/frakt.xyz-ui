@@ -1,19 +1,18 @@
+import { BorrowNftBulk } from '@frakt/api/nft';
 import { sum, map, filter } from 'ramda';
 
-import { BulkValues } from '../../hooks';
-
 export const useBorrowBulk = (): {
-  getTotalValue: (bulk: BulkValues[]) => number;
+  getTotalValue: (bulk: BorrowNftBulk[]) => number;
 } => {
-  const getTotalValue = (bulk): number => {
-    const priceBased = ({ isPriceBased }) => isPriceBased;
+  const getTotalValue = (bulk: BorrowNftBulk[]): number => {
+    const priceBased = (nft: BorrowNftBulk) => nft?.isPriceBased;
+    const timeBased = (nft: BorrowNftBulk) => !nft?.isPriceBased;
     const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
-    const timeBased = ({ isPriceBased }) => !isPriceBased;
-    const suggestedLoanValue = ({ priceBased }) =>
-      priceBased.suggestedLoanValue;
+    const suggestedLoanValue = (nft: BorrowNftBulk) =>
+      nft?.priceBased.suggestedLoanValue;
 
-    const priceBasedLoans = filter(priceBased, bulk);
-    const timeBasedLoans = filter(timeBased, bulk);
+    const priceBasedLoans: BorrowNftBulk[] = filter(priceBased, bulk);
+    const timeBasedLoans: BorrowNftBulk[] = filter(timeBased, bulk);
 
     const priceBasedLoansValue =
       sum(map(suggestedLoanValue, priceBasedLoans)) || 0;

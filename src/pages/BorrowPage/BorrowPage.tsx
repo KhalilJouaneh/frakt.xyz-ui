@@ -9,7 +9,7 @@ import { loansActions } from '../../state/loans/actions';
 import NoSuitableNft from './components/NoSuitableNft';
 import { BorrowType, marks, useBorrowPage } from './hooks';
 import BorrowBulk from './components/BorrowBulk';
-import BorrowNft from './components/BorrowManual';
+import BorrowManual from './components/BorrowManual';
 import styles from './BorrowPage.module.scss';
 import Button from '../../components/Button';
 import { Loader } from '../../components/Loader';
@@ -133,7 +133,7 @@ const BorrowPage: FC = () => {
         </AppLayout>
       )}
       {borrowType === BorrowType.SINGLE && (
-        <BorrowNft onClick={() => setBorrowType(null)} />
+        <BorrowManual onClick={() => setBorrowType(null)} />
       )}
     </>
   );

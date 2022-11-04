@@ -8,11 +8,9 @@ import { AppLayout } from '../../../../components/Layout/AppLayout';
 import InfinityScroll from '../../../../components/InfinityScroll';
 import { loansActions } from '../../../../state/loans/actions';
 import NFTCheckbox from '../../../../components/NFTCheckbox';
-import { BorrowNft } from '../../../../state/loans/types';
 import styles from './BorrowManual.module.scss';
 import NoSuitableNft from '../NoSuitableNft';
 import SelectedBulk from '../SelectedBulk';
-import { BulkValues } from '../../hooks';
 import SidebarForm from '../SidebarForm';
 import { useBorrowNft } from './hooks';
 import SortNfts from '../SortNfts';
@@ -22,6 +20,7 @@ import {
   selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
+import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -57,7 +56,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
   const bulkNfts = useMemo(() => {
-    return selectedNfts.map((nft: BulkValues) => {
+    return selectedNfts.map((nft: BorrowNftBulk) => {
       const currentNft = find(propEq('mint', nft.mint))(
         perpetualNftsInfo,
       ) as any;

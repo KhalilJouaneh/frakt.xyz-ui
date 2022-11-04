@@ -10,11 +10,11 @@ import { SolanaIcon } from '../../../../icons';
 import SuccessLoan from '../SuccessLoan';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
-import { BulkValues } from '../../hooks';
 import Header from '../Header';
+import { BorrowNftBulk } from '@frakt/api/nft';
 
 interface SelectedBulkProps {
-  selectedBulk: BulkValues[];
+  selectedBulk: BorrowNftBulk[];
   onClick?: () => void;
   onBack?: () => void;
 }
@@ -36,7 +36,7 @@ const SelectedBulk: FC<SelectedBulkProps> = ({
 
   const isSelectedBulk = !!selectedBulk?.length;
 
-  const onEditLoan = (nft: BulkValues): void => {
+  const onEditLoan = (nft: BorrowNftBulk): void => {
     const selectedNftsMint = rawselectedBulk.map(({ mint }) => mint);
     const currentNftId = selectedNftsMint.indexOf(nft.mint);
 
@@ -106,8 +106,8 @@ const getStatsValue = (
 };
 
 const getPriceBasedValues = (
-  loans: BulkValues[],
-  onEditLoan: (nft: BulkValues) => void,
+  loans: BorrowNftBulk[],
+  onEditLoan: (nft: BorrowNftBulk) => void,
 ) => {
   return (
     <>

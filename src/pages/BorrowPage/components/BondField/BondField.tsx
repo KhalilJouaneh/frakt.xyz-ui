@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { BorrowNft } from '../../../../state/loans/types';
+import { BorrowNft } from '@frakt/api/nft';
 import { SolanaIcon } from '../../../../icons';
 import styles from './BondField.module.scss';
 

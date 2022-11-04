@@ -1,10 +1,11 @@
+import { BorrowNft } from '@frakt/api/nft';
 import { combineReducers } from 'redux';
 import { createReducer } from 'typesafe-actions';
 import { AsyncState } from '../../utils/state';
 
 import { createInitialAsyncState } from '../../utils/state/reducers';
 import { loansActions, loansTypes } from './actions';
-import { BorrowNft, LiquidityPool, Loan } from './types';
+import { LiquidityPool, Loan } from './types';
 
 export const initialLoansState: AsyncState<Loan[]> =
   createInitialAsyncState<Loan[]>(null);

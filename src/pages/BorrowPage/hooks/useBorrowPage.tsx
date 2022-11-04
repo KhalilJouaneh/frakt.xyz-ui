@@ -2,53 +2,22 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sum, map } from 'ramda';
 
-import { networkRequest } from '../../../utils/state';
-import { BorrowNft } from '../../../state/loans/types';
+import {
+  fetchWalletBorrowNfts,
+  fetchBulkSuggestion,
+  BulkSuggestion,
+} from '@frakt/api/nft';
 
 export enum BorrowType {
   BULK = 'bulk',
   SINGLE = 'single',
 }
 
-type BulksKeys = 'best' | 'cheapest' | 'safest' | 'max';
-
-export interface BulkValues extends BorrowNft {
-  mint: string;
-  name: string;
-  imageUrl: string;
-  valuation: string;
-  maxLoanValue: string;
-  isCanFreeze: boolean;
-  isPriceBased?: boolean;
-  solLoanValue?: number;
-  timeBased: {
-    returnPeriodDays: number;
-    ltvPercents: number;
-    fee: string;
-    feeDiscountPercents: string;
-    repayValue: string;
-    liquidityPoolPubkey: string;
-    loanValue: string;
-    isCanStake: boolean;
-  };
-  priceBased?: {
-    liquidityPoolPubkey: string;
-    ltvPercents: number;
-    borrowAPRPercents: number;
-    collaterizationRate: number;
-    isCanStake: boolean;
-    ltv?: number;
-    suggestedLoanValue?: number;
-  };
-}
-
-export type BulksType = { [key in BulksKeys]: BulkValues[] };
-
 export const useBorrowPage = (): {
   availableBorrowValue: number;
   onSubmit: () => Promise<void>;
   loading: boolean;
-  bulks: BulksType;
+  bulks: BulkSuggestion;
   setBorrowValue: Dispatch<SetStateAction<string>>;
   borrowValue: string;
   onBorrowPercentChange: (nextValue: number) => void;
@@ -61,7 +30,7 @@ export const useBorrowPage = (): {
   const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
 
   const [availableBorrowValue, setAvailableBorrowValue] = useState<number>(0);
-  const [bulks, setBulks] = useState<BulksType>(null);
+  const [bulks, setBulks] = useState<BulkSuggestion>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [borrowValue, setBorrowValue] = useState<string>('');
   const [percentValue, setPersentValue] = useState<number>(0);
@@ -104,20 +73,19 @@ export const useBorrowPage = (): {
     return value ? value?.toFixed(2) : '0';
   };
 
-  const URL = `https://${process.env.BACKEND_DOMAIN}/nft`;
-
   const onSubmit = async (): Promise<void> => {
     const totalValue =
       percentValue > 99.5 ? Math.ceil(availableBorrowValue) : borrowValue;
 
     try {
-      const bulks = await networkRequest({
-        url: `${URL}/suggest/${publicKey?.toBase58()}?solAmount=${totalValue}`,
+      const bulks = await fetchBulkSuggestion({
+        publicKey,
+        totalValue,
       });
 
-      setBulks(bulks as BulksType);
+      setBulks(bulks);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -125,12 +93,13 @@ export const useBorrowPage = (): {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `${URL}/meta/${publicKey?.toBase58()}?&limit=${1000}`,
-      );
-      const allNfts = await response.json();
+      const walletNfts = await fetchWalletBorrowNfts({
+        publicKey,
+        limit: 1000,
+        offset: 0,
+      });
 
-      const availableBorrowValue = sum(map(maxLoanValue, allNfts)) || 0;
+      const availableBorrowValue = sum(map(maxLoanValue, walletNfts)) || 0;
 
       setAvailableBorrowValue(availableBorrowValue);
     })();
