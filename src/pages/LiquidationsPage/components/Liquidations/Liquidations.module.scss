@@ -1,3 +1,10 @@
 .tab {
   flex-wrap: nowrap;
 }
+
+.tabContent {
+  border: 1px solid var(--secondary-border);
+  border-top: 0;
+  background: var(--primary-background);
+  padding: 24px;
+}

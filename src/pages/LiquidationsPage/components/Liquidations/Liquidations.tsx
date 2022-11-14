@@ -131,59 +131,61 @@ const Liquidations: FC = () => {
         setValue={setTabValue}
         {...renderTip}
       />
-      {tabValue === LiquidationsTabsNames.LIQUIDATIONS &&
-        (publicKey ? (
+      <div className={styles.tabContent}>
+        {tabValue === LiquidationsTabsNames.LIQUIDATIONS &&
+          (publicKey ? (
+            <LiquidationsList
+              withRafflesInfo
+              fetchItemsFunc={(params) =>
+                dispatch(liquidationsActions.fetchRaffleList(params))
+              }
+            >
+              {graceList.length ? (
+                graceList.map((item) => (
+                  <LiquidationRaffleCard
+                    key={item.nftMint}
+                    data={item}
+                    disabled={lotteryTickets.quantity < 1}
+                  />
+                ))
+              ) : (
+                <EmptyList text="No ongoing raffles at the moment" />
+              )}
+            </LiquidationsList>
+          ) : (
+            <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
+          ))}
+        {tabValue === LiquidationsTabsNames.GRACE && (
           <LiquidationsList
-            withRafflesInfo
+            isGraceList
             fetchItemsFunc={(params) =>
-              dispatch(liquidationsActions.fetchRaffleList(params))
+              dispatch(liquidationsActions.fetchGraceList(params))
             }
           >
             {graceList.length ? (
               graceList.map((item) => (
-                <LiquidationRaffleCard
-                  key={item.nftMint}
-                  data={item}
-                  disabled={lotteryTickets.quantity < 1}
-                />
+                <GraceCard key={item.nftMint} data={item} />
               ))
             ) : (
-              <EmptyList text="No ongoing raffles at the moment" />
+              <EmptyList text="No loans on grace at the moment" />
             )}
           </LiquidationsList>
-        ) : (
-          <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
-        ))}
-      {tabValue === LiquidationsTabsNames.GRACE && (
-        <LiquidationsList
-          isGraceList
-          fetchItemsFunc={(params) =>
-            dispatch(liquidationsActions.fetchGraceList(params))
-          }
-        >
-          {graceList.length ? (
-            graceList.map((item) => (
-              <GraceCard key={item.nftMint} data={item} />
-            ))
+        )}
+        {tabValue === LiquidationsTabsNames.RAFFLES &&
+          (graceList.length ? (
+            <LiquidationsList
+              fetchItemsFunc={(params) =>
+                dispatch(liquidationsActions.updateWonRaffleList(params))
+              }
+            >
+              {graceList.map((item) => (
+                <WonRaffleCard key={item.nftMint} data={item} />
+              ))}
+            </LiquidationsList>
           ) : (
-            <EmptyList text="No loans on grace at the moment" />
-          )}
-        </LiquidationsList>
-      )}
-      {tabValue === LiquidationsTabsNames.RAFFLES &&
-        (graceList.length ? (
-          <LiquidationsList
-            fetchItemsFunc={(params) =>
-              dispatch(liquidationsActions.updateWonRaffleList(params))
-            }
-          >
-            {graceList.map((item) => (
-              <WonRaffleCard key={item.nftMint} data={item} />
-            ))}
-          </LiquidationsList>
-        ) : (
-          <NoWinningRaffles onClick={handleTryLottery} />
-        ))}
+            <NoWinningRaffles onClick={handleTryLottery} />
+          ))}
+      </div>
     </>
   );
 };

@@ -35,23 +35,31 @@
 
 .primary {
   flex: 1;
-  border: 1px solid var(--primary-border);
+  border: 1px solid var(--secondary-border);
   background: var(--secondary-background);
-  color: var(--black-color);
+  color: var(--secondary-border);
   font: var(--font-text-8);
 
   &:hover {
-    background: var(--secondary-background);
+    background: var(--primary-background);
   }
 }
 
 .tabActive {
-  border: 1px solid var(--black-color);
+  border: 0;
+  border-top: 1px solid var(--secondary-border);
+  background: var(--primary-background);
 
   &,
   &:hover {
-    background: var(--primary-background);
     pointer-events: none;
+  }
+
+  &:first-child {
+    border-left: 1px solid var(--secondary-border);
+  }
+  &:last-child {
+    border-right: 1px solid var(--secondary-border);
   }
 }
 
