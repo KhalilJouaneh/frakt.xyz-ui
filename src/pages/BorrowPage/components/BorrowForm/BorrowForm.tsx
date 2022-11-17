@@ -65,14 +65,6 @@ const BorrowForm: FC<BorrowFormProps> = ({
   return (
     <>
       <div className={styles.details}>
-        <p className={styles.detailsTitle}>Duration</p>
-        <Select
-          options={selectOptions}
-          value={selectValue}
-          onChange={({ value }) => setSelectValue(value)}
-          defaultValue={selectOptions[0]}
-          disabled={!selectedNft.priceBased}
-        />
         <div className={styles.sliderWrapper}>
           <p className={styles.sliderLabel}>
             To borrow: {solLoanValue?.toFixed(2)} SOL{' '}
@@ -87,6 +79,15 @@ const BorrowForm: FC<BorrowFormProps> = ({
             max={maxLoanValue}
           />
         </div>
+        <p className={styles.detailsTitle}>Duration</p>
+        <Select
+          className={styles.select}
+          options={selectOptions}
+          value={selectValue}
+          onChange={({ value }) => setSelectValue(value)}
+          defaultValue={selectOptions[0]}
+          disabled={!selectedNft.priceBased}
+        />
         <LoansFields
           risk={risk}
           ltv={ltv}

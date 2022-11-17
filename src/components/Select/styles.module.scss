@@ -42,6 +42,12 @@
     .custom-select__indicator-separator {
       display: none;
     }
+    .custom-select__dropdown-indicator {
+      color: var(--secondary-border);
+      &:hover {
+        color: var(--secondary-border);
+      }
+    }
     .custom-select__control--menu-is-open .custom-select__dropdown-indicator {
       color: var(--secondary-border);
       transform: rotate(180deg);
