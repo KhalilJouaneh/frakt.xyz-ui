@@ -14,9 +14,9 @@
 }
 
 .detailsTitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
-  margin: 9px 0;
+  margin: 45px 0 8px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -67,6 +67,14 @@
     .ant-slider-mark-text:last-child {
       left: 90.5% !important;
       width: 100px;
+    }
+  }
+}
+
+.select {
+  :global {
+    .custom-select__control {
+      background-color: transparent;
     }
   }
 }
