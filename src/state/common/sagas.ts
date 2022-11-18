@@ -7,13 +7,11 @@ import { selectConnection, selectWalletPublicKey } from './selectors';
 import loansSagas from '../loans/sagas';
 import liquidationsSagas from '../liquidations/sagas';
 import { commonTypes, commonActions } from './actions';
-import { tokenListActions } from '../tokenList/actions';
 import { networkRequest, connectSocket } from '../../utils/state';
 import { parseSolanaHealth } from './helpers';
 
 const appInitSaga = function* () {
   yield put(commonActions.fetchSolanaHealth());
-  yield put(tokenListActions.fetchTokenList());
   const socket = yield call(connectSocket);
   yield put(commonActions.setSocket(socket));
   sagaMiddleware.run(loansSagas(socket));
