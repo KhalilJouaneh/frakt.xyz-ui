@@ -24,9 +24,12 @@ export const useFirebaseNotifications = (): void => {
     if (walletPublicKey && dispatch && 'serviceWorker' in navigator) {
       const app = initializeApp(firebaseConfig);
       const messaging = getMessaging(app);
-      getToken(messaging, { vapidKey: process.env.FCM_VAPID }).then((token) => {
-        dispatch(commonActions.sendFcmToken(token));
-      });
+
+      getToken(messaging, { vapidKey: process.env.FCM_VAPID })
+        .then((token) => {
+          dispatch(commonActions.sendFcmToken(token));
+        })
+        .catch(() => {});
 
       navigator.serviceWorker
         .register('/firebase-messaging-sw.js')
