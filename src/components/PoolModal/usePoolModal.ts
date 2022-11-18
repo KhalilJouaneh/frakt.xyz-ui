@@ -20,7 +20,6 @@ export enum InputControlsNames {
 export enum TabsNames {
   DEPOSIT = 'deposit',
   WITHDRAW = 'withdraw',
-  SWAP = 'swap',
 }
 
 export type FormFieldValues = {
@@ -66,10 +65,6 @@ export const usePoolModal = ({
     {
       label: 'Deposit',
       value: 'deposit',
-    },
-    {
-      label: 'Swap',
-      value: 'swap',
     },
     {
       label: 'Withdraw',
@@ -167,6 +162,11 @@ export const useDepositTxn = ({
   liquidityPoolPubkey,
   depositValue,
   withdrawValue,
+}: {
+  depositValue?: string;
+  withdrawValue?: string;
+  onCancel: () => void;
+  liquidityPoolPubkey: string;
 }): {
   depositLiquidity: () => void;
   unstakeLiquidity: () => void;
@@ -210,14 +210,3 @@ export const marks: { [key: number]: string | JSX.Element } = {
   75: '75 %',
   100: '100 %',
 };
-
-export const riskTabs = [
-  {
-    label: 'Medium Risk',
-    value: 'medium',
-  },
-  {
-    label: 'high Risk',
-    value: 'high',
-  },
-];
