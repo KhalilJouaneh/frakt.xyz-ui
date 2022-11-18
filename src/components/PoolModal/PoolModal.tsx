@@ -1,17 +1,12 @@
-import { FC, useEffect, useState } from 'react';
-import cx from 'classnames';
+import { FC } from 'react';
 
-import { TabsNames, useDepositTxn, usePoolModal } from './usePoolModal';
-import RiskTabs, { RiskTabsNames } from './RiskTabs';
-import SwapForm from '../../componentsNew/SwapModal';
+import { TabsNames, usePoolModal } from './usePoolModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
-import DepositHigh from './DepositHigh';
 import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
 import { Modal } from '../Modal';
-import Icons from '../../iconsNew';
 
 interface PoolModalProps {
   visible: string;
@@ -30,32 +25,17 @@ export const PoolModal: FC<PoolModalProps> = ({
   utilizationRate,
   liquidityPoolPubkey,
 }) => {
-  const { withdrawValue, depositValue, poolTabs, tabValue, setTabValue } =
-    usePoolModal({ visible, depositAmount });
-
-  const { depositLiquidity, unstakeLiquidity } = useDepositTxn({
-    liquidityPoolPubkey,
-    depositValue,
-    withdrawValue,
-    onCancel,
+  const { poolTabs, tabValue, setTabValue } = usePoolModal({
+    visible,
+    depositAmount,
   });
-
-  const [riskTabType, setRiskTabType] = useState<RiskTabsNames>(
-    RiskTabsNames.MEDIUM,
-  );
-
-  const [mobileVisible, setMobileVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    setMobileVisible(false);
-  }, [visible]);
 
   return (
     <Modal
       visible={!!visible}
       centered
       onCancel={onCancel}
-      width={716}
+      width={500}
       footer={false}
       closable={false}
       className={styles.modal}
@@ -65,57 +45,31 @@ export const PoolModal: FC<PoolModalProps> = ({
           <CloseModalIcon className={styles.closeIcon} />
         </div>
       </div>
-      {mobileVisible && (
-        <div onClick={() => setMobileVisible(false)} className={styles.btnBack}>
-          <Icons.Arrow />
-        </div>
-      )}
-      <div className={cx(styles.wrapper, mobileVisible && styles.mobileModal)}>
-        <RiskTabs
-          onClick={setRiskTabType}
-          type={riskTabType}
-          className={styles.tabs}
-        />
-        <div className={styles.poolTabs}>
-          <Tabs tabs={poolTabs} value={tabValue} setValue={setTabValue} />
-          <div className={styles.content}>
-            {tabValue === TabsNames.DEPOSIT &&
-              riskTabType === RiskTabsNames.HIGH && (
-                <DepositHigh
-                  depositAmount={depositAmount}
-                  utilizationRate={utilizationRate}
-                  onSubmit={depositLiquidity}
-                  apr={apr}
-                />
-              )}
-            {tabValue === TabsNames.DEPOSIT &&
-              riskTabType === RiskTabsNames.MEDIUM && (
-                <DepositTab
-                  depositAmount={depositAmount}
-                  utilizationRate={utilizationRate}
-                  onSubmit={depositLiquidity}
-                  apr={apr}
-                />
-              )}
-            {tabValue === TabsNames.SWAP && <SwapForm />}
-            {tabValue === TabsNames.WITHDRAW && (
-              <WithdrawTab
-                onSubmit={unstakeLiquidity}
-                depositAmount={depositAmount}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-      {!mobileVisible && (
-        <div className={styles.mobileWrapper}>
-          <RiskTabs
-            setMobileVisible={setMobileVisible}
-            onClick={setRiskTabType}
-            type={riskTabType}
+
+      <Tabs
+        className={styles.tabs}
+        tabs={poolTabs}
+        value={tabValue}
+        setValue={setTabValue}
+      />
+      <div className={styles.content}>
+        {tabValue === TabsNames.DEPOSIT && (
+          <DepositTab
+            liquidityPoolPubkey={liquidityPoolPubkey}
+            utilizationRate={utilizationRate}
+            depositAmount={depositAmount}
+            onCancel={onCancel}
+            apr={apr}
           />
-        </div>
-      )}
+        )}
+        {tabValue === TabsNames.WITHDRAW && (
+          <WithdrawTab
+            liquidityPoolPubkey={liquidityPoolPubkey}
+            onCancel={onCancel}
+            depositAmount={depositAmount}
+          />
+        )}
+      </div>
     </Modal>
   );
 };

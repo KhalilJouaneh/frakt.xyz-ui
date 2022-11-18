@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { sendAmplitudeData } from '../../../utils/amplitude';
 import { TokenFieldWithBalance } from '../../TokenField';
-import { marks, usePoolModal } from '../usePoolModal';
+import { marks, useDepositTxn, usePoolModal } from '../usePoolModal';
 import styles from './DepositTab.module.scss';
 import { SOL_TOKEN } from '../../../utils';
 import { Slider } from '../../Slider';
@@ -10,16 +10,18 @@ import Button from '../../Button';
 
 interface DepositTabProps {
   utilizationRate: number;
-  onSubmit: () => void;
+  onCancel: () => void;
   apr: number;
   depositAmount: number;
+  liquidityPoolPubkey: string;
 }
 
 const DepositTab: FC<DepositTabProps> = ({
   utilizationRate,
-  onSubmit,
   apr,
   depositAmount,
+  liquidityPoolPubkey,
+  onCancel,
 }) => {
   const {
     depositValue,
@@ -28,6 +30,12 @@ const DepositTab: FC<DepositTabProps> = ({
     onDepositPercentChange,
     solWalletBalance,
   } = usePoolModal({ depositAmount });
+
+  const { depositLiquidity } = useDepositTxn({
+    liquidityPoolPubkey,
+    depositValue,
+    onCancel,
+  });
 
   const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
 
@@ -78,7 +86,7 @@ const DepositTab: FC<DepositTabProps> = ({
         </div>
         <Button
           onClick={() => {
-            onSubmit();
+            depositLiquidity();
             sendAmplitudeData('loans-confirm-deposit');
           }}
           className={styles.btn}
