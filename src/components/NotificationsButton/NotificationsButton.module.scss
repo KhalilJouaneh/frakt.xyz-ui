@@ -1,0 +1,22 @@
+@import '../../scss/abstracts/mixins';
+@import '../../scss/abstracts/typography';
+
+.container {
+  height: 100%;
+  padding: 8px;
+  border: 1px solid var(--light-green-color);
+  background-color: var(--light-green-color-2);
+  @include flex;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-1);
+
+  &:hover {
+    background-color: var(--light-green-color-1);
+  }
+
+  path {
+    fill: var(--connect-btn-text);
+    transition: fill var(--transition-1);
+  }
+}
