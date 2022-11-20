@@ -1,24 +1,35 @@
+import { FC } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
 
-import Button from '../Button';
 import { commonActions } from '../../state/common/actions';
+import { shortenAddress } from '../../utils/solanaUtils';
+import styles from './ConnectButton.module.scss';
+import { ArrowDownBtn } from '../../icons';
 
 export interface ConnectButtonProps {
   className?: string;
 }
 
-const ConnectButton = ({ className }: ConnectButtonProps): JSX.Element => {
+const ConnectButton: FC<ConnectButtonProps> = () => {
   const dispatch = useDispatch();
+  const { publicKey: walletPubKey, connected } = useWallet();
 
   return (
-    <Button
-      className={className}
+    <div
+      className={styles.container}
       onClick={() => {
         dispatch(commonActions.toggleWalletModal());
       }}
     >
-      Connect wallet
-    </Button>
+      {connected && (
+        <>
+          {shortenAddress(walletPubKey.toString())}
+          <ArrowDownBtn className={styles.arrowDownIcon} />
+        </>
+      )}
+      {!connected && 'Connect Wallet'}
+    </div>
   );
 };
 
