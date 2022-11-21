@@ -1,0 +1,15 @@
+.input {
+  width: 100%;
+  background: var(--secondary-background);
+  border: unset;
+  border-bottom: 1px solid var(--primary-border);
+  padding: 12px 16px;
+  font: var(--font-text-4);
+  border-color: var(--transition-1);
+
+  &:focus,
+  &:focus-visible {
+    outline: unset;
+    border-bottom: 1px solid var(--secondary-border);
+  }
+}
