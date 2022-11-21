@@ -29,20 +29,25 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   fetchItemsFunc: FetchDataFunc,
   isGraceList?: boolean,
 ) => {
-  const defaultSortIndex = isGraceList ? 2 : 1;
-  const defaultSortBy = isGraceList ? 'startedAt' : 'liquidationPrice';
-  const defaultSortOrder = isGraceList ? 'asc' : 'desc';
+  const defaultSortValue = isGraceList
+    ? {
+        label: <span>Grace Period</span>,
+        value: 'startedAt_asc',
+      }
+    : {
+        label: <span>Liquidation Price</span>,
+        value: 'liquidationPrice_desc',
+      };
 
-  const [sortOrder, setSortOrder] = useState<string>(defaultSortOrder);
-  const [sortBy, setSortBy] = useState<string>(defaultSortBy);
+  const [sortOrder, setSortOrder] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('');
   const [search, setSearch] = useState<string>('');
   const [collections, setCollections] = useState<[]>([]);
   const stringRef = useRef(null);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
-      [LiquidationsListFormNames.SORT]:
-        SORT_VALUES_WITH_GRACE[defaultSortIndex],
+      [LiquidationsListFormNames.SORT]: defaultSortValue,
       [LiquidationsListFormNames.COLLECTIONS_SORT]: null,
     },
   });

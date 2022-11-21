@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
+import { find, propEq } from 'ramda';
 
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { loansActions } from './../../../../state/loans/actions';
@@ -16,6 +17,7 @@ type UseSeletedBulk = (props: { rawselectedBulk: BorrowNftBulk[] }) => {
   loadingModalVisible: boolean;
   selectedBulk: BorrowNftBulk[];
   feesOnDay: number;
+  isMaxReturnPeriodDays: boolean;
 };
 
 export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
@@ -26,6 +28,11 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
 
   const feesOnDay = getFeesOnDay(selectedBulk);
+
+  const maxReturnPeriodDays = 14;
+  const isMaxReturnPeriodDays = !!selectedBulk.find(
+    ({ timeBased }) => timeBased.returnPeriodDays === maxReturnPeriodDays,
+  );
 
   const {
     visible: loadingModalVisible,
@@ -70,5 +77,6 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     loadingModalVisible,
     closeLoadingModal,
     feesOnDay,
+    isMaxReturnPeriodDays,
   };
 };
