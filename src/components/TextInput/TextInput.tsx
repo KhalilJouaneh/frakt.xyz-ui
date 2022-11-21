@@ -4,6 +4,7 @@ import { FC } from 'react';
 import styles from './TextInput.module.scss';
 
 interface TextInputProps {
+  label?: string;
   className?: string;
   wrapperClassName?: string;
   defaultValue?: string;
@@ -12,6 +13,7 @@ interface TextInputProps {
 }
 
 export const TextInput: FC<TextInputProps> = ({
+  label,
   className,
   wrapperClassName,
   defaultValue,
@@ -20,6 +22,7 @@ export const TextInput: FC<TextInputProps> = ({
 }) => {
   return (
     <div className={classNames(wrapperClassName)}>
+      {label && <label className={styles.label}>label</label>}
       <input
         className={classNames(styles.input, className)}
         defaultValue={defaultValue}
