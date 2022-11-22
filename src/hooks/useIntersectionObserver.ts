@@ -1,41 +1,42 @@
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
-interface ChildrenRefs {
-  sectionRef: { current: HTMLParagraphElement };
-}
+type UseIntersectionObserver = (
+  elementRef: RefObject<Element>,
+  props: {
+    threshold?: number;
+    root?: Element;
+    rootMargin?: string;
+    freezeOnceVisible?: boolean;
+  },
+) => IntersectionObserverEntry | null;
 
-export const useIntersectionObserver = (
-  parentRef?: { current: HTMLParagraphElement },
-  childrenRefs?: ChildrenRefs[],
-  callback?: (element: Element) => void,
-): void => {
-  const observer = useRef<IntersectionObserver>();
+export const useIntersectionObserver: UseIntersectionObserver = (
+  elementRef: RefObject<Element>,
+  { threshold = 0, root = null, rootMargin = '0%', freezeOnceVisible = false },
+) => {
+  const [entry, setEntry] = useState<IntersectionObserverEntry>();
+
+  const frozen = entry?.isIntersecting && freezeOnceVisible;
+
+  const updateEntry = ([entry]: IntersectionObserverEntry[]): void => {
+    setEntry(entry);
+  };
 
   useEffect(() => {
-    const options = {
-      root: parentRef?.current || null,
-      rootMargin: '0px',
-      threshold: 0.7,
-    };
+    const node = elementRef?.current; // DOM Ref
+    const hasIOSupport = !!window.IntersectionObserver;
 
-    observer.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          callback && callback(entry.target);
-        }
-      });
-    }, options);
+    if (!hasIOSupport || frozen || !node) return;
 
-    childrenRefs?.forEach((child) => {
-      child.sectionRef?.current &&
-        observer.current.observe(child.sectionRef.current);
-    });
+    const observerParams = { threshold, root, rootMargin };
+    const observer = new IntersectionObserver(updateEntry, observerParams);
 
-    return () => {
-      childrenRefs.forEach((child) => {
-        child.sectionRef?.current &&
-          observer.current.unobserve(child.sectionRef.current);
-      });
-    };
-  }, [callback, parentRef, childrenRefs]);
+    observer.observe(node);
+
+    return () => observer.disconnect();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elementRef?.current, threshold, root, rootMargin, frozen]);
+
+  return entry ?? null;
 };
