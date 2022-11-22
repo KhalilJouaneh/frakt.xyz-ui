@@ -14,6 +14,7 @@ import { networkRequest } from '../../utils/state';
 import { FRKT } from '../../iconsNew/FRKT';
 import { WalletsItems } from '../WalletContent/WalletContent';
 import Icons from '../../iconsNew/';
+import { useUserInfo } from '@frakt/hooks';
 
 interface CurrentUserTableProps {
   className?: string;
@@ -30,6 +31,7 @@ const CurrentUserTable = ({
   const { disconnect, publicKey } = useWallet();
   const { account } = useNativeAccount();
   const [usersRewards, setUsersRewars] = useState<UsersRewards>(null);
+  const { data: userData } = useUserInfo();
 
   if (!publicKey) {
     return null;
@@ -88,7 +90,10 @@ const CurrentUserTable = ({
       {!visibleWalletItems ? (
         <div className={`${className} ${styles.wrapper}`}>
           <div className={styles.userWrapper}>
-            <UserAvatar className={styles.avatar} />
+            <UserAvatar
+              className={styles.avatar}
+              imageUrl={userData?.avatarUrl}
+            />
             <div className={styles.userInfo}>
               <div
                 className={styles.walletInfo}
