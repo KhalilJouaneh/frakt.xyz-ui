@@ -22,7 +22,7 @@ export const TextInput: FC<TextInputProps> = ({
 }) => {
   return (
     <div className={classNames(wrapperClassName)}>
-      {label && <label className={styles.label}>label</label>}
+      {label && <label className={styles.label}>{label}</label>}
       <input
         className={classNames(styles.input, className)}
         defaultValue={defaultValue}
