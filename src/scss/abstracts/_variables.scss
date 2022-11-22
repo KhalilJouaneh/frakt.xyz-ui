@@ -1,5 +1,9 @@
 :root {
   --header-height: 64px;
+
+  @media screen and (max-width: 1023px) {
+    --header-height: 56px;
+  }
 }
 
 :root[data-theme='light'] {

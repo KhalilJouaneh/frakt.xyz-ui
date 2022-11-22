@@ -1,4 +1,4 @@
-@import '../../scss/abstracts/mixins';
+@import '@frakt/scss/abstracts/mixins';
 
 .container {
   position: fixed;
@@ -17,6 +17,10 @@
   @include flex(row, nowrap, flex-start, center);
   gap: 16px;
   height: 100%;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
 }
 
 .walletBtn {
@@ -42,6 +46,10 @@
   }
 }
 
+.logoWrapper {
+  @include flex(row, nowrap, flex-start, center);
+}
+
 .logo {
   path {
     fill: var(--primary-icon);
@@ -50,5 +58,10 @@
   @media (max-width: 767px) {
     width: 107px;
     height: 32px;
+  }
+
+  @media screen and (max-width: 575px) {
+    width: 80px;
+    height: 24px;
   }
 }

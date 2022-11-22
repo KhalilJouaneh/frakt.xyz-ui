@@ -22,6 +22,7 @@ export const Header: FC = () => {
         href="https://frakt-landing.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
+        className={styles.logoWrapper}
       >
         <Logo className={styles.logo} />
       </a>

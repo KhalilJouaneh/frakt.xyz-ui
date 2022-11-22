@@ -12,6 +12,10 @@
   padding: 32px;
   @include flex(column, nowrap, flex-start, flex-start);
   overflow-y: auto;
+
+  @media screen and (max-width: 1023px) {
+    width: 100vw;
+  }
 }
 .rootHidden {
   display: none;
@@ -47,6 +51,7 @@
 }
 
 .settingsBtn {
+  @include flex(row, nowrap, center, center);
   background: unset;
   border: unset;
   cursor: pointer;
@@ -168,6 +173,7 @@
 }
 
 .notficationsList {
+  width: 100%;
   @include flex(column, nowrap, flex-start, stretch);
   row-gap: 16px;
 }

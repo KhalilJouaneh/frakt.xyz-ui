@@ -18,10 +18,19 @@
   &:hover {
     background-color: var(--light-green-color-1);
   }
+
+  @media (max-width: 767px) {
+    font-size: 14px;
+    padding: 8px;
+  }
 }
 
 .avatar {
   width: 24px;
+
+  @media (max-width: 767px) {
+    width: 18px;
+  }
 }
 
 .arrowDownIcon {
