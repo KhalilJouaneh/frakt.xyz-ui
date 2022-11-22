@@ -6,15 +6,13 @@ body {
       box-shadow: unset;
     }
     :global {
-      opacity: 1;
       min-width: 38px;
+
       .ant-click-animating-node {
-        display: none;
+        display: none !important;
       }
 
       .ant-switch-handle {
-        width: 39px;
-        height: 8px;
         top: -5px;
         left: -1px;
       }
@@ -26,9 +24,7 @@ body {
         border: 1px solid var(--secondary-text);
       }
 
-      width: 35px;
       height: 16px;
-      box-sizing: border-box;
       background-image: unset !important;
       background-color: var(--secondary-background);
       border-radius: 10px;
@@ -45,13 +41,6 @@ body {
       left: calc(100% - 47px) !important;
     }
   }
-
-  .toggle:global.ant-switch-checked.ant-switch-disabled {
-    .ant-switch-handle::before {
-      background: var(--gray-color-1);
-      box-shadow: none;
-    }
-  }
 }
 
 .filterToggle {
@@ -63,7 +52,6 @@ body {
   &__text {
     color: var(--secondary-border);
     font: var(--font-text-8);
-    transition: opacity var(--transition-1);
     margin-bottom: 5px;
   }
 }

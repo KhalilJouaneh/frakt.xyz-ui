@@ -76,6 +76,10 @@
     height: 35px;
     width: 35px;
   }
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
 }
 
 .closeIcon {

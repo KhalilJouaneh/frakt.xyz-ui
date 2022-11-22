@@ -45,7 +45,7 @@ export const usePoolModal = ({
   onDepositPercentChange: (nextValue: number) => void;
   onWithdrawPercentChange: (nextValue: number) => void;
   percentValue: number;
-  solWalletBalance: string;
+  solWalletBalance: number;
 } => {
   const { watch, register, setValue } = useForm({
     defaultValues: {
@@ -55,9 +55,12 @@ export const usePoolModal = ({
     },
   });
 
+  const feeAmount = 0.02;
+
   const { account } = useNativeAccount();
   const solBalanceValue = getSolBalanceValue(account);
   const solWalletBalance = getCorrectSolWalletBalance(solBalanceValue);
+  const solWalletBalanceWithFee = parseFloat(solWalletBalance) - feeAmount;
 
   const { depositValue, withdrawValue, percentValue } = watch();
 
@@ -96,7 +99,7 @@ export const usePoolModal = ({
   }, [register]);
 
   const onDepositPercentChange = (nextValue: number): void => {
-    const depositValue = calcValueByBalance(nextValue, solWalletBalance);
+    const depositValue = calcValueByBalance(nextValue, solWalletBalanceWithFee);
 
     setValue(InputControlsNames.DEPOSIT_VALUE, depositValue);
     setValue(InputControlsNames.PERCENT_VALUE, nextValue);
@@ -111,7 +114,7 @@ export const usePoolModal = ({
 
   const onDepositValueChange = (nextValue: string): void => {
     setValue(InputControlsNames.DEPOSIT_VALUE, nextValue);
-    caclPercentOfBalance(nextValue, solWalletBalance);
+    caclPercentOfBalance(nextValue, solWalletBalanceWithFee);
   };
 
   const onWithdrawValueChange = (nextValue: string): void => {
@@ -153,7 +156,7 @@ export const usePoolModal = ({
     onWithdrawValueChange,
     onWithdrawPercentChange,
     onDepositPercentChange,
-    solWalletBalance,
+    solWalletBalance: solWalletBalanceWithFee,
   };
 };
 

@@ -37,15 +37,10 @@ const DepositTab: FC<DepositTabProps> = ({
     onCancel,
   });
 
-  const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
-
-  const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
+  const notEnoughBalanceError = solWalletBalance < parseFloat(depositValue);
 
   const isDisabledDepositBtn =
-    Number(depositValue) === 0 || notEnoughBalanceError;
-
-  const depositAmountWithFee =
-    rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
+    parseFloat(depositValue) === 0 || notEnoughBalanceError;
 
   return (
     <div className={styles.wrapper}>
@@ -56,7 +51,7 @@ const DepositTab: FC<DepositTabProps> = ({
           onValueChange={onDepositValueChange}
           currentToken={SOL_TOKEN}
           label={`BALANCE:`}
-          lpBalance={Number(depositAmountWithFee.toFixed(2))}
+          lpBalance={parseFloat(solWalletBalance.toFixed(2))}
           error={notEnoughBalanceError}
           showMaxButton
           labelRight
