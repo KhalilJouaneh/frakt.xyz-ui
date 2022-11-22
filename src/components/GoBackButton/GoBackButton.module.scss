@@ -9,6 +9,7 @@
   cursor: pointer;
   height: 40px;
   width: 40px;
+  transition: border var(--transition-1);
 
   svg {
     path {
