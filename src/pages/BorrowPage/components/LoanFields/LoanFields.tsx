@@ -129,6 +129,22 @@ const LoansFields: FC<LoansFieldsProps> = ({
             {fee.toFixed(3)} <SolanaIcon />
           </p>
         </div>
+        {!isPriceBasedType && (
+          <div className={styles.staticValue}>
+            <p className={styles.staticValueTitle}>Holder discount</p>
+            <p className={styles.staticValueData}>
+              {timeBased.feeDiscountPercents} %
+            </p>
+          </div>
+        )}
+        {!isPriceBasedType && (
+          <div className={styles.staticValue}>
+            <p className={styles.staticValueTitle}>To repay</p>
+            <p className={styles.staticValueData}>
+              {timeBased.repayValue} <SolanaIcon />
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

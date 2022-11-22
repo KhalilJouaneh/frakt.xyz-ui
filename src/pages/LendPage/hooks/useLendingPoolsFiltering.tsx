@@ -52,7 +52,7 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
       [FilterFormInputsNames.SHOW_STAKED]: false,
       [FilterFormInputsNames.SORT]: {
         label: <span>APR</span>,
-        value: 'apr_asc',
+        value: 'totalLiquidity_desc',
       },
     },
   });
@@ -93,14 +93,14 @@ export const useLendingPoolsFiltering: UseLendingPoolsFiltering = () => {
             return compareNumbers(
               poolA.depositApr,
               poolB.depositApr,
-              sortOrder === SORT_ORDER.ASC,
+              sortOrder === SORT_ORDER.DESC,
             );
           }
           if (sortField === SortField.TOTAL_LIQUIDITY) {
             return compareNumbers(
               poolA.totalLiquidity,
               poolB.totalLiquidity,
-              sortOrder === SORT_ORDER.ASC,
+              sortOrder === SORT_ORDER.DESC,
             );
           }
           return 0;

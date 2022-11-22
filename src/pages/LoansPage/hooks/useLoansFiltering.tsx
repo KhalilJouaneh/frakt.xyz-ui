@@ -98,7 +98,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
             return compareNumbers(
               loanA.repayValue,
               loanB.repayValue,
-              sortOrder === 'asc',
+              sortOrder === 'desc',
             );
           }
 
@@ -113,7 +113,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
             return compareNumbers(
               timeToRepayA,
               timeToRepayB,
-              sortOrder === 'asc',
+              sortOrder === 'desc',
             );
           }
 
@@ -124,7 +124,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
             return compareNumbers(
               loanA.health,
               loanB.health,
-              sortOrder === 'asc',
+              sortOrder === 'desc',
             );
           }
 
@@ -135,7 +135,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
             return compareNumbers(
               creationTimeA,
               creationTimeB,
-              sortOrder === 'asc',
+              sortOrder === 'desc',
             );
           }
           return 0;

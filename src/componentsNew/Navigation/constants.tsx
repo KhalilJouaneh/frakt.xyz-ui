@@ -72,14 +72,14 @@ export const NAVIGATION_LINKS = [
     icon: Icons.MyLoans,
     iconDark: Icons.MyLoansDark,
   },
-  {
-    pathname: PATHS.BONDS,
-    to: PATHS.BONDS,
-    label: 'My bonds',
-    event: 'navigation-bonds',
-    icon: Icons.Bonds,
-    iconDark: Icons.BondsDark,
-  },
+  // {
+  //   pathname: PATHS.BONDS,
+  //   to: PATHS.BONDS,
+  //   label: 'My bonds',
+  //   event: 'navigation-bonds',
+  //   icon: Icons.Bonds,
+  //   iconDark: Icons.BondsDark,
+  // },
   {
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,

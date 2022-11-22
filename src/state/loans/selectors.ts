@@ -68,16 +68,15 @@ export const selectUserLoansPending: (state) => boolean = createSelector(
   (graceLotsNull, restLoansNull) => graceLotsNull && restLoansNull,
 );
 
-export const selectLiquidityPools: (
-  state: LiquidityPool[],
-) => LiquidityPool[] | null = createSelector(
-  [pathOr(null, ['loans', 'liquidityPools', 'data'])],
-  ifElse(
-    isArray,
-    compose(reverse<LiquidityPool>, sortBy(propOr(0, 'totalLiquidity'))),
-    identity,
-  ),
-);
+export const selectLiquidityPools: (state: LiquidityPool[]) => LiquidityPool[] =
+  createSelector(
+    [pathOr([], ['loans', 'liquidityPools', 'data'])],
+    ifElse(
+      isArray,
+      compose(reverse<LiquidityPool>, sortBy(propOr(0, 'totalLiquidity'))),
+      identity,
+    ),
+  );
 
 export const selectHiddenBorrowNfts: (state: string[]) => string[] =
   createSelector([pathOr([], ['loans', 'hiddenBorrowNfts'])], identity);
