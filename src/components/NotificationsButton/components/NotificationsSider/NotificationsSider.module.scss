@@ -197,7 +197,7 @@
     background: var(--light-green-color);
   }
 }
-.notificationCardInfoUnred {
+.notificationCardInfoRead {
   &::after {
     content: unset;
   }
