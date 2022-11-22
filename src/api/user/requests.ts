@@ -8,22 +8,32 @@ type FetchUser = (props: {
 }) => Promise<UserInfo | null>;
 
 export const fetchUser: FetchUser = async ({ publicKey }) => {
-  const { data } = await axios.get<UserInfoRaw>(
-    `https://${process.env.BACKEND_DOMAIN}/user/${publicKey.toBase58()}`,
-  );
+  try {
+    const { data } = await axios.get<UserInfoRaw>(
+      `https://${process.env.BACKEND_DOMAIN}/user/${publicKey.toBase58()}`,
+    );
 
-  if (!data) return null;
+    if (!data) return null;
 
-  return {
-    avatarUrl: getDiscordAvatarUrl(data.discordId, data.avatar),
-    isOnServer: data.isOnServer,
-  };
+    return {
+      avatarUrl: getDiscordAvatarUrl(data.discordId, data.avatar),
+      isOnServer: data.isOnServer,
+    };
+  } catch (error) {
+    return null;
+  }
 };
 
 type RemoveUser = (props: { publicKey: web3.PublicKey }) => Promise<void>;
 
 export const removeUser: RemoveUser = async ({ publicKey }) => {
-  await axios.get(
-    `https://${process.env.BACKEND_DOMAIN}/user/${publicKey.toBase58()}/delete`,
-  );
+  try {
+    await axios.get(
+      `https://${
+        process.env.BACKEND_DOMAIN
+      }/user/${publicKey.toBase58()}/delete`,
+    );
+  } catch (error) {
+    return null;
+  }
 };
