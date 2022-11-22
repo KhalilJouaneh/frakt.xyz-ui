@@ -6,7 +6,7 @@ export const community = [
     label: 'Discord',
     icon: Icons.Discord,
     iconDark: Icons.DiscordDark,
-    href: 'https://discord.com/invite/UqbxgFrvCu',
+    href: process.env.FRAKT_DISCORD_SERVER,
   },
   {
     label: 'Twitter',
