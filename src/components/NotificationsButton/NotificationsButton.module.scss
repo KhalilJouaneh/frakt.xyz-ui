@@ -2,21 +2,29 @@
 @import '../../scss/abstracts/typography';
 
 .container {
-  height: 100%;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
   padding: 8px;
-  border: 1px solid var(--light-green-color);
-  background-color: var(--light-green-color-2);
-  @include flex;
+  border: 1px solid var(--gray-color-2);
+  @include flex(row, nowrap, center, center);
   cursor: pointer;
   user-select: none;
-  transition: background-color var(--transition-1);
+  background-color: unset;
+
+  transition: border var(--transition-1);
 
   &:hover {
-    background-color: var(--light-green-color-1);
+    border-color: var(--secondary-border);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: unset;
   }
 
   path {
-    fill: var(--connect-btn-text);
+    fill: var(--black-color);
     transition: fill var(--transition-1);
   }
 }
