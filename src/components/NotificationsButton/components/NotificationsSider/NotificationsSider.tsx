@@ -1,17 +1,16 @@
-import { shortenAddress } from '@frakt-protocol/frakt-sdk/lib/pools';
-import Button from '@frakt/components/Button';
-import { Loader } from '@frakt/components/Loader';
-import { UserAvatar } from '@frakt/components/UserAvatar';
-import { useUserInfo, useUserNotifications } from '@frakt/hooks';
-import { Alert } from '@frakt/iconsNew/Alert';
-import { BellSlash } from '@frakt/iconsNew/BellSlash';
-import { getDiscordUri } from '@frakt/utils';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useIntersectionObserver, useUserNotifications } from '@frakt/hooks';
 import classNames from 'classnames';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 
 import { Notification } from '@frakt/api/user';
-import { Header, SetUpContent, SignMessageContent } from './components';
+import {
+  Header,
+  LoadingContent,
+  NoNotificationsContent,
+  SettingsContent,
+  SetUpContent,
+  SignMessageContent,
+} from './components';
 import { ContentType } from './constants';
 import { useNotificationsSider } from './hooks';
 import styles from './NotificationsSider.module.scss';
@@ -35,7 +34,7 @@ export const NotificationsSider: FC = () => {
 };
 
 const NotificationsContent = () => {
-  const { notifications, isLoading } = useUserNotifications();
+  const { notifications, isLoading, markRead } = useUserNotifications();
 
   if (isLoading) {
     return <LoadingContent />;
@@ -49,7 +48,11 @@ const NotificationsContent = () => {
     <div className={styles.content}>
       <div className={styles.notficationsList}>
         {notifications.map((notification) => (
-          <NotificationCard key={notification.id} notification={notification} />
+          <NotificationCard
+            key={notification.id}
+            notification={notification}
+            markAsRead={() => markRead([notification.id])}
+          />
         ))}
       </div>
     </div>
@@ -58,13 +61,34 @@ const NotificationsContent = () => {
 
 interface NotificationCardProps {
   notification: Notification;
+  markAsRead: () => void;
 }
 
-const NotificationCard: FC<NotificationCardProps> = ({ notification }) => {
+const NotificationCard: FC<NotificationCardProps> = ({
+  notification,
+  markAsRead,
+}) => {
   const { image, message, date, isRead } = notification;
 
+  const ref = useRef<HTMLDivElement | null>(null);
+  const entry = useIntersectionObserver(ref, {});
+  const isVisible = !!entry?.isIntersecting;
+
+  useEffect(() => {
+    if (isRead) return;
+
+    let timerId: ReturnType<typeof setTimeout> = null;
+    if (isVisible) {
+      timerId = setTimeout(() => markAsRead(), 1000);
+    } else {
+      clearTimeout(timerId);
+    }
+
+    return () => clearTimeout(timerId);
+  }, [isVisible, isRead, markAsRead]);
+
   return (
-    <div className={styles.notificationCard}>
+    <div className={styles.notificationCard} ref={ref}>
       <div
         className={classNames(styles.notificationCardInfo, {
           [styles.notificationCardInfoRead]: isRead,
@@ -82,80 +106,6 @@ const NotificationCard: FC<NotificationCardProps> = ({ notification }) => {
       <p className={styles.notificationCardDate}>
         {moment.unix(date).fromNow()}
       </p>
-    </div>
-  );
-};
-
-const NoNotificationsContent = () => {
-  return (
-    <div className={classNames(styles.content, styles.noNotifications)}>
-      <BellSlash />
-      <p className={styles.noNotificationsText}>
-        You have no new notifications
-      </p>
-    </div>
-  );
-};
-
-const LoadingContent = () => {
-  return (
-    <div className={classNames(styles.content, styles.contentCentered)}>
-      <Loader size="large" />
-    </div>
-  );
-};
-
-const SettingsContent = () => {
-  const { publicKey } = useWallet();
-
-  const { data, isDiscordConnected, removeUserInfo } = useUserInfo();
-
-  const linkButtonHanlder = async () => {
-    if (isDiscordConnected) {
-      await removeUserInfo();
-      return;
-    }
-
-    window.location.href = getDiscordUri(publicKey);
-  };
-
-  return (
-    <div className={classNames(styles.content)}>
-      <h2 className={styles.contentTitle}>Channels</h2>
-
-      <p className={styles.discordSettingsLabel}>Discord</p>
-      <div className={styles.discordSettings}>
-        <UserAvatar
-          className={styles.discordSettingsAvatar}
-          imageUrl={data?.avatarUrl}
-        />
-        <div className={styles.discordSettingsUserInfo}>
-          <p className={styles.discordSettingsUserName}>
-            {data ? shortenAddress(publicKey.toBase58()) : 'Username'}
-          </p>
-          <Button
-            className={styles.discordSettingsBtn}
-            onClick={linkButtonHanlder}
-          >
-            {isDiscordConnected ? 'Unlink' : 'Link'}
-          </Button>
-        </div>
-      </div>
-      <div className={styles.discordAlert}>
-        <Alert />
-        <p>
-          Please note that you should be a member of our{' '}
-          <a
-            href={process.env.FRAKT_DISCORD_SERVER}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.discordLink}
-          >
-            server
-          </a>{' '}
-          to receive notifications
-        </p>
-      </div>
     </div>
   );
 };
