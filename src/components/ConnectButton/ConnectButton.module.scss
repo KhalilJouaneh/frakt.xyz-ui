@@ -2,16 +2,21 @@
 @import '../../scss/abstracts/typography';
 
 .container {
-  width: 194px;
+  padding: 12px;
   height: 48px;
+
   border: 1px solid var(--light-green-color);
   background-color: var(--light-green-color-2);
   @include flex;
   transition: background-color var(--transition-1), color var(--transition-1);
+  color: var(--connect-btn-text);
+  @include text-header-button;
+  cursor: pointer;
+  user-select: none;
+  gap: 8px;
 
   &:hover {
     background-color: var(--light-green-color-1);
-    color: var(--connect-btn-text);
   }
 
   @media screen and (max-width: 1024px) {
@@ -26,8 +31,9 @@
   border-right: 1px solid var(--light-green-color);
   cursor: pointer;
 
-  path {
-    fill: var(--connect-btn-text);
+  @media (max-width: 767px) {
+    font-size: 14px;
+    padding: 8px;
   }
 
   @media screen and (max-width: 1024px) {
@@ -48,6 +54,13 @@
 
   @media screen and (max-width: 1024px) {
     height: 40px;
+  }
+}
+.avatar {
+  width: 24px;
+
+  @media (max-width: 767px) {
+    width: 18px;
   }
 }
 

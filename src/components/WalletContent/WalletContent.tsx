@@ -1,8 +1,7 @@
-import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-import { selectUser } from '../../state/common/selectors';
 import { commonActions } from '../../state/common/actions';
 import { sendAmplitudeData } from '../../utils/amplitude';
 import CurrentUserTable from '../CurrentUserTable';
@@ -14,7 +13,7 @@ interface WalletContentProps {
   className?: string;
 }
 
-export const WalletsItems = () => {
+export const WalletsItems: FC = () => {
   const { wallets, select } = useWallet();
   const dispatch = useDispatch();
 
@@ -36,10 +35,9 @@ export const WalletsItems = () => {
   );
 };
 
-const WalletContent = ({ className = '' }: WalletContentProps): JSX.Element => {
+const WalletContent: FC<WalletContentProps> = ({ className = '' }) => {
   const dispatch = useDispatch();
   const { connected } = useWallet();
-  const user = useSelector(selectUser);
 
   const ref = useRef();
   useOnClickOutside(ref, () =>
@@ -57,7 +55,7 @@ const WalletContent = ({ className = '' }: WalletContentProps): JSX.Element => {
       />
       <div ref={ref} className={`${styles.container} container`}>
         {connected ? (
-          <CurrentUserTable className={styles.itemsContainer} user={user} />
+          <CurrentUserTable className={styles.itemsContainer} />
         ) : (
           <WalletsItems />
         )}

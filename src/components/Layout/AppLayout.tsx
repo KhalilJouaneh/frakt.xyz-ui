@@ -19,19 +19,12 @@ export const Layout: FC<LayoutProps> = ({ children }) => {
 
   useEffect(() => {
     dispatch(commonActions.setWalletModal({ isVisible: false }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [dispatch]);
 
   return (
-    <div>
-      <div
-        id="app-content"
-        onScroll={onContentScroll}
-        className={styles.content}
-      >
-        {children}
-        <NotificationBar />
-      </div>
+    <div id="app-content" onScroll={onContentScroll} className={styles.content}>
+      {children}
+      <NotificationBar />
     </div>
   );
 };

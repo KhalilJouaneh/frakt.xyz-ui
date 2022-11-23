@@ -21,7 +21,6 @@ export const useWebSocketSubscriptions = (): void => {
   useEffect(() => {
     if (wallet.connected) {
       dispatch(commonActions.setWallet(wallet));
-      dispatch(commonActions.fetchUser(wallet.publicKey));
     }
   }, [dispatch, wallet]);
 

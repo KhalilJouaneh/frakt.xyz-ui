@@ -1,0 +1,44 @@
+@import '@frakt/scss/abstracts/mixins';
+@import '@frakt/scss/abstracts/typography';
+
+.container {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-color-2);
+  @include flex(row, nowrap, center, center);
+  cursor: pointer;
+  user-select: none;
+  background-color: unset;
+
+  transition: border var(--transition-1);
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: unset;
+  }
+
+  path {
+    fill: var(--black-color);
+    transition: fill var(--transition-1);
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 32px;
+    width: 32px;
+  }
+
+  @media screen and (max-width: 575px) {
+    height: 28px;
+    width: 28px;
+
+    svg {
+      height: 20px;
+      width: 20px;
+    }
+  }
+}

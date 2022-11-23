@@ -1,4 +1,3 @@
-import { Switch } from 'antd';
 import { FC } from 'react';
 import cx from 'classnames';
 
@@ -10,23 +9,41 @@ interface ToggleProps {
   value?: boolean;
   defaultChecked?: boolean;
   label?: string;
-  onChange?: (value: any) => void;
+  onChange?: (value: boolean) => void;
 }
 
 const Toggle: FC<ToggleProps> = ({
   className = '',
   disabled = false,
   onChange = () => {},
-  value = false,
+  value,
   label = null,
-}) => (
-  <div
-    className={cx(styles.filterToggle, className)}
-    onClick={() => onChange(!value)}
-  >
-    <Switch className={styles.toggle} checked={value} disabled={disabled} />
-    {label && <p className={styles.filterToggle__text}>{label}</p>}
-  </div>
-);
+  defaultChecked,
+}) => {
+  const isControlled = typeof value === 'boolean';
+
+  return (
+    <label
+      className={cx(
+        styles.root,
+        { [styles.rootDisabled]: disabled },
+        className,
+      )}
+    >
+      <input
+        type="checkbox"
+        className={styles.input}
+        defaultChecked={defaultChecked}
+        checked={isControlled ? value : undefined}
+        disabled={disabled}
+        onChange={(event) => {
+          onChange(isControlled ? !value : event.target.checked);
+        }}
+      />
+      <span className={styles.slider} />
+      <span className={styles.label}>{label}</span>
+    </label>
+  );
+};
 
 export default Toggle;
