@@ -1,31 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from '@frakt-protocol/frakt-sdk';
-import { NavLink } from 'react-router-dom';
 import { sum, filter, map } from 'ramda';
 
+import { UserAvatar } from '@frakt/components/UserAvatar';
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
-import { SolanaIcon, UserIcon } from '../../icons';
-
-import {
-  getDiscordUri,
-  getDiscordAvatarUrl,
-  copyToClipboard,
-} from '../../utils';
-import { PATHS } from '../../constants';
-import { UserState } from '../../state/common/types';
-import DiscordIcon from '../../icons/DiscordIcon2';
-import { sendAmplitudeData, setAmplitudeUserId } from '../../utils/amplitude';
+import { SolanaIcon } from '../../icons';
+import { copyToClipboard } from '../../utils';
+import { setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import { networkRequest } from '../../utils/state';
 import { FRKT } from '../../iconsNew/FRKT';
 import { WalletsItems } from '../WalletContent/WalletContent';
 import Icons from '../../iconsNew/';
+import { useUserInfo } from '@frakt/hooks';
 
 interface CurrentUserTableProps {
   className?: string;
-  user?: UserState;
 }
 
 interface UsersRewards {
@@ -35,12 +27,11 @@ interface UsersRewards {
 
 const CurrentUserTable = ({
   className = '',
-  user = null,
 }: CurrentUserTableProps): JSX.Element => {
   const { disconnect, publicKey } = useWallet();
   const { account } = useNativeAccount();
-  const avatarUrl = getDiscordAvatarUrl(user?.discordId, user?.avatar);
   const [usersRewards, setUsersRewars] = useState<UsersRewards>(null);
+  const { data: userData } = useUserInfo();
 
   if (!publicKey) {
     return null;
@@ -99,7 +90,10 @@ const CurrentUserTable = ({
       {!visibleWalletItems ? (
         <div className={`${className} ${styles.wrapper}`}>
           <div className={styles.userWrapper}>
-            <UserIcon className={styles.avatar} url={avatarUrl} />
+            <UserAvatar
+              className={styles.avatar}
+              imageUrl={userData?.avatarUrl}
+            />
             <div className={styles.userInfo}>
               <div
                 className={styles.walletInfo}
@@ -137,20 +131,6 @@ const CurrentUserTable = ({
               Sign out
             </div>
           </div>
-
-          {!user && (
-            <a
-              href={getDiscordUri(publicKey)}
-              className={styles.discordButton}
-              rel="noopener noreferrer"
-            >
-              <DiscordIcon
-                onClick={() => sendAmplitudeData('navigation-discord')}
-                className={styles.logo}
-              />{' '}
-              Link discord
-            </a>
-          )}
         </div>
       ) : (
         <WalletsItems />
