@@ -67,12 +67,14 @@
 .btnWrapperRow {
   display: flex;
   gap: 16px;
+  margin-top: 8px;
 }
 
 .reward {
   display: flex;
   flex-direction: column;
   min-height: 43px;
+  margin-top: 8px;
 }
 
 .rewardTitle {

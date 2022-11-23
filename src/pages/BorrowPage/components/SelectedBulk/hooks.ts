@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
-import { find, propEq } from 'ramda';
 
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { loansActions } from './../../../../state/loans/actions';
 import { commonActions } from '../../../../state/common/actions';
 import { proposeBulkLoan } from '../../../../utils/loans';
 import { useConnection } from '../../../../hooks';
-import { getFeesOnDay } from './helpers';
+import { getFeesOnDay, getFeesOnDayForMaxDuration } from './helpers';
 import { BorrowNftBulk } from '@frakt/api/nft';
 
 type UseSeletedBulk = (props: { rawselectedBulk: BorrowNftBulk[] }) => {
@@ -17,6 +16,7 @@ type UseSeletedBulk = (props: { rawselectedBulk: BorrowNftBulk[] }) => {
   loadingModalVisible: boolean;
   selectedBulk: BorrowNftBulk[];
   feesOnDay: number;
+  feesOnMaxDuration: number;
   isMaxReturnPeriodDays: boolean;
 };
 
@@ -28,11 +28,13 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const [selectedBulk, setSelectedBulk] = useState(rawselectedBulk);
 
   const feesOnDay = getFeesOnDay(selectedBulk);
+  const feesOnMaxDuration = getFeesOnDayForMaxDuration(selectedBulk);
 
   const maxReturnPeriodDays = 14;
-  const isMaxReturnPeriodDays = !!selectedBulk.find(
-    ({ timeBased }) => timeBased.returnPeriodDays === maxReturnPeriodDays,
-  );
+  const isMaxReturnPeriodDays =
+    !!selectedBulk.find(
+      ({ timeBased }) => timeBased.returnPeriodDays === maxReturnPeriodDays,
+    ) || !!feesOnMaxDuration;
 
   const {
     visible: loadingModalVisible,
@@ -77,6 +79,7 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
     loadingModalVisible,
     closeLoadingModal,
     feesOnDay,
+    feesOnMaxDuration,
     isMaxReturnPeriodDays,
   };
 };

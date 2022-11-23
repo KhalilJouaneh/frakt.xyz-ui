@@ -20,7 +20,7 @@
     }
 
     @media screen and (max-width: 767px) {
-      max-height: 585px;
+      max-height: 470px;
       margin: -1px;
     }
 
@@ -116,8 +116,8 @@
 
   @media screen and (max-width: 767px) {
     padding: 0 24px;
-    padding-top: 20px;
-    min-height: 135px;
+    padding-top: 4px;
+    min-height: 120px;
     overflow: unset !important;
   }
 
@@ -145,7 +145,7 @@
 
   @media screen and (max-width: 767px) {
     position: absolute;
-    bottom: 0px;
+    bottom: -1px;
     left: 50%;
     display: flex;
     transform: translate(-50%);

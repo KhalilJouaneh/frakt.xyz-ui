@@ -10,6 +10,7 @@ interface SignAndConfirmTransactionProps {
   connection: web3.Connection;
   wallet: WalletContextState;
   commitment?: web3.Commitment;
+  onAfterSend?: () => void;
 }
 
 type SignAndConfirmTransaction = (
@@ -21,6 +22,7 @@ export const signAndConfirmTransaction: SignAndConfirmTransaction = async ({
   signers = [],
   connection,
   wallet,
+  onAfterSend,
   commitment = 'finalized',
 }) => {
   const { blockhash, lastValidBlockHeight } =
@@ -38,6 +40,8 @@ export const signAndConfirmTransaction: SignAndConfirmTransaction = async ({
     signedTransaction.serialize(),
     // { skipPreflight: true },
   );
+
+  onAfterSend?.();
 
   notify({
     message: 'Transaction sent',

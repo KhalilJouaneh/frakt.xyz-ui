@@ -14,6 +14,7 @@ type UnstakeLiquidity = (props: {
   wallet: WalletContextState;
   liquidityPool: string;
   amount: number;
+  onAfterSend?: () => void;
 }) => Promise<boolean>;
 
 export const unstakeLiquidity: UnstakeLiquidity = async ({
@@ -21,6 +22,7 @@ export const unstakeLiquidity: UnstakeLiquidity = async ({
   wallet,
   liquidityPool,
   amount,
+  onAfterSend,
 }): Promise<boolean> => {
   try {
     await loans.unstakeLiquidity({
@@ -32,6 +34,7 @@ export const unstakeLiquidity: UnstakeLiquidity = async ({
       amount,
       sendTxn: async (transaction) => {
         await signAndConfirmTransaction({
+          onAfterSend,
           transaction,
           connection,
           wallet,

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { marks, useDepositTxn, usePoolModal } from '../usePoolModal';
+import { marks, useDepositTxn, usePoolModal } from '../hooks';
 import { TokenFieldWithBalance } from '../../TokenField';
 import styles from './WithdrawTab.module.scss';
 import { SOL_TOKEN } from '../../../utils';
@@ -23,9 +23,11 @@ const WithdrawTab: FC<WithdrawTabProps> = ({
     percentValue,
     onWithdrawValueChange,
     onWithdrawPercentChange,
+    onClearDepositValue,
   } = usePoolModal({ depositAmount });
 
   const { unstakeLiquidity } = useDepositTxn({
+    onClearDepositValue,
     liquidityPoolPubkey,
     withdrawValue,
     onCancel,
