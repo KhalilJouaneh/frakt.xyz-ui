@@ -31,9 +31,10 @@ export const useSeletedBulk: UseSeletedBulk = ({ rawselectedBulk }) => {
   const feesOnMaxDuration = getFeesOnDayForMaxDuration(selectedBulk);
 
   const maxReturnPeriodDays = 14;
-  const isMaxReturnPeriodDays = !!selectedBulk.find(
-    ({ timeBased }) => timeBased.returnPeriodDays === maxReturnPeriodDays,
-  );
+  const isMaxReturnPeriodDays =
+    !!selectedBulk.find(
+      ({ timeBased }) => timeBased.returnPeriodDays === maxReturnPeriodDays,
+    ) || !!feesOnMaxDuration;
 
   const {
     visible: loadingModalVisible,

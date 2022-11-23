@@ -1,7 +1,10 @@
-import { any, sum } from 'ramda';
+import { sum } from 'ramda';
 
 import { BorrowNftBulk } from '@frakt/api/nft';
-import { feeOnDayForTimeBased } from '../LoanFields/helpers';
+import {
+  feeOnDayForPriceBased,
+  feeOnDayForTimeBased,
+} from '../LoanFields/helpers';
 
 const getPriceBasedValues = (
   nft: BorrowNftBulk,
@@ -134,16 +137,10 @@ export const getFeesOnDay = (selectedBulk: BorrowNftBulk[]): number => {
       const ltv =
         rawLtv || suggestedLtvPersent || priceBasedLtv || timeBasedLtv;
 
-      if (!nft.isPriceBased) {
-        const { feeOnDay } = feeOnDayForTimeBased(nft, ltv);
-
-        return feeOnDay;
+      if (nft.isPriceBased) {
+        return feeOnDayForPriceBased(nft, ltv).feeOnDay;
       } else {
-        const { priceBased } = nft;
-
-        const loanValue = valuationNumber * (ltv / 100);
-
-        return (loanValue * (priceBased.borrowAPRPercents * 0.01)) / 365;
+        return feeOnDayForTimeBased(nft, ltv).feeOnDay;
       }
     }),
   );
@@ -159,14 +156,22 @@ export const getFeesOnDayForMaxDuration = (selectedBulk: BorrowNftBulk[]) => {
       const isMaxDurationNft = timeBased.returnPeriodDays === maxDuraionDays;
       const isPriceBased = nft?.isPriceBased;
 
-      const ltv = (nft.solLoanValue / valuationNumber) * 100;
+      const suggestedLoanValue = nft?.priceBased?.suggestedLoanValue;
+      const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
+      const rawLtv = (nft?.solLoanValue / valuationNumber) * 100;
+      const timeBasedLtv = timeBased.ltvPercents;
 
-      if (isMaxDurationNft && !isPriceBased) {
-        const { feeOnDay } = feeOnDayForTimeBased(nft, ltv);
+      const ltv = rawLtv || suggestedLtvPersent || timeBasedLtv;
 
-        return feeOnDay;
+      if (isMaxDurationNft) {
+        if (isPriceBased) {
+          return feeOnDayForPriceBased(nft, ltv).feeOnDay;
+        }
+        return feeOnDayForTimeBased(nft, ltv).feeOnDay;
       }
-
+      if (isPriceBased) {
+        return feeOnDayForPriceBased(nft, ltv).feeOnDay;
+      }
       return 0;
     }),
   );
