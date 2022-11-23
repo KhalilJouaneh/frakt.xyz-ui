@@ -1,6 +1,7 @@
 .fieldWrapper {
   display: flex;
   flex-direction: column;
+  padding-top: 16px;
 }
 
 .fieldDesc {
@@ -36,11 +37,12 @@
 .staticValueWrapper {
   display: flex;
   flex-direction: column;
-  padding-top: 16px;
   gap: 8px;
 
   @media (max-width: 767px) {
     gap: 7px;
+    height: 150px;
+    overflow: auto;
   }
 }
 
