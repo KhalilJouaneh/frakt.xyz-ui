@@ -87,6 +87,9 @@
   font: var(--font-text-2);
   margin-bottom: 24px;
 }
+.contentTitleOffsetTop {
+  padding-top: 32px;
+}
 
 .signMessageSubtitle {
   margin-bottom: 8px;
@@ -218,4 +221,20 @@
 .notificationCardDate {
   color: var(--gray-color-2);
   font: 400 14px var(--font-family-chakra);
+}
+
+.eventsList {
+  width: 100%;
+  display: grid;
+  row-gap: 8px;
+  column-gap: 24px;
+
+  @media screen and (max-width: 1023px) and (min-width: 575px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.eventsListRow {
+  font: 400 16px var(--font-family-chakra);
+  @include flex(row, nowrap, space-between, flex-start);
 }
