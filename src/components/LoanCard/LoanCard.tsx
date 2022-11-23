@@ -31,7 +31,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
 
   const { imageUrl, name, isGracePeriod, reward } = loan;
 
-  const rewardAmount = reward?.amount || 33;
+  const rewardAmount = reward?.amount;
 
   return (
     <>
