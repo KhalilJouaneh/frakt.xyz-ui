@@ -23,15 +23,15 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-    // onGemStake,
-    // onGemClaim,
-    // onGemUnstake,
+    onGemStake,
+    onGemClaim,
+    onGemUnstake,
     transactionsLeft,
   } = useLoans(loan);
 
-  const { imageUrl, name, isGracePeriod } = loan;
+  const { imageUrl, name, isGracePeriod, reward } = loan;
 
-  // const rewardAmount = reward?.amount;
+  const rewardAmount = reward?.amount || 33;
 
   return (
     <>
@@ -53,6 +53,35 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
             <Button type="secondary" className={styles.btn} onClick={onPayback}>
               Repay
             </Button>
+            {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+              <div className={styles.btnWrapperRow}>
+                <Button
+                  type="primary"
+                  className={styles.btn}
+                  onClick={onGemClaim}
+                  disabled={!rewardAmount}
+                >
+                  Claim {reward?.token}
+                </Button>
+                <Button
+                  type="primary"
+                  className={styles.btn}
+                  onClick={onGemUnstake}
+                  disabled={!rewardAmount}
+                >
+                  Unstake
+                </Button>
+              </div>
+            )}
+            {reward?.stakeState === RewardState.UNSTAKED && (
+              <Button
+                type="tertiary"
+                className={styles.btn}
+                onClick={onGemStake}
+              >
+                Stake
+              </Button>
+            )}
           </div>
         </div>
       </div>
