@@ -38,6 +38,10 @@
   flex-direction: column;
   padding-top: 16px;
   gap: 8px;
+
+  @media (max-width: 767px) {
+    gap: 7px;
+  }
 }
 
 .staticValueTitle {
@@ -81,4 +85,3 @@
     height: 14px;
   }
 }
-

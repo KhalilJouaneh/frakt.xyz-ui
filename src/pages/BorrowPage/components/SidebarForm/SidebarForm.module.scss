@@ -20,7 +20,7 @@
     }
 
     @media screen and (max-width: 767px) {
-      max-height: 530px;
+      max-height: 520px;
       margin: -1px;
     }
 
@@ -145,7 +145,7 @@
 
   @media screen and (max-width: 767px) {
     position: absolute;
-    bottom: 12px;
+    bottom: -1px;
     left: 50%;
     display: flex;
     transform: translate(-50%);

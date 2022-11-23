@@ -1,12 +1,13 @@
 import { FC } from 'react';
 
-import { TabsNames, usePoolModal } from './usePoolModal';
+import { usePoolModal } from './hooks/usePoolModal';
 import { CloseModalIcon } from '../../icons';
 import styles from './PoolModal.module.scss';
 import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
 import { Tabs } from '../Tabs';
 import { Modal } from '../Modal';
+import { TabsNames } from './types';
 
 interface PoolModalProps {
   visible: string;

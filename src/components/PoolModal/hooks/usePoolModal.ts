@@ -1,40 +1,18 @@
 import { useEffect } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useForm } from 'react-hook-form';
 
-import { useNativeAccount } from '../../utils/accounts';
-import { getCorrectSolWalletBalance, getSolBalanceValue } from '../../utils';
-import { Tab, useTabs } from '../Tabs';
-import {
-  depositLiquidity as depositTxn,
-  unstakeLiquidity as unstakeTxn,
-} from '../../utils/loans';
-import { useConnection } from '../../hooks';
+import { getCorrectSolWalletBalance, getSolBalanceValue } from '@frakt/utils';
+import { useNativeAccount } from '@frakt/utils/accounts';
+import { Tab, useTabs } from '@frakt/components/Tabs';
+import { InputControlsNames } from '../types';
 
-export enum InputControlsNames {
-  DEPOSIT_VALUE = 'depositValue',
-  WITHDRAW_VALUE = 'withdrawValue',
-  PERCENT_VALUE = 'percentValue',
-}
-
-export enum TabsNames {
-  DEPOSIT = 'deposit',
-  WITHDRAW = 'withdraw',
-}
-
-export type FormFieldValues = {
-  [InputControlsNames.DEPOSIT_VALUE]: string;
-  [InputControlsNames.WITHDRAW_VALUE]: string;
-  [InputControlsNames.PERCENT_VALUE]: number;
-};
-
-export const usePoolModal = ({
+type UsePoolModal = ({
   visible,
   depositAmount,
 }: {
   visible?: string;
   depositAmount: number;
-}): {
+}) => {
   depositValue: string;
   withdrawValue: string;
   poolTabs: Tab[];
@@ -46,7 +24,10 @@ export const usePoolModal = ({
   onWithdrawPercentChange: (nextValue: number) => void;
   percentValue: number;
   solWalletBalance: number;
-} => {
+  onClearDepositValue: () => void;
+};
+
+export const usePoolModal: UsePoolModal = ({ visible, depositAmount }) => {
   const { watch, register, setValue } = useForm({
     defaultValues: {
       [InputControlsNames.DEPOSIT_VALUE]: '',
@@ -122,6 +103,12 @@ export const usePoolModal = ({
     caclPercentOfBalance(nextValue, depositAmount);
   };
 
+  const onClearDepositValue = (): void => {
+    setValue(InputControlsNames.DEPOSIT_VALUE, '');
+    setValue(InputControlsNames.WITHDRAW_VALUE, '');
+    setValue(InputControlsNames.PERCENT_VALUE, 0);
+  };
+
   const caclPercentOfBalance = (
     nextValue: string,
     balance: string | number,
@@ -156,54 +143,9 @@ export const usePoolModal = ({
     onWithdrawValueChange,
     onWithdrawPercentChange,
     onDepositPercentChange,
+    onClearDepositValue,
     solWalletBalance: solWalletBalanceWithFee,
   };
-};
-
-export const useDepositTxn = ({
-  onCancel,
-  liquidityPoolPubkey,
-  depositValue,
-  withdrawValue,
-}: {
-  depositValue?: string;
-  withdrawValue?: string;
-  onCancel: () => void;
-  liquidityPoolPubkey: string;
-}): {
-  depositLiquidity: () => void;
-  unstakeLiquidity: () => void;
-} => {
-  const wallet = useWallet();
-  const connection = useConnection();
-
-  const depositLiquidity = async (): Promise<void> => {
-    const amount = Number(depositValue) * 1e9;
-
-    await depositTxn({
-      connection,
-      wallet,
-      liquidityPool: liquidityPoolPubkey,
-      amount,
-    });
-
-    onCancel();
-  };
-
-  const unstakeLiquidity = async (): Promise<void> => {
-    const amount = Number(withdrawValue) * 1e9;
-
-    await unstakeTxn({
-      connection,
-      wallet,
-      liquidityPool: liquidityPoolPubkey,
-      amount,
-    });
-
-    onCancel();
-  };
-
-  return { depositLiquidity, unstakeLiquidity };
 };
 
 export const marks: { [key: number]: string | JSX.Element } = {

@@ -14,6 +14,7 @@ type DepositLiquidity = (props: {
   wallet: WalletContextState;
   liquidityPool: string;
   amount: number;
+  onAfterSend?: () => void;
 }) => Promise<boolean>;
 
 export const depositLiquidity: DepositLiquidity = async ({
@@ -21,6 +22,7 @@ export const depositLiquidity: DepositLiquidity = async ({
   wallet,
   liquidityPool,
   amount,
+  onAfterSend,
 }): Promise<boolean> => {
   try {
     await loans.depositLiquidity({
@@ -31,6 +33,7 @@ export const depositLiquidity: DepositLiquidity = async ({
       amount,
       sendTxn: async (transaction) => {
         await signAndConfirmTransaction({
+          onAfterSend,
           transaction,
           connection,
           wallet,

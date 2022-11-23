@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
+import { marks, usePoolModal, useDepositTxn } from '../hooks';
 import { sendAmplitudeData } from '../../../utils/amplitude';
 import { TokenFieldWithBalance } from '../../TokenField';
-import { marks, useDepositTxn, usePoolModal } from '../usePoolModal';
 import styles from './DepositTab.module.scss';
 import { SOL_TOKEN } from '../../../utils';
 import { Slider } from '../../Slider';
@@ -29,18 +29,23 @@ const DepositTab: FC<DepositTabProps> = ({
     onDepositValueChange,
     onDepositPercentChange,
     solWalletBalance,
+    onClearDepositValue,
   } = usePoolModal({ depositAmount });
 
   const { depositLiquidity } = useDepositTxn({
     liquidityPoolPubkey,
     depositValue,
     onCancel,
+    onClearDepositValue,
   });
 
-  const notEnoughBalanceError = solWalletBalance < parseFloat(depositValue);
+  const solWalletBalanceNumber = parseFloat(solWalletBalance.toFixed(2));
+  const depositValueNumber = parseFloat(depositValue) || 0;
+
+  const notEnoughBalanceError = solWalletBalanceNumber < depositValueNumber;
 
   const isDisabledDepositBtn =
-    parseFloat(depositValue) === 0 || notEnoughBalanceError;
+    depositValueNumber === 0 || notEnoughBalanceError;
 
   return (
     <div className={styles.wrapper}>
@@ -51,7 +56,7 @@ const DepositTab: FC<DepositTabProps> = ({
           onValueChange={onDepositValueChange}
           currentToken={SOL_TOKEN}
           label={`BALANCE:`}
-          lpBalance={parseFloat(solWalletBalance.toFixed(2))}
+          lpBalance={solWalletBalanceNumber}
           error={notEnoughBalanceError}
           showMaxButton
           labelRight
