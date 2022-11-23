@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNotificationsSider } from '@frakt/components/NotificationsSider';
 
 import ThemeSwitcher from '../../componentsNew/ThemeSwitcher';
 import styles from './BurgerMenu.module.scss';
@@ -10,34 +10,43 @@ import {
 import { MenuItem } from '../../componentsNew/Navigation/Navigation';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../../state/theme/selectors';
+import { useBurgerMenu } from './hooks';
 
 interface BurgerMenuProps {
   className?: string;
 }
 
 const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isVisible, toggleVisibility } = useBurgerMenu();
+  const { setVisibility: setNotificationsSiderVisibility } =
+    useNotificationsSider();
 
-  const closeMenu = (): void => setIsOpen(false);
   const theme: string = useSelector(selectTheme);
 
   const isDark = theme === 'dark';
+
+  const onBurgerIconClick = () => {
+    if (!isVisible) {
+      setNotificationsSiderVisibility(false);
+    }
+    toggleVisibility();
+  };
 
   return (
     <>
       <div
         className={`${styles.burgerIcon} ${
-          isOpen ? styles.opened : ''
+          isVisible ? styles.opened : ''
         } ${className}`}
-        onClick={(): void => setIsOpen(!isOpen)}
+        onClick={onBurgerIconClick}
       >
         <div className={styles.centerIconLine} />
       </div>
       <div
         className={`${styles.wrapper} ${
-          !isOpen ? styles.menuOverlayHidden : ''
+          !isVisible ? styles.menuOverlayHidden : ''
         }`}
-        onClick={closeMenu}
+        onClick={toggleVisibility}
       >
         <ul className={styles.navigation}>
           {NAVIGATION_LINKS.map(({ label, to, pathname }) => (
