@@ -108,11 +108,6 @@ const toggleWalletModalReducer = createReducer<ModalState>(initialModalState, {
     isVisible: !state.isVisible,
   }),
 });
-const toggleDiscordModalReducer = createReducer<ModalState>(initialModalState, {
-  [commonTypes.TOGGLE_DISCORD_MODAL]: (state) => ({
-    isVisible: !state.isVisible,
-  }),
-});
 
 const setConfettiReducer = createReducer<ConfettiState>(initialConfettiState, {
   [commonTypes.SET_CONFETTI]: (state) => ({
@@ -141,7 +136,6 @@ export default combineReducers({
   fetchSolanaTimestamp: fetchSolanaTimestampReducer,
   notification: setNotificationReducer,
   walletModal: composeReducers(setWalletModalReducer, toggleWalletModalReducer),
-  discordModal: toggleDiscordModalReducer,
   confetti: setConfettiReducer,
   selectedNftId: setSelectedNftIdReducer,
 });

@@ -43,11 +43,6 @@ export const selectWalletPublicKey = createSelector(
   identity,
 );
 
-export const selectModalVisible = createSelector(
-  [pathOr(false, ['common', 'discordModal', 'isVisible'])],
-  identity,
-);
-
 export const selectConfettiVisible = createSelector(
   [pathOr(false, ['common', 'confetti', 'isVisible'])],
   identity,

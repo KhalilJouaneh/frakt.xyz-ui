@@ -27,7 +27,6 @@ export const commonTypes = {
   FETCH_SOLANA_TIMESTAMP__PENDING: 'common/FETCH_SOLANA_TIMESTAMP__PENDING',
   FETCH_SOLANA_TIMESTAMP__FULFILLED: 'common/FETCH_SOLANA_TIMESTAMP__FULFILLED',
   FETCH_SOLANA_TIMESTAMP__FAILED: 'common/FETCH_SOLANA_TIMESTAMP__FAILED',
-  TOGGLE_DISCORD_MODAL: 'common/TOGGLE_DISCORD_MODAL',
   SET_CONFETTI: 'common/SET_CONFETTI',
   SET_SELECTED_NFT_ID: 'common/SET_SELECTED_NFT_ID',
 };
@@ -94,10 +93,6 @@ export const commonActions = {
   fetchSolanaTimestampFailed: createCustomAction(
     commonTypes.FETCH_SOLANA_TIMESTAMP__FAILED,
     (error: ServerError) => ({ payload: error }),
-  ),
-  toggleDiscordModal: createCustomAction(
-    commonTypes.TOGGLE_DISCORD_MODAL,
-    () => null,
   ),
   setConfetti: createCustomAction(
     commonTypes.SET_CONFETTI,
