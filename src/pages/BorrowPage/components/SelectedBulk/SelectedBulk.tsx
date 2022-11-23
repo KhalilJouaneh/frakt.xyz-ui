@@ -32,7 +32,7 @@ const SelectedBulk: FC<SelectedBulkProps> = ({
     loadingModalVisible,
     closeLoadingModal,
     feesOnDay,
-    isMaxReturnPeriodDays,
+    feesOnMaxDuration,
   } = useSeletedBulk({ rawselectedBulk });
 
   const isSelectedBulk = !!selectedBulk?.length;
@@ -56,7 +56,7 @@ const SelectedBulk: FC<SelectedBulkProps> = ({
           onBack={onBack}
           selectedBulkValue={totalBorrowed}
           feeOnDay={feesOnDay}
-          isMaxReturnPeriodDays={isMaxReturnPeriodDays}
+          feesOnMaxDuration={feesOnMaxDuration}
         />
       )}
 

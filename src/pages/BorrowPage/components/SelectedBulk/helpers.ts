@@ -1,6 +1,7 @@
-import { sum } from 'ramda';
+import { any, sum } from 'ramda';
 
 import { BorrowNftBulk } from '@frakt/api/nft';
+import { feeOnDayForTimeBased } from '../LoanFields/helpers';
 
 const getPriceBasedValues = (
   nft: BorrowNftBulk,
@@ -119,27 +120,54 @@ export const getSelectedBulkValues = (nft: BorrowNftBulk) => {
 export const getFeesOnDay = (selectedBulk: BorrowNftBulk[]): number => {
   return sum(
     selectedBulk.map((nft): number => {
+      const { valuation, timeBased } = nft;
+      const valuationNumber = parseFloat(valuation);
+
+      const suggestedLoanValue = nft?.priceBased?.suggestedLoanValue;
+      const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
+
+      const rawLtv = (nft?.solLoanValue / valuationNumber) * 100;
+
+      const timeBasedLtv = timeBased.ltvPercents;
+      const priceBasedLtv = nft?.priceBased?.ltvPercents;
+
+      const ltv =
+        rawLtv || suggestedLtvPersent || priceBasedLtv || timeBasedLtv;
+
       if (!nft.isPriceBased) {
-        const { timeBased } = nft;
+        const { feeOnDay } = feeOnDayForTimeBased(nft, ltv);
 
-        const { feeDiscountPercents, fee, returnPeriodDays } = timeBased;
-
-        const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
-        const dayFee = Number(fee) / returnPeriodDays;
-
-        return dayFee - dayFee * feeDiscountPercentsValue;
+        return feeOnDay;
       } else {
-        const { priceBased, valuation } = nft;
-        const suggestedLtvPersent =
-          (priceBased?.suggestedLoanValue / parseFloat(valuation)) * 100;
+        const { priceBased } = nft;
 
-        const ltv =
-          priceBased?.ltv || suggestedLtvPersent || priceBased?.ltvPercents;
-
-        const loanValue = parseFloat(valuation) * (ltv / 100);
+        const loanValue = valuationNumber * (ltv / 100);
 
         return (loanValue * (priceBased.borrowAPRPercents * 0.01)) / 365;
       }
+    }),
+  );
+};
+
+export const getFeesOnDayForMaxDuration = (selectedBulk: BorrowNftBulk[]) => {
+  return sum(
+    selectedBulk.map((nft): number => {
+      const { valuation, timeBased } = nft;
+      const valuationNumber = parseFloat(valuation);
+
+      const maxDuraionDays = 14;
+      const isMaxDurationNft = timeBased.returnPeriodDays === maxDuraionDays;
+      const isPriceBased = nft?.isPriceBased;
+
+      const ltv = (nft.solLoanValue / valuationNumber) * 100;
+
+      if (isMaxDurationNft && !isPriceBased) {
+        const { feeOnDay } = feeOnDayForTimeBased(nft, ltv);
+
+        return feeOnDay;
+      }
+
+      return 0;
     }),
   );
 };
