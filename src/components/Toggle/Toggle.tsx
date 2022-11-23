@@ -34,7 +34,7 @@ const Toggle: FC<ToggleProps> = ({
         type="checkbox"
         className={styles.input}
         defaultChecked={defaultChecked}
-        checked={isControlled ? value : null}
+        checked={isControlled ? value : undefined}
         disabled={disabled}
         onChange={(event) => {
           onChange(isControlled ? !value : event.target.checked);
