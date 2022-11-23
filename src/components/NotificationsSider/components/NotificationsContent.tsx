@@ -1,39 +1,14 @@
-import { useIntersectionObserver, useUserNotifications } from '@frakt/hooks';
-import classNames from 'classnames';
 import { FC, useEffect, useRef } from 'react';
-
-import { Notification } from '@frakt/api/user';
-import {
-  Header,
-  LoadingContent,
-  NoNotificationsContent,
-  SettingsContent,
-  SetUpContent,
-  SignMessageContent,
-} from './components';
-import { ContentType } from './constants';
-import { useNotificationsSider } from './hooks';
-import styles from './NotificationsSider.module.scss';
+import classNames from 'classnames';
 import moment from 'moment';
 
-export const NotificationsSider: FC = () => {
-  const { isVisible, contentType } = useNotificationsSider();
+import { BellSlash } from '@frakt/iconsNew/BellSlash';
+import { useIntersectionObserver, useUserNotifications } from '@frakt/hooks';
+import { Notification } from '@frakt/api/user';
+import styles from '../NotificationsSider.module.scss';
+import { LoadingContent } from './LoadingContent';
 
-  return (
-    <div
-      className={classNames(styles.root, { [styles.rootHidden]: !isVisible })}
-    >
-      <Header />
-      {contentType === ContentType.SETTINGS && <SettingsContent />}
-      {contentType === ContentType.LOADING && <LoadingContent />}
-      {contentType === ContentType.SIGN_MESSAGE && <SignMessageContent />}
-      {contentType === ContentType.NOTIFICATIONS && <NotificationsContent />}
-      {contentType === ContentType.SET_UP && <SetUpContent />}
-    </div>
-  );
-};
-
-const NotificationsContent = () => {
+export const NotificationsContent: FC = () => {
   const { notifications, isLoading, markRead } = useUserNotifications();
 
   if (isLoading) {
@@ -55,6 +30,17 @@ const NotificationsContent = () => {
           />
         ))}
       </div>
+    </div>
+  );
+};
+
+const NoNotificationsContent: FC = () => {
+  return (
+    <div className={classNames(styles.content, styles.noNotifications)}>
+      <BellSlash />
+      <p className={styles.noNotificationsText}>
+        You have no new notifications
+      </p>
     </div>
   );
 };

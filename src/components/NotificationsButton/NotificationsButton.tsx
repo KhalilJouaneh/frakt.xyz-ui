@@ -5,7 +5,7 @@ import { BellWithBadge } from '@frakt/iconsNew/BellWithBadge';
 import {
   NotificationsSider,
   useNotificationsSider,
-} from './components/NotificationsSider';
+} from '../NotificationsSider';
 import styles from './NotificationsButton.module.scss';
 import { useUserNotifications } from '@frakt/hooks';
 
