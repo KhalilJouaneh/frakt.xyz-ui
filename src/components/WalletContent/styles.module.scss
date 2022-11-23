@@ -30,9 +30,13 @@
   box-shadow: rgb(0 0 0 / 1%) 0px 0px 0px,
     var(--secondary-border) 4px 4px 0px 0px;
 
+  @media (max-width: 1024px) {
+    top: 64px;
+  }
+
   @media (max-width: 767px) {
     position: fixed;
-    top: 63px;
+    top: 55px;
     left: 0;
     right: 0;
     max-width: unset;

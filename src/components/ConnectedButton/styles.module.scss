@@ -13,6 +13,10 @@
     background-color: var(--light-green-color-1);
     color: var(--connect-btn-text);
   }
+
+  @media screen and (max-width: 1024px) {
+    height: 40px;
+  }
 }
 
 .icon {
@@ -24,6 +28,10 @@
 
   path {
     fill: var(--connect-btn-text);
+  }
+
+  @media screen and (max-width: 1024px) {
+    height: 40px;
   }
 }
 
@@ -37,6 +45,10 @@
   user-select: none;
   max-width: 154px;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    height: 40px;
+  }
 }
 
 .arrowDownIcon {
