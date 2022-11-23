@@ -1,7 +1,12 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
 import { getDiscordAvatarUrl } from '@frakt/utils';
 import axios from 'axios';
-import { UserInfo, UserInfoRaw, Notification } from './types';
+import {
+  UserInfo,
+  UserInfoRaw,
+  Notification,
+  NotificationsSettings,
+} from './types';
 
 type FetchUser = (props: {
   publicKey: web3.PublicKey;
@@ -86,3 +91,27 @@ export const deleteNotifications: DeleteNotifications = async ({
     },
   );
 };
+
+type GetUserNotificationsSettings = (props: {
+  publicKey: web3.PublicKey;
+}) => Promise<NotificationsSettings>;
+export const getUserNotificationsSettings: GetUserNotificationsSettings =
+  async ({ publicKey }) => {
+    const { data } = await axios.get<NotificationsSettings>(
+      `https://${process.env.BACKEND_DOMAIN}/settings/${publicKey.toBase58()}`,
+    );
+
+    return data;
+  };
+
+type SetUserNotificationsSettings = (props: {
+  publicKey: web3.PublicKey;
+  settings: NotificationsSettings;
+}) => Promise<void>;
+export const setUserNotificationsSettings: SetUserNotificationsSettings =
+  async ({ publicKey, settings }) => {
+    await axios.post(
+      `https://${process.env.BACKEND_DOMAIN}/settings/${publicKey.toBase58()}`,
+      settings,
+    );
+  };
