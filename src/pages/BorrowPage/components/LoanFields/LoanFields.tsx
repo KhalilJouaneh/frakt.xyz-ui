@@ -141,7 +141,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
           <div className={styles.staticValue}>
             <p className={styles.staticValueTitle}>To repay</p>
             <p className={styles.staticValueData}>
-              {timeBased.repayValue} <SolanaIcon />
+              {solLoanValue?.toFixed(3) || 0} <SolanaIcon />
             </p>
           </div>
         )}
