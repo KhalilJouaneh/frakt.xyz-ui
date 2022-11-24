@@ -33,8 +33,6 @@ export const useLiquidationsRaffle = (data) => {
     close: closeLoadingModal,
   } = useLoadingModal();
 
-  console.log(loadingModalVisible);
-
   const isDisabledIncrement = ticketCount >= lotteryTickets.tickets.length;
 
   const handleSumit = () => {
@@ -47,7 +45,6 @@ export const useLiquidationsRaffle = (data) => {
   };
 
   const participateInRaffle = async (): Promise<void> => {
-    console.log(data);
     try {
       const { nftMint, ticketCount } = data;
       openLoadingModal();

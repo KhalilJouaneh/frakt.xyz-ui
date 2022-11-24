@@ -28,6 +28,8 @@ import {
   selectLotteryTickets,
   selectRaffleNotifications,
 } from '../../../../state/liquidations/selectors';
+import { MOCK_RAFFLES_CARDS_DATA } from './mock';
+import Overlay from '../Overlay';
 
 const Liquidations: FC = () => {
   const {
@@ -123,7 +125,8 @@ const Liquidations: FC = () => {
     : {};
 
   return (
-    <>
+    <div className={styles.container}>
+      <Overlay />
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -140,8 +143,8 @@ const Liquidations: FC = () => {
                 dispatch(liquidationsActions.fetchRaffleList(params))
               }
             >
-              {graceList.length ? (
-                graceList.map((item) => (
+              {MOCK_RAFFLES_CARDS_DATA.length ? (
+                MOCK_RAFFLES_CARDS_DATA.map((item) => (
                   <LiquidationRaffleCard
                     key={item.nftMint}
                     data={item}
@@ -186,7 +189,7 @@ const Liquidations: FC = () => {
             <NoWinningRaffles onClick={handleTryLottery} />
           ))}
       </div>
-    </>
+    </div>
   );
 };
 
