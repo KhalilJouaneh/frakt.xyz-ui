@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 import classNames from 'classnames';
 
 import { ContentType } from './constants';
@@ -11,12 +11,14 @@ import { SetUpContent } from './components/SetUpContent';
 import { SettingsContent } from './components/SettingsContent';
 import { SignMessageContent } from './components/SignMessageContent';
 
-export const NotificationsSider: FC = () => {
+export const NotificationsSider = forwardRef<HTMLDivElement>((props, ref) => {
   const { isVisible, contentType } = useNotificationsSider();
 
   return (
     <div
+      onClick={(event) => event}
       className={classNames(styles.root, { [styles.rootHidden]: !isVisible })}
+      ref={ref}
     >
       <Header />
       {contentType === ContentType.SETTINGS && <SettingsContent />}
@@ -26,4 +28,6 @@ export const NotificationsSider: FC = () => {
       {contentType === ContentType.SET_UP && <SetUpContent />}
     </div>
   );
-};
+});
+
+NotificationsSider.displayName = 'NotificationsSider';

@@ -1,7 +1,7 @@
 @import '@frakt/scss/abstracts/mixins';
 @import '@frakt/scss/abstracts/typography';
 
-.container {
+.button {
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -41,4 +41,7 @@
       width: 20px;
     }
   }
+}
+.buttonActive {
+  border-color: var(--secondary-border);
 }

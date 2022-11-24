@@ -1,13 +1,13 @@
 import { FC, ReactNode, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import FilterCollections from '../../../../componentsNew/FilterCollections';
 import { FetchItemsParams } from '../../../../state/liquidations/types';
 import { SearchInput } from '../../../../components/SearchInput';
 import { LiquidationsListFormNames } from '../../model';
 import styles from './LiquidationsList.module.scss';
 import { TicketsCounter } from '../TicketsCounter';
-import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';
 import {
   SORT_VALUES as RAW_SORT_VALUES,

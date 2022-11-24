@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import NumericInput from '../../components/NumericInput';
-import { useOnClickOutside } from '../../utils';
 import Button from '../../components/Button';
 import styles from './SlippageModal.module.scss';
 import Icons from '../../iconsNew';

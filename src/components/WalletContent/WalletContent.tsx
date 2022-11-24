@@ -2,10 +2,10 @@ import { FC, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import { commonActions } from '../../state/common/actions';
 import { sendAmplitudeData } from '../../utils/amplitude';
 import CurrentUserTable from '../CurrentUserTable';
-import { useOnClickOutside } from '../../utils';
 import styles from './styles.module.scss';
 import { WalletItem } from './WalletItem';
 
