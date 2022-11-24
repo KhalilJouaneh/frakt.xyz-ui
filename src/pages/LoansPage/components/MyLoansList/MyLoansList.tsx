@@ -2,13 +2,13 @@ import { FC, useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useSelector } from 'react-redux';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../../../componentsNew/FiltersDropdown';
 import { LoansList } from '../LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
-import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';
 import styles from './MyLoansList.module.scss';
 import {

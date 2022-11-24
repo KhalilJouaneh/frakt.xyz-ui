@@ -1,4 +1,5 @@
-import { useNotificationsSider } from '@frakt/components/NotificationsSider';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 
 import ThemeSwitcher from '../../componentsNew/ThemeSwitcher';
 import styles from './BurgerMenu.module.scss';
@@ -8,7 +9,6 @@ import {
   NAVIGATION_LINKS,
 } from '../../componentsNew/Navigation';
 import { MenuItem } from '../../componentsNew/Navigation/Navigation';
-import { useSelector } from 'react-redux';
 import { selectTheme } from '../../state/theme/selectors';
 import { useBurgerMenu } from './hooks';
 
@@ -16,21 +16,12 @@ interface BurgerMenuProps {
   className?: string;
 }
 
-const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
+const BurgerMenu: FC<BurgerMenuProps> = ({ className = '' }) => {
   const { isVisible, toggleVisibility } = useBurgerMenu();
-  const { setVisibility: setNotificationsSiderVisibility } =
-    useNotificationsSider();
 
   const theme: string = useSelector(selectTheme);
 
   const isDark = theme === 'dark';
-
-  const onBurgerIconClick = () => {
-    if (!isVisible) {
-      setNotificationsSiderVisibility(false);
-    }
-    toggleVisibility();
-  };
 
   return (
     <>
@@ -38,7 +29,7 @@ const BurgerMenu = ({ className = '' }: BurgerMenuProps): JSX.Element => {
         className={`${styles.burgerIcon} ${
           isVisible ? styles.opened : ''
         } ${className}`}
-        onClick={onBurgerIconClick}
+        onClick={toggleVisibility}
       >
         <div className={styles.centerIconLine} />
       </div>

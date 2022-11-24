@@ -119,6 +119,9 @@ module.exports = {
       manifest: './public/manifest.json',
     }),
     new Webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new Webpack.ProvidePlugin({
       process: 'process/browser',
     }),
     new Webpack.DefinePlugin({

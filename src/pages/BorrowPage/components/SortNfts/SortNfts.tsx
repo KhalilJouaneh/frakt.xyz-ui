@@ -1,10 +1,10 @@
 import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react';
 import cx from 'classnames';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import { BorrowNft } from '@frakt/api/nft';
 import { SearchInput } from '../../../../components/SearchInput';
 import SortControl from '../../../../componentsNew/SortControl';
-import { useOnClickOutside } from '../../../../utils';
 import Button from '../../../../components/Button';
 import styles from './SortNfts.module.scss';
 import {

@@ -1,0 +1,39 @@
+.btn {
+  padding: 0;
+  justify-content: center;
+  height: 26px;
+  width: 139px;
+  
+  @media screen and (max-width: 767px) {
+    width: 117px;
+  }
+}
+
+.rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  line-height: 1;
+
+  @media screen and (max-width: 767px) {
+    gap: 10px;
+  }
+}
+
+.reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary-border);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+
+  span {
+    color: var(--secondary-border);
+    font: var(--font-text-8);
+
+    svg {
+      margin-left: 4px;
+    }
+  }
+}
