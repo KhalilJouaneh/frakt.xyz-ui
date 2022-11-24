@@ -66,7 +66,7 @@ export const NAVIGATION_LINKS = [
   {
     pathname: PATHS.LIQUIDATIONS,
     to: PATHS.LIQUIDATIONS,
-    label: 'Liquidations',
+    label: 'Raffles',
     event: 'navigation-liquidation',
     icon: Icons.Raffles,
     iconDark: Icons.RafflesDark,
