@@ -14,7 +14,7 @@ const LiquidationsPage: FC = () => {
     <AppLayout>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Liquidations</h1>
+          <h1 className={styles.title}>Raffles</h1>
           <h2 className={styles.subtitle}>
             Buyout liquidated NFTs on discount
           </h2>

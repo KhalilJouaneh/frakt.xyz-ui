@@ -28,6 +28,7 @@ import {
   selectLotteryTickets,
   selectRaffleNotifications,
 } from '../../../../state/liquidations/selectors';
+import Overlay from '../Overlay';
 
 const Liquidations: FC = () => {
   const {
@@ -123,7 +124,8 @@ const Liquidations: FC = () => {
     : {};
 
   return (
-    <>
+    <div className={styles.container}>
+      <Overlay />
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -184,7 +186,7 @@ const Liquidations: FC = () => {
         ) : (
           <NoWinningRaffles onClick={handleTryLottery} />
         ))}
-    </>
+    </div>
   );
 };
 
