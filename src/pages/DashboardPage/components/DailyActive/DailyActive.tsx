@@ -19,7 +19,7 @@ const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
 
   return (
     <Block className={styles.content}>
-      <h2 className={styles.title}>Daily Active</h2>
+      <h2 className={styles.title}>Daily Stats</h2>
       <div className={styles.blockWrapper}>
         <div className={styles.block}>
           <h3 className={styles.subtitle}>Volume</h3>
