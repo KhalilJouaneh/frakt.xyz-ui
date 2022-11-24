@@ -58,7 +58,7 @@ const BorrowPage: FC = () => {
                     value={borrowValue}
                     onValueChange={onBorrowValueChange}
                     currentToken={SOL_TOKEN}
-                    label={`Available balance:`}
+                    label="Available to borrow:"
                     lpBalance={Number(availableBorrowValue?.toFixed(2))}
                     showMaxButton
                     error={notEnoughBalanceError}
