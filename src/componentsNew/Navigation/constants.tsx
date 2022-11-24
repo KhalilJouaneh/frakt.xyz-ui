@@ -6,7 +6,7 @@ export const community = [
     label: 'Discord',
     icon: Icons.Discord,
     iconDark: Icons.DiscordDark,
-    href: 'https://discord.com/invite/UqbxgFrvCu',
+    href: process.env.FRAKT_DISCORD_SERVER,
   },
   {
     label: 'Twitter',
@@ -72,14 +72,14 @@ export const NAVIGATION_LINKS = [
     icon: Icons.MyLoans,
     iconDark: Icons.MyLoansDark,
   },
-  {
-    pathname: PATHS.BONDS,
-    to: PATHS.BONDS,
-    label: 'My bonds',
-    event: 'navigation-bonds',
-    icon: Icons.Bonds,
-    iconDark: Icons.BondsDark,
-  },
+  // {
+  //   pathname: PATHS.BONDS,
+  //   to: PATHS.BONDS,
+  //   label: 'My bonds',
+  //   event: 'navigation-bonds',
+  //   icon: Icons.Bonds,
+  //   iconDark: Icons.BondsDark,
+  // },
   {
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,

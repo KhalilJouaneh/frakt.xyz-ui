@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
+import { marks, usePoolModal, useDepositTxn } from '../hooks';
 import { sendAmplitudeData } from '../../../utils/amplitude';
 import { TokenFieldWithBalance } from '../../TokenField';
-import { marks, usePoolModal } from '../usePoolModal';
 import styles from './DepositTab.module.scss';
 import { SOL_TOKEN } from '../../../utils';
 import { Slider } from '../../Slider';
@@ -10,16 +10,18 @@ import Button from '../../Button';
 
 interface DepositTabProps {
   utilizationRate: number;
-  onSubmit: () => void;
+  onCancel: () => void;
   apr: number;
   depositAmount: number;
+  liquidityPoolPubkey: string;
 }
 
 const DepositTab: FC<DepositTabProps> = ({
   utilizationRate,
-  onSubmit,
   apr,
   depositAmount,
+  liquidityPoolPubkey,
+  onCancel,
 }) => {
   const {
     depositValue,
@@ -27,17 +29,23 @@ const DepositTab: FC<DepositTabProps> = ({
     onDepositValueChange,
     onDepositPercentChange,
     solWalletBalance,
+    onClearDepositValue,
   } = usePoolModal({ depositAmount });
 
-  const rawdepositAmountWithFee = Number(solWalletBalance) - 0.02;
+  const { depositLiquidity } = useDepositTxn({
+    liquidityPoolPubkey,
+    depositValue,
+    onCancel,
+    onClearDepositValue,
+  });
 
-  const notEnoughBalanceError = Number(solWalletBalance) < Number(depositValue);
+  const solWalletBalanceNumber = parseFloat(solWalletBalance.toFixed(2));
+  const depositValueNumber = parseFloat(depositValue) || 0;
+
+  const notEnoughBalanceError = solWalletBalanceNumber < depositValueNumber;
 
   const isDisabledDepositBtn =
-    Number(depositValue) === 0 || notEnoughBalanceError;
-
-  const depositAmountWithFee =
-    rawdepositAmountWithFee < 0 ? 0 : rawdepositAmountWithFee;
+    depositValueNumber === 0 || notEnoughBalanceError;
 
   return (
     <div className={styles.wrapper}>
@@ -48,7 +56,7 @@ const DepositTab: FC<DepositTabProps> = ({
           onValueChange={onDepositValueChange}
           currentToken={SOL_TOKEN}
           label={`BALANCE:`}
-          lpBalance={Number(depositAmountWithFee.toFixed(2))}
+          lpBalance={solWalletBalanceNumber}
           error={notEnoughBalanceError}
           showMaxButton
           labelRight
@@ -78,7 +86,7 @@ const DepositTab: FC<DepositTabProps> = ({
         </div>
         <Button
           onClick={() => {
-            onSubmit();
+            depositLiquidity();
             sendAmplitudeData('loans-confirm-deposit');
           }}
           className={styles.btn}

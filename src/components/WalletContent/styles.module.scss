@@ -32,7 +32,7 @@
 
   @media (max-width: 767px) {
     position: fixed;
-    top: 63px;
+    top: var(--header-height);
     left: 0;
     right: 0;
     max-width: unset;

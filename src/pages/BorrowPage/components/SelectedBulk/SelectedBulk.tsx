@@ -32,6 +32,8 @@ const SelectedBulk: FC<SelectedBulkProps> = ({
     loadingModalVisible,
     closeLoadingModal,
     feesOnDay,
+    feesOnMaxDuration,
+    isMaxReturnPeriodDays,
   } = useSeletedBulk({ rawselectedBulk });
 
   const isSelectedBulk = !!selectedBulk?.length;
@@ -55,6 +57,8 @@ const SelectedBulk: FC<SelectedBulkProps> = ({
           onBack={onBack}
           selectedBulkValue={totalBorrowed}
           feeOnDay={feesOnDay}
+          isMaxReturnPeriodDays={isMaxReturnPeriodDays}
+          feesOnMaxDuration={feesOnMaxDuration}
         />
       )}
 
@@ -147,7 +151,7 @@ const getPriceBasedValues = (
               {getStatsValue('To borrow', maxLoanValue, 'number')}
               {getStatsValue(
                 'Duration',
-                `${isPriceBasedLoan ? `Perpetual` : `${period} DAYS`}`,
+                `${isPriceBasedLoan ? `Perpetual` : `${period} days`}`,
               )}
               {isPriceBasedLoan &&
                 getStatsValue(

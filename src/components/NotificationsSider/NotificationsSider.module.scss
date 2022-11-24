@@ -1,0 +1,240 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.root {
+  z-index: 6;
+  position: fixed;
+  background-color: var(--primary-background);
+  border-left: 1px solid var(--primary-border);
+  top: var(--header-height);
+  right: 0;
+  height: calc(100vh - var(--header-height));
+  width: 432px;
+  padding: 32px;
+  @include flex(column, nowrap, flex-start, flex-start);
+  overflow-y: auto;
+
+  @media screen and (max-width: 1023px) {
+    width: 100vw;
+  }
+}
+.rootHidden {
+  display: none;
+}
+
+.header {
+  @include flex(column, nowrap, flex-start, flex-start);
+  gap: 8px;
+  margin-bottom: 36px;
+  width: 100%;
+}
+
+.titleContainer {
+  @include flex(row, nowrap, flex-start, center);
+  width: 100%;
+  height: 32px;
+}
+
+.goBackBtn {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.title {
+  font: var(--font-subtitle-2);
+  flex-grow: 1;
+}
+
+.settingsBtn {
+  @include flex(row, nowrap, center, center);
+  background: unset;
+  border: unset;
+  cursor: pointer;
+  padding: unset;
+
+  svg {
+    fill: var(--black-color);
+  }
+}
+
+.clearBtn {
+  font: var(--font-btn-middle);
+  color: var(--blue-color);
+  cursor: pointer;
+  border: unset;
+  border-bottom: 1px solid var(--blue-color);
+  background: unset;
+  padding: unset;
+}
+
+.content {
+  flex-grow: 1;
+  width: 100%;
+  @include flex(column, nowrap, flex-start, flex-start);
+}
+.contentCentered {
+  @include flex(column, nowrap, center, center);
+}
+
+.contentTitle {
+  width: 100%;
+  text-align: center;
+  font: var(--font-text-2);
+  margin-bottom: 24px;
+}
+.contentTitleOffsetTop {
+  padding-top: 32px;
+}
+
+.signMessageSubtitle {
+  margin-bottom: 8px;
+}
+
+.signMessageBtn {
+  font: var(--font-text-4);
+}
+
+.contentSetUp {
+  @include flex(column, nowrap, flex-start, stretch);
+  gap: 16px;
+}
+
+.noNotifications {
+  @include flex(column, nowrap, center, center);
+  gap: 16px;
+}
+
+.noNotificationsText {
+  font: var(--font-text-2);
+  text-align: center;
+}
+
+.discordSettingsLabel {
+  color: var(--gray-color-2);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.discordSettings {
+  @include flex(row, nowrap, flex-start, center);
+  gap: 16px;
+}
+
+.discordSettingsUserInfo {
+  flex-grow: 1;
+  @include flex(column, nowrap, center, flex-start);
+  gap: 8px;
+}
+
+.discordSettingsUserName {
+  font: var(--font-text-5);
+  font-size: 16px;
+}
+
+.discordSettingsAvatar {
+  width: 64px;
+}
+
+.discordSettingsBtn {
+  width: 100%;
+}
+
+.discordAlert {
+  padding-top: 8px;
+  display: grid;
+  grid-template: auto / 24px 1fr;
+  column-gap: 8px;
+  align-items: center;
+  font: var(--font-text-5);
+  font-weight: 500;
+  color: var(--gray-color-2);
+
+  svg {
+    fill: var(--gray-color-2);
+  }
+}
+
+.discordLink {
+  font: var(--font-btn-middle);
+  cursor: pointer;
+
+  &,
+  &:hover,
+  &:focus,
+  &:focus-visible,
+  &:visited {
+    color: var(--blue-color);
+    border: unset;
+    border-bottom: 1px solid var(--blue-color);
+  }
+}
+
+.notficationsList {
+  width: 100%;
+  @include flex(column, nowrap, flex-start, stretch);
+  row-gap: 16px;
+}
+
+.notificationCard {
+  width: 100%;
+  padding: 24px;
+  border: 1px solid var(--light-green-color);
+  border-radius: 20px;
+}
+
+.notificationCardInfo {
+  @include flex(row, nowrap, flex-start, flex-start);
+  column-gap: 8px;
+  font: 700 16px var(--font-family-syne);
+  margin-bottom: 8px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--light-green-color);
+  }
+}
+.notificationCardInfoRead {
+  &::after {
+    content: unset;
+  }
+}
+
+.notificationCardImg {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.notificationCardDate {
+  color: var(--gray-color-2);
+  font: 400 14px var(--font-family-chakra);
+}
+
+.eventsList {
+  width: 100%;
+  display: grid;
+  row-gap: 8px;
+  column-gap: 24px;
+
+  @media screen and (max-width: 1023px) and (min-width: 575px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.eventsListRow {
+  font: 400 16px var(--font-family-chakra);
+  @include flex(row, nowrap, space-between, flex-start);
+}

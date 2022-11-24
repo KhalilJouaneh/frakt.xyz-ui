@@ -14,11 +14,15 @@
 }
 
 .detailsTitle {
-  color: var(--gray-color-2);
+  color: var(--secondary-text);
   font: var(--font-text-6);
-  margin: 9px 0;
+  margin: 45px 0 8px;
   text-align: center;
   text-transform: uppercase;
+
+  @media screen and (max-width: 767px) {
+    margin: 28px 0 0;
+  }
 }
 
 .continueBtnContainer {
@@ -49,6 +53,11 @@
   flex-direction: column;
   gap: 15px;
   margin: 16px 0;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
 }
 
 .sliderLabel {
@@ -67,6 +76,14 @@
     .ant-slider-mark-text:last-child {
       left: 90.5% !important;
       width: 100px;
+    }
+  }
+}
+
+.select {
+  :global {
+    .custom-select__control {
+      background-color: transparent;
     }
   }
 }

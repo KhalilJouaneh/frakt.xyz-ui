@@ -1,24 +1,37 @@
 import { FC } from 'react';
 
+import { marks, useDepositTxn, usePoolModal } from '../hooks';
 import { TokenFieldWithBalance } from '../../TokenField';
-import { marks, usePoolModal } from '../usePoolModal';
 import styles from './WithdrawTab.module.scss';
 import { SOL_TOKEN } from '../../../utils';
 import { Slider } from '../../Slider';
 import Button from '../../Button';
 
 interface WithdrawTabProps {
-  onSubmit: () => void;
   depositAmount: number;
+  liquidityPoolPubkey: string;
+  onCancel: () => void;
 }
 
-const WithdrawTab: FC<WithdrawTabProps> = ({ onSubmit, depositAmount }) => {
+const WithdrawTab: FC<WithdrawTabProps> = ({
+  depositAmount,
+  liquidityPoolPubkey,
+  onCancel,
+}) => {
   const {
     withdrawValue,
     percentValue,
     onWithdrawValueChange,
     onWithdrawPercentChange,
+    onClearDepositValue,
   } = usePoolModal({ depositAmount });
+
+  const { unstakeLiquidity } = useDepositTxn({
+    onClearDepositValue,
+    liquidityPoolPubkey,
+    withdrawValue,
+    onCancel,
+  });
 
   const notEnoughDepositError = depositAmount < Number(withdrawValue);
 
@@ -50,7 +63,7 @@ const WithdrawTab: FC<WithdrawTabProps> = ({ onSubmit, depositAmount }) => {
         step={1}
       />
       <Button
-        onClick={onSubmit}
+        onClick={unstakeLiquidity}
         className={styles.btn}
         type="secondary"
         disabled={isDisabledWithdrawBtn}

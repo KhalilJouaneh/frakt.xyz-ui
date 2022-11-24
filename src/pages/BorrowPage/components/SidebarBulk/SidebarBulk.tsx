@@ -14,10 +14,14 @@ interface SidebarBulkProps {
   onSubmit: () => void;
   selectedBulkValue?: number;
   feeOnDay: number;
+  feesOnMaxDuration?: number;
+  isMaxReturnPeriodDays?: boolean;
 }
 
 const SidebarBulk: FC<SidebarBulkProps> = ({
   selectedBulkValue,
+  feesOnMaxDuration,
+  isMaxReturnPeriodDays,
   onClick,
   onBack,
   onSubmit,
@@ -47,13 +51,15 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
               {(feeOnDay * 7).toFixed(3)} <SolanaIcon />
             </p>
           </div>
-          <div className={styles.feesRow}>
-            <p className={styles.subtitle}>Fee on day 14</p>
-            <p className={styles.value}>
-              {(feeOnDay * 14).toFixed(3)}
-              <SolanaIcon />
-            </p>
-          </div>
+          {isMaxReturnPeriodDays && (
+            <div className={styles.feesRow}>
+              <p className={styles.subtitle}>Fee on day 14</p>
+              <p className={styles.value}>
+                {(feesOnMaxDuration * 14).toFixed(3)}
+                <SolanaIcon />
+              </p>
+            </div>
+          )}
         </div>
         <div className={styles.sidebarBtnWrapper}>
           <Button

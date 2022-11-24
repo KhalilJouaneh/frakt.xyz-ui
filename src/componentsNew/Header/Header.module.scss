@@ -1,0 +1,67 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.container {
+  position: fixed;
+  z-index: 4;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--primary-background);
+  border-bottom: 1px solid var(--primary-border);
+  backdrop-filter: blur(12px);
+  @include flex;
+  padding: 8px 16px;
+}
+
+.widgetContainer {
+  margin-left: auto;
+  @include flex(row, nowrap, flex-start, center);
+  gap: 16px;
+  height: 100%;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.walletBtn {
+  background: var(--light-green-color-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.2s ease-in, background-color 0.2s ease-in;
+  font: var(--font-body-small);
+  height: 48px;
+
+  svg {
+    path {
+      fill: var(--black-color);
+    }
+  }
+}
+
+.switcherContainer {
+  margin: 8px 16px 0 0;
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.logoWrapper {
+  @include flex(row, nowrap, flex-start, center);
+}
+
+.logo {
+  path {
+    fill: var(--primary-icon);
+  }
+
+  @media (max-width: 767px) {
+    width: 107px;
+    height: 32px;
+  }
+
+  @media screen and (max-width: 575px) {
+    width: 80px;
+    height: 24px;
+  }
+}

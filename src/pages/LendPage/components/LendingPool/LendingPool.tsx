@@ -4,10 +4,10 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
+import { TabsNames } from '@frakt/components/PoolModal/types';
 import { PoolModal } from '../../../../components/PoolModal';
 import Button from '../../../../components/Button';
 import styles from './LendingPool.module.scss';
-import { TabsNames } from '../../../../components/PoolModal/usePoolModal';
 import Tooltip from '../../../../components/Tooltip';
 import { commonActions } from '../../../../state/common/actions';
 import { LiquidityPool } from '../../../../state/loans/types';

@@ -1,0 +1,23 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.root {
+  @include flex(row, nowrap, center, center);
+
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  transition: border var(--transition-1);
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
+}

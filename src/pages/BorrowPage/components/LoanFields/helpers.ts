@@ -2,17 +2,24 @@ import { BorrowNft } from '@frakt/api/nft';
 
 export const feeOnDayForTimeBased = (
   nft: BorrowNft,
+  ltv?: number,
 ): {
   fee: number;
   feeOnDay: number;
 } => {
-  const { returnPeriodDays, fee, feeDiscountPercents } = nft.timeBased;
+  const { returnPeriodDays, fee, feeDiscountPercents, ltvPercents } =
+    nft.timeBased;
+
+  const timeBasedLtvValue = ltvPercents / 100;
+  const suggestedLtvValue = ltv / 100;
+
+  const feeAmount = (Number(fee) / timeBasedLtvValue) * suggestedLtvValue;
 
   const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
 
-  const feeOnDay = Number(fee) / returnPeriodDays;
+  const feeOnDay = feeAmount / returnPeriodDays;
   const feeOnDayWithDiscount = feeOnDay - feeOnDay * feeDiscountPercentsValue;
-  const feeWithDiscount = Number(fee) - Number(fee) * feeDiscountPercentsValue;
+  const feeWithDiscount = feeAmount - feeAmount * feeDiscountPercentsValue;
 
   return {
     fee: feeWithDiscount,
@@ -49,7 +56,7 @@ export const feeOnDayByType = ({
   if (isPriceBasedType) {
     return feeOnDayForPriceBased(nft, ltv);
   } else {
-    return feeOnDayForTimeBased(nft);
+    return feeOnDayForTimeBased(nft, ltv);
   }
 };
 

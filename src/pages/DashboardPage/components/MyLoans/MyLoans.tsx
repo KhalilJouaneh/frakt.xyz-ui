@@ -49,7 +49,7 @@ const MyLoans: FC = () => {
     { name: 'Flip', value: flipLoansValue?.toFixed(3) },
     { name: 'Perpetual', value: perpetualLoansValue?.toFixed(3) },
     { name: 'On grace', value: graceLoansValue?.toFixed(3) },
-    { name: 'Bound', value: 0 },
+    { name: 'Bond', value: 0 },
   ];
 
   return (

@@ -34,7 +34,6 @@ export { QuestionIcon } from './QuestionIcon';
 // export { DocsIcon } from './DocsIcon';
 // export { MediumIcon } from './MediumIcon';
 // export { CoinGeckoIcon } from './CoinGeckoIcon';
-export { UserIcon } from './UserIcon';
 export { PencilIcon } from './PencilIcon';
 // export { PaperPlane } from './PaperPlane';
 export { Timer } from './Timer';
