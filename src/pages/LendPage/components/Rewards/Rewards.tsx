@@ -25,7 +25,7 @@ const Rewards: FC<RewardsProps> = ({ liquidityPool }) => {
   return (
     <div className={styles.rewards}>
       <div className={styles.reward}>
-        Pending Rewards:{' '}
+        Rewards:{' '}
         <span>
           {userDeposit?.harvestAmount?.toFixed(3)}
           <SolanaIcon />
