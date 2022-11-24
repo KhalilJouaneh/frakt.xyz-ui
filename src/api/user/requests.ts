@@ -19,8 +19,14 @@ export const fetchUser: FetchUser = async ({ publicKey }) => {
 
     if (!data) return null;
 
+    const avatarUrl = getDiscordAvatarUrl(data.discordId, data.avatar);
+
+    const { data: avatarExists } = await axios
+      .get<string>(avatarUrl)
+      .catch((error) => error);
+
     return {
-      avatarUrl: getDiscordAvatarUrl(data.discordId, data.avatar),
+      avatarUrl: avatarExists ? avatarUrl : null,
       isOnServer: data.isOnServer,
     };
   } catch (error) {
