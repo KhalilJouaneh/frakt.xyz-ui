@@ -26,6 +26,8 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
     tryId,
   } = useLiquidationsRaffle(data);
 
+  console.log(data);
+
   return (
     <div className={styles.card}>
       <div className={styles.nftInfo}>
