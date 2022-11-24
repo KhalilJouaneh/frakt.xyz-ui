@@ -14,13 +14,22 @@ import { useLoanFields } from '../LoanFields/hooks';
 import { useConnection } from '../../../../hooks';
 import { Tab } from '../../../../components/Tabs';
 
-const getConfirmModalText = (nft: BorrowNft, isPriceBased = false): string => {
+const getConfirmModalText = (
+  nft: BorrowNft,
+  solLoanValue,
+  selectValue = 'flip',
+): string => {
   const { name, timeBased } = nft;
+  const isFlip = selectValue === 'flip';
 
-  const confirmShortTermText = `You are about to use ${name} as collateral for an instant loan of ${timeBased.repayValue} SOL (incl. interest rate if applicable) that you commit to repay in full within ${timeBased.returnPeriodDays} days. Proceed?`;
+  const confirmShortTermText = `You are about to use ${name} as collateral for an instant loan of ${
+    solLoanValue?.toFixed(2) || 0
+  } SOL (incl. interest rate if applicable) that you commit to repay in full within ${
+    timeBased.returnPeriodDays
+  } days. Proceed?`;
   const confirmLongTermText = `You are about to confirm the transaction to borrow against your ${name}`;
 
-  return isPriceBased ? confirmLongTermText : confirmShortTermText;
+  return isFlip ? confirmShortTermText : confirmLongTermText;
 };
 
 type UseBorrowForm = (props: {
@@ -173,7 +182,11 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     }
   };
 
-  const confirmText = getConfirmModalText(selectedNft, isPriceBased);
+  const confirmText = getConfirmModalText(
+    selectedNft,
+    solLoanValue,
+    selectValue,
+  );
 
   return {
     selectOptions,
