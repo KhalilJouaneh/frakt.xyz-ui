@@ -17,9 +17,10 @@ import { Tab } from '../../../../components/Tabs';
 const getConfirmModalText = (
   nft: BorrowNft,
   solLoanValue,
-  isPriceBased = false,
+  selectValue = 'flip',
 ): string => {
   const { name, timeBased } = nft;
+  const isFlip = selectValue === 'flip';
 
   const confirmShortTermText = `You are about to use ${name} as collateral for an instant loan of ${
     solLoanValue?.toFixed(2) || 0
@@ -28,7 +29,7 @@ const getConfirmModalText = (
   } days. Proceed?`;
   const confirmLongTermText = `You are about to confirm the transaction to borrow against your ${name}`;
 
-  return isPriceBased ? confirmLongTermText : confirmShortTermText;
+  return isFlip ? confirmShortTermText : confirmLongTermText;
 };
 
 type UseBorrowForm = (props: {
@@ -184,7 +185,7 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
   const confirmText = getConfirmModalText(
     selectedNft,
     solLoanValue,
-    isPriceBased,
+    selectValue,
   );
 
   return {
