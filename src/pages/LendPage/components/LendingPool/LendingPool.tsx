@@ -13,6 +13,7 @@ import { commonActions } from '../../../../state/common/actions';
 import { LiquidityPool } from '../../../../state/loans/types';
 import { sendAmplitudeData } from '../../../../utils/amplitude';
 import { SolanaIcon } from '../../../../icons';
+import Rewards from '../Rewards';
 
 interface LendingPoolProps {
   liquidityPool: LiquidityPool;
@@ -49,6 +50,11 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
   return (
     <>
       <div className={styles.pool}>
+        {connected && !!userDeposit?.depositAmount && (
+          <div className={styles.header}>
+            <Rewards liquidityPool={liquidityPool} />
+          </div>
+        )}
         <div className={styles.poolCard}>
           <div className={styles.tokenInfo}>
             <LiquidityPoolImage liquidityPool={liquidityPool} />

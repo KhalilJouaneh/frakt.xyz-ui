@@ -11,6 +11,7 @@ import {
   MathWalletAdapter,
   SolletWalletAdapter,
   ExodusWalletAdapter,
+  BackpackWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { SentreWalletAdapter } from '@sentre/connector';
 import {
@@ -42,6 +43,7 @@ const wallets = [
   new MathWalletAdapter(),
   new ExodusWalletAdapter(),
   new SentreWalletAdapter(),
+  new BackpackWalletAdapter(),
   new SolletWalletAdapter({ network: WalletAdapterNetwork.Mainnet }),
 ];
 

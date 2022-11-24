@@ -1,3 +1,21 @@
+.header {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid var(--primary-border);
+  padding: 8px 32px;
+  height: 42px;
+
+  @media screen and (max-width: 1024px) {
+    padding: 8px 24px;
+  }
+
+  @media screen and (max-width: 767px) {
+    padding: 8px 16px;
+  }
+}
+
 .pool {
   background: var(--primary-background);
   border: 1px solid var(--primary-border);
