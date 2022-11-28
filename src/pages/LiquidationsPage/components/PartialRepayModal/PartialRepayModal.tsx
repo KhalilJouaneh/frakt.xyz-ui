@@ -95,7 +95,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
       </div>
 
       <div className={styles.lable}>
-        <p>Debt:</p> <span>{loan?.repayValue.toFixed(2)} SOL</span>
+        <p>Debt:</p> <span>{loan?.repayValue?.toFixed(2)} SOL</span>
       </div>
 
       <Slider
@@ -109,7 +109,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
       <div className={styles.info}>
         <span className={styles.infoTitle}>Repay value</span>
         <span className={styles.infoValue}>
-          {repayValue.toFixed(2)}
+          {repayValue?.toFixed(2)}
           <SolanaIcon />
         </span>
       </div>
@@ -125,7 +125,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         type="secondary"
         disabled={submitDisabled}
       >
-        Repay {remainingDebt === '0' ? 'all' : repayValue.toFixed(2)}
+        Repay {remainingDebt === '0' ? 'all' : repayValue?.toFixed(2)}
       </Button>
     </Modal>
   );
