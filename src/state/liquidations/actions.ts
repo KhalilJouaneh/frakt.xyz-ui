@@ -105,36 +105,4 @@ export const liquidationsActions = {
     liquidationsTypes.SET_RAFFLE_NOTIFICATIONS,
     (response) => ({ payload: response }),
   ),
-  txRaffleTry: createCustomAction(
-    liquidationsTypes.TX_RAFFLE_TRY,
-    (payload) => ({ payload }),
-  ),
-  txRaffleTryPending: createCustomAction(
-    liquidationsTypes.TX_RAFFLE_TRY__PENDING,
-    () => null,
-  ),
-  txRaffleTryFulfilled: createCustomAction(
-    liquidationsTypes.TX_RAFFLE_TRY__FULFILLED,
-    (payload) => ({ payload }),
-  ),
-  txRaffleTryFailed: createCustomAction(
-    liquidationsTypes.TX_RAFFLE_TRY__FAILED,
-    (error) => ({ payload: error }),
-  ),
-  txLiquidate: createCustomAction(
-    liquidationsTypes.TX_LIQUIDATE,
-    (payload) => ({ payload }),
-  ),
-  txLiquidatePending: createCustomAction(
-    liquidationsTypes.TX_LIQUIDATE__PENDING,
-    () => null,
-  ),
-  txLiquidateFulfilled: createCustomAction(
-    liquidationsTypes.TX_LIQUIDATE__FULFILLED,
-    (payload) => ({ payload }),
-  ),
-  txLiquidateFailed: createCustomAction(
-    liquidationsTypes.TX_LIQUIDATE__FAILED,
-    (error) => ({ payload: error }),
-  ),
 };

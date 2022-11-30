@@ -20,7 +20,7 @@ export interface FetchItemsParams {
   collections?: string;
 }
 export interface RaffleListItem {
-  pubkey: string;
+  rafflePubKey: string;
   nftMint: string;
   nftName: string;
   nftImageUrl: string;
@@ -28,6 +28,7 @@ export interface RaffleListItem {
   nftFloorPrice: number; //? 1.23 (SOL)
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
+  tickets: number;
 }
 export interface WonRaffleListItem {
   pubkey: string;
@@ -39,21 +40,9 @@ export interface WonRaffleListItem {
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
 }
-export interface LotteryTickets {
-  totalTickets: number;
-  nftMints: string[];
-  stakeNfts: Array<{
-    stakeAccountPublicKey: string;
-    nftMint: string;
-    attempts: number;
-  }>;
-  nextRefillIn?: string;
-}
 
 export interface LotteryTicket {
-  nftMint: string;
-  stakeAccountPublicKey?: string;
-  attempts?: number;
+  totalTickets: number;
 }
 
 export interface CollectionsListItem {

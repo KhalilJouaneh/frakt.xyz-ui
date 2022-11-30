@@ -28,8 +28,6 @@ import {
   selectLotteryTickets,
   selectRaffleNotifications,
 } from '../../../../state/liquidations/selectors';
-import { MOCK_RAFFLES_CARDS_DATA } from './mock';
-import Overlay from '../Overlay';
 
 const Liquidations: FC = () => {
   const {
@@ -49,6 +47,7 @@ const Liquidations: FC = () => {
   const raffleList = useSelector(selectRaffleList);
   const wonRaffleList = useSelector(selectWonRaffleList);
   const lotteryTickets = useSelector(selectLotteryTickets);
+
   const raffleNotifications: RaffleNotifications = useSelector(
     selectRaffleNotifications,
   );
@@ -126,7 +125,6 @@ const Liquidations: FC = () => {
 
   return (
     <div className={styles.container}>
-      <Overlay />
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -143,12 +141,12 @@ const Liquidations: FC = () => {
                 dispatch(liquidationsActions.fetchRaffleList(params))
               }
             >
-              {MOCK_RAFFLES_CARDS_DATA.length ? (
-                MOCK_RAFFLES_CARDS_DATA.map((item) => (
+              {raffleList.length ? (
+                raffleList.map((item) => (
                   <LiquidationRaffleCard
                     key={item.nftMint}
                     data={item}
-                    disabled={lotteryTickets.quantity < 1}
+                    disabled={lotteryTickets?.totalTickets < 1}
                   />
                 ))
               ) : (

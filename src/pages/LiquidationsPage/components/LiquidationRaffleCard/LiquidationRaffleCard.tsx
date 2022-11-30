@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { ConfirmModal } from '../../../../components/ConfirmModal';
+import {
+  ConfirmModal,
+  useConfirmModal,
+} from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
 import { SolanaIcon, Timer } from '../../../../icons';
@@ -18,13 +21,16 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
     decrementCounter,
     isDisabledIncrement,
     ticketCount,
-    handleSumit,
-    handleClick,
+    onSubmit,
     closeLoadingModal,
     loadingModalVisible,
-    setTryId,
-    tryId,
   } = useLiquidationsRaffle(data);
+
+  const {
+    visible: confirmModalVisible,
+    open: openConfirmModal,
+    close: closeConfirmModal,
+  } = useConfirmModal();
 
   return (
     <div className={styles.card}>
@@ -80,15 +86,15 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
       <Button
         type="secondary"
         className={styles.btn}
-        onClick={handleClick}
+        onClick={openConfirmModal}
         disabled={disabled}
       >
         {disabled ? 'Try by 0 ticket' : 'Participate'}
       </Button>
       <ConfirmModal
-        visible={!!tryId}
-        onCancel={() => setTryId(null)}
-        onSubmit={handleSumit}
+        visible={confirmModalVisible}
+        onCancel={closeConfirmModal}
+        onSubmit={onSubmit}
         title="Ready?"
         subtitle={`You are about to confirm the transaction to try your chance in raffle for ${data.nftName}`}
         btnAgree="Let's go"

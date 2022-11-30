@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { createReducer } from 'typesafe-actions';
-import { append } from 'ramda';
 
 import { AsyncState } from '../../utils/state';
 import {
@@ -80,21 +79,6 @@ const setLotteryTicketsListReducer = createReducer(
   },
 );
 
-const txRaffleTryReducer = createReducer(
-  initialTxState,
-  createHandlers<unknown>(liquidationsTypes.TX_RAFFLE_TRY),
-);
-
-const txLiquidateReducer = createReducer(
-  initialTxState,
-  createHandlers<unknown>(liquidationsTypes.TX_LIQUIDATE),
-);
-
-const ignoreLotteryTicketsListReducer = createReducer([], {
-  [liquidationsTypes.TX_RAFFLE_TRY__FULFILLED]: (state, action) =>
-    append(action.payload, state),
-});
-
 export default combineReducers({
   graceList: fetchGraceListReducer,
   raffleList: fetchRaffleListReducer,
@@ -102,7 +86,4 @@ export default combineReducers({
   raffleNotifications: setRaffleNotificationsReducer,
   wonRaffleList: setWonRaffleListReducer,
   lotteryTicketsList: setLotteryTicketsListReducer,
-  ignoreLotteryTicketsList: ignoreLotteryTicketsListReducer,
-  txRaffleTry: txRaffleTryReducer,
-  txLiquidate: txLiquidateReducer,
 });

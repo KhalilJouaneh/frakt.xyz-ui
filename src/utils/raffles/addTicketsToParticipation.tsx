@@ -1,4 +1,4 @@
-import { participateInRaffle as txn } from '@frakters/raffle-sdk/lib/raffle-core/functions/user';
+import { addTicketsToParticipation as txn } from '@frakters/raffle-sdk/lib/raffle-core/functions/user';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { BN, web3 } from '@frakt-protocol/frakt-sdk';
 
@@ -10,14 +10,14 @@ import {
   showSolscanLinkNotification,
 } from '../transactions';
 
-type ParticipateInRaffle = (props: {
+type AddTicketsToParticipation = (props: {
   connection: web3.Connection;
   wallet: WalletContextState;
   tickets: number;
   raffleAddress: string;
 }) => Promise<boolean>;
 
-export const participateInRaffle: ParticipateInRaffle = async ({
+export const addTicketsToParticipation: AddTicketsToParticipation = async ({
   connection,
   wallet,
   tickets,

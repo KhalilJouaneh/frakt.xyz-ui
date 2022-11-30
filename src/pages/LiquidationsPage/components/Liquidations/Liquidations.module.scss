@@ -7,11 +7,9 @@
   border-top: 0;
   background: var(--primary-background);
   padding: 24px;
-  height: 592px;
-  overflow: hidden;
+  min-height: 600px;
 }
 
 .container {
   position: relative;
-  max-height: 648px;
 }

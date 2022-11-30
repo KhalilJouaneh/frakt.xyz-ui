@@ -1,28 +1,16 @@
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import cx from 'classnames';
 
 import { ConfirmModal } from '../../../../components/ConfirmModal';
 import { LoadingModal } from '../../../../components/LoadingModal';
-import { selectTxLiquidateStatus } from '../../../../state/liquidations/selectors';
-import { liquidationsActions } from '../../../../state/liquidations/actions';
-import { useOnFulfilled } from '../../../../hooks';
 import styles from './WonRaffleCard.module.scss';
 
 const WonRaffleCard: FC<{ data }> = ({ data }) => {
-  const [tryId, setTryId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const txRequestStatus = useSelector(selectTxLiquidateStatus);
-  useOnFulfilled(txRequestStatus, () => {
-    setIsLoading(false);
-  });
 
-  const handleSumit = () => {
-    setTryId(null);
-    setIsLoading(true);
-    dispatch(liquidationsActions.txLiquidate(data));
-  };
+  const handleSumit = () => {};
 
   const isWinner = true;
 
@@ -58,8 +46,8 @@ const WonRaffleCard: FC<{ data }> = ({ data }) => {
         </div>
       </div>
       <ConfirmModal
-        visible={tryId}
-        onCancel={() => setTryId(null)}
+        visible={null}
+        onCancel={() => null}
         onSubmit={handleSumit}
         title="Ready?"
         subtitle={`You are about to confirm the transaction to liquidate and aquire ${data.nftName}`}

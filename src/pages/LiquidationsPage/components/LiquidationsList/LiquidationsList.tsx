@@ -68,7 +68,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   return (
     <>
       <div className={styles.searchWrapper}>
-        <TicketsCounter tickets={lotteryTickets.quantity} />
+        <TicketsCounter tickets={lotteryTickets?.totalTickets} />
         <div ref={ref}>
           <div className={styles.sortWrapper}>
             <Button type="tertiary" onClick={toggleFiltersModal}>

@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   participateInRaffle as participateInRaffleTxn,
-  buyAuction as buyAuctionTxn,
+  addTicketsToParticipation as addTicketsToParticipationTxn,
 } from '../../../../utils/raffles';
 import { useConnection } from '../../../../hooks';
 import { selectLotteryTickets } from '../../../../state/liquidations/selectors';
 import { useLoadingModal } from '../../../../components/LoadingModal';
+import { RaffleListItem } from '@frakt/state/liquidations/types';
 
-export const useLiquidationsRaffle = (data) => {
+export const useLiquidationsRaffle = (data: RaffleListItem) => {
   const wallet = useWallet();
   const connection = useConnection();
 
@@ -33,47 +34,26 @@ export const useLiquidationsRaffle = (data) => {
     close: closeLoadingModal,
   } = useLoadingModal();
 
-  const isDisabledIncrement = ticketCount >= lotteryTickets.tickets.length;
+  const isDisabledIncrement = ticketCount >= lotteryTickets?.totalTickets;
 
-  const handleSumit = () => {
-    setTryId(null);
-    participateInRaffle();
-  };
+  const onSubmit = async (): Promise<void> => {
+    openLoadingModal();
 
-  const handleClick = () => {
-    setTryId(data.nftMint);
-  };
+    const params = {
+      connection,
+      wallet,
+      tickets: ticketCount,
+      raffleAddress: data?.rafflePubKey,
+    };
 
-  const participateInRaffle = async (): Promise<void> => {
+    console.log(data);
+
     try {
-      const { nftMint, ticketCount } = data;
-      openLoadingModal();
-
-      await participateInRaffleTxn({
-        connection,
-        wallet,
-        tickets: ticketCount,
-        raffleAddress: nftMint,
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
-  const buyAuction = async (): Promise<void> => {
-    try {
-      const { nftMint, receiver, auction } = data;
-      openLoadingModal();
-
-      await buyAuctionTxn({
-        connection,
-        wallet,
-        nftMint,
-        receiver,
-        auction,
-      });
+      if (data.tickets) {
+        await addTicketsToParticipationTxn(params);
+      } else {
+        await participateInRaffleTxn(params);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -82,14 +62,11 @@ export const useLiquidationsRaffle = (data) => {
   };
 
   return {
-    participateInRaffle,
-    buyAuction,
     incrementCounter,
     decrementCounter,
     isDisabledIncrement,
     ticketCount,
-    handleSumit,
-    handleClick,
+    onSubmit,
     setTryId,
     tryId,
     loadingModalVisible,
