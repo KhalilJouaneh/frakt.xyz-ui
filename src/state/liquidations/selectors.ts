@@ -1,17 +1,5 @@
 import { createSelector } from 'reselect';
-import {
-  pathOr,
-  identity,
-  map,
-  reject,
-  useWith,
-  pluck,
-  compose,
-  mapObjIndexed,
-  groupBy,
-  prop,
-  length,
-} from 'ramda';
+import { pathOr, identity, map, reject, useWith, pluck } from 'ramda';
 
 import { LotteryTicket, RaffleListItem } from './types';
 
@@ -61,9 +49,4 @@ export const selectGraceCollectionsDropdownData = createSelector(
     label: item,
     value: item,
   })),
-);
-
-export const selectRaffleNotifications = createSelector(
-  [pathOr([], ['liquidations', 'raffleNotifications', 'data'])],
-  compose(mapObjIndexed(length), groupBy(prop('ticketState'))),
 );

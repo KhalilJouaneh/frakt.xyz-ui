@@ -49,9 +49,9 @@ const fetchRaffleListSaga = function* (action) {
 };
 
 const fetchWonRaffleListSaga = function* (action) {
-  if (!action.payload) {
-    return;
-  }
+  // if (!action.payload) {
+  //   return;
+  // }
   const publicKey = yield select(selectWalletPublicKey);
   // const qs = stringify(action.payload);
   yield put(liquidationsActions.fetchWonRafflePending());

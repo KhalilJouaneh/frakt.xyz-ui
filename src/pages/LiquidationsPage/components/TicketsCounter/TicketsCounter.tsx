@@ -15,7 +15,7 @@ export const TicketsCounter: FC<TicketsCounterProps> = ({ tickets }) => {
       </div>
       <div className={styles.ticketInfo}>
         <div className={styles.title}>Tickets you have</div>
-        <div className={styles.value}>{tickets}</div>
+        <div className={styles.value}>{tickets || 0}</div>
       </div>
     </div>
   );

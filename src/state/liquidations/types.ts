@@ -39,6 +39,7 @@ export interface WonRaffleListItem {
   nftFloorPrice: number; //? 1.23 (SOL)
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
+  user: string;
 }
 
 export interface LotteryTicket {
@@ -47,11 +48,4 @@ export interface LotteryTicket {
 
 export interface CollectionsListItem {
   name: string;
-}
-
-export interface RaffleNotifications {
-  notWinning?: number;
-  winning?: number;
-  toBeRevealed?: number;
-  rejected?: number;
 }

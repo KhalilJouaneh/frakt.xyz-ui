@@ -94,11 +94,11 @@ export const liquidationsActions = {
     () => null,
   ),
   fetchWonRaffleFulfilled: createCustomAction(
-    liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST__FULFILLED,
     (response: WonRaffleListItem[]) => ({ payload: response }),
   ),
   fetchWonRaffleFailed: createCustomAction(
-    liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST__FAILED,
     (error: ServerError) => ({ payload: error }),
   ),
   setLotteryTicketsList: createCustomAction(

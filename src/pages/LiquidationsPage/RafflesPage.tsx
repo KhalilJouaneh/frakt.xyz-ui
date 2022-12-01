@@ -2,14 +2,14 @@ import { FC } from 'react';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
 import Liquidations from './components/Liquidations';
-import styles from './LiquidationsPage.module.scss';
+import styles from './RafflesPage.module.scss';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
   SORT = 'sort',
 }
 
-const LiquidationsPage: FC = () => {
+const RafflesPage: FC = () => {
   return (
     <AppLayout>
       <div className={styles.header}>
@@ -25,4 +25,4 @@ const LiquidationsPage: FC = () => {
   );
 };
 
-export default LiquidationsPage;
+export default RafflesPage;

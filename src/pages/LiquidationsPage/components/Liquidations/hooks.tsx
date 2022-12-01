@@ -130,17 +130,17 @@ export const SORT_VALUES_WITH_GRACE = [
   },
 ];
 
-export const LIQUIDATIONS_TABS: Tab[] = [
+export const RAFFLES_TABS: Tab[] = [
   {
     label: 'Ongoing',
-    value: 'liquidations',
+    value: 'ongoing',
   },
   {
     label: 'Upcoming',
-    value: 'grace',
+    value: 'upcoming',
   },
   {
     label: 'History',
-    value: 'raffles',
+    value: 'history',
   },
 ];

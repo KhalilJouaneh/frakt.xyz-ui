@@ -1,42 +1,41 @@
-import { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC } from 'react';
 import cx from 'classnames';
 
-import { ConfirmModal } from '../../../../components/ConfirmModal';
-import { LoadingModal } from '../../../../components/LoadingModal';
+import { WonRaffleListItem } from '@frakt/state/liquidations/types';
+import { shortenAddress } from '@frakt/utils/solanaUtils';
 import styles from './WonRaffleCard.module.scss';
 
-const WonRaffleCard: FC<{ data }> = ({ data }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+interface WonRaffleCardProps {
+  raffle: WonRaffleListItem;
+}
 
-  const handleSumit = () => {};
+const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
+  const { nftImageUrl, nftName, nftFloorPrice, liquidationPrice, user } =
+    raffle;
 
-  const isWinner = true;
+  const isWinner = false;
 
   return (
     <div className={styles.cardWrapper}>
       <div className={cx(styles.card, isWinner && styles.cardWinner)}>
         <div className={styles.nftInfo}>
-          <img className={styles.nftImage} src={data.nftImageUrl} />
-          <p className={styles.nftName}>{data.nftName}</p>
+          <img className={styles.nftImage} src={nftImageUrl} />
+          <p className={styles.nftName}>{nftName}</p>
         </div>
         <div className={styles.statsValue}>
           <div className={cx(styles.totalValue, styles.opacity)}>
             <p className={styles.subtitle}>Floor price</p>
-            <p className={styles.value}>{`${data.nftFloorPrice} SOL`}</p>
+            <p className={styles.value}>{`${nftFloorPrice} SOL`}</p>
           </div>
           <div className={styles.totalValue}>
             <p className={styles.subtitle}>liquidation price</p>
-            <p
-              className={styles.value}
-            >{`${data.paybackPriceWithGrace} SOL`}</p>
+            <p className={styles.value}>{`${liquidationPrice} SOL`}</p>
           </div>
           <div className={styles.totalValue}>
             <p className={styles.subtitle}>Winner</p>
             <div className={styles.winner}>
               <div className={styles.winnerBadge}>You!</div>
-              <p className={styles.value}>H2aF...WrnH</p>
+              <p className={styles.value}>{shortenAddress(user)}</p>
             </div>
           </div>
           <div className={styles.totalValue}>
@@ -45,19 +44,6 @@ const WonRaffleCard: FC<{ data }> = ({ data }) => {
           </div>
         </div>
       </div>
-      <ConfirmModal
-        visible={null}
-        onCancel={() => null}
-        onSubmit={handleSumit}
-        title="Ready?"
-        subtitle={`You are about to confirm the transaction to liquidate and aquire ${data.nftName}`}
-        btnAgree="Let's go"
-      />
-      <LoadingModal
-        title="Please approve transaction"
-        visible={isLoading}
-        onCancel={() => setIsLoading(false)}
-      />
     </div>
   );
 };

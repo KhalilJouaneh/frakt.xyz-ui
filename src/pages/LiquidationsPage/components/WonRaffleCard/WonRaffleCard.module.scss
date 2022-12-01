@@ -6,6 +6,7 @@
   flex-direction: column;
   padding: 24px;
   gap: 16px;
+  height: 100%;
 }
 
 .cardWinner {
@@ -39,6 +40,7 @@
 .nftInfo {
   display: flex;
   align-items: center;
+  flex-grow: 1;
   gap: 16px;
 }
 
@@ -85,4 +87,12 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font: var(--font-text-8);
+  font-size: 14px;
 }

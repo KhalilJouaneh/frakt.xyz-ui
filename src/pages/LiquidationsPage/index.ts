@@ -1,1 +1,1 @@
-export { default } from './LiquidationsPage';
+export { default } from './RafflesPage';

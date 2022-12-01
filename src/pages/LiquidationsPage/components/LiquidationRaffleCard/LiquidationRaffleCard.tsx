@@ -1,19 +1,22 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import {
-  ConfirmModal,
-  useConfirmModal,
-} from '../../../../components/ConfirmModal';
-import { LoadingModal } from '../../../../components/LoadingModal';
+import { useConfirmModal, ConfirmModal } from '@frakt/components/ConfirmModal';
+import { RaffleListItem } from '@frakt/state/liquidations/types';
+import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
-import { SolanaIcon, Timer } from '../../../../icons';
-import Button from '../../../../components/Button';
+import { SolanaIcon, Timer } from '@frakt/icons';
 import { useLiquidationsRaffle } from './hooks';
+import Button from '@frakt/components/Button';
 import Icons from '../../../../iconsNew';
 
-const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
-  data,
+interface LiquidationRaffleCard {
+  raffle?: RaffleListItem;
+  disabled: boolean;
+}
+
+const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
+  raffle,
   disabled,
 }) => {
   const {
@@ -24,7 +27,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
     onSubmit,
     closeLoadingModal,
     loadingModalVisible,
-  } = useLiquidationsRaffle(data);
+  } = useLiquidationsRaffle(raffle);
 
   const {
     visible: confirmModalVisible,
@@ -35,22 +38,22 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
   return (
     <div className={styles.card}>
       <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={data.nftImageUrl} />
+        <img className={styles.nftImage} src={raffle.nftImageUrl} />
         <div>
-          <p className={styles.nftName}>{data.nftName}</p>
+          <p className={styles.nftName}>{raffle.nftName}</p>
         </div>
       </div>
       <div className={styles.statsValue}>
         <div className={classNames(styles.totalValue, styles.opacity)}>
           <p className={styles.subtitle}>Floor price</p>
           <p className={styles.value}>
-            {`${data.nftFloorPrice}`} <SolanaIcon />
+            {`${raffle.nftFloorPrice}`} <SolanaIcon />
           </p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>liquidation price</p>
           <p className={styles.value}>
-            {`${data.liquidationPrice}`}
+            {`${raffle.liquidationPrice}`}
             <SolanaIcon />
           </p>
         </div>
@@ -87,7 +90,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
         type="secondary"
         className={styles.btn}
         onClick={openConfirmModal}
-        disabled={disabled}
+        disabled={disabled || !ticketCount}
       >
         {disabled ? 'Try by 0 ticket' : 'Participate'}
       </Button>
@@ -96,7 +99,7 @@ const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
         onCancel={closeConfirmModal}
         onSubmit={onSubmit}
         title="Ready?"
-        subtitle={`You are about to confirm the transaction to try your chance in raffle for ${data.nftName}`}
+        subtitle={`You are about to confirm the transaction to try your chance in raffle for ${raffle.nftName}`}
         btnAgree="Let's go"
       />
       <LoadingModal

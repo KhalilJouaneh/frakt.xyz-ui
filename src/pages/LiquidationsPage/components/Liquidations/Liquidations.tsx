@@ -1,11 +1,8 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { usePrevious } from '../../../../hooks';
-import { notify, closeNotification } from '../../../../utils';
-import { NotifyType } from '../../../../utils/solanaUtils';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
-import { LIQUIDATIONS_TABS } from '.';
+import { RAFFLES_TABS } from '.';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import { LiquidationsTabsNames } from '../../model';
 import { Tabs, useTabs } from '../../../../components/Tabs';
@@ -16,7 +13,6 @@ import styles from './Liquidations.module.scss';
 import GraceCard from '../GraceCard/GraceCard';
 import WonRaffleCard from '../WonRaffleCard';
 import EmptyList from '../../../../componentsNew/EmptyList';
-import { RaffleNotifications } from '../../../../state/liquidations/types';
 import {
   selectSocket,
   selectWalletPublicKey,
@@ -26,7 +22,6 @@ import {
   selectRaffleList,
   selectWonRaffleList,
   selectLotteryTickets,
-  selectRaffleNotifications,
 } from '../../../../state/liquidations/selectors';
 
 const Liquidations: FC = () => {
@@ -35,12 +30,11 @@ const Liquidations: FC = () => {
     value: tabValue,
     setValue: setTabValue,
   } = useTabs({
-    tabs: LIQUIDATIONS_TABS,
-    defaultValue: LIQUIDATIONS_TABS[0].value,
+    tabs: RAFFLES_TABS,
+    defaultValue: RAFFLES_TABS[0].value,
   });
 
   const dispatch = useDispatch();
-  const notificationIdRef = useRef('');
   const socket = useSelector(selectSocket);
   const publicKey = useSelector(selectWalletPublicKey);
   const graceList = useSelector(selectGraceList);
@@ -48,80 +42,22 @@ const Liquidations: FC = () => {
   const wonRaffleList = useSelector(selectWonRaffleList);
   const lotteryTickets = useSelector(selectLotteryTickets);
 
-  const raffleNotifications: RaffleNotifications = useSelector(
-    selectRaffleNotifications,
-  );
-  const prevRaffleNotifications: RaffleNotifications =
-    usePrevious(raffleNotifications);
-
   useEffect(() => {
-    dispatch(liquidationsActions.fetchGraceList());
-    dispatch(liquidationsActions.fetchRaffleList());
-    dispatch(liquidationsActions.fetchCollectionsList());
     dispatch(liquidationsActions.fetchWonRaffleList());
-  }, [dispatch]);
+    dispatch(liquidationsActions.fetchCollectionsList());
+    dispatch(liquidationsActions.fetchRaffleList());
+    dispatch(liquidationsActions.fetchGraceList());
+  }, [dispatch, socket]);
 
   useEffect(() => {
     if (publicKey && socket) {
-      socket.emit('won-raffles-subscribe', { wallet: publicKey, limit: 1000 });
       socket.emit('lottery-tickets-subscribe', publicKey);
     }
   }, [socket, publicKey]);
 
-  useEffect(() => {
-    if (raffleNotifications.notWinning || raffleNotifications.rejected) {
-      notify({
-        message: "Ooops. Your ticket didn't win :(",
-        type: NotifyType.ERROR,
-      });
-    }
-
-    if (raffleNotifications.winning) {
-      notify({
-        message: 'Congratulations! Your ticket has won! :)',
-        type: NotifyType.SUCCESS,
-      });
-    }
-
-    if (raffleNotifications.toBeRevealed) {
-      if (prevRaffleNotifications?.toBeRevealed) {
-        closeNotification(notificationIdRef.current);
-      }
-      const loaderNotificationId = Math.random().toString(36);
-      notificationIdRef.current = loaderNotificationId;
-      notify({
-        message:
-          raffleNotifications.toBeRevealed === 1
-            ? 'Your ticket is trying to win a raffle...'
-            : `Your ${raffleNotifications.toBeRevealed} tickets are trying to win a raffle...`,
-        type: NotifyType.INFO,
-        persist: true,
-        key: loaderNotificationId,
-      });
-    }
-
-    if (
-      prevRaffleNotifications?.toBeRevealed &&
-      !raffleNotifications.toBeRevealed
-    ) {
-      closeNotification(notificationIdRef.current);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [raffleNotifications]);
-
   const handleTryLottery = () => {
-    setTabValue(LIQUIDATIONS_TABS[0].value);
+    setTabValue(RAFFLES_TABS[0].value);
   };
-
-  const renderTip = wonRaffleList.length
-    ? {
-        renderTip: {
-          tabValue: LiquidationsTabsNames.RAFFLES,
-          value: wonRaffleList.length.toString(),
-        },
-      }
-    : {};
 
   return (
     <div className={styles.container}>
@@ -130,10 +66,9 @@ const Liquidations: FC = () => {
         tabs={liquidationTabs}
         value={tabValue}
         setValue={setTabValue}
-        {...renderTip}
       />
       <div className={styles.tabContent}>
-        {tabValue === LiquidationsTabsNames.LIQUIDATIONS &&
+        {tabValue === LiquidationsTabsNames.ONGOING &&
           (publicKey ? (
             <LiquidationsList
               withRafflesInfo
@@ -142,10 +77,10 @@ const Liquidations: FC = () => {
               }
             >
               {raffleList.length ? (
-                raffleList.map((item) => (
+                raffleList.map((raffle) => (
                   <LiquidationRaffleCard
-                    key={item.nftMint}
-                    data={item}
+                    key={raffle.nftMint}
+                    raffle={raffle}
                     disabled={lotteryTickets?.totalTickets < 1}
                   />
                 ))
@@ -156,7 +91,7 @@ const Liquidations: FC = () => {
           ) : (
             <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
           ))}
-        {tabValue === LiquidationsTabsNames.GRACE && (
+        {tabValue === LiquidationsTabsNames.UPCOMING && (
           <LiquidationsList
             isGraceList
             fetchItemsFunc={(params) =>
@@ -172,15 +107,15 @@ const Liquidations: FC = () => {
             )}
           </LiquidationsList>
         )}
-        {tabValue === LiquidationsTabsNames.RAFFLES &&
+        {tabValue === LiquidationsTabsNames.HISTORY &&
           (wonRaffleList.length ? (
             <LiquidationsList
               fetchItemsFunc={(params) =>
                 dispatch(liquidationsActions.fetchWonRaffleList(params))
               }
             >
-              {wonRaffleList.map((item) => (
-                <WonRaffleCard key={item.nftMint} data={item} />
+              {wonRaffleList.map((raffle) => (
+                <WonRaffleCard key={raffle.nftMint} raffle={raffle} />
               ))}
             </LiquidationsList>
           ) : (

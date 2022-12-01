@@ -1,7 +1,7 @@
 export enum LiquidationsTabsNames {
-  LIQUIDATIONS = 'liquidations',
-  RAFFLES = 'raffles',
-  GRACE = 'grace',
+  ONGOING = 'ongoing',
+  UPCOMING = 'upcoming',
+  HISTORY = 'history',
 }
 
 export enum LiquidationsListFormNames {
