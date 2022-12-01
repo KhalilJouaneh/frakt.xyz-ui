@@ -52,12 +52,10 @@ const fetchCollectionsListReducer = createReducer(
   ),
 );
 
-const setWonRaffleListReducer = createReducer(initialWonRaffleListState, {
-  [liquidationsTypes.SET_WON_RAFFLE_LIST]: (state, action) => ({
-    ...state,
-    data: action.payload,
-  }),
-});
+const fetchWonRaffleListReducer = createReducer(
+  initialWonRaffleListState,
+  createHandlers<WonRaffleListItem[]>(liquidationsTypes.FETCH_WON_RAFFLE_LIST),
+);
 
 const setRaffleNotificationsReducer = createReducer(
   initialRaffleNotificationsState,
@@ -83,7 +81,7 @@ export default combineReducers({
   graceList: fetchGraceListReducer,
   raffleList: fetchRaffleListReducer,
   collectionsList: fetchCollectionsListReducer,
+  wonRaffleList: fetchWonRaffleListReducer,
   raffleNotifications: setRaffleNotificationsReducer,
-  wonRaffleList: setWonRaffleListReducer,
   lotteryTicketsList: setLotteryTicketsListReducer,
 });

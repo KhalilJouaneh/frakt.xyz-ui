@@ -58,13 +58,13 @@ const Liquidations: FC = () => {
     dispatch(liquidationsActions.fetchGraceList());
     dispatch(liquidationsActions.fetchRaffleList());
     dispatch(liquidationsActions.fetchCollectionsList());
+    dispatch(liquidationsActions.fetchWonRaffleList());
   }, [dispatch]);
 
   useEffect(() => {
     if (publicKey && socket) {
       socket.emit('won-raffles-subscribe', { wallet: publicKey, limit: 1000 });
       socket.emit('lottery-tickets-subscribe', publicKey);
-      socket.emit('raffle-notifications-subscribe', publicKey);
     }
   }, [socket, publicKey]);
 
@@ -173,13 +173,13 @@ const Liquidations: FC = () => {
           </LiquidationsList>
         )}
         {tabValue === LiquidationsTabsNames.RAFFLES &&
-          (graceList.length ? (
+          (wonRaffleList.length ? (
             <LiquidationsList
               fetchItemsFunc={(params) =>
-                dispatch(liquidationsActions.updateWonRaffleList(params))
+                dispatch(liquidationsActions.fetchWonRaffleList(params))
               }
             >
-              {graceList.map((item) => (
+              {wonRaffleList.map((item) => (
                 <WonRaffleCard key={item.nftMint} data={item} />
               ))}
             </LiquidationsList>

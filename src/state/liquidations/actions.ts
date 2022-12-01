@@ -5,6 +5,7 @@ import {
   FetchItemsParams,
   RaffleListItem,
   CollectionsListItem,
+  WonRaffleListItem,
 } from './types';
 import { ServerError } from '../../utils/state';
 
@@ -23,18 +24,13 @@ export const liquidationsTypes = {
   FETCH_COLLECTIONS_LIST__FULFILLED:
     'liquidations/FETCH_COLLECTIONS_LIST__FULFILLED',
   FETCH_COLLECTIONS_LIST__FAILED: 'liquidations/FETCH_COLLECTIONS_LIST__FAILED',
-  SET_WON_RAFFLE_LIST: 'liquidations/SET_WON_RAFFLE_LIST',
-  UPDATE_WON_RAFFLE_LIST: 'liquidations/UPDATE_WON_RAFFLE_LIST',
+  FETCH_WON_RAFFLE_LIST: 'liquidations/FETCH_WON_RAFFLE_LIST',
+  FETCH_WON_RAFFLE_LIST__PENDING: 'liquidations/FETCH_WON_RAFFLE_LIST__PENDING',
+  FETCH_WON_RAFFLE_LIST__FULFILLED:
+    'liquidations/FETCH_WON_RAFFLE_LIST__FULFILLED',
+  FETCH_WON_RAFFLE_LIST__FAILED: 'liquidations/FETCH_WON_RAFFLE_LIST__FAILED',
   SET_LOTTERY_TICKETS_LIST: 'liquidations/SET_LOTTERY_TICKETS_LIST',
   SET_RAFFLE_NOTIFICATIONS: 'liquidations/SET_RAFFLE_NOTIFICATIONS',
-  TX_RAFFLE_TRY: 'liquidations/TX_RAFFLE_TRY',
-  TX_RAFFLE_TRY__PENDING: 'liquidations/TX_RAFFLE_TRY__PENDING',
-  TX_RAFFLE_TRY__FULFILLED: 'liquidations/TX_RAFFLE_TRY__FULFILLED',
-  TX_RAFFLE_TRY__FAILED: 'liquidations/TX_RAFFLE_TRY__FAILED',
-  TX_LIQUIDATE: 'liquidations/TX_LIQUIDATE',
-  TX_LIQUIDATE__PENDING: 'liquidations/TX_LIQUIDATE__PENDING',
-  TX_LIQUIDATE__FULFILLED: 'liquidations/TX_LIQUIDATE__FULFILLED',
-  TX_LIQUIDATE__FAILED: 'liquidations/TX_LIQUIDATE__FAILED',
 };
 
 export const liquidationsActions = {
@@ -89,13 +85,21 @@ export const liquidationsActions = {
     liquidationsTypes.FETCH_COLLECTIONS_LIST__FAILED,
     (error: ServerError) => ({ payload: error }),
   ),
-  setWonRaffleList: createCustomAction(
-    liquidationsTypes.SET_WON_RAFFLE_LIST,
-    (response) => ({ payload: response }),
+  fetchWonRaffleList: createCustomAction(
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+    (params?: FetchItemsParams) => ({ payload: params }),
   ),
-  updateWonRaffleList: createCustomAction(
-    liquidationsTypes.UPDATE_WON_RAFFLE_LIST,
-    (params) => ({ payload: params }),
+  fetchWonRafflePending: createCustomAction(
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST__PENDING,
+    () => null,
+  ),
+  fetchWonRaffleFulfilled: createCustomAction(
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+    (response: WonRaffleListItem[]) => ({ payload: response }),
+  ),
+  fetchWonRaffleFailed: createCustomAction(
+    liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+    (error: ServerError) => ({ payload: error }),
   ),
   setLotteryTicketsList: createCustomAction(
     liquidationsTypes.SET_LOTTERY_TICKETS_LIST,

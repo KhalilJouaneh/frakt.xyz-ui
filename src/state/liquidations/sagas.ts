@@ -4,15 +4,8 @@ import { Socket } from 'socket.io-client';
 
 import { stringify } from '../../utils/state/qs';
 import { liquidationsTypes, liquidationsActions } from './actions';
-import { WonRaffleListItem } from './types';
 import { networkRequest } from '../../utils/state';
 import { selectWalletPublicKey } from '../common/selectors';
-
-const wonRafflesChannel = (socket: Socket) =>
-  eventChannel((emit) => {
-    socket.on('won-raffles', (response) => emit(response));
-    return () => socket.off('won-raffles');
-  });
 
 const lotteryTicketsChannel = (socket: Socket) =>
   eventChannel((emit) => {
@@ -55,22 +48,23 @@ const fetchRaffleListSaga = function* (action) {
   }
 };
 
-const updateWonRaffleListSaga = function* (action) {
+const fetchWonRaffleListSaga = function* (action) {
   if (!action.payload) {
     return;
   }
   const publicKey = yield select(selectWalletPublicKey);
   // const qs = stringify(action.payload);
-
-  yield put(liquidationsActions.fetchRaffleListPending());
+  yield put(liquidationsActions.fetchWonRafflePending());
   try {
     const data = yield call(networkRequest, {
-      url: `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true&user=${publicKey}'`,
+      url: `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true&user=${publicKey}`,
     });
 
-    yield put(liquidationsActions.fetchRaffleListFulfilled(data));
+    console.log(data);
+
+    yield put(liquidationsActions.fetchWonRaffleFulfilled(data));
   } catch (error) {
-    yield put(liquidationsActions.fetchRaffleListFailed(error));
+    yield put(liquidationsActions.fetchWonRaffleFailed(error));
   }
 };
 
@@ -96,17 +90,12 @@ const fetchCollectionsListSaga = function* () {
   }
 };
 
-const subscribeWonRaffleListSaga = function* (list: WonRaffleListItem[]) {
-  yield put(liquidationsActions.setWonRaffleList(list));
-};
-
 const subscribeLotteryTicketsSaga = function* (list) {
   yield put(liquidationsActions.setLotteryTicketsList(list));
 };
 
 const liquidationsSagas = (socket: Socket) =>
   function* (): Generator {
-    const wonRafflesStream: any = yield call(wonRafflesChannel, socket);
     const lotteryTicketsStream: any = yield call(lotteryTicketsChannel, socket);
 
     yield all([
@@ -117,8 +106,8 @@ const liquidationsSagas = (socket: Socket) =>
     ]);
     yield all([
       takeLatest(
-        liquidationsTypes.UPDATE_WON_RAFFLE_LIST,
-        updateWonRaffleListSaga,
+        liquidationsTypes.FETCH_WON_RAFFLE_LIST,
+        fetchWonRaffleListSaga,
       ),
     ]);
     yield all([
@@ -127,7 +116,6 @@ const liquidationsSagas = (socket: Socket) =>
         fetchCollectionsListSaga,
       ),
     ]);
-    yield all([takeLatest(wonRafflesStream, subscribeWonRaffleListSaga)]);
     yield all([takeLatest(lotteryTicketsStream, subscribeLotteryTicketsSaga)]);
   };
 
