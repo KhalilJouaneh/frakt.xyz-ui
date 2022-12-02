@@ -48,26 +48,6 @@ const fetchRaffleListSaga = function* (action) {
   }
 };
 
-const fetchWonRaffleListSaga = function* (action) {
-  // if (!action.payload) {
-  //   return;
-  // }
-  const publicKey = yield select(selectWalletPublicKey);
-  // const qs = stringify(action.payload);
-  yield put(liquidationsActions.fetchWonRafflePending());
-  try {
-    const data = yield call(networkRequest, {
-      url: `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true&user=${publicKey}`,
-    });
-
-    console.log(data);
-
-    yield put(liquidationsActions.fetchWonRaffleFulfilled(data));
-  } catch (error) {
-    yield put(liquidationsActions.fetchWonRaffleFailed(error));
-  }
-};
-
 const fetchCollectionsListSaga = function* () {
   yield put(liquidationsActions.fetchCollectionsListPending());
   try {
@@ -103,12 +83,6 @@ const liquidationsSagas = (socket: Socket) =>
     ]);
     yield all([
       takeLatest(liquidationsTypes.FETCH_RAFFLE_LIST, fetchRaffleListSaga),
-    ]);
-    yield all([
-      takeLatest(
-        liquidationsTypes.FETCH_WON_RAFFLE_LIST,
-        fetchWonRaffleListSaga,
-      ),
     ]);
     yield all([
       takeLatest(

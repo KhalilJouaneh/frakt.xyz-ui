@@ -20,9 +20,9 @@ import {
 import {
   selectGraceList,
   selectRaffleList,
-  selectWonRaffleList,
   selectLotteryTickets,
 } from '../../../../state/liquidations/selectors';
+import { useRaffleHistory } from '@frakt/api/raffle';
 
 const Liquidations: FC = () => {
   const {
@@ -39,11 +39,12 @@ const Liquidations: FC = () => {
   const publicKey = useSelector(selectWalletPublicKey);
   const graceList = useSelector(selectGraceList);
   const raffleList = useSelector(selectRaffleList);
-  const wonRaffleList = useSelector(selectWonRaffleList);
   const lotteryTickets = useSelector(selectLotteryTickets);
 
+  const { data: wonRaffleList, isLoading: isLoadingWonRaffleList } =
+    useRaffleHistory();
+
   useEffect(() => {
-    dispatch(liquidationsActions.fetchWonRaffleList());
     dispatch(liquidationsActions.fetchCollectionsList());
     dispatch(liquidationsActions.fetchRaffleList());
     dispatch(liquidationsActions.fetchGraceList());
@@ -108,8 +109,9 @@ const Liquidations: FC = () => {
           </LiquidationsList>
         )}
         {tabValue === RafflesTabsNames.HISTORY &&
-          (wonRaffleList.length ? (
+          (!isLoadingWonRaffleList ? (
             <LiquidationsList
+              isWonList
               fetchItemsFunc={(params) =>
                 dispatch(liquidationsActions.fetchWonRaffleList(params))
               }

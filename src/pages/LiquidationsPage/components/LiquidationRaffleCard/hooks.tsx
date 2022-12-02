@@ -14,7 +14,6 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
   const wallet = useWallet();
   const connection = useConnection();
 
-  const [tryId, setTryId] = useState<string>(null);
   const [ticketCount, setTicketCount] = useState<number>(0);
   const lotteryTickets = useSelector(selectLotteryTickets);
 
@@ -46,8 +45,6 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
       raffleAddress: data?.rafflePubKey,
     };
 
-    console.log(data);
-
     try {
       if (data.tickets) {
         await addTicketsToParticipationTxn(params);
@@ -67,8 +64,6 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
     isDisabledIncrement,
     ticketCount,
     onSubmit,
-    setTryId,
-    tryId,
     loadingModalVisible,
     closeLoadingModal,
   };

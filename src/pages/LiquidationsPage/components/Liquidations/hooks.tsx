@@ -14,8 +14,9 @@ import {
 type FetchDataFunc = (params: FetchItemsParams) => void;
 
 type UseLiquidationsPage = (
-  fetchItemsFunc: FetchDataFunc,
+  fetchItemsFunc?: FetchDataFunc,
   isGraceList?: boolean,
+  isWonList?: boolean,
 ) => {
   control: Control<FilterFormFieldsValues>;
   setSearch: (value?: string) => void;

@@ -24,11 +24,13 @@ import {
   useLiquidationsPage,
 } from '../Liquidations';
 import Toggle from '@frakt/components/Toggle';
+import { useRaffleHistory } from '@frakt/api/raffle';
 
 interface RafflesListProps {
   children: ReactNode;
   withRafflesInfo?: boolean;
   isGraceList?: boolean;
+  isWonList?: boolean;
   fetchItemsFunc?: (params: FetchItemsParams) => void;
 }
 
@@ -37,9 +39,10 @@ const RafflesList: FC<RafflesListProps> = ({
   withRafflesInfo,
   fetchItemsFunc,
   isGraceList,
+  isWonList,
 }) => {
   const { control, setValue, collections, sort, setCollections } =
-    useLiquidationsPage(fetchItemsFunc, isGraceList);
+    useLiquidationsPage(fetchItemsFunc, isGraceList, isWonList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
 
@@ -67,6 +70,9 @@ const RafflesList: FC<RafflesListProps> = ({
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
 
+  const { data: wonRaffleList, isLoading: isLoadingWonRaffleList } =
+    useRaffleHistory();
+
   return (
     <>
       <div className={styles.searchWrapper}>
@@ -82,18 +88,20 @@ const RafflesList: FC<RafflesListProps> = ({
                 onCancel={closeFiltersModal}
                 className={styles.filtersDropdown}
               >
-                <Controller
-                  control={control}
-                  name={RafflesListFormNames.SHOW_MY_RAFFLES}
-                  render={({ field: { ref, ...field } }) => (
-                    <Toggle
-                      label="My prizes only"
-                      className={styles.toggle}
-                      name={FilterFormInputsNames.SHOW_MY_RAFFLES}
-                      {...field}
-                    />
-                  )}
-                />
+                {isWonList && (
+                  <Controller
+                    control={control}
+                    name={RafflesListFormNames.SHOW_MY_RAFFLES}
+                    render={({ field: { ref, ...field } }) => (
+                      <Toggle
+                        label="My prizes only"
+                        className={styles.toggle}
+                        name={FilterFormInputsNames.SHOW_MY_RAFFLES}
+                        {...field}
+                      />
+                    )}
+                  />
+                )}
                 {!!SORT_COLLECTIONS_VALUES.length && (
                   <FilterCollections
                     setSelectedCollections={setCollections}
