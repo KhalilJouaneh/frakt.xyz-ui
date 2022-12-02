@@ -29,6 +29,7 @@ export interface RaffleListItem {
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
   tickets: number;
+  expiredAt: string;
 }
 export interface WonRaffleListItem {
   pubkey: string;

@@ -1,10 +1,12 @@
-import { notification } from 'antd';
+import { useEffect } from 'react';
 import { web3, BN, TokenInfo } from '@frakt-protocol/frakt-sdk';
+import { useCountdown } from '@frakt/hooks';
+import { notification } from 'antd';
 import { Dictionary } from 'lodash';
+import moment from 'moment';
 
 import { formatNumber, Notify, NotifyType } from './solanaUtils';
 import { FRKT_TOKEN_MINT_PUBLIC_KEY } from '../config';
-import { useEffect } from 'react';
 
 export const notify: Notify = ({
   message = '',
@@ -244,4 +246,16 @@ export const useOnClickOutside = (ref, handler): void => {
       document.removeEventListener('touchstart', listener);
     };
   }, [ref, handler]);
+};
+
+export const createTimerJSX = (expiredAt: string | number): JSX.Element => {
+  const { timeLeft } = useCountdown(moment(expiredAt).unix());
+
+  return (
+    <>
+      {timeLeft.days}d<p>:</p>
+      {timeLeft.hours}h<p>:</p>
+      {timeLeft.minutes}m
+    </>
+  );
 };

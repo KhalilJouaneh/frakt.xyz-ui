@@ -1,24 +1,27 @@
-export enum LiquidationsTabsNames {
+export enum RafflesTabsNames {
   ONGOING = 'ongoing',
   UPCOMING = 'upcoming',
   HISTORY = 'history',
 }
 
-export enum LiquidationsListFormNames {
+export enum RafflesListFormNames {
   SORT = 'sort',
   COLLECTIONS_SORT = 'collections',
+  SHOW_MY_RAFFLES = 'showMyRaffles',
 }
 
-export type LiquiditionsSortValue = {
+export type RafflesSortValue = {
   label: JSX.Element;
   value: string;
 };
 
 export enum FilterFormInputsNames {
   SORT = 'sort',
+  SHOW_MY_RAFFLES = 'showMyRaffles',
 }
 
 export type FilterFormFieldsValues = {
-  [LiquidationsListFormNames.SORT]: LiquiditionsSortValue;
-  [LiquidationsListFormNames.COLLECTIONS_SORT]: LiquiditionsSortValue;
+  [RafflesListFormNames.SORT]: RafflesSortValue;
+  [RafflesListFormNames.SHOW_MY_RAFFLES]: boolean;
+  [RafflesListFormNames.COLLECTIONS_SORT]: RafflesSortValue;
 };

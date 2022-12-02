@@ -1,36 +1,38 @@
 import { FC, ReactNode, useRef } from 'react';
+import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import FilterCollections from '../../../../componentsNew/FilterCollections';
-import { FetchItemsParams } from '../../../../state/liquidations/types';
-import { LiquidationsListFormNames } from '../../model';
-import styles from './LiquidationsList.module.scss';
+import FilterCollections from '@frakt/componentsNew/FilterCollections';
+import { FetchItemsParams } from '@frakt/state/liquidations/types';
+import SortControl from '@frakt/componentsNew/SortControl';
 import { TicketsCounter } from '../TicketsCounter';
-import { useOnClickOutside } from '../../../../utils';
-import Button from '../../../../components/Button';
+import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
+import { useOnClickOutside } from '@frakt/utils';
+import styles from './RafflesList.module.scss';
+import Button from '@frakt/components/Button';
+import FiltersDropdown, {
+  useFiltersModal,
+} from '@frakt/componentsNew/FiltersDropdown';
+import {
+  selectLotteryTickets,
+  selectRaffleCollectionsDropdownData,
+  selectGraceCollectionsDropdownData,
+} from '@frakt/state/liquidations/selectors';
 import {
   SORT_VALUES as RAW_SORT_VALUES,
   SORT_VALUES_WITH_GRACE,
   useLiquidationsPage,
 } from '../Liquidations';
-import FiltersDropdown, {
-  useFiltersModal,
-} from '../../../../componentsNew/FiltersDropdown';
-import {
-  selectLotteryTickets,
-  selectRaffleCollectionsDropdownData,
-  selectGraceCollectionsDropdownData,
-} from '../../../../state/liquidations/selectors';
-import SortControl from '../../../../componentsNew/SortControl';
+import Toggle from '@frakt/components/Toggle';
 
-interface LiquidationsListProps {
+interface RafflesListProps {
   children: ReactNode;
   withRafflesInfo?: boolean;
   isGraceList?: boolean;
   fetchItemsFunc?: (params: FetchItemsParams) => void;
 }
 
-const LiquidationsList: FC<LiquidationsListProps> = ({
+const RafflesList: FC<RafflesListProps> = ({
   children,
   withRafflesInfo,
   fetchItemsFunc,
@@ -80,6 +82,18 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                 onCancel={closeFiltersModal}
                 className={styles.filtersDropdown}
               >
+                <Controller
+                  control={control}
+                  name={RafflesListFormNames.SHOW_MY_RAFFLES}
+                  render={({ field: { ref, ...field } }) => (
+                    <Toggle
+                      label="My raffles"
+                      // className={styles.toggle}
+                      name={FilterFormInputsNames.SHOW_MY_RAFFLES}
+                      {...field}
+                    />
+                  )}
+                />
                 {!!SORT_COLLECTIONS_VALUES.length && (
                   <FilterCollections
                     setSelectedCollections={setCollections}
@@ -89,7 +103,7 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
                 )}
                 <SortControl
                   control={control}
-                  name={LiquidationsListFormNames.SORT}
+                  name={RafflesListFormNames.SORT}
                   options={SORT_VALUES}
                   sort={sort}
                   setValue={setValue}
@@ -104,4 +118,4 @@ const LiquidationsList: FC<LiquidationsListProps> = ({
   );
 };
 
-export default LiquidationsList;
+export default RafflesList;

@@ -1,32 +1,34 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import moment from 'moment';
 
-import { SolanaIcon, Timer } from '../../../../icons';
-import { useCountdown } from '../../../../hooks';
+import { GraceListItem } from '@frakt/state/liquidations/types';
+import { SolanaIcon, Timer } from '@frakt/icons';
 import styles from './GraceCard.module.scss';
+import { createTimerJSX } from '@frakt/utils';
 
-const GraceCard: FC<{ data }> = ({ data }) => {
-  const { timeLeft } = useCountdown(moment(data.expiredAt).unix());
+interface GraceCardProps {
+  raffle: GraceListItem;
+}
 
+const GraceCard: FC<GraceCardProps> = ({ raffle }) => {
   return (
     <div className={styles.card}>
       <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={data.nftImageUrl} />
-        <p className={styles.nftName}>{data.nftName}</p>
+        <img className={styles.nftImage} src={raffle.nftImageUrl} />
+        <p className={styles.nftName}>{raffle.nftName}</p>
       </div>
       <div className={styles.statsValue}>
         <div className={cx(styles.totalValue, styles.opacity)}>
           <p className={styles.subtitle}>Floor price</p>
           <p className={styles.value}>
-            {`${data.valuation}`}
+            {`${raffle.valuation}`}
             <SolanaIcon />
           </p>
         </div>
         <div className={styles.totalValue}>
           <p className={styles.subtitle}>liquidation price</p>
           <p className={styles.value}>
-            {`${data.liquidationPrice}`}
+            {`${raffle.liquidationPrice}`}
             <SolanaIcon />
           </p>
         </div>
@@ -36,9 +38,7 @@ const GraceCard: FC<{ data }> = ({ data }) => {
             <Timer />
             <div>
               <div className={styles.countdown}>
-                {timeLeft.days}d<p>:</p>
-                {timeLeft.hours}h<p>:</p>
-                {timeLeft.minutes}m
+                {createTimerJSX(raffle.expiredAt)}
               </div>
             </div>
           </div>

@@ -7,8 +7,8 @@ import { useDebounce, usePrevious } from '../../../../hooks';
 import { Tab } from '../../../../components/Tabs';
 import {
   FilterFormFieldsValues,
-  LiquidationsListFormNames,
-  LiquiditionsSortValue,
+  RafflesListFormNames,
+  RafflesSortValue,
 } from '../../model';
 
 type FetchDataFunc = (params: FetchItemsParams) => void;
@@ -22,7 +22,7 @@ type UseLiquidationsPage = (
   setCollections: (value?: []) => void;
   setValue?: any;
   collections: any;
-  sort?: LiquiditionsSortValue;
+  sort?: RafflesSortValue;
 };
 
 export const useLiquidationsPage: UseLiquidationsPage = (
@@ -47,12 +47,15 @@ export const useLiquidationsPage: UseLiquidationsPage = (
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
-      [LiquidationsListFormNames.SORT]: defaultSortValue,
-      [LiquidationsListFormNames.COLLECTIONS_SORT]: null,
+      [RafflesListFormNames.SORT]: defaultSortValue,
+      [RafflesListFormNames.COLLECTIONS_SORT]: null,
+      [RafflesListFormNames.SHOW_MY_RAFFLES]: false,
     },
   });
 
-  const sort = watch(LiquidationsListFormNames.SORT);
+  const sort = watch(RafflesListFormNames.SORT);
+  const showMyRaffles = watch(RafflesListFormNames.SHOW_MY_RAFFLES);
+
   const prevCollections = usePrevious(collections);
 
   const stringCollection = collections.map((value) => value).join(',');
@@ -111,7 +114,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   };
 };
 
-export const SORT_VALUES: LiquiditionsSortValue[] = [
+export const SORT_VALUES: RafflesSortValue[] = [
   {
     label: <span>Name</span>,
     value: 'nftName_',

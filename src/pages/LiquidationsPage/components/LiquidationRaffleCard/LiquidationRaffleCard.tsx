@@ -7,6 +7,7 @@ import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
 import { SolanaIcon, Timer } from '@frakt/icons';
 import { useLiquidationsRaffle } from './hooks';
+import { createTimerJSX } from '@frakt/utils';
 import Button from '@frakt/components/Button';
 import Icons from '../../../../iconsNew';
 
@@ -61,7 +62,9 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
           <p className={styles.subtitle}>Duration</p>
           <div className={styles.wrapper}>
             <Timer />
-            <div className={styles.countdown}>9m : 46s</div>
+            <div className={styles.countdown}>
+              {createTimerJSX(raffle.expiredAt)}
+            </div>
           </div>
         </div>
       </div>

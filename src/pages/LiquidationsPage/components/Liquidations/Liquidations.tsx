@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { liquidationsActions } from '../../../../state/liquidations/actions';
 import { RAFFLES_TABS } from '.';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
-import { LiquidationsTabsNames } from '../../model';
+import { RafflesTabsNames } from '../../model';
 import { Tabs, useTabs } from '../../../../components/Tabs';
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import NoWinningRaffles from '../NoWinningRaffles';
-import LiquidationsList from '../LiquidationsList';
+import LiquidationsList from '../RafflesList';
 import styles from './Liquidations.module.scss';
 import GraceCard from '../GraceCard/GraceCard';
 import WonRaffleCard from '../WonRaffleCard';
@@ -68,7 +68,7 @@ const Liquidations: FC = () => {
         setValue={setTabValue}
       />
       <div className={styles.tabContent}>
-        {tabValue === LiquidationsTabsNames.ONGOING &&
+        {tabValue === RafflesTabsNames.ONGOING &&
           (publicKey ? (
             <LiquidationsList
               withRafflesInfo
@@ -91,7 +91,7 @@ const Liquidations: FC = () => {
           ) : (
             <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
           ))}
-        {tabValue === LiquidationsTabsNames.UPCOMING && (
+        {tabValue === RafflesTabsNames.UPCOMING && (
           <LiquidationsList
             isGraceList
             fetchItemsFunc={(params) =>
@@ -99,15 +99,15 @@ const Liquidations: FC = () => {
             }
           >
             {graceList.length ? (
-              graceList.map((item) => (
-                <GraceCard key={item.nftMint} data={item} />
+              graceList.map((raffle) => (
+                <GraceCard key={raffle.nftMint} raffle={raffle} />
               ))
             ) : (
               <EmptyList text="No loans on grace at the moment" />
             )}
           </LiquidationsList>
         )}
-        {tabValue === LiquidationsTabsNames.HISTORY &&
+        {tabValue === RafflesTabsNames.HISTORY &&
           (wonRaffleList.length ? (
             <LiquidationsList
               fetchItemsFunc={(params) =>
