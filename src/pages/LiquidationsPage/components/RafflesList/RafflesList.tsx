@@ -87,8 +87,8 @@ const RafflesList: FC<RafflesListProps> = ({
                   name={RafflesListFormNames.SHOW_MY_RAFFLES}
                   render={({ field: { ref, ...field } }) => (
                     <Toggle
-                      label="My raffles"
-                      // className={styles.toggle}
+                      label="My prizes only"
+                      className={styles.toggle}
                       name={FilterFormInputsNames.SHOW_MY_RAFFLES}
                       {...field}
                     />

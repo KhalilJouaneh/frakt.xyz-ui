@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import cx from 'classnames';
 
+import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
 import { GraceListItem } from '@frakt/state/liquidations/types';
-import { SolanaIcon, Timer } from '@frakt/icons';
-import styles from './GraceCard.module.scss';
 import { createTimerJSX } from '@frakt/utils';
+import styles from './GraceCard.module.scss';
+import { Timer } from '@frakt/icons';
 
 interface GraceCardProps {
   raffle: GraceListItem;
@@ -13,36 +13,28 @@ interface GraceCardProps {
 const GraceCard: FC<GraceCardProps> = ({ raffle }) => {
   return (
     <div className={styles.card}>
-      <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={raffle.nftImageUrl} />
-        <p className={styles.nftName}>{raffle.nftName}</p>
-      </div>
+      <GeneralCardInfo
+        nftName={raffle.nftName}
+        nftImageUrl={raffle.nftImageUrl}
+      />
       <div className={styles.statsValue}>
-        <div className={cx(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>
-            {`${raffle.valuation}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>
-            {`${raffle.liquidationPrice}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>Grace period</p>
+        <StatsRaffleValues
+          className={styles.opacity}
+          label="Floor price"
+          value={raffle.valuation}
+        />
+        <StatsRaffleValues
+          label="liquidation price"
+          value={raffle.liquidationPrice}
+        />
+        <StatsRaffleValues label="Grace period">
           <div className={styles.wrapper}>
             <Timer />
-            <div>
-              <div className={styles.countdown}>
-                {createTimerJSX(raffle.expiredAt)}
-              </div>
+            <div className={styles.countdown}>
+              {createTimerJSX(raffle.expiredAt)}
             </div>
           </div>
-        </div>
+        </StatsRaffleValues>
       </div>
     </div>
   );

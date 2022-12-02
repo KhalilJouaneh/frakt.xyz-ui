@@ -23,24 +23,6 @@
   width: 56px;
 }
 
-.subtitle {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-transform: uppercase;
-}
-
-.value {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  font: var(--font-text-8);
-
-  svg {
-    width: 11px;
-    height: 10px;
-  }
-}
-
 .opacity {
   opacity: 0.5;
 }
@@ -50,13 +32,6 @@
   flex-direction: column;
   align-items: center;
   gap: 11.5px;
-}
-
-.totalValue {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .wrapper {

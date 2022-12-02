@@ -1,15 +1,18 @@
 import { FC } from 'react';
-import classNames from 'classnames';
 
 import { useConfirmModal, ConfirmModal } from '@frakt/components/ConfirmModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
-import { SolanaIcon, Timer } from '@frakt/icons';
 import { useLiquidationsRaffle } from './hooks';
-import { createTimerJSX } from '@frakt/utils';
 import Button from '@frakt/components/Button';
+import { createTimerJSX } from '@frakt/utils';
 import Icons from '../../../../iconsNew';
+import { Timer } from '@frakt/icons';
+import {
+  GeneralCardInfo,
+  StatsRaffleValues,
+} from '../StatsRaffleValues/StatsRaffleValues';
 
 interface LiquidationRaffleCard {
   raffle?: RaffleListItem;
@@ -38,35 +41,29 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
 
   return (
     <div className={styles.card}>
-      <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={raffle.nftImageUrl} />
-        <div>
-          <p className={styles.nftName}>{raffle.nftName}</p>
-        </div>
-      </div>
+      <GeneralCardInfo
+        nftName={raffle.nftName}
+        nftImageUrl={raffle.nftImageUrl}
+      />
       <div className={styles.statsValue}>
-        <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>
-            {`${raffle.nftFloorPrice}`} <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>
-            {`${raffle.liquidationPrice}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>Duration</p>
+        <StatsRaffleValues
+          className={styles.opacity}
+          label="Floor price"
+          value={raffle.nftFloorPrice}
+        />
+        <StatsRaffleValues
+          className={styles.opacity}
+          label="Liquidation price"
+          value={raffle.liquidationPrice}
+        />
+        <StatsRaffleValues label="Duration">
           <div className={styles.wrapper}>
             <Timer />
             <div className={styles.countdown}>
               {createTimerJSX(raffle.expiredAt)}
             </div>
           </div>
-        </div>
+        </StatsRaffleValues>
       </div>
       <div className={styles.ticketsWrapper}>
         <p className={styles.subtitle}>Tickets</p>
