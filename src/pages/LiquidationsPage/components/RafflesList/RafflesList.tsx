@@ -2,13 +2,14 @@ import { FC, ReactNode, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
+import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
 import { FetchItemsParams } from '@frakt/state/liquidations/types';
 import SortControl from '@frakt/componentsNew/SortControl';
 import { TicketsCounter } from '../TicketsCounter';
-import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import { useOnClickOutside } from '@frakt/utils';
 import styles from './RafflesList.module.scss';
+import Toggle from '@frakt/components/Toggle';
 import Button from '@frakt/components/Button';
 import FiltersDropdown, {
   useFiltersModal,
@@ -23,8 +24,6 @@ import {
   SORT_VALUES_WITH_GRACE,
   useLiquidationsPage,
 } from '../Liquidations';
-import Toggle from '@frakt/components/Toggle';
-import { useRaffleHistory } from '@frakt/api/raffle';
 
 interface RafflesListProps {
   children: ReactNode;
@@ -69,9 +68,6 @@ const RafflesList: FC<RafflesListProps> = ({
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
-
-  const { data: wonRaffleList, isLoading: isLoadingWonRaffleList } =
-    useRaffleHistory();
 
   return (
     <>
@@ -121,7 +117,7 @@ const RafflesList: FC<RafflesListProps> = ({
           </div>
         </div>
       </div>
-      <div className={styles.rafflesList}>{children}</div>
+      {children}
     </>
   );
 };

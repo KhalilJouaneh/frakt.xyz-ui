@@ -1,0 +1,10 @@
+.rafflesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  }
+}

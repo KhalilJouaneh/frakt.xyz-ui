@@ -1,28 +1,18 @@
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { liquidationsActions } from '../../../../state/liquidations/actions';
-import { RAFFLES_TABS } from '.';
-import LiquidationRaffleCard from '../LiquidationRaffleCard';
-import { RafflesTabsNames } from '../../model';
-import { Tabs, useTabs } from '../../../../components/Tabs';
-import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
-import NoWinningRaffles from '../NoWinningRaffles';
-import LiquidationsList from '../RafflesList';
+import { liquidationsActions } from '@frakt/state/liquidations/actions';
+import { Tabs, useTabs } from '@frakt/components/Tabs';
+import UpcomingRaffleTab from '../UpcomingRaffleTab';
+import OngoingRaffleTab from '../OngoingRaffleTab';
 import styles from './Liquidations.module.scss';
-import GraceCard from '../GraceCard/GraceCard';
-import WonRaffleCard from '../WonRaffleCard';
-import EmptyList from '../../../../componentsNew/EmptyList';
+import { RafflesTabsNames } from '../../model';
+import WonRaffleTab from '../WonRaffleTab';
+import { RAFFLES_TABS } from '.';
 import {
   selectSocket,
   selectWalletPublicKey,
 } from '../../../../state/common/selectors';
-import {
-  selectGraceList,
-  selectRaffleList,
-  selectLotteryTickets,
-} from '../../../../state/liquidations/selectors';
-import { useRaffleHistory } from '@frakt/api/raffle';
 
 const Liquidations: FC = () => {
   const {
@@ -37,12 +27,6 @@ const Liquidations: FC = () => {
   const dispatch = useDispatch();
   const socket = useSelector(selectSocket);
   const publicKey = useSelector(selectWalletPublicKey);
-  const graceList = useSelector(selectGraceList);
-  const raffleList = useSelector(selectRaffleList);
-  const lotteryTickets = useSelector(selectLotteryTickets);
-
-  const { data: wonRaffleList, isLoading: isLoadingWonRaffleList } =
-    useRaffleHistory();
 
   useEffect(() => {
     dispatch(liquidationsActions.fetchCollectionsList());
@@ -61,7 +45,7 @@ const Liquidations: FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -69,62 +53,13 @@ const Liquidations: FC = () => {
         setValue={setTabValue}
       />
       <div className={styles.tabContent}>
-        {tabValue === RafflesTabsNames.ONGOING &&
-          (publicKey ? (
-            <LiquidationsList
-              withRafflesInfo
-              fetchItemsFunc={(params) =>
-                dispatch(liquidationsActions.fetchRaffleList(params))
-              }
-            >
-              {raffleList.length ? (
-                raffleList.map((raffle) => (
-                  <LiquidationRaffleCard
-                    key={raffle.nftMint}
-                    raffle={raffle}
-                    disabled={lotteryTickets?.totalTickets < 1}
-                  />
-                ))
-              ) : (
-                <EmptyList text="No ongoing raffles at the moment" />
-              )}
-            </LiquidationsList>
-          ) : (
-            <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
-          ))}
-        {tabValue === RafflesTabsNames.UPCOMING && (
-          <LiquidationsList
-            isGraceList
-            fetchItemsFunc={(params) =>
-              dispatch(liquidationsActions.fetchGraceList(params))
-            }
-          >
-            {graceList.length ? (
-              graceList.map((raffle) => (
-                <GraceCard key={raffle.nftMint} raffle={raffle} />
-              ))
-            ) : (
-              <EmptyList text="No loans on grace at the moment" />
-            )}
-          </LiquidationsList>
+        {tabValue === RafflesTabsNames.ONGOING && <OngoingRaffleTab />}
+        {tabValue === RafflesTabsNames.UPCOMING && <UpcomingRaffleTab />}
+        {tabValue === RafflesTabsNames.HISTORY && (
+          <WonRaffleTab onClick={handleTryLottery} />
         )}
-        {tabValue === RafflesTabsNames.HISTORY &&
-          (!isLoadingWonRaffleList ? (
-            <LiquidationsList
-              isWonList
-              fetchItemsFunc={(params) =>
-                dispatch(liquidationsActions.fetchWonRaffleList(params))
-              }
-            >
-              {wonRaffleList.map((raffle) => (
-                <WonRaffleCard key={raffle.nftMint} raffle={raffle} />
-              ))}
-            </LiquidationsList>
-          ) : (
-            <NoWinningRaffles onClick={handleTryLottery} />
-          ))}
       </div>
-    </div>
+    </>
   );
 };
 
