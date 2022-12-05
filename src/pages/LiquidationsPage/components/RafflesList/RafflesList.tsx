@@ -1,10 +1,9 @@
-import { FC, ReactNode, useEffect, useRef } from 'react';
+import { FC, ReactNode, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
-import { FetchItemsParams } from '@frakt/state/liquidations/types';
 import SortControl from '@frakt/componentsNew/SortControl';
 import { TicketsCounter } from '../TicketsCounter';
 import { useOnClickOutside } from '@frakt/utils';

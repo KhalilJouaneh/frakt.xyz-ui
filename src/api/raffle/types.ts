@@ -42,6 +42,8 @@ export interface WonRaffleListItem {
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
   user: string;
+  expiredAt: string;
+  startedAt: string;
 }
 
 export type FetchRaffleHistory = (props: {

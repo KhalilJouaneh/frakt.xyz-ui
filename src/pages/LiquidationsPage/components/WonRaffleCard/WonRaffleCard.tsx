@@ -1,11 +1,14 @@
 import { FC } from 'react';
+import { equals } from 'ramda';
 import cx from 'classnames';
 
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
-import { WonRaffleListItem } from '@frakt/state/liquidations/types';
 import { shortenAddress } from '@frakt/utils/solanaUtils';
+import { WonRaffleListItem } from '@frakt/api/raffle';
 import styles from './WonRaffleCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
+import moment from 'moment';
+import { useCountdown } from '@frakt/hooks';
 
 interface WonRaffleCardProps {
   raffle: WonRaffleListItem;
@@ -13,8 +16,7 @@ interface WonRaffleCardProps {
 
 const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
   const { publicKey } = useWallet();
-
-  const isWinner = raffle?.user === publicKey?.toBase58();
+  const isWinner = equals(raffle?.user, publicKey?.toBase58());
 
   return (
     <div className={styles.cardWrapper}>
@@ -37,18 +39,14 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
             {isWinner ? (
               <div className={styles.winner}>
                 <div className={styles.winnerBadge}>You!</div>
-                <p className={styles.value}>
-                  {raffle?.user && shortenAddress(raffle?.user)}
-                </p>
+                <p className={styles.value}>{shortenAddress(raffle?.user)}</p>
               </div>
             ) : (
-              <p className={styles.value}>
-                {raffle?.user && shortenAddress(raffle?.user)}
-              </p>
+              <p className={styles.value}>{shortenAddress(raffle?.user)}</p>
             )}
           </StatsRaffleValues>
           <StatsRaffleValues label="Ended">
-            <span>8 min ago</span>
+            <span>{moment(raffle?.expiredAt).fromNow(false)}</span>
           </StatsRaffleValues>
         </div>
       </div>

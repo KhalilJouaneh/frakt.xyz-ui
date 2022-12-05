@@ -75,11 +75,11 @@ type UseRaffleData = ({
 export const useRafflesData: UseRaffleData = ({ queryData, id, queryFunc }) => {
   const { connected, publicKey } = useWallet();
 
-  const qs = stringify(queryData);
+  const queryString = stringify(queryData);
 
   const { isLoading, data, refetch } = useQuery(
     [id],
-    () => queryFunc({ query: qs, publicKey }),
+    () => queryFunc({ query: queryString, publicKey }),
     {
       enabled: connected,
       staleTime: 2000,
@@ -88,7 +88,9 @@ export const useRafflesData: UseRaffleData = ({ queryData, id, queryFunc }) => {
   );
 
   useEffect(() => {
-    refetch();
+    if (queryData) {
+      refetch();
+    }
   }, [queryData]);
 
   return {
