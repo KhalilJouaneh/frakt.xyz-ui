@@ -1,35 +1,32 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
+import { fetchLiquidationRaffle, useRafflesData } from '@frakt/api/raffle';
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
-import { liquidationsActions } from '@frakt/state/liquidations/actions';
+import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 import { selectWalletPublicKey } from '@frakt/state/common/selectors';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import EmptyList from '@frakt/componentsNew/EmptyList';
+import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
-import {
-  selectLotteryTickets,
-  selectRaffleList,
-} from '@frakt/state/liquidations/selectors';
 import RafflesList from '../RafflesList';
 
 const OngoingRaffleTab: FC = () => {
-  const dispatch = useDispatch();
-
   const lotteryTickets = useSelector(selectLotteryTickets);
   const publicKey = useSelector(selectWalletPublicKey);
-  const raffleList = useSelector(selectRaffleList);
+
+  const { queryData } = useRaffleSort();
+  const { data: raffleList, isLoading: isLoadingRaffleList } = useRafflesData({
+    queryData,
+    id: 'ongoingRaffleList',
+    queryFunc: fetchLiquidationRaffle,
+  });
 
   return (
     <>
       {publicKey ? (
-        <RafflesList
-          withRafflesInfo
-          fetchItemsFunc={(params) =>
-            dispatch(liquidationsActions.fetchRaffleList(params))
-          }
-        >
-          {raffleList.length ? (
+        <RafflesList withRafflesInfo>
+          {!isLoadingRaffleList && raffleList?.length ? (
             <div className={styles.rafflesList}>
               {raffleList.map((raffle) => (
                 <LiquidationRaffleCard

@@ -1,15 +1,9 @@
+import { FetchItemsParams } from '@frakt/api/raffle';
 import create from 'zustand';
 
-export interface SortData {
-  sortBy: string;
-  sort: string;
-  search: any;
-  collections: string;
-}
-
 interface RaffleSortState {
-  setSortQuery: (value: SortData) => void;
-  queryData: SortData;
+  setSortQuery: (value: FetchItemsParams) => void;
+  queryData: FetchItemsParams;
 }
 
 export const useRaffleSort = create<RaffleSortState>((set) => ({

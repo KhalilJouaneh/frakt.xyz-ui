@@ -11,9 +11,10 @@ import Block from '../Block';
 
 interface GraceListProps {
   graceList: any;
+  isLoadingRaffleList?: boolean;
 }
 
-const GraceList: FC<GraceListProps> = ({ graceList }) => {
+const GraceList: FC<GraceListProps> = ({ graceList, isLoadingRaffleList }) => {
   const getTimeleft = (expiredAt) => {
     const { timeLeft } = useCountdown(moment(expiredAt).unix());
     return (
@@ -32,7 +33,7 @@ const GraceList: FC<GraceListProps> = ({ graceList }) => {
         <p className={styles.headerTitle}>Collections</p>
         <p className={styles.headerTitle}>Grace period</p>
       </div>
-      {graceList.length ? (
+      {!isLoadingRaffleList && graceList?.length ? (
         <div className={styles.content}>
           {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
             <div key={nftName} className={styles.card}>

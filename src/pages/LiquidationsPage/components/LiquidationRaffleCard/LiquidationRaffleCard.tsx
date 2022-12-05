@@ -52,7 +52,6 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
           value={raffle.nftFloorPrice}
         />
         <StatsRaffleValues
-          className={styles.opacity}
           label="Liquidation price"
           value={raffle.liquidationPrice}
         />

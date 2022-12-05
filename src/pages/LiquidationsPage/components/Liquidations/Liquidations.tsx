@@ -30,9 +30,7 @@ const Liquidations: FC = () => {
 
   useEffect(() => {
     dispatch(liquidationsActions.fetchCollectionsList());
-    dispatch(liquidationsActions.fetchRaffleList());
-    dispatch(liquidationsActions.fetchGraceList());
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (publicKey && socket) {

@@ -1,26 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { equals } from 'ramda';
 
-import { FetchItemsParams } from '../../../../../state/liquidations/types';
-import { useDebounce, usePrevious } from '../../../../../hooks';
-import { Tab } from '../../../../../components/Tabs';
+import { useRaffleSort } from './useRaffleSort';
+import { Tab } from '@frakt/components/Tabs';
+import { usePrevious } from '@frakt/hooks';
 import {
   FilterFormFieldsValues,
   RafflesListFormNames,
   RafflesSortValue,
 } from '../../../model';
-import { SortData, useRaffleSort } from './useRaffleSort';
-
-type FetchDataFunc = (params: FetchItemsParams) => void;
 
 type UseLiquidationsPage = (
-  fetchItemsFunc?: FetchDataFunc,
   isGraceList?: boolean,
   isWonList?: boolean,
 ) => {
   control: Control<FilterFormFieldsValues>;
-  setSearch: (value?: string) => void;
   setCollections: (value?: []) => void;
   setValue?: any;
   collections: any;
@@ -28,9 +23,13 @@ type UseLiquidationsPage = (
 };
 
 export const useLiquidationsPage: UseLiquidationsPage = (
-  fetchItemsFunc: FetchDataFunc,
   isGraceList?: boolean,
+  isWonList?: boolean,
 ) => {
+  const defaultSort = isGraceList
+    ? { sortOrder: 'asc', sortBy: 'startedAt' }
+    : { sortOrder: 'desc', sortBy: 'liquidationPrice' };
+
   const defaultSortValue = isGraceList
     ? {
         label: <span>Grace Period</span>,
@@ -41,11 +40,9 @@ export const useLiquidationsPage: UseLiquidationsPage = (
         value: 'liquidationPrice_desc',
       };
 
-  const [sortOrder, setSortOrder] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('');
-  const [search, setSearch] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<string>(defaultSort.sortOrder);
+  const [sortBy, setSortBy] = useState<string>(defaultSort.sortBy);
   const [collections, setCollections] = useState<[]>([]);
-  const stringRef = useRef(null);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
@@ -67,18 +64,12 @@ export const useLiquidationsPage: UseLiquidationsPage = (
     const query = {
       sortBy,
       sort: sortOrder,
-      search: stringRef.current,
       collections: stringCollection,
       ...params,
-    } as SortData;
+    };
 
     setSortQuery(query);
   };
-
-  const searchDebounced = useDebounce((search: string): void => {
-    stringRef.current = search;
-    fetchItems();
-  }, 300);
 
   useEffect(() => {
     const [newSortBy, newSortOrder] = sort.value.split('_');
@@ -93,14 +84,6 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   }, [sort.value]);
 
   useEffect(() => {
-    if (search === stringRef.current) {
-      return;
-    }
-    searchDebounced(search);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
-
-  useEffect(() => {
     if (equals(prevCollections, collections)) {
       return;
     }
@@ -110,7 +93,6 @@ export const useLiquidationsPage: UseLiquidationsPage = (
 
   return {
     control,
-    setSearch,
     setCollections,
     collections,
     setValue,

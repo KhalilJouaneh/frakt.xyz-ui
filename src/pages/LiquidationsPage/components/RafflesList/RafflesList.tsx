@@ -30,19 +30,16 @@ interface RafflesListProps {
   withRafflesInfo?: boolean;
   isGraceList?: boolean;
   isWonList?: boolean;
-  fetchItemsFunc?: (params: FetchItemsParams) => void;
-  setQs?: any;
 }
 
 const RafflesList: FC<RafflesListProps> = ({
   children,
   withRafflesInfo,
-  fetchItemsFunc,
   isGraceList,
   isWonList,
 }) => {
   const { control, setValue, collections, sort, setCollections } =
-    useLiquidationsPage(fetchItemsFunc, isGraceList, isWonList);
+    useLiquidationsPage(isGraceList, isWonList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
 

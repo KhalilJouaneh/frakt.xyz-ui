@@ -4,7 +4,6 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import cx from 'classnames';
 
 import { liquidationsActions } from '../../state/liquidations/actions';
-import { selectGraceList } from '../../state/liquidations/selectors';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import AvailableBorrow from './components/AvailableBorrow';
 import { selectStats } from '../../state/stats/selectors';
@@ -20,6 +19,8 @@ import MyDeposit from './components/MyDeposit';
 import Lending from './components/Lending';
 import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
+import { fetchGraceRaffle, useRafflesData } from '@frakt/api/raffle';
+import { useRaffleSort } from '../LiquidationsPage/components/Liquidations/hooks';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
@@ -28,20 +29,27 @@ const DashboardPage: FC = () => {
   const { totalStats, lastLoans, lendingPools, dailyActivity, loading } =
     useSelector(selectStats);
 
-  const graceList = useSelector(selectGraceList);
+  const { queryData } = useRaffleSort();
+  const { data: graceList, isLoading: isLoadingRaffleList } = useRafflesData({
+    queryData,
+    id: 'graceList',
+    queryFunc: fetchGraceRaffle,
+  });
+
+  // const graceList = useSelector(selectGraceList);
 
   useEffect(() => {
     dispatch(statsActions.fetchStats());
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(
-      liquidationsActions.fetchGraceList({
-        sortBy: 'startedAt',
-        sort: 'asc',
-      }),
-    );
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(
+  //     liquidationsActions.fetchGraceList({
+  //       sortBy: 'startedAt',
+  //       sort: 'asc',
+  //     }),
+  //   );
+  // }, [dispatch]);
 
   return (
     <AppLayout>
@@ -87,7 +95,10 @@ const DashboardPage: FC = () => {
                 <LastLoans lastLoans={lastLoans} />
               </div>
               <div className={cx(styles.row, styles.rowDirection)}>
-                <GraceList graceList={graceList} />
+                <GraceList
+                  graceList={graceList}
+                  isLoadingRaffleList={isLoadingRaffleList}
+                />
               </div>
             </div>
           </div>

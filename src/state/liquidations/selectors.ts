@@ -1,29 +1,7 @@
 import { createSelector } from 'reselect';
 import { pathOr, identity, map, reject, useWith, pluck } from 'ramda';
 
-import { LotteryTicket, RaffleListItem } from './types';
-
-export const selectGraceList = createSelector(
-  [pathOr([], ['liquidations', 'graceList', 'data'])],
-  identity,
-);
-
-export const selectWonRaffleList = createSelector(
-  [pathOr([], ['liquidations', 'wonRaffleList', 'data'])],
-  identity,
-);
-
-export const selectRaffleList = createSelector(
-  [pathOr([], ['liquidations', 'raffleList', 'data']), selectWonRaffleList],
-  useWith(
-    (raffleList: Array<RaffleListItem>, wonMints: string[]) =>
-      reject(
-        (item: RaffleListItem) => wonMints.includes(item.nftMint),
-        raffleList,
-      ),
-    [identity, pluck('nftMint')],
-  ),
-);
+import { LotteryTicket } from './types';
 
 export const selectLotteryTickets: (state) => LotteryTicket = createSelector(
   [pathOr(null, ['liquidations', 'lotteryTicketsList', 'data'])],
