@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { equals } from 'ramda';
 
-import { FetchItemsParams } from '../../../../state/liquidations/types';
-import { useDebounce, usePrevious } from '../../../../hooks';
-import { Tab } from '../../../../components/Tabs';
+import { FetchItemsParams } from '../../../../../state/liquidations/types';
+import { useDebounce, usePrevious } from '../../../../../hooks';
+import { Tab } from '../../../../../components/Tabs';
 import {
   FilterFormFieldsValues,
   RafflesListFormNames,
   RafflesSortValue,
-} from '../../model';
+} from '../../../model';
+import { SortData, useRaffleSort } from './useRaffleSort';
 
 type FetchDataFunc = (params: FetchItemsParams) => void;
 
@@ -60,6 +61,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const prevCollections = usePrevious(collections);
 
   const stringCollection = collections.map((value) => value).join(',');
+  const { setSortQuery } = useRaffleSort();
 
   const fetchItems = (params = {}): void => {
     const query = {
@@ -68,8 +70,9 @@ export const useLiquidationsPage: UseLiquidationsPage = (
       search: stringRef.current,
       collections: stringCollection,
       ...params,
-    };
-    fetchItemsFunc(query);
+    } as SortData;
+
+    setSortQuery(query);
   };
 
   const searchDebounced = useDebounce((search: string): void => {

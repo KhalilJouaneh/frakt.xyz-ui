@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef } from 'react';
+import { FC, ReactNode, useEffect, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
@@ -31,6 +31,7 @@ interface RafflesListProps {
   isGraceList?: boolean;
   isWonList?: boolean;
   fetchItemsFunc?: (params: FetchItemsParams) => void;
+  setQs?: any;
 }
 
 const RafflesList: FC<RafflesListProps> = ({

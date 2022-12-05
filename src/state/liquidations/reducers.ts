@@ -7,24 +7,13 @@ import {
   createInitialAsyncState,
 } from '../../utils/state/reducers';
 import { liquidationsTypes } from './actions';
-import {
-  GraceListItem,
-  RaffleListItem,
-  WonRaffleListItem,
-  CollectionsListItem,
-} from './types';
-
-export const initialGraceListState: AsyncState<GraceListItem[]> =
-  createInitialAsyncState<GraceListItem[]>(null);
+import { RaffleListItem, CollectionsListItem } from './types';
 
 export const initialRaffleListState: AsyncState<RaffleListItem[]> =
   createInitialAsyncState<RaffleListItem[]>(null);
 
 export const initialCollectionsListState: AsyncState<CollectionsListItem[]> =
   createInitialAsyncState<CollectionsListItem[]>(null);
-
-export const initialWonRaffleListState: AsyncState<WonRaffleListItem[]> =
-  createInitialAsyncState<WonRaffleListItem[]>(null);
 
 export const initialRaffleNotificationsState: AsyncState<any[]> =
   createInitialAsyncState<any[]>(null);
@@ -34,11 +23,6 @@ export const initialLotteryTicketsListState: AsyncState<any> =
 
 export const initialTxState: AsyncState<unknown> =
   createInitialAsyncState<unknown>(null);
-
-const fetchGraceListReducer = createReducer(
-  initialGraceListState,
-  createHandlers<GraceListItem[]>(liquidationsTypes.FETCH_GRACE_LIST),
-);
 
 const fetchRaffleListReducer = createReducer(
   initialRaffleListState,
@@ -50,11 +34,6 @@ const fetchCollectionsListReducer = createReducer(
   createHandlers<CollectionsListItem[]>(
     liquidationsTypes.FETCH_COLLECTIONS_LIST,
   ),
-);
-
-const fetchWonRaffleListReducer = createReducer(
-  initialWonRaffleListState,
-  createHandlers<WonRaffleListItem[]>(liquidationsTypes.FETCH_WON_RAFFLE_LIST),
 );
 
 const setRaffleNotificationsReducer = createReducer(
@@ -78,10 +57,8 @@ const setLotteryTicketsListReducer = createReducer(
 );
 
 export default combineReducers({
-  graceList: fetchGraceListReducer,
   raffleList: fetchRaffleListReducer,
   collectionsList: fetchCollectionsListReducer,
-  wonRaffleList: fetchWonRaffleListReducer,
   raffleNotifications: setRaffleNotificationsReducer,
   lotteryTicketsList: setLotteryTicketsListReducer,
 });

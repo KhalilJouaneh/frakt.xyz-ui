@@ -1,27 +1,28 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectGraceList } from '@frakt/state/liquidations/selectors';
-import { liquidationsActions } from '@frakt/state/liquidations/actions';
+import { fetchGraceRaffle, useRafflesData } from '@frakt/api/raffle';
 import EmptyList from '@frakt/componentsNew/EmptyList';
-import GraceCard from '../GraceCard';
-import RafflesList from '../RafflesList';
 import styles from './UpcomingRaffleTab.module.scss';
+import RafflesList from '../RafflesList';
+import GraceCard from '../GraceCard';
+import { useRaffleSort } from '../Liquidations/hooks';
 
 const UpcomingRaffleTab: FC = () => {
-  const dispatch = useDispatch();
-  const graceList = useSelector(selectGraceList);
+  const { queryData } = useRaffleSort();
+
+  const { data: graceList, isLoading: isLoadingWonRaffleList } = useRafflesData(
+    {
+      queryData,
+      id: 'graceRaffle',
+      queryFunc: fetchGraceRaffle,
+    },
+  );
 
   return (
     <>
-      <RafflesList
-        isGraceList
-        fetchItemsFunc={(params) =>
-          dispatch(liquidationsActions.fetchGraceList(params))
-        }
-      >
-        {graceList.length ? (
+      <RafflesList isGraceList>
+        {!isLoadingWonRaffleList && graceList?.length ? (
           <div className={styles.rafflesList}>
-            {graceList.map((raffle) => (
+            {graceList?.map((raffle) => (
               <GraceCard key={raffle.nftMint} raffle={raffle} />
             ))}
           </div>

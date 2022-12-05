@@ -13,22 +13,6 @@ const lotteryTicketsChannel = (socket: Socket) =>
     return () => socket.off('lottery-tickets');
   });
 
-const fetchGraceListSaga = function* (action) {
-  if (!action.payload) {
-    return;
-  }
-  const qs = stringify(action.payload);
-  yield put(liquidationsActions.fetchGraceListPending());
-  try {
-    const data = yield call(networkRequest, {
-      url: `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-list${qs}&limit=1000`,
-    });
-    yield put(liquidationsActions.fetchGraceListFulfilled(data));
-  } catch (error) {
-    yield put(liquidationsActions.fetchGraceListFailed(error));
-  }
-};
-
 const fetchRaffleListSaga = function* (action) {
   if (!action.payload) {
     return;
@@ -78,9 +62,6 @@ const liquidationsSagas = (socket: Socket) =>
   function* (): Generator {
     const lotteryTicketsStream: any = yield call(lotteryTicketsChannel, socket);
 
-    yield all([
-      takeLatest(liquidationsTypes.FETCH_GRACE_LIST, fetchGraceListSaga),
-    ]);
     yield all([
       takeLatest(liquidationsTypes.FETCH_RAFFLE_LIST, fetchRaffleListSaga),
     ]);

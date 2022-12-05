@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { stringify } from '@frakt/utils/state';
 
-type FetchRaffleHistory = (props: { publicKey: any }) => Promise<any>;
+type FetchRaffleHistory = (props: { query: any }) => Promise<any>;
 
-export const fetchRaffleHistory: FetchRaffleHistory = async ({ publicKey }) => {
+const baseUrl = `https://${process.env.BACKEND_DOMAIN}`;
+
+export const fetchRaffleHistory: FetchRaffleHistory = async (qs) => {
   try {
     const { data } = await axios.get<any>(
-      `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true`,
+      `${baseUrl}/liquidation?history=true&${qs}`,
     );
 
     if (!data) return null;
@@ -18,19 +22,46 @@ export const fetchRaffleHistory: FetchRaffleHistory = async ({ publicKey }) => {
   }
 };
 
-export const useRaffleHistory = () => {
-  const { connected, publicKey } = useWallet();
+export const fetchGraceRaffle: FetchRaffleHistory = async (qs) => {
+  try {
+    const { data } = await axios.get<any>(
+      `${baseUrl}/liquidation/grace-list${qs}&limit=1000`,
+    );
 
-  const {
-    isLoading,
-    data,
-    refetch: refetchUserInfo,
-  } = useQuery(['raffleHistory'], () => fetchRaffleHistory({ publicKey }), {
+    if (!data) return null;
+
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+type UseRaffleData = ({
+  queryData,
+  id,
+  queryFunc,
+}: {
+  queryData: any;
+  id: string;
+  queryFunc: any;
+}) => {
+  data: any;
+  isLoading: boolean;
+};
+
+export const useRafflesData: UseRaffleData = ({ queryData, id, queryFunc }) => {
+  const { connected } = useWallet();
+
+  const qs = stringify(queryData);
+
+  const { isLoading, data, refetch } = useQuery([id], () => queryFunc(qs), {
     enabled: connected,
     staleTime: 5000,
   });
 
-  console.log(data);
+  useEffect(() => {
+    refetch();
+  }, [queryData]);
 
   return {
     data,
