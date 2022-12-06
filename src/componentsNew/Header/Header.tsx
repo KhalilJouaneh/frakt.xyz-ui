@@ -18,12 +18,7 @@ export const Header: FC = () => {
   return (
     <div className={styles.container}>
       {visible && <WalletContent />}
-      <a
-        href="https://frakt-landing.vercel.app/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.logoWrapper}
-      >
+      <a href={process.env.FRAKT_LANDING_URL} className={styles.logoWrapper}>
         <Logo className={styles.logo} />
       </a>
       <div className={styles.widgetContainer}>

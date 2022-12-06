@@ -48,7 +48,7 @@ const GraceList: FC<GraceListProps> = ({ graceList }) => {
 
       <NavLink to={PATHS.LIQUIDATIONS}>
         <Button className={styles.btn} type="secondary">
-          Liqudations
+          Liquidations
         </Button>
       </NavLink>
     </Block>

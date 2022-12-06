@@ -6,7 +6,7 @@ import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
 import SortControl from '@frakt/componentsNew/SortControl';
 import { TicketsCounter } from '../TicketsCounter';
-import { useOnClickOutside } from '@frakt/utils';
+import { useOnClickOutside } from '@frakt/hooks';
 import styles from './RafflesList.module.scss';
 import Toggle from '@frakt/components/Toggle';
 import Button from '@frakt/components/Button';

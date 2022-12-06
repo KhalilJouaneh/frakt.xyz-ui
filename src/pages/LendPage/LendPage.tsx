@@ -1,6 +1,7 @@
 import { FC, useRef } from 'react';
 import { Controller } from 'react-hook-form';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import LendingPool from './components/LendingPool';
 import styles from './LendPage.module.scss';
@@ -15,7 +16,6 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '../../componentsNew/FiltersDropdown';
 import Button from '../../components/Button';
-import { useOnClickOutside } from '../../utils';
 import SortControl from '../../componentsNew/SortControl';
 
 export enum InputControlsNames {

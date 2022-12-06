@@ -1,9 +1,9 @@
 import { FC, useRef } from 'react';
 
+import { useOnClickOutside } from '@frakt/hooks';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { SearchInput } from '../../components/SearchInput';
 import Header from '../BorrowPage/components/Header';
-import { useOnClickOutside } from '../../utils';
 import Button from '../../components/Button';
 import FiltersDropdown, {
   useFiltersModal,

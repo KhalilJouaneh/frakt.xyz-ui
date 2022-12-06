@@ -11,8 +11,8 @@ export enum ContentType {
 export const NotificationsSettingsNames = {
   [NotificationEvents.LOANS]: 'Loans',
   [NotificationEvents.DEPOSITS]: 'Deposits',
-  [NotificationEvents.LOT_TICKETS]: 'Lottery tickets',
+  [NotificationEvents.LOT_TICKETS]: 'Raffle tickets',
   [NotificationEvents.GRACES]: 'Grace period',
-  [NotificationEvents.LIQUIDATIONS_IN_24H]: 'Liquidations in 24h',
+  [NotificationEvents.LIQUIDATIONS_IN_24H]: 'Liquidations',
   DEFAULT: 'Unknown value',
 };

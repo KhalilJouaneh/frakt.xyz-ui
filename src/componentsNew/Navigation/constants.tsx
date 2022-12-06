@@ -39,6 +39,14 @@ export const documentation = [
 
 export const NAVIGATION_LINKS = [
   {
+    pathname: PATHS.ROOT,
+    to: PATHS.ROOT,
+    label: 'Dashboard',
+    icon: Icons.Dashboard,
+    iconDark: Icons.DashboardDark,
+    fillIcon: true,
+  },
+  {
     pathname: PATHS.BORROW,
     to: PATHS.BORROW,
     label: 'Borrow',
@@ -80,12 +88,4 @@ export const NAVIGATION_LINKS = [
   //   icon: Icons.Bonds,
   //   iconDark: Icons.BondsDark,
   // },
-  {
-    pathname: PATHS.ROOT,
-    to: PATHS.ROOT,
-    label: 'Dashboard',
-    icon: Icons.Dashboard,
-    iconDark: Icons.DashboardDark,
-    fillIcon: true,
-  },
 ];

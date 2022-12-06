@@ -39,7 +39,7 @@ const Liquidations: FC = () => {
   }, [socket, publicKey]);
 
   return (
-    <>
+    <div className={styles.tabContent}>
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -51,7 +51,7 @@ const Liquidations: FC = () => {
         {tabValue === RafflesTabsNames.UPCOMING && <UpcomingRaffleTab />}
         {tabValue === RafflesTabsNames.HISTORY && <WonRaffleTab />}
       </div>
-    </>
+    </div>
   );
 };
 
