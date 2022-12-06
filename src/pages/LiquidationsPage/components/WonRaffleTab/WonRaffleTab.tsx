@@ -1,31 +1,39 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
-import { fetchRaffleHistory, useRafflesData } from '@frakt/api/raffle';
+import { useRaffleInfo } from '@frakt/hooks/useRaffleInfo';
+import { useIntersection } from '@frakt/hooks/useIntersection';
+import { useRaffleSort } from '../Liquidations/hooks';
 import NoWinningRaffles from '../NoWinningRaffles';
 import styles from './WonRaffleTab.module.scss';
 import WonRaffleCard from '../WonRaffleCard';
 import RafflesList from '../RafflesList';
-import { useRaffleSort } from '../Liquidations/hooks';
 
 interface WonRaffleTabProps {
   onClick: () => void;
 }
 
+const url = `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true`;
+
 const WonRaffleTab: FC<WonRaffleTabProps> = ({ onClick }) => {
   const { queryData } = useRaffleSort();
-  console.log(queryData);
-  const { data: wonRaffleList, isLoading: isLoadingWonRaffleList } =
-    useRafflesData({
-      queryData,
-      id: 'wonRaffleList',
-      queryFunc: fetchRaffleHistory,
-    });
+  const { ref, inView } = useIntersection();
+
+  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
+    useRaffleInfo({ url, id: 'wonRaffleList', queryData });
+
+  useEffect(() => {
+    if (inView && !isFetchingNextPage && !isListEnded) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
+
+  const wonRaffleList = data?.pages?.map((page) => page.data).flat();
 
   return (
     <>
-      {!isLoadingWonRaffleList ? (
+      {wonRaffleList?.length ? (
         <RafflesList isWonList>
-          <div className={styles.rafflesList}>
+          <div className={styles.rafflesList} ref={ref}>
             {wonRaffleList?.map((raffle) => (
               <WonRaffleCard key={raffle.nftMint} raffle={raffle} />
             ))}

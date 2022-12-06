@@ -39,10 +39,15 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
             {isWinner ? (
               <div className={styles.winner}>
                 <div className={styles.winnerBadge}>You!</div>
-                <p className={styles.value}>{shortenAddress(raffle?.user)}</p>
+                <p className={styles.value}>
+                  {' '}
+                  {raffle?.user && shortenAddress(raffle?.user)}
+                </p>
               </div>
             ) : (
-              <p className={styles.value}>{shortenAddress(raffle?.user)}</p>
+              <p className={styles.value}>
+                {raffle?.user && shortenAddress(raffle?.user)}
+              </p>
             )}
           </StatsRaffleValues>
           <StatsRaffleValues label="Ended">
