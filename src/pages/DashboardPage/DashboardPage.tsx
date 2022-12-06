@@ -30,13 +30,20 @@ const DashboardPage: FC = () => {
 
   const { queryData } = useRaffleSort();
 
-  const { data } = useRaffleInfo({
-    url: 'liquidation/grace-list',
-    id: 'graceDashboardList',
-    queryData,
-  });
+  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
+    useRaffleInfo({
+      url: 'liquidation/grace-list',
+      id: 'graceDashboardList',
+      queryData,
+    });
 
   const graceList = data?.pages?.map((page) => page.data).flat();
+
+  useEffect(() => {
+    if (!isFetchingNextPage && !isListEnded) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, isFetchingNextPage, isListEnded]);
 
   useEffect(() => {
     dispatch(statsActions.fetchStats());
