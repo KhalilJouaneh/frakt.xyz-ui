@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
 import { equals } from 'ramda';
 
@@ -11,10 +12,7 @@ import {
   RafflesSortValue,
 } from '../../../model';
 
-type UseLiquidationsPage = (
-  isGraceList?: boolean,
-  isWonList?: boolean,
-) => {
+type UseLiquidationsPage = (isGraceList?: boolean) => {
   control: Control<FilterFormFieldsValues>;
   setCollections: (value?: []) => void;
   setValue?: any;
@@ -24,7 +22,6 @@ type UseLiquidationsPage = (
 
 export const useLiquidationsPage: UseLiquidationsPage = (
   isGraceList?: boolean,
-  isWonList?: boolean,
 ) => {
   const defaultSort = isGraceList
     ? { sortOrder: 'asc', sortBy: 'startedAt' }
@@ -39,6 +36,8 @@ export const useLiquidationsPage: UseLiquidationsPage = (
         label: <span>Liquidation Price</span>,
         value: 'liquidationPrice_desc',
       };
+
+  const { publicKey } = useWallet();
 
   const [sortOrder, setSortOrder] = useState<string>(defaultSort.sortOrder);
   const [sortBy, setSortBy] = useState<string>(defaultSort.sortBy);
@@ -70,6 +69,12 @@ export const useLiquidationsPage: UseLiquidationsPage = (
 
     setSortQuery(query);
   };
+
+  useEffect(() => {
+    const userPubKey = showMyRaffles ? publicKey?.toBase58() : '';
+
+    fetchItems({ user: userPubKey });
+  }, [showMyRaffles, publicKey]);
 
   useEffect(() => {
     const [newSortBy, newSortOrder] = sort.value.split('_');

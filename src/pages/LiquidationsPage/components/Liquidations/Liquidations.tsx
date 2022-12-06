@@ -38,10 +38,6 @@ const Liquidations: FC = () => {
     }
   }, [socket, publicKey]);
 
-  const handleTryLottery = () => {
-    setTabValue(RAFFLES_TABS[0].value);
-  };
-
   return (
     <>
       <Tabs
@@ -53,9 +49,7 @@ const Liquidations: FC = () => {
       <div className={styles.tabContent}>
         {tabValue === RafflesTabsNames.ONGOING && <OngoingRaffleTab />}
         {tabValue === RafflesTabsNames.UPCOMING && <UpcomingRaffleTab />}
-        {tabValue === RafflesTabsNames.HISTORY && (
-          <WonRaffleTab onClick={handleTryLottery} />
-        )}
+        {tabValue === RafflesTabsNames.HISTORY && <WonRaffleTab />}
       </div>
     </>
   );

@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useSelector } from 'react-redux';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
-import { selectWalletPublicKey } from '@frakt/state/common/selectors';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import EmptyList from '@frakt/componentsNew/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
@@ -14,13 +14,19 @@ import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 
 const OngoingRaffleTab: FC = () => {
   const lotteryTickets = useSelector(selectLotteryTickets);
-  const publicKey = useSelector(selectWalletPublicKey);
+  const { publicKey } = useWallet();
 
   const { ref, inView } = useIntersection();
   const { queryData } = useRaffleSort();
 
+  const userQueryData = { ...queryData, user: publicKey?.toBase58() };
+
   const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
-    useRaffleInfo({ url: 'liquidation', id: 'ongoingRaffleList', queryData });
+    useRaffleInfo({
+      url: 'liquidation',
+      id: 'ongoingRaffleList',
+      queryData: userQueryData,
+    });
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && !isListEnded) {
