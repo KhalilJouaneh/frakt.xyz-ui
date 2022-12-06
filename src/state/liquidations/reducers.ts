@@ -24,11 +24,6 @@ export const initialLotteryTicketsListState: AsyncState<any> =
 export const initialTxState: AsyncState<unknown> =
   createInitialAsyncState<unknown>(null);
 
-const fetchRaffleListReducer = createReducer(
-  initialRaffleListState,
-  createHandlers<RaffleListItem[]>(liquidationsTypes.FETCH_RAFFLE_LIST),
-);
-
 const fetchCollectionsListReducer = createReducer(
   initialCollectionsListState,
   createHandlers<CollectionsListItem[]>(
@@ -57,7 +52,6 @@ const setLotteryTicketsListReducer = createReducer(
 );
 
 export default combineReducers({
-  raffleList: fetchRaffleListReducer,
   collectionsList: fetchCollectionsListReducer,
   raffleNotifications: setRaffleNotificationsReducer,
   lotteryTicketsList: setLotteryTicketsListReducer,

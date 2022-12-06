@@ -28,6 +28,7 @@ export const liquidationsActions = {
     (response: {
       raffleCollections: CollectionsListItem[];
       graceCollections: CollectionsListItem[];
+      historyCollections: CollectionsListItem[];
     }) => ({ payload: response }),
   ),
   fetchCollectionsListFailed: createCustomAction(

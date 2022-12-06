@@ -14,18 +14,23 @@ const lotteryTicketsChannel = (socket: Socket) =>
 const fetchCollectionsListSaga = function* () {
   yield put(liquidationsActions.fetchCollectionsListPending());
   try {
-    const { raffleCollections, graceCollections } = yield all({
-      raffleCollections: call(networkRequest, {
-        url: `https://${process.env.BACKEND_DOMAIN}/liquidation/raffle-collections`,
-      }),
-      graceCollections: call(networkRequest, {
-        url: `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-collections`,
-      }),
-    });
+    const { raffleCollections, graceCollections, historyCollections } =
+      yield all({
+        raffleCollections: call(networkRequest, {
+          url: `https://${process.env.BACKEND_DOMAIN}/liquidation/raffle-collections`,
+        }),
+        graceCollections: call(networkRequest, {
+          url: `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-collections`,
+        }),
+        historyCollections: call(networkRequest, {
+          url: `https://${process.env.BACKEND_DOMAIN}/liquidation/history-collections`,
+        }),
+      });
     yield put(
       liquidationsActions.fetchCollectionsListFulfilled({
         raffleCollections,
         graceCollections,
+        historyCollections,
       }),
     );
   } catch (error) {

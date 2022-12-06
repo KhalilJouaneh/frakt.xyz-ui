@@ -15,8 +15,9 @@ import FiltersDropdown, {
 } from '@frakt/componentsNew/FiltersDropdown';
 import {
   selectLotteryTickets,
-  selectRaffleCollectionsDropdownData,
-  selectGraceCollectionsDropdownData,
+  selectRaffleCollections,
+  selectGraceCollections,
+  selectHistoryCollections,
 } from '@frakt/state/liquidations/selectors';
 import {
   SORT_VALUES as RAW_SORT_VALUES,
@@ -38,22 +39,26 @@ const RafflesList: FC<RafflesListProps> = ({
   isWonList,
 }) => {
   const { control, setValue, collections, sort, setCollections } =
-    useLiquidationsPage(isGraceList, isWonList);
+    useLiquidationsPage(isGraceList);
 
   const lotteryTickets = useSelector(selectLotteryTickets);
 
-  const collectionsRaffleListDropdownData = useSelector(
-    selectRaffleCollectionsDropdownData,
-  );
-  const collectionsGraceListDropdownData = useSelector(
-    selectGraceCollectionsDropdownData,
-  );
-  const SORT_COLLECTIONS_VALUES = withRafflesInfo
-    ? collectionsRaffleListDropdownData
-    : collectionsGraceListDropdownData.map((item) => ({
-        label: <span>{item.label}</span>,
-        value: item.value,
-      }));
+  const collectionsRaffleList = useSelector(selectRaffleCollections);
+  const collectionsGraceList = useSelector(selectGraceCollections);
+  const collectionsHistoryList = useSelector(selectHistoryCollections);
+
+  const getSortCollectionValues = () => {
+    if (withRafflesInfo) return collectionsRaffleList;
+    if (isGraceList) return collectionsGraceList;
+    if (isWonList) return collectionsHistoryList;
+  };
+
+  const currentCollectionsList = getSortCollectionValues();
+
+  const SORT_COLLECTIONS_VALUES = currentCollectionsList.map((item) => ({
+    label: <span>{item.label}</span>,
+    value: item.value,
+  }));
 
   const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
 

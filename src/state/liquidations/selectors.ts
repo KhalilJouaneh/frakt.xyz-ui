@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { pathOr, identity, map, reject, useWith, pluck } from 'ramda';
+import { pathOr, identity, map } from 'ramda';
 
 import { LotteryTicket } from './types';
 
@@ -8,7 +8,7 @@ export const selectLotteryTickets: (state) => LotteryTicket = createSelector(
   identity,
 );
 
-export const selectRaffleCollectionsDropdownData = createSelector(
+export const selectRaffleCollections = createSelector(
   [
     pathOr(
       [],
@@ -21,8 +21,20 @@ export const selectRaffleCollectionsDropdownData = createSelector(
   })),
 );
 
-export const selectGraceCollectionsDropdownData = createSelector(
+export const selectGraceCollections = createSelector(
   [pathOr([], ['liquidations', 'collectionsList', 'data', 'graceCollections'])],
+  map((item: any) => ({
+    label: item,
+    value: item,
+  })),
+);
+export const selectHistoryCollections = createSelector(
+  [
+    pathOr(
+      [],
+      ['liquidations', 'collectionsList', 'data', 'historyCollections'],
+    ),
+  ],
   map((item: any) => ({
     label: item,
     value: item,
