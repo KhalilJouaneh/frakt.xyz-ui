@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FetchItemsParams } from '@frakt/api/raffle';
 import { stringify } from '@frakt/utils/state';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -60,14 +60,15 @@ export const useRaffleInfo = (params: {
     };
   };
 
-  const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-    [id],
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    [id, publicKey, queryData],
     ({ pageParam = 0 }) => fetchData({ pageParam, queryString }),
     {
-      enabled: !!publicKey,
+      enabled: !!publicKey && !!queryData,
       getPreviousPageParam: (firstPage) => {
         return firstPage.pageParam - 1 ?? undefined;
       },
+      refetchInterval: 5000,
       getNextPageParam: (lastPage) => {
         return lastPage.data?.length ? lastPage.pageParam + 1 : undefined;
       },
@@ -75,10 +76,6 @@ export const useRaffleInfo = (params: {
       networkMode: 'offlineFirst',
     },
   );
-
-  useEffect(() => {
-    refetch();
-  }, [queryString]);
 
   return {
     data,
