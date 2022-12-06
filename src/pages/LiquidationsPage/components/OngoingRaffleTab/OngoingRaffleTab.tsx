@@ -1,7 +1,6 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { fetchLiquidationRaffle, useRafflesData } from '@frakt/api/raffle';
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 import { selectWalletPublicKey } from '@frakt/state/common/selectors';
@@ -10,24 +9,33 @@ import EmptyList from '@frakt/componentsNew/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
 import RafflesList from '../RafflesList';
+import { useIntersection } from '@frakt/hooks/useIntersection';
+import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 
 const OngoingRaffleTab: FC = () => {
   const lotteryTickets = useSelector(selectLotteryTickets);
   const publicKey = useSelector(selectWalletPublicKey);
 
+  const { ref, inView } = useIntersection();
   const { queryData } = useRaffleSort();
-  const { data: raffleList, isLoading: isLoadingRaffleList } = useRafflesData({
-    queryData,
-    id: 'ongoingRaffleList',
-    queryFunc: fetchLiquidationRaffle,
-  });
+
+  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
+    useRaffleInfo({ url: 'liquidation', id: 'ongoingRaffleList', queryData });
+
+  useEffect(() => {
+    if (inView && !isFetchingNextPage && !isListEnded) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
+
+  const raffleList = data?.pages?.map((page) => page.data).flat();
 
   return (
     <>
       {publicKey ? (
         <RafflesList withRafflesInfo>
-          {!isLoadingRaffleList && raffleList?.length ? (
-            <div className={styles.rafflesList}>
+          {raffleList?.length ? (
+            <div className={styles.rafflesList} ref={ref}>
               {raffleList.map((raffle) => (
                 <LiquidationRaffleCard
                   key={raffle.nftMint}

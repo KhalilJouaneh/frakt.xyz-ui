@@ -1,31 +1,19 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import moment from 'moment';
 
+import { GraceListItem } from '@frakt/api/raffle';
 import Button from '../../../../components/Button';
-import { useCountdown } from '../../../../hooks';
+import { createTimerJSX } from '@frakt/utils';
 import { PATHS } from '../../../../constants';
 import styles from './GraceList.module.scss';
 import { Timer } from '../../../../icons';
 import Block from '../Block';
 
 interface GraceListProps {
-  graceList: any;
-  isLoadingRaffleList?: boolean;
+  graceList: GraceListItem[];
 }
 
-const GraceList: FC<GraceListProps> = ({ graceList, isLoadingRaffleList }) => {
-  const getTimeleft = (expiredAt) => {
-    const { timeLeft } = useCountdown(moment(expiredAt).unix());
-    return (
-      <div className={styles.countdown}>
-        {timeLeft.days}d<p>:</p>
-        {timeLeft.hours}h<p>:</p>
-        {timeLeft.minutes}m
-      </div>
-    );
-  };
-
+const GraceList: FC<GraceListProps> = ({ graceList }) => {
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Grace list</h3>
@@ -33,7 +21,7 @@ const GraceList: FC<GraceListProps> = ({ graceList, isLoadingRaffleList }) => {
         <p className={styles.headerTitle}>Collections</p>
         <p className={styles.headerTitle}>Grace period</p>
       </div>
-      {!isLoadingRaffleList && graceList?.length ? (
+      {graceList?.length ? (
         <div className={styles.content}>
           {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
             <div key={nftName} className={styles.card}>
@@ -43,7 +31,9 @@ const GraceList: FC<GraceListProps> = ({ graceList, isLoadingRaffleList }) => {
               </div>
               <div className={styles.wrapper}>
                 <Timer className={styles.icon} />
-                {getTimeleft(expiredAt)}
+                <div className={styles.countdown}>
+                  {createTimerJSX(expiredAt)}
+                </div>
               </div>
             </div>
           ))}

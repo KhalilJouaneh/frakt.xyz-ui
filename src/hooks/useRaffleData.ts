@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { FetchItemsParams } from '@frakt/api/raffle';
 import { stringify } from '@frakt/utils/state';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
@@ -6,14 +8,15 @@ import {
   InfiniteQueryObserverResult,
   useInfiniteQuery,
 } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
 
 const LIMIT = 20;
+
+const baseUrl = `https://${process.env.BACKEND_DOMAIN}`;
 
 export const useRaffleInfo = (params: {
   url: string;
   id: string;
-  queryData: any;
+  queryData: FetchItemsParams;
 }): {
   data: InfiniteData<{ pageParam: number; data: any[] }>;
   fetchNextPage: (options?: FetchNextPageOptions) => Promise<
@@ -27,7 +30,7 @@ export const useRaffleInfo = (params: {
 } => {
   const { publicKey } = useWallet();
 
-  const { url: baseUrl, id, queryData } = params;
+  const { url, id, queryData } = params;
   const queryString = stringify(queryData);
 
   const [isListEnded, setIsListEnded] = useState<boolean>(false);
@@ -41,7 +44,9 @@ export const useRaffleInfo = (params: {
   }) => {
     const data = await (
       await fetch(
-        `${baseUrl}&${queryString}&limit=${LIMIT}&skip=${LIMIT * pageParam}`,
+        `${baseUrl}/${url}${queryString}&limit=${LIMIT}&skip=${
+          LIMIT * pageParam
+        }`,
       )
     ).json();
 

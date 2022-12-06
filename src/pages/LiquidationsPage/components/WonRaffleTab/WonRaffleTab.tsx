@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 
-import { useRaffleInfo } from '@frakt/hooks/useRaffleInfo';
+import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 import { useIntersection } from '@frakt/hooks/useIntersection';
 import { useRaffleSort } from '../Liquidations/hooks';
 import NoWinningRaffles from '../NoWinningRaffles';
@@ -12,14 +12,16 @@ interface WonRaffleTabProps {
   onClick: () => void;
 }
 
-const url = `https://${process.env.BACKEND_DOMAIN}/liquidation?history=true`;
-
 const WonRaffleTab: FC<WonRaffleTabProps> = ({ onClick }) => {
   const { queryData } = useRaffleSort();
   const { ref, inView } = useIntersection();
 
   const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
-    useRaffleInfo({ url, id: 'wonRaffleList', queryData });
+    useRaffleInfo({
+      url: 'liquidation?history=true&',
+      id: 'wonRaffleList',
+      queryData,
+    });
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && !isListEnded) {

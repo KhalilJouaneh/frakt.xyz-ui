@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { equals } from 'ramda';
+import moment from 'moment';
 import cx from 'classnames';
 
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
@@ -7,8 +8,6 @@ import { shortenAddress } from '@frakt/utils/solanaUtils';
 import { WonRaffleListItem } from '@frakt/api/raffle';
 import styles from './WonRaffleCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
-import moment from 'moment';
-import { useCountdown } from '@frakt/hooks';
 
 interface WonRaffleCardProps {
   raffle: WonRaffleListItem;
@@ -40,7 +39,6 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
               <div className={styles.winner}>
                 <div className={styles.winnerBadge}>You!</div>
                 <p className={styles.value}>
-                  {' '}
                   {raffle?.user && shortenAddress(raffle?.user)}
                 </p>
               </div>
