@@ -44,20 +44,12 @@
 }
 
 .tabActive {
-  border: 0;
-  border-top: 1px solid var(--secondary-border);
+  border-bottom: 0 !important;
   background: var(--primary-background);
 
   &,
   &:hover {
     pointer-events: none;
-  }
-
-  &:first-child {
-    border-left: 1px solid var(--secondary-border);
-  }
-  &:last-child {
-    border-right: 1px solid var(--secondary-border);
   }
 }
 
