@@ -41,13 +41,11 @@ export const useRaffleInfo = (params: {
     pageParam: number;
     queryString: string;
   }) => {
-    const data = await (
-      await fetch(
-        `${baseUrl}/${url}${queryString}&limit=${LIMIT}&skip=${
-          LIMIT * pageParam
-        }`,
-      )
-    ).json();
+    const urlpath = `${baseUrl}/${url}${queryString}&limit=${LIMIT}&skip=${
+      LIMIT * pageParam
+    }`.replace('&?', '&');
+
+    const data = await (await fetch(urlpath)).json();
 
     if (!data?.length) {
       setIsListEnded(true);

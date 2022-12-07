@@ -33,7 +33,7 @@ const RafflesList: FC<RafflesListProps> = ({
   const lotteryTickets = useSelector(selectLotteryTickets);
 
   const { control, setValue, collections, sort, setCollections } =
-    useLiquidationsPage(isGraceList);
+    useLiquidationsPage(isGraceList, isWonList);
 
   const { SORT_COLLECTIONS_VALUES, SORT_VALUES } = useRaffleList({
     withRafflesInfo,

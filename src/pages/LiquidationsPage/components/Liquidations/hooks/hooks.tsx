@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
 import { equals } from 'ramda';
@@ -12,7 +12,10 @@ import {
   RafflesSortValue,
 } from '../../../model';
 
-type UseLiquidationsPage = (isGraceList?: boolean) => {
+type UseLiquidationsPage = (
+  isGraceList?: boolean,
+  isWonList?: boolean,
+) => {
   control: Control<FilterFormFieldsValues>;
   setCollections: (value?: []) => void;
   setValue?: any;
@@ -21,21 +24,25 @@ type UseLiquidationsPage = (isGraceList?: boolean) => {
 };
 
 export const useLiquidationsPage: UseLiquidationsPage = (
-  isGraceList?: boolean,
+  isGraceList,
+  isWonList,
 ) => {
-  const defaultSort = isGraceList
-    ? { sortOrder: 'asc', sortBy: 'startedAt' }
-    : { sortOrder: 'desc', sortBy: 'liquidationPrice' };
+  const defaultSort = useMemo(() => {
+    if (isGraceList) return { sortOrder: 'asc', sortBy: 'startedAt' };
+    if (isWonList) return { sortOrder: 'desc', sortBy: 'startedAt' };
+    return { sortOrder: 'desc', sortBy: 'liquidationPrice' };
+  }, []);
 
-  const defaultSortValue = isGraceList
-    ? {
-        label: <span>Grace Period</span>,
-        value: 'startedAt_asc',
-      }
-    : {
-        label: <span>Liquidation Price</span>,
-        value: 'liquidationPrice_desc',
-      };
+  const defaultSortValue = useMemo(() => {
+    if (isGraceList)
+      return { label: <span>Grace Period</span>, value: 'startedAt_asc' };
+    if (isWonList)
+      return { label: <span>Ended</span>, value: 'startedAt_desc' };
+    return {
+      label: <span>Liquidation Price</span>,
+      value: 'liquidationPrice_desc',
+    };
+  }, []);
 
   const { publicKey } = useWallet();
 
@@ -120,6 +127,14 @@ export const SORT_VALUES_WITH_GRACE = [
   ...SORT_VALUES,
   {
     label: <span>Grace Period</span>,
+    value: 'startedAt_',
+  },
+];
+
+export const SORT_VALUES_WITH_HISTORY = [
+  ...SORT_VALUES,
+  {
+    label: <span>Ended</span>,
     value: 'startedAt_',
   },
 ];

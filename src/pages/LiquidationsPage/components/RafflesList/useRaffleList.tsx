@@ -8,6 +8,7 @@ import {
 import {
   SORT_VALUES_WITH_GRACE,
   SORT_VALUES as RAW_SORT_VALUES,
+  SORT_VALUES_WITH_HISTORY,
 } from '../Liquidations';
 
 type SortValues = {
@@ -44,7 +45,13 @@ export const useRaffleList = ({
     value: item.value,
   }));
 
-  const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
+  const getSortValues = () => {
+    if (isGraceList) return SORT_VALUES_WITH_GRACE;
+    if (isWonList) return SORT_VALUES_WITH_HISTORY;
+    return RAW_SORT_VALUES;
+  };
+
+  const SORT_VALUES = getSortValues();
 
   return { SORT_COLLECTIONS_VALUES, SORT_VALUES };
 };
