@@ -96,29 +96,41 @@
   width: 40px;
 
   svg > path {
-    fill: var(--secondary-text);
+    fill: var(--secondary-border);
   }
 
   @media (max-width: 767px) {
     height: 32px;
     width: 32px;
   }
+
+  &:disabled {
+    svg > path {
+      fill: var(--secondary-text);
+    }
+  }
 }
 
-.counterValue {
+.input {
+  border: 0;
+  border-bottom: 1px solid var(--secondary-text);
   color: var(--secondary-text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   font: var(--font-text-4);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  outline: 0;
+  text-align: center;
   width: 40px;
 
-  &:after {
-    content: '';
-    display: block;
-    background-color: var(--secondary-text);
-    margin-top: 4px;
-    height: 1px;
-    width: 100%;
+  &:focus,
+  &:focus-visible {
+    color: var(--secondary-border);
+    border-bottom: 1px solid var(--secondary-border);
   }
+}
+
+.activeInput {
+  color: var(--secondary-border);
+  border-bottom: 1px solid var(--secondary-border);
 }

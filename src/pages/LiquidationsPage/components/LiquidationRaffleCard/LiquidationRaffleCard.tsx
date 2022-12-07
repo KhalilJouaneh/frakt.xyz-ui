@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import Tooltip from 'rc-tooltip';
+import cx from 'classnames';
 
 import { useConfirmModal, ConfirmModal } from '@frakt/components/ConfirmModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
@@ -16,7 +17,7 @@ import {
 } from '../StatsRaffleValues/StatsRaffleValues';
 
 interface LiquidationRaffleCard {
-  raffle?: RaffleListItem;
+  raffle: RaffleListItem;
   disabled: boolean;
 }
 
@@ -32,6 +33,7 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
     onSubmit,
     closeLoadingModal,
     loadingModalVisible,
+    handleChange,
   } = useLiquidationsRaffle(raffle);
 
   const {
@@ -72,10 +74,15 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
             type="tertiary"
             className={styles.counter}
             onClick={decrementCounter}
+            disabled={ticketCount <= 0}
           >
             <Icons.Minus />
           </Button>
-          <div className={styles.counterValue}>{ticketCount}</div>
+          <input
+            value={ticketCount}
+            className={cx(styles.input, ticketCount && styles.activeInput)}
+            onChange={handleChange}
+          />
           <Button
             type="tertiary"
             className={styles.counter}

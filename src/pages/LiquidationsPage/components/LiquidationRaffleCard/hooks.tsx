@@ -27,6 +27,15 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
     }
   };
 
+  const handleChange = (event): void => {
+    const valueNumber = parseFloat(event.target.value);
+    if (valueNumber >= lotteryTickets.totalTickets) {
+      setTicketCount(lotteryTickets.totalTickets);
+    } else {
+      setTicketCount(valueNumber || 0);
+    }
+  };
+
   const {
     visible: loadingModalVisible,
     open: openLoadingModal,
@@ -51,6 +60,7 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
       } else {
         await participateInRaffleTxn(params);
       }
+      setTicketCount(0);
     } catch (error) {
       console.error(error);
     } finally {
@@ -66,5 +76,8 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
     onSubmit,
     loadingModalVisible,
     closeLoadingModal,
+    setTicketCount,
+    lotteryTickets,
+    handleChange,
   };
 };
