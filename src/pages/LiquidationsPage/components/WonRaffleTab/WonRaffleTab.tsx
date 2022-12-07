@@ -12,20 +12,22 @@ const WonRaffleTab: FC = () => {
   const { queryData } = useRaffleSort();
   const { ref, inView } = useIntersection();
 
-  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
-    useRaffleInfo({
-      url: 'liquidation?history=true&',
-      id: 'wonRaffleList',
-      queryData,
-    });
+  const {
+    data: wonRaffleList,
+    fetchNextPage,
+    isFetchingNextPage,
+    isListEnded,
+  } = useRaffleInfo({
+    url: 'liquidation?history=true&',
+    id: 'wonRaffleList',
+    queryData,
+  });
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && !isListEnded) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
-
-  const wonRaffleList = data?.pages?.map((page) => page.data).flat();
 
   return (
     <>

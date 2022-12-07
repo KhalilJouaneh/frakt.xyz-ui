@@ -13,20 +13,22 @@ const UpcomingRaffleTab: FC = () => {
 
   const { ref, inView } = useIntersection();
 
-  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
-    useRaffleInfo({
-      url: 'liquidation/grace-list',
-      id: 'graceList',
-      queryData,
-    });
+  const {
+    data: graceList,
+    fetchNextPage,
+    isFetchingNextPage,
+    isListEnded,
+  } = useRaffleInfo({
+    url: 'liquidation/grace-list',
+    id: 'graceList',
+    queryData,
+  });
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && !isListEnded) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
-
-  const graceList = data?.pages?.map((page) => page.data).flat();
 
   return (
     <>

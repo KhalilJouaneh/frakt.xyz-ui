@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import Tooltip from 'rc-tooltip';
 
 import { useConfirmModal, ConfirmModal } from '@frakt/components/ConfirmModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
@@ -85,14 +86,23 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
           </Button>
         </div>
       </div>
-      <Button
-        type="secondary"
-        className={styles.btn}
-        onClick={openConfirmModal}
-        disabled={disabled || !ticketCount}
+      <Tooltip
+        placement="top"
+        trigger="hover"
+        overlay="You need to use at least 1 ticket"
+        overlayClassName={ticketCount && styles.hiddenOverlay}
       >
-        {disabled ? 'Try by 0 ticket' : 'Participate'}
-      </Button>
+        <span>
+          <Button
+            type="secondary"
+            className={styles.btn}
+            onClick={openConfirmModal}
+            disabled={disabled || !ticketCount}
+          >
+            {!ticketCount ? 'Try by 0 ticket' : 'Participate'}
+          </Button>
+        </span>
+      </Tooltip>
       <ConfirmModal
         visible={confirmModalVisible}
         onCancel={closeConfirmModal}

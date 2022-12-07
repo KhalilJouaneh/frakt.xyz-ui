@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
+import { useIntersection } from '@frakt/hooks/useIntersection';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
+import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 import EmptyList from '@frakt/componentsNew/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
 import RafflesList from '../RafflesList';
-import { useIntersection } from '@frakt/hooks/useIntersection';
-import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 
 const OngoingRaffleTab: FC = () => {
   const lotteryTickets = useSelector(selectLotteryTickets);
@@ -21,20 +21,22 @@ const OngoingRaffleTab: FC = () => {
 
   const userQueryData = { ...queryData, user: publicKey?.toBase58() };
 
-  const { data, fetchNextPage, isFetchingNextPage, isListEnded } =
-    useRaffleInfo({
-      url: 'liquidation',
-      id: 'ongoingRaffleList',
-      queryData: userQueryData,
-    });
+  const {
+    data: raffleList,
+    fetchNextPage,
+    isFetchingNextPage,
+    isListEnded,
+  } = useRaffleInfo({
+    url: 'liquidation',
+    id: 'ongoingRaffleList',
+    queryData: userQueryData,
+  });
 
   useEffect(() => {
     if (inView && !isFetchingNextPage && !isListEnded) {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
-
-  const raffleList = data?.pages?.map((page) => page.data).flat();
 
   return (
     <>

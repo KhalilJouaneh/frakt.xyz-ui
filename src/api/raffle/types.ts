@@ -45,16 +45,3 @@ export interface WonRaffleListItem {
   expiredAt: string;
   startedAt: string;
 }
-
-export type FetchRaffleHistory = (props: {
-  query: string;
-}) => Promise<WonRaffleListItem[]>;
-
-export type FetchGraceRaffle = (props: {
-  query: string;
-}) => Promise<GraceListItem[]>;
-
-export type FetchLiquidationRaffle = (props: {
-  query: string;
-  publicKey?: string;
-}) => Promise<RaffleListItem[]>;

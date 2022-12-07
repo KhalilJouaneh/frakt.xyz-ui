@@ -4,7 +4,6 @@ import { stringify } from '@frakt/utils/state';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   FetchNextPageOptions,
-  InfiniteData,
   InfiniteQueryObserverResult,
   useInfiniteQuery,
 } from '@tanstack/react-query';
@@ -18,7 +17,7 @@ export const useRaffleInfo = (params: {
   id: string;
   queryData: FetchItemsParams;
 }): {
-  data: InfiniteData<{ pageParam: number; data: any[] }>;
+  data: any[];
   fetchNextPage: (options?: FetchNextPageOptions) => Promise<
     InfiniteQueryObserverResult<{
       pageParam: number;
@@ -77,8 +76,10 @@ export const useRaffleInfo = (params: {
     },
   );
 
+  const rafflesData = data?.pages?.map((page) => page.data).flat();
+
   return {
-    data,
+    data: rafflesData,
     fetchNextPage,
     isFetchingNextPage,
     isListEnded,

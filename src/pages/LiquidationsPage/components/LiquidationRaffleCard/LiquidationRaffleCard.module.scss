@@ -62,6 +62,10 @@
   }
 }
 
+.hiddenOverlay {
+  display: none;
+}
+
 .countdown {
   font: var(--font-text-8);
   display: flex;
