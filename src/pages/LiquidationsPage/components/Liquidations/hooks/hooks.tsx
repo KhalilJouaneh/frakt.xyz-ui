@@ -30,7 +30,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const defaultSort = useMemo(() => {
     if (isGraceList) return { sortOrder: 'asc', sortBy: 'startedAt' };
     if (isWonList) return { sortOrder: 'desc', sortBy: 'startedAt' };
-    return { sortOrder: 'desc', sortBy: 'liquidationPrice' };
+    return { sortOrder: 'asc', sortBy: 'startedAt' };
   }, []);
 
   const defaultSortValue = useMemo(() => {
@@ -38,10 +38,7 @@ export const useLiquidationsPage: UseLiquidationsPage = (
       return { label: <span>Grace Period</span>, value: 'startedAt_asc' };
     if (isWonList)
       return { label: <span>Ended</span>, value: 'startedAt_desc' };
-    return {
-      label: <span>Liquidation Price</span>,
-      value: 'liquidationPrice_desc',
-    };
+    return { label: <span>Duration</span>, value: 'startedAt_asc' };
   }, []);
 
   const { publicKey } = useWallet();
@@ -120,6 +117,14 @@ export const SORT_VALUES: RafflesSortValue[] = [
   {
     label: <span>Liquidation Price</span>,
     value: 'liquidationPrice_',
+  },
+];
+
+export const SORT_VALUES_WITH_LIQUIDATION = [
+  ...SORT_VALUES,
+  {
+    label: <span>Duration</span>,
+    value: 'startedAt_',
   },
 ];
 

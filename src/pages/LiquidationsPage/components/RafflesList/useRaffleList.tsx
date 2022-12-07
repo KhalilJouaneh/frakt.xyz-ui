@@ -7,8 +7,8 @@ import {
 } from '@frakt/state/liquidations/selectors';
 import {
   SORT_VALUES_WITH_GRACE,
-  SORT_VALUES as RAW_SORT_VALUES,
   SORT_VALUES_WITH_HISTORY,
+  SORT_VALUES_WITH_LIQUIDATION,
 } from '../Liquidations';
 
 type SortValues = {
@@ -48,7 +48,7 @@ export const useRaffleList = ({
   const getSortValues = () => {
     if (isGraceList) return SORT_VALUES_WITH_GRACE;
     if (isWonList) return SORT_VALUES_WITH_HISTORY;
-    return RAW_SORT_VALUES;
+    return SORT_VALUES_WITH_LIQUIDATION;
   };
 
   const SORT_VALUES = getSortValues();

@@ -11,7 +11,7 @@ import { useLoadingModal } from '../../../../components/LoadingModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 
-export const useLiquidationsRaffle = (data: RaffleListItem) => {
+export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
   const wallet = useWallet();
   const connection = useConnection();
 
@@ -59,11 +59,11 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
       connection,
       wallet,
       tickets: ticketCount,
-      raffleAddress: data?.rafflePubKey,
+      raffleAddress: raffle?.rafflePubKey,
     };
 
     try {
-      if (data.tickets) {
+      if (raffle.tickets) {
         await addTicketsToParticipationTxn(params);
       } else {
         await participateInRaffleTxn(params);
