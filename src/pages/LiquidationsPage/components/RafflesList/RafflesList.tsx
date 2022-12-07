@@ -1,6 +1,5 @@
 import { FC, ReactNode, useRef } from 'react';
 import { Controller } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 
 import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
@@ -13,17 +12,8 @@ import Button from '@frakt/components/Button';
 import FiltersDropdown, {
   useFiltersModal,
 } from '@frakt/componentsNew/FiltersDropdown';
-import {
-  selectLotteryTickets,
-  selectRaffleCollections,
-  selectGraceCollections,
-  selectHistoryCollections,
-} from '@frakt/state/liquidations/selectors';
-import {
-  SORT_VALUES as RAW_SORT_VALUES,
-  SORT_VALUES_WITH_GRACE,
-  useLiquidationsPage,
-} from '../Liquidations';
+import { useLiquidationsPage } from '../Liquidations';
+import { useRaffleList } from './useRaffleList';
 
 interface RafflesListProps {
   children: ReactNode;
@@ -41,26 +31,14 @@ const RafflesList: FC<RafflesListProps> = ({
   const { control, setValue, collections, sort, setCollections } =
     useLiquidationsPage(isGraceList);
 
-  const lotteryTickets = useSelector(selectLotteryTickets);
+  const { getRaffleTickets, SORT_COLLECTIONS_VALUES, SORT_VALUES } =
+    useRaffleList({
+      withRafflesInfo,
+      isGraceList,
+      isWonList,
+    });
 
-  const collectionsRaffleList = useSelector(selectRaffleCollections);
-  const collectionsGraceList = useSelector(selectGraceCollections);
-  const collectionsHistoryList = useSelector(selectHistoryCollections);
-
-  const getSortCollectionValues = () => {
-    if (withRafflesInfo) return collectionsRaffleList;
-    if (isGraceList) return collectionsGraceList;
-    if (isWonList) return collectionsHistoryList;
-  };
-
-  const currentCollectionsList = getSortCollectionValues();
-
-  const SORT_COLLECTIONS_VALUES = currentCollectionsList.map((item) => ({
-    label: <span>{item.label}</span>,
-    value: item.value,
-  }));
-
-  const SORT_VALUES = isGraceList ? SORT_VALUES_WITH_GRACE : RAW_SORT_VALUES;
+  const { lotteryTickets, availableTickets } = getRaffleTickets();
 
   const {
     visible: filtersModalVisible,
@@ -74,7 +52,10 @@ const RafflesList: FC<RafflesListProps> = ({
   return (
     <>
       <div className={styles.searchWrapper}>
-        <TicketsCounter tickets={lotteryTickets?.totalTickets} />
+        <TicketsCounter
+          availableTickets={availableTickets}
+          tickets={lotteryTickets}
+        />
         <div ref={ref}>
           <div className={styles.sortWrapper}>
             <Button type="tertiary" onClick={toggleFiltersModal}>

@@ -1,13 +1,17 @@
 import { FC } from 'react';
-import Icons from '../../../../iconsNew';
+import Icons from '@frakt/iconsNew';
 
 import styles from './TicketsCounter.module.scss';
 
 interface TicketsCounterProps {
   tickets: number;
+  availableTickets: number;
 }
 
-export const TicketsCounter: FC<TicketsCounterProps> = ({ tickets }) => {
+export const TicketsCounter: FC<TicketsCounterProps> = ({
+  tickets,
+  availableTickets,
+}) => {
   return (
     <div className={styles.ticket}>
       <div className={styles.ticketIcon}>
@@ -15,7 +19,9 @@ export const TicketsCounter: FC<TicketsCounterProps> = ({ tickets }) => {
       </div>
       <div className={styles.ticketInfo}>
         <div className={styles.title}>Tickets you have</div>
-        <div className={styles.value}>{tickets || 0}</div>
+        <div className={styles.value}>
+          {availableTickets} / {tickets}
+        </div>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export interface RaffleListItem {
   expiredAt: string;
 }
 export interface WonRaffleListItem {
-  pubkey: string;
+  rafflePubKey: string;
   nftMint: string;
   nftName: string;
   nftImageUrl: string;

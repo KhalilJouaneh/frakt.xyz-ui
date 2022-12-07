@@ -1,7 +1,8 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { liquidationsActions } from '@frakt/state/liquidations/actions';
+import { useLiquidationRaffles } from '../OngoingRaffleTab/hooks';
 import { Tabs, useTabs } from '@frakt/components/Tabs';
 import UpcomingRaffleTab from '../UpcomingRaffleTab';
 import OngoingRaffleTab from '../OngoingRaffleTab';
@@ -38,6 +39,19 @@ const Liquidations: FC = () => {
     }
   }, [socket, publicKey]);
 
+  const { raffles } = useLiquidationRaffles();
+
+  const renderTip = useMemo(() => {
+    return raffles?.length
+      ? {
+          renderTip: {
+            tabValue: RafflesTabsNames.ONGOING,
+            value: raffles?.length.toString(),
+          },
+        }
+      : {};
+  }, [raffles]);
+
   return (
     <>
       <Tabs
@@ -45,6 +59,7 @@ const Liquidations: FC = () => {
         tabs={liquidationTabs}
         value={tabValue}
         setValue={setTabValue}
+        {...renderTip}
       />
       <div className={styles.tabContent}>
         {tabValue === RafflesTabsNames.ONGOING && <OngoingRaffleTab />}

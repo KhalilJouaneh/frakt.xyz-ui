@@ -11,6 +11,8 @@ import EmptyList from '@frakt/componentsNew/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
 import RafflesList from '../RafflesList';
+import { RaffleListItem } from '@frakt/api/raffle';
+import { useLiquidationRaffles } from './hooks';
 
 const OngoingRaffleTab: FC = () => {
   const lotteryTickets = useSelector(selectLotteryTickets);
@@ -38,13 +40,19 @@ const OngoingRaffleTab: FC = () => {
     }
   }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
 
+  const { setRaffles } = useLiquidationRaffles();
+
+  useEffect(() => {
+    setRaffles(raffleList);
+  }, [inView]);
+
   return (
     <>
       {publicKey ? (
         <RafflesList withRafflesInfo>
           {raffleList?.length ? (
             <div className={styles.rafflesList} ref={ref}>
-              {raffleList.map((raffle) => (
+              {raffleList.map((raffle: RaffleListItem) => (
                 <LiquidationRaffleCard
                   key={raffle.nftMint}
                   raffle={raffle}
