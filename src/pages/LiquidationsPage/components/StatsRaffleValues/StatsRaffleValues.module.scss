@@ -34,9 +34,14 @@
 
 .nftName {
   font: var(--font-subtitle-2);
+  font-size: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 18px;
+  }
 }
 
 .nftImage {
-  height: 56px;
-  width: 56px;
+  height: 48px;
+  width: 48px;
 }

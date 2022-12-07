@@ -14,11 +14,6 @@
   font: var(--font-subtitle);
   color: var(--primary-border);
   height: 42px;
-
-  @media screen and (max-width: 510px) {
-    font-size: 15px;
-    height: unset;
-  }
 }
 
 .ticketIcon {

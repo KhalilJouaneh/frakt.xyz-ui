@@ -3,8 +3,6 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin-right: 1px;
-  margin-top: 1px;
 }
 
 .tab {
@@ -75,4 +73,9 @@
   align-items: center;
   justify-content: center;
   font: var(--font-text-5);
+
+  @media (max-width: 1024px) {
+    min-width: 29px;
+    height: 22px;
+  }
 }

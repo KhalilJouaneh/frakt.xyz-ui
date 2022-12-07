@@ -53,7 +53,7 @@ const Liquidations: FC = () => {
   }, [raffles]);
 
   return (
-    <>
+    <div className={styles.content}>
       <Tabs
         className={styles.tab}
         tabs={liquidationTabs}
@@ -66,7 +66,7 @@ const Liquidations: FC = () => {
         {tabValue === RafflesTabsNames.UPCOMING && <UpcomingRaffleTab />}
         {tabValue === RafflesTabsNames.HISTORY && <WonRaffleTab />}
       </div>
-    </>
+    </div>
   );
 };
 

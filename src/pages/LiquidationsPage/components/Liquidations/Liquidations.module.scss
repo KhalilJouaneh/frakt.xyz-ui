@@ -1,10 +1,26 @@
 .tab {
   flex-wrap: nowrap;
+
+  button {
+    border: 0;
+    border-bottom: 1px solid var(--secondary-border);
+  }
+
+  button:first-child {
+    border-left: 0;
+    border-right: 1px solid var(--secondary-border);
+  }
+  button:last-child {
+    border-right: 0;
+    border-left: 1px solid var(--secondary-border);
+  }
+}
+
+.content {
+  border: 1px solid var(--secondary-border);
 }
 
 .tabContent {
-  border: 1px solid var(--secondary-border);
-  border-top: 0;
   background: var(--primary-background);
   padding: 24px;
   min-height: 600px;

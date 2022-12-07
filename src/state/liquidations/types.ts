@@ -20,6 +20,7 @@ export interface RaffleListItem {
 
 export interface LotteryTicket {
   totalTickets: number;
+  currentTickets: number;
 }
 
 export interface CollectionsListItem {

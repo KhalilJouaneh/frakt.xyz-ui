@@ -9,6 +9,7 @@ import { useConnection } from '../../../../hooks';
 import { selectLotteryTickets } from '../../../../state/liquidations/selectors';
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
+import { useConfirmModal } from '@frakt/components/ConfirmModal';
 
 export const useLiquidationsRaffle = (data: RaffleListItem) => {
   const wallet = useWallet();
@@ -16,6 +17,7 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
 
   const [ticketCount, setTicketCount] = useState<number>(0);
   const lotteryTickets = useSelector(selectLotteryTickets);
+  const currentTickets = lotteryTickets?.currentTickets || 0;
 
   const incrementCounter = (): void => {
     setTicketCount(ticketCount + 1);
@@ -29,8 +31,8 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
 
   const handleChange = (event): void => {
     const valueNumber = parseFloat(event.target.value);
-    if (valueNumber >= lotteryTickets.totalTickets) {
-      setTicketCount(lotteryTickets.totalTickets);
+    if (valueNumber >= currentTickets) {
+      setTicketCount(currentTickets);
     } else {
       setTicketCount(valueNumber || 0);
     }
@@ -42,7 +44,13 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
     close: closeLoadingModal,
   } = useLoadingModal();
 
-  const isDisabledIncrement = ticketCount >= lotteryTickets?.totalTickets;
+  const {
+    visible: confirmModalVisible,
+    open: openConfirmModal,
+    close: closeConfirmModal,
+  } = useConfirmModal();
+
+  const isDisabledIncrement = ticketCount >= currentTickets;
 
   const onSubmit = async (): Promise<void> => {
     openLoadingModal();
@@ -61,6 +69,7 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
         await participateInRaffleTxn(params);
       }
       setTicketCount(0);
+      closeConfirmModal();
     } catch (error) {
       console.error(error);
     } finally {
@@ -79,5 +88,8 @@ export const useLiquidationsRaffle = (data: RaffleListItem) => {
     setTicketCount,
     lotteryTickets,
     handleChange,
+    confirmModalVisible,
+    openConfirmModal,
+    closeConfirmModal,
   };
 };

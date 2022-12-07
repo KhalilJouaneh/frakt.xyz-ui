@@ -54,9 +54,9 @@ const OngoingRaffleTab: FC = () => {
             <div className={styles.rafflesList} ref={ref}>
               {raffleList.map((raffle: RaffleListItem) => (
                 <LiquidationRaffleCard
-                  key={raffle.nftMint}
+                  key={raffle.rafflePubKey}
                   raffle={raffle}
-                  disabled={lotteryTickets?.totalTickets < 1}
+                  disabled={lotteryTickets?.currentTickets < 1}
                 />
               ))}
             </div>

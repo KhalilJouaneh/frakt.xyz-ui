@@ -14,6 +14,8 @@ import FiltersDropdown, {
 } from '@frakt/componentsNew/FiltersDropdown';
 import { useLiquidationsPage } from '../Liquidations';
 import { useRaffleList } from './useRaffleList';
+import { useSelector } from 'react-redux';
+import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 
 interface RafflesListProps {
   children: ReactNode;
@@ -28,17 +30,16 @@ const RafflesList: FC<RafflesListProps> = ({
   isGraceList,
   isWonList,
 }) => {
+  const lotteryTickets = useSelector(selectLotteryTickets);
+
   const { control, setValue, collections, sort, setCollections } =
     useLiquidationsPage(isGraceList);
 
-  const { getRaffleTickets, SORT_COLLECTIONS_VALUES, SORT_VALUES } =
-    useRaffleList({
-      withRafflesInfo,
-      isGraceList,
-      isWonList,
-    });
-
-  const { lotteryTickets, availableTickets } = getRaffleTickets();
+  const { SORT_COLLECTIONS_VALUES, SORT_VALUES } = useRaffleList({
+    withRafflesInfo,
+    isGraceList,
+    isWonList,
+  });
 
   const {
     visible: filtersModalVisible,
@@ -53,8 +54,8 @@ const RafflesList: FC<RafflesListProps> = ({
     <>
       <div className={styles.searchWrapper}>
         <TicketsCounter
-          availableTickets={availableTickets}
-          tickets={lotteryTickets}
+          currentTickets={lotteryTickets?.currentTickets}
+          totalTickets={lotteryTickets?.totalTickets}
         />
         <div ref={ref}>
           <div className={styles.sortWrapper}>

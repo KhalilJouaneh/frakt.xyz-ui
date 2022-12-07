@@ -1,11 +1,40 @@
 .card {
   background: var(--primary-background);
-  border: 1px solid var(--primary-border);
+  border: 3px solid transparent;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  padding: 24px;
   gap: 16px;
+  padding: 24px;
+
+  @media (max-width: 767px) {
+    padding: 15px;
+  }
+}
+
+.cardWrapper {
+  border: 1px solid var(--primary-border);
+  position: relative;
+}
+
+.participatedCard {
+  border-color: var(--light-green-color);
+}
+
+.badge {
+  background: var(--light-green-color);
+  color: var(--button-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--light-green-color);
+  position: absolute;
+  top: -16px;
+  right: 16px;
+  font: var(--font-text-5);
+  height: 33px;
+  padding: 8px;
+  max-width: 190px;
 }
 
 .subtitle {
