@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import Tooltip from 'rc-tooltip';
 import cx from 'classnames';
 
 import { ConfirmModal } from '@frakt/components/ConfirmModal';
@@ -15,6 +14,7 @@ import {
   GeneralCardInfo,
   StatsRaffleValues,
 } from '../StatsRaffleValues/StatsRaffleValues';
+import Tooltip from '@frakt/components/Tooltip';
 
 interface LiquidationRaffleCard {
   raffle: RaffleListItem;
