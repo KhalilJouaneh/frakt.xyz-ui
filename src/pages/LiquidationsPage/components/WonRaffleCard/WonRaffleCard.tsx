@@ -4,8 +4,8 @@ import moment from 'moment';
 import cx from 'classnames';
 
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
+import { WonRaffleListItem } from '@frakt/state/liquidations/types';
 import { shortenAddress } from '@frakt/utils/solanaUtils';
-import { WonRaffleListItem } from '@frakt/api/raffle';
 import styles from './WonRaffleCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -14,6 +14,7 @@ interface WonRaffleCardProps {
 }
 
 const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
+  console.log(raffle);
   const { publicKey } = useWallet();
   const isWinner = equals(raffle?.user, publicKey?.toBase58());
 

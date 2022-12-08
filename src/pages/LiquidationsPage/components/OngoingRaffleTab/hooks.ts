@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { RaffleListItem } from '@frakt/api/raffle';
+import { RaffleListItem } from '@frakt/state/liquidations/types';
 
 interface LiquidationRafflesState {
   setRaffles: (value: RaffleListItem[]) => void;

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { FetchItemsParams } from '@frakt/api/raffle';
 import { stringify } from '@frakt/utils/state';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
@@ -7,6 +6,7 @@ import {
   InfiniteQueryObserverResult,
   useInfiniteQuery,
 } from '@tanstack/react-query';
+import { FetchItemsParams } from '@frakt/state/liquidations/types';
 
 const LIMIT = 20;
 

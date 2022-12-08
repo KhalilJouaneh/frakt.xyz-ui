@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
+import { GraceListItem } from '@frakt/state/liquidations/types';
 import { createTimerJSX } from '@frakt/utils';
 import styles from './GraceCard.module.scss';
 import { Timer } from '@frakt/icons';
-import { GraceListItem } from '@frakt/api/raffle';
 
 interface GraceCardProps {
   raffle: GraceListItem;

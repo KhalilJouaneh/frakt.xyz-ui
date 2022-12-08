@@ -1,5 +1,5 @@
-import { FetchItemsParams } from '@frakt/api/raffle';
 import create from 'zustand';
+import { FetchItemsParams } from '@frakt/state/liquidations/types';
 
 interface RaffleSortState {
   setSortQuery: (value: FetchItemsParams) => void;
