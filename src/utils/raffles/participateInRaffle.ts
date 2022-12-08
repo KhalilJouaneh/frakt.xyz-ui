@@ -42,6 +42,11 @@ export const participateInRaffle: ParticipateInRaffle = async ({
       },
     });
 
+    notify({
+      message: 'Transaction successful!',
+      type: NotifyType.SUCCESS,
+    });
+
     return true;
   } catch (error) {
     const isNotConfirmed = showSolscanLinkNotification(error);
