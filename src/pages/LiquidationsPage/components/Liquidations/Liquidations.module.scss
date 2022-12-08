@@ -3,19 +3,19 @@
 
   button {
     border: 0;
-    border-bottom: 1px solid var(--secondary-border);
+    border-bottom: 1px solid var(--primary-border);
   }
 
   button:first-child {
-    border-right: 1px solid var(--secondary-border);
+    border-right: 1px solid var(--primary-border);
   }
   button:last-child {
-    border-left: 1px solid var(--secondary-border);
+    border-left: 1px solid var(--primary-border);
   }
 }
 
 .content {
-  border: 1px solid var(--secondary-border);
+  border: 1px solid var(--primary-border);
 }
 
 .tabContent {
