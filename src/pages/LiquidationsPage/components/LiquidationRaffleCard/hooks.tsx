@@ -4,12 +4,12 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import {
   participateInRaffle as participateInRaffleTxn,
   addTicketsToParticipation as addTicketsToParticipationTxn,
-} from '../../../../utils/raffles';
+} from '@frakt/utils/raffles';
 import { useConnection } from '../../../../hooks';
-import { selectLotteryTickets } from '../../../../state/liquidations/selectors';
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
+import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 
 export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
   const wallet = useWallet();
