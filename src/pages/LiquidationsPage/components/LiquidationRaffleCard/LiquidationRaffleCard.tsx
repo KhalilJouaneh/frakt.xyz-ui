@@ -39,12 +39,18 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
     closeConfirmModal,
   } = useLiquidationsRaffle(raffle);
 
+  const isParticipationExists =
+    raffle.isParticipationExists || !!raffle.tickets;
+
   return (
     <div className={styles.cardWrapper}>
       <div
-        className={cx(styles.card, raffle.tickets && styles.participatedCard)}
+        className={cx(
+          styles.card,
+          isParticipationExists && styles.participatedCard,
+        )}
       >
-        {!!raffle.tickets && (
+        {isParticipationExists && (
           <div className={styles.badge}>
             You’ve used {raffle.tickets} tickets
           </div>

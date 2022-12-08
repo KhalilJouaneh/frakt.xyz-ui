@@ -51,6 +51,8 @@ export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
   } = useConfirmModal();
 
   const isDisabledIncrement = ticketCount >= currentTickets;
+  const isParticipationExists =
+    raffle?.isParticipationExists || !!raffle?.tickets;
 
   const onSubmit = async (): Promise<void> => {
     openLoadingModal();
@@ -63,7 +65,7 @@ export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
     };
 
     try {
-      if (raffle.tickets) {
+      if (isParticipationExists) {
         await addTicketsToParticipationTxn(params);
       } else {
         await participateInRaffleTxn(params);

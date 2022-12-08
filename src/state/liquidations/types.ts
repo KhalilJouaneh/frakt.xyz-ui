@@ -6,6 +6,7 @@ export interface FetchItemsParams {
   user?: string;
 }
 export interface RaffleListItem {
+  isParticipationExists: boolean;
   rafflePubKey: string;
   nftMint: string;
   nftName: string;
