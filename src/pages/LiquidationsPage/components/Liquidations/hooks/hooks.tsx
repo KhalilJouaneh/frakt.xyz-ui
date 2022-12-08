@@ -50,7 +50,6 @@ export const useLiquidationsPage: UseLiquidationsPage = (
   const [sortOrder, setSortOrder] = useState<string>(defaultSort.sortOrder);
   const [sortBy, setSortBy] = useState<string>(defaultSort.sortBy);
   const [collections, setCollections] = useState<string[]>([]);
-  console.log(collections);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
