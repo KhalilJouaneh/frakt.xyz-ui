@@ -5,9 +5,9 @@ import { ConfirmModal } from '@frakt/components/ConfirmModal';
 import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
+import { createTimerJSX } from '@frakt/components/Timer';
 import { useLiquidationsRaffle } from './hooks';
 import Button from '@frakt/components/Button';
-import { createTimerJSX } from '@frakt/utils';
 import Icons from '../../../../iconsNew';
 import { Timer } from '@frakt/icons';
 import {

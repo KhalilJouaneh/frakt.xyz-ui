@@ -230,15 +230,3 @@ export const compareNumbers = (
     if (numberA > numberB) return -1;
   } else if (numberB > numberA) return -1;
 };
-
-export const createTimerJSX = (expiredAt: string | number): JSX.Element => {
-  const { timeLeft } = useCountdown(moment(expiredAt).unix());
-
-  return (
-    <>
-      {timeLeft.days}d<p>:</p>
-      {timeLeft.hours}h<p>:</p>
-      {timeLeft.minutes}m
-    </>
-  );
-};

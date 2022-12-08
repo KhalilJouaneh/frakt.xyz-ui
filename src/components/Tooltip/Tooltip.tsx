@@ -14,7 +14,7 @@ const Tooltip: FC<RcTooltipProps> = ({
   <RcTooltip
     {...props}
     arrowContent={<></>}
-    overlayClassName={cx(overlayClassName, styles['rc-tooltip-inner'])}
+    overlayClassName={cx(overlayClassName, styles['rcTooltipInner'])}
     getTooltipContainer={(triggerNode) => (triggerNode as any).parentNode}
   >
     {children}
