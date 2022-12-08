@@ -14,7 +14,6 @@ interface WonRaffleCardProps {
 }
 
 const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
-  console.log(raffle);
   const { publicKey } = useWallet();
   const isWinner = equals(raffle?.user, publicKey?.toBase58());
 

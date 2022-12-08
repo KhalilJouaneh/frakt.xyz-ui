@@ -4,7 +4,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { useDispatch } from 'react-redux';
 
-import { usePartialRepayModal } from '../../pages/LoansPage/components/PartialRepayModal';
+import { usePartialRepayModal } from '../PartialRepayModal';
 import { paybackLoan as paybackLoanTx } from '../../utils/loans';
 import { commonActions } from '../../state/common/actions';
 import { loansActions } from '../../state/loans/actions';

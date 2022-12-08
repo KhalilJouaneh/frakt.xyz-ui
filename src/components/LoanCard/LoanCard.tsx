@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { PartialRepayModal } from '@frakt/pages/LoansPage/components/PartialRepayModal';
+import { PartialRepayModal } from '@frakt/components/PartialRepayModal';
 import { caclTimeToRepay } from '../../utils/loans';
 import { RewardState, useLoans } from './hooks';
 import { LoadingModal } from '../LoadingModal';
