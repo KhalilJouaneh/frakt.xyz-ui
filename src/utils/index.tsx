@@ -1,9 +1,6 @@
-import { useEffect } from 'react';
 import { web3, BN, TokenInfo } from '@frakt-protocol/frakt-sdk';
-import { useCountdown } from '@frakt/hooks';
 import { notification } from 'antd';
 import { Dictionary } from 'lodash';
-import moment from 'moment';
 
 import { formatNumber, Notify, NotifyType } from './solanaUtils';
 import { FRKT_TOKEN_MINT_PUBLIC_KEY } from '../config';
