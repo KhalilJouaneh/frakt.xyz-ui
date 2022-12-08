@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Control, useForm } from 'react-hook-form';
+import { Control, useForm, UseFormSetValue } from 'react-hook-form';
 import { equals } from 'ramda';
 
 import { useRaffleSort } from './useRaffleSort';
@@ -18,8 +18,12 @@ type UseLiquidationsPage = (
 ) => {
   control: Control<FilterFormFieldsValues>;
   setCollections: (value?: []) => void;
-  setValue?: any;
-  collections: any;
+  setValue?: UseFormSetValue<{
+    sort: RafflesSortValue;
+    collections: string[];
+    showMyRaffles: boolean;
+  }>;
+  collections: string[];
   sort?: RafflesSortValue;
 };
 
@@ -45,7 +49,8 @@ export const useLiquidationsPage: UseLiquidationsPage = (
 
   const [sortOrder, setSortOrder] = useState<string>(defaultSort.sortOrder);
   const [sortBy, setSortBy] = useState<string>(defaultSort.sortBy);
-  const [collections, setCollections] = useState<[]>([]);
+  const [collections, setCollections] = useState<string[]>([]);
+  console.log(collections);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {

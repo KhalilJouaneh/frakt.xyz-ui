@@ -45,7 +45,7 @@ export const useRaffleList = ({
     value: item.value,
   }));
 
-  const getSortValues = () => {
+  const getSortValues = (): SortValues[] => {
     if (isGraceList) return SORT_VALUES_WITH_GRACE;
     if (isWonList) return SORT_VALUES_WITH_HISTORY;
     return SORT_VALUES_WITH_LIQUIDATION;
