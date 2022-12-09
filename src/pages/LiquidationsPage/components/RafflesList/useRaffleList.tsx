@@ -40,10 +40,12 @@ export const useRaffleList = ({
 
   const currentCollectionsList = getSortCollectionValues();
 
-  const SORT_COLLECTIONS_VALUES = currentCollectionsList?.map((item) => ({
-    label: <span>{item.label}</span>,
-    value: item.value,
-  }));
+  const SORT_COLLECTIONS_VALUES = (currentCollectionsList || []).map(
+    (item) => ({
+      label: <span>{item.label}</span>,
+      value: item.value,
+    }),
+  );
 
   const getSortValues = (): SortValues[] => {
     if (isGraceList) return SORT_VALUES_WITH_GRACE;
