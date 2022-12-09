@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { liquidationsActions } from '@frakt/state/liquidations/actions';
+// import { liquidationsActions } from '@frakt/state/liquidations/actions';
 import { useLiquidationRaffles } from '../OngoingRaffleTab/hooks';
 import { Tabs, useTabs } from '@frakt/components/Tabs';
 import UpcomingRaffleTab from '../UpcomingRaffleTab';
@@ -25,13 +25,13 @@ const Liquidations: FC = () => {
     defaultValue: RAFFLES_TABS[0].value,
   });
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const socket = useSelector(selectSocket);
   const publicKey = useSelector(selectWalletPublicKey);
 
-  useEffect(() => {
-    dispatch(liquidationsActions.fetchCollectionsList());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(liquidationsActions.fetchCollectionsList());
+  // }, [dispatch]);
 
   useEffect(() => {
     if (publicKey && socket) {
