@@ -1,0 +1,47 @@
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.label {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.value {
+  font: var(--font-text-8);
+
+  svg {
+    width: 11px;
+    height: 10px;
+  }
+}
+
+.nftInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nftName {
+  font: var(--font-subtitle-2);
+  font-size: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 18px;
+  }
+}
+
+.nftImage {
+  height: 48px;
+  width: 48px;
+}

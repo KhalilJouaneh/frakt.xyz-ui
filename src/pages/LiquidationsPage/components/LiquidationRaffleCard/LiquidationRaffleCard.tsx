@@ -1,81 +1,140 @@
-import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+import { FC } from 'react';
+import cx from 'classnames';
 
-import { ConfirmModal } from '../../../../components/ConfirmModal';
-import { LoadingModal } from '../../../../components/LoadingModal';
-import Button from '../../../../components/Button';
-import { SolanaIcon } from '../../../../icons';
-import { liquidationsActions } from '../../../../state/liquidations/actions';
-import { selectTxRaffleTryStatus } from '../../../../state/liquidations/selectors';
-import { useOnFulfilled } from '../../../../hooks';
+import { ConfirmModal } from '@frakt/components/ConfirmModal';
+import { RaffleListItem } from '@frakt/state/liquidations/types';
+import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
+import { createTimerJSX } from '@frakt/components/Timer';
+import { useLiquidationsRaffle } from './hooks';
+import Button from '@frakt/components/Button';
+import Icons from '../../../../iconsNew';
+import { Timer } from '@frakt/icons';
+import {
+  GeneralCardInfo,
+  StatsRaffleValues,
+} from '../StatsRaffleValues/StatsRaffleValues';
+import Tooltip from '@frakt/components/Tooltip';
 
-const LiquidationRaffleCard: FC<{ data; disabled: boolean }> = ({
-  data,
+interface LiquidationRaffleCard {
+  raffle: RaffleListItem;
+  disabled: boolean;
+}
+
+const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
+  raffle,
   disabled,
 }) => {
-  const [tryId, setTryId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
-  const txRequestStatus = useSelector(selectTxRaffleTryStatus);
-  useOnFulfilled(txRequestStatus, () => {
-    setIsLoading(false);
-  });
+  const {
+    incrementCounter,
+    decrementCounter,
+    isDisabledIncrement,
+    ticketCount,
+    onSubmit,
+    closeLoadingModal,
+    loadingModalVisible,
+    handleChange,
+    confirmModalVisible,
+    openConfirmModal,
+    closeConfirmModal,
+  } = useLiquidationsRaffle(raffle);
 
-  const handleClick = () => {
-    setTryId(data.nftMint);
-  };
-
-  const handleSumit = () => {
-    setTryId(null);
-    setIsLoading(true);
-    dispatch(liquidationsActions.txRaffleTry(data));
-  };
+  const isParticipationExists =
+    raffle.isParticipationExists || !!raffle.tickets;
 
   return (
-    <div className={styles.card}>
-      <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={data.nftImageUrl} />
-        <div>
-          <p className={styles.nftName}>{data.nftName}</p>
+    <div className={styles.cardWrapper}>
+      <div
+        className={cx(
+          styles.card,
+          isParticipationExists && styles.participatedCard,
+        )}
+      >
+        {isParticipationExists && (
+          <div className={styles.badge}>
+            You’ve used {raffle.tickets} tickets
+          </div>
+        )}
+        <GeneralCardInfo
+          nftName={raffle.nftName}
+          nftImageUrl={raffle.nftImageUrl}
+        />
+        <div className={styles.statsValue}>
+          <StatsRaffleValues
+            className={styles.opacity}
+            label="Floor price"
+            value={raffle.nftFloorPrice}
+          />
+          <StatsRaffleValues
+            label="Liquidation price"
+            value={raffle.liquidationPrice}
+          />
+          <StatsRaffleValues label="Duration">
+            <div className={styles.wrapper}>
+              <Timer />
+              <div className={styles.countdown}>
+                {createTimerJSX(raffle.expiredAt)}
+              </div>
+            </div>
+          </StatsRaffleValues>
         </div>
-      </div>
-      <div className={styles.statsValue}>
-        <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>
-            {`${data.nftFloorPrice}`} <SolanaIcon />
-          </p>
+        <div className={styles.ticketsWrapper}>
+          <p className={styles.subtitle}>Tickets</p>
+          <div className={styles.ticketsInfo}>
+            <Button
+              type="tertiary"
+              className={styles.counter}
+              onClick={decrementCounter}
+              disabled={ticketCount <= 0}
+            >
+              <Icons.Minus />
+            </Button>
+            <input
+              value={ticketCount}
+              className={cx(styles.input, ticketCount && styles.activeInput)}
+              onChange={handleChange}
+            />
+            <Button
+              type="tertiary"
+              className={styles.counter}
+              onClick={incrementCounter}
+              disabled={isDisabledIncrement}
+            >
+              <Icons.Plus />
+            </Button>
+          </div>
         </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>
-            {`${data.liquidationPrice}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <Button
-          type="secondary"
-          className={styles.btn}
-          onClick={handleClick}
-          disabled={disabled}
+        <Tooltip
+          placement="top"
+          trigger="hover"
+          overlay="You need to use at least 1 ticket"
+          overlayClassName={ticketCount && styles.hiddenOverlay}
         >
-          Try by 0 ticket
-        </Button>
+          <span>
+            <Button
+              type="secondary"
+              className={styles.btn}
+              onClick={openConfirmModal}
+              disabled={disabled || !ticketCount}
+            >
+              {!ticketCount ? 'Try by 0 ticket' : 'Participate'}
+            </Button>
+          </span>
+        </Tooltip>
       </div>
+
       <ConfirmModal
-        visible={tryId}
-        onCancel={() => setTryId(null)}
-        onSubmit={handleSumit}
+        visible={confirmModalVisible}
+        onCancel={closeConfirmModal}
+        onSubmit={onSubmit}
         title="Ready?"
-        subtitle={`You are about to confirm the transaction to try your chance in raffle for ${data.nftName}`}
+        subtitle={`You are about to confirm the transaction to try your chance in raffle for ${raffle.nftName}`}
         btnAgree="Let's go"
       />
       <LoadingModal
         title="Please approve transaction"
-        visible={isLoading}
-        onCancel={() => setIsLoading(false)}
+        visible={loadingModalVisible}
+        onCancel={closeLoadingModal}
       />
     </div>
   );

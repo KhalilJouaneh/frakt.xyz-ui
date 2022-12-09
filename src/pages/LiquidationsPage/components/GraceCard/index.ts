@@ -1,1 +1,1 @@
-export * from './GraceCard';
+export { default } from './GraceCard';

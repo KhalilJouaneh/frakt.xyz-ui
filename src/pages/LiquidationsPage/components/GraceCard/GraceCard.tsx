@@ -1,54 +1,40 @@
 import { FC } from 'react';
-import classNames from 'classnames';
 
+import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
+import { GraceListItem } from '@frakt/state/liquidations/types';
+import { createTimerJSX } from '@frakt/components/Timer';
 import styles from './GraceCard.module.scss';
-import moment from 'moment';
-import { SolanaIcon, Timer } from '../../../../icons';
-import { useCountdown } from '../../../../hooks';
+import { Timer } from '@frakt/icons';
 
-const GraceCard: FC<{ data }> = ({ data }) => {
-  const { timeLeft } = useCountdown(moment(data.expiredAt).unix());
+interface GraceCardProps {
+  raffle: GraceListItem;
+}
 
+const GraceCard: FC<GraceCardProps> = ({ raffle }) => {
   return (
     <div className={styles.card}>
-      <div className={styles.nftInfo}>
-        <img className={styles.nftImage} src={data.nftImageUrl} />
-        <p className={styles.nftName}>{data.nftName}</p>
-      </div>
+      <GeneralCardInfo
+        nftName={raffle.nftName}
+        nftImageUrl={raffle.nftImageUrl}
+      />
       <div className={styles.statsValue}>
-        <div className={classNames(styles.totalValue, styles.opacity)}>
-          <p className={styles.subtitle}>Floor price</p>
-          <p className={styles.value}>
-            {`${data.valuation}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>liquidation price</p>
-          <p className={styles.value}>
-            {`${data.liquidationPrice}`}
-            <SolanaIcon />
-          </p>
-        </div>
-        <div className={styles.totalValue}>
-          <p className={styles.subtitle}>Grace period</p>
+        <StatsRaffleValues
+          className={styles.opacity}
+          label="Floor price"
+          value={raffle.valuation}
+        />
+        <StatsRaffleValues
+          label="liquidation price"
+          value={raffle.liquidationPrice}
+        />
+        <StatsRaffleValues label="Grace period">
           <div className={styles.wrapper}>
-            <Timer className={styles.icon} />
-            <div>
-              <div className={styles.countdown}>
-                {timeLeft.days}d<p>:</p>
-                {timeLeft.hours}h<p>:</p>
-                {timeLeft.minutes}m
-              </div>
-              {/* <div className={styles.timeProgressWrapper}>
-                <div
-                  className={styles.timeProgress}
-                  style={{ width: `${80}%` }}
-                />
-              </div> */}
+            <Timer />
+            <div className={styles.countdown}>
+              {createTimerJSX(raffle.expiredAt)}
             </div>
           </div>
-        </div>
+        </StatsRaffleValues>
       </div>
     </div>
   );
