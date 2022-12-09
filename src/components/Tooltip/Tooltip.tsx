@@ -1,16 +1,20 @@
 import { FC } from 'react';
 import { TooltipProps as RcTooltipProps } from 'rc-tooltip/lib/Tooltip';
 import RcTooltip from 'rc-tooltip';
+import cx from 'classnames';
 
 import 'rc-tooltip/assets/bootstrap_white.css';
 import styles from './Tooltip.module.scss';
 
-const Tooltip: FC<RcTooltipProps> = ({ children, ...props }) => (
+const Tooltip: FC<RcTooltipProps> = ({
+  children,
+  overlayClassName,
+  ...props
+}) => (
   <RcTooltip
     {...props}
     arrowContent={<></>}
-    transitionName="custom-animation"
-    overlayClassName={styles['rc-tooltip-inner']}
+    overlayClassName={cx(overlayClassName, styles['rcTooltipInner'])}
     getTooltipContainer={(triggerNode) => (triggerNode as any).parentNode}
   >
     {children}

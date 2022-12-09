@@ -1,3 +1,24 @@
+export interface FetchItemsParams {
+  sortBy?: string;
+  sort?: string;
+  search?: string;
+  collections?: string;
+  user?: string;
+}
+export interface RaffleListItem {
+  isParticipationExists: boolean;
+  rafflePubKey: string;
+  nftMint: string;
+  nftName: string;
+  nftImageUrl: string;
+  nftCollectionName: string;
+  nftFloorPrice: number; //? 1.23 (SOL)
+  liquidationPrice: number; //? 1.23 (SOL)
+  liquidationPriceBN: string;
+  tickets: number;
+  expiredAt: string;
+}
+
 export interface GraceListItem {
   pubkey: string;
   nftMint: string;
@@ -13,24 +34,8 @@ export interface GraceListItem {
   expiredAt: string;
 }
 
-export interface FetchItemsParams {
-  sortBy?: string;
-  sort?: string;
-  search?: string;
-  collections?: string;
-}
-export interface RaffleListItem {
-  pubkey: string;
-  nftMint: string;
-  nftName: string;
-  nftImageUrl: string;
-  nftCollectionName: string;
-  nftFloorPrice: number; //? 1.23 (SOL)
-  liquidationPrice: number; //? 1.23 (SOL)
-  liquidationPriceBN: string;
-}
 export interface WonRaffleListItem {
-  pubkey: string;
+  rafflePubKey: string;
   nftMint: string;
   nftName: string;
   nftImageUrl: string;
@@ -38,31 +43,16 @@ export interface WonRaffleListItem {
   nftFloorPrice: number; //? 1.23 (SOL)
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
-}
-export interface LotteryTickets {
-  totalTickets: number;
-  nftMints: string[];
-  stakeNfts: Array<{
-    stakeAccountPublicKey: string;
-    nftMint: string;
-    attempts: number;
-  }>;
-  nextRefillIn?: string;
+  user: string;
+  expiredAt: string;
+  startedAt: string;
 }
 
 export interface LotteryTicket {
-  nftMint: string;
-  stakeAccountPublicKey?: string;
-  attempts?: number;
+  totalTickets: number;
+  currentTickets: number;
 }
 
 export interface CollectionsListItem {
   name: string;
-}
-
-export interface RaffleNotifications {
-  notWinning?: number;
-  winning?: number;
-  toBeRevealed?: number;
-  rejected?: number;
 }

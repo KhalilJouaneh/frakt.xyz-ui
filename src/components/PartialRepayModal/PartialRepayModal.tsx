@@ -1,13 +1,13 @@
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { FC, useState } from 'react';
 
-import Button from '../../../../components/Button';
-import { Modal } from '../../../../components/Modal';
-import { Slider } from '../../../../components/Slider';
-import { CloseModalIcon, SolanaIcon } from '../../../../icons';
-import { Loan } from '../../../../state/loans/types';
-import { SOL_TOKEN } from '../../../../utils';
-import { useNativeAccount } from '../../../../utils/accounts';
+import Button from '../Button';
+import { Modal } from '../Modal';
+import { Slider } from '../Slider';
+import { CloseModalIcon, SolanaIcon } from '../../icons';
+import { Loan } from '../../state/loans/types';
+import { SOL_TOKEN } from '../../utils';
+import { useNativeAccount } from '../../utils/accounts';
 import styles from './PartialRepayModal.module.scss';
 
 interface PartialRepayModalProps {

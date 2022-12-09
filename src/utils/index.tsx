@@ -1,5 +1,5 @@
-import { notification } from 'antd';
 import { web3, BN, TokenInfo } from '@frakt-protocol/frakt-sdk';
+import { notification } from 'antd';
 import { Dictionary } from 'lodash';
 
 import { formatNumber, Notify, NotifyType } from './solanaUtils';
