@@ -9,7 +9,7 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '../../componentsNew/FiltersDropdown';
 import styles from './BondsPage.module.scss';
-import BondsPool from './components/BondPool';
+import BondsPoolPage from '../BondsPoolPage';
 
 const BondsPage: FC = () => {
   const {
@@ -47,14 +47,14 @@ const BondsPage: FC = () => {
         </div>
       </div>
       <div className={styles.pools}>
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
-        <BondsPool />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
+        <BondsPoolPage />
       </div>
     </AppLayout>
   );

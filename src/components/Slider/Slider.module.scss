@@ -1,4 +1,6 @@
 .slider {
+  margin: 0 !important;
+  padding: 0px 5px 64px !important;
   :global {
     .ant-slider {
       margin: 0;
@@ -28,6 +30,10 @@
       width: 43px;
     }
     .ant-slider-dot-active {
+      background-color: var(--gray-color-4);
+      border: var(--border-slider-grey);
+    }
+    .ant-slider:hover .ant-slider-dot-active {
       background-color: var(--light-green-color);
       border: var(--border-black-1);
     }
@@ -36,8 +42,8 @@
       height: 4px;
     }
     .ant-slider-track {
-      background-color: var(--light-green-color);
-      border: var(--border-black-1);
+      background-color: var(--light-green-color-2);
+      border: var(--border-slider-grey);
       height: 4px;
     }
     .ant-slider:hover .ant-slider-rail {
@@ -45,20 +51,23 @@
     }
     .ant-slider:hover .ant-slider-track {
       background-color: var(--light-green-color);
+      border: var(--border-black-1);
     }
 
     .ant-slider-handle {
-      background-color: var(--light-green-color);
-      border: 1px solid #000;
+      background-color: var(--gray-color-4);
+      border: var(--border-slider-grey);
       position: relative;
       margin-top: -8px;
       height: 18px;
       width: 18px;
 
-      &:focus,
-      &:hover {
+      &:focus .ant-slider-rail {
         box-shadow: unset;
       }
+    }
+    .ant-slider:hover .ant-slider-handle {
+      background-color: var(--light-green-color);
     }
     .ant-slider-handle.ant-tooltip-open {
       border-color: var(--light-green-color);
@@ -70,7 +79,7 @@
   :global {
     .ant-slider-handle {
       background-color: var(--light-green-color);
-      border: var(--border-black-1);
+      border: var(--border-slider-grey);
       position: relative;
       margin-top: -8px;
       height: 18px;
@@ -103,4 +112,27 @@
       }
     }
   }
+}
+
+.label {
+  margin-left: -5px;
+  margin-bottom: 8px;
+  height: 21px;
+  font: var(--font-text-6);
+  text-transform: uppercase;
+  transition: var(--transition-1);
+  color: var(--secondary-text);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    font: var(--font-text-8);
+    color: var(--secondary-border);
+  }
+}
+
+.labelFlex {
+  width: 100%;
 }

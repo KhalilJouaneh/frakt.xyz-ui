@@ -169,9 +169,8 @@ body input.valueInput {
   color: var(--secondary-text);
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 3px;
+  gap: 8px;
 
   span {
     font: var(--font-text-8);
@@ -208,5 +207,13 @@ body input.valueInput {
     .root {
       border-color: var(--red-color);
     }
+  }
+}
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
   }
 }

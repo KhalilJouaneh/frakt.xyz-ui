@@ -5,6 +5,8 @@ import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 import { ChevronDownIcon, SolanaIcon } from '../../icons';
 import NumericInput from '../NumericInput';
 import styles from './styles.module.scss';
+import { Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 export interface TokenFieldProps {
   tokensList?: TokenInfo[];
@@ -23,6 +25,7 @@ export interface TokenFieldProps {
   disabled?: boolean;
   labelRight?: boolean;
   lpBalance?: number;
+  toolTipText?: string;
 }
 
 const TokenField: FC<TokenFieldProps> = ({
@@ -41,6 +44,7 @@ const TokenField: FC<TokenFieldProps> = ({
   labelRight,
   disabled = false,
   lpBalance,
+  toolTipText,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -66,6 +70,11 @@ const TokenField: FC<TokenFieldProps> = ({
             )}
           >
             {label}
+            {toolTipText && (
+              <Tooltip placement="bottom" overlay={toolTipText}>
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+            )}
             {!!lpBalance && (
               <span>
                 {lpBalance} {currentToken?.symbol}

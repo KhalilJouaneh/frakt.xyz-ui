@@ -8,9 +8,9 @@
 
 :root[data-theme='light'] {
   --black-color: #000000;
-
   --blue-color: #007aff;
   --red-color: #ff1f47;
+  --red-color-hover: #ffdee4;
   --red-error-color: #ff1f47;
   --orange-color: #ff701f;
   --light-green-hover: #8cea15;
@@ -42,6 +42,7 @@
   --border-white-1: 1px solid #ffffff;
   --border-black-1: 1px solid #000000;
   --border-light-green-1: 1px solid #9cff1f;
+  --border-slider-grey: 1px solid #aeaeb2;
 
   --transition-1: 0.2s ease-in;
 
@@ -113,6 +114,7 @@
 
   --blue-color: #0a84ff;
   --red-color: #ff1f47;
+  --red-color-hover: #ffdee4;
   --red-error-color: #ff1f47;
   --orange-color: #ff701f;
   --light-green-hover: #8cea15;
@@ -129,6 +131,7 @@
   --border-white-1: 1px solid #ffffff;
   --border-black-1: 1px solid #000000;
   --border-light-green-1: 1px solid #a4ff31;
+  --border-slider-grey: 1px solid #aeaeb2;
 
   --blur-background: rgba(20, 20, 21, 0.64);
 

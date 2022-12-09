@@ -9,13 +9,27 @@
   }
 }
 
-.pools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  padding-top: 32px;
+.toggle {
+  max-width: 160px;
 
   @media screen and (max-width: 767px) {
+    justify-content: center;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.pools {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  @media screen and (max-width: 1440px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     padding-top: 24px;
   }
