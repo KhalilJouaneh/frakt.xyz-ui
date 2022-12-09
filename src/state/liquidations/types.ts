@@ -16,6 +16,7 @@ export interface RaffleListItem {
   liquidationPrice: number; //? 1.23 (SOL)
   liquidationPriceBN: string;
   tickets: number;
+  totalTickets: number;
   expiredAt: string;
 }
 
