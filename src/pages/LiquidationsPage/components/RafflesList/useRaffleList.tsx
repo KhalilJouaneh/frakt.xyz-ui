@@ -40,7 +40,7 @@ export const useRaffleList = ({
 
   const currentCollectionsList = getSortCollectionValues();
 
-  const SORT_COLLECTIONS_VALUES = currentCollectionsList.map((item) => ({
+  const SORT_COLLECTIONS_VALUES = currentCollectionsList?.map((item) => ({
     label: <span>{item.label}</span>,
     value: item.value,
   }));
