@@ -7,7 +7,7 @@ import styles from './WonRaffleTab.module.scss';
 import WonRaffleCard from '../WonRaffleCard';
 import RafflesList from '../RafflesList';
 import EmptyList from '@frakt/componentsNew/EmptyList';
-import { WonRaffleListItem } from '@frakt/state/liquidations/types';
+import { WonRaffleListItem } from '@frakt/api/raffle';
 
 const WonRaffleTab: FC = () => {
   const { queryData } = useRaffleSort();
