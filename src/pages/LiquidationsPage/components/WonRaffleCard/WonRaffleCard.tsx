@@ -48,6 +48,12 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
               </p>
             )}
           </StatsRaffleValues>
+          <StatsRaffleValues label="Winner spent">
+            <span>{raffle?.winnerTickets} TICKETS</span>
+          </StatsRaffleValues>
+          <StatsRaffleValues label="Total spent">
+            <span>{raffle?.totalTickets} TICKETS</span>
+          </StatsRaffleValues>
           <StatsRaffleValues label="Ended">
             <span>{moment(raffle?.expiredAt).fromNow(false)}</span>
           </StatsRaffleValues>

@@ -47,6 +47,8 @@ export interface WonRaffleListItem {
   user: string;
   expiredAt: string;
   startedAt: string;
+  totalTickets: number;
+  winnerTickets: number;
 }
 
 export interface LotteryTicket {
