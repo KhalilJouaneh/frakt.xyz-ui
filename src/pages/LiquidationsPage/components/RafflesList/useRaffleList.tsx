@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
-import {
-  selectGraceCollections,
-  selectHistoryCollections,
-  selectRaffleCollections,
-} from '@frakt/state/liquidations/selectors';
+// import {
+//   selectGraceCollections,
+//   selectHistoryCollections,
+//   selectRaffleCollections,
+// } from '@frakt/state/liquidations/selectors';
 import {
   SORT_VALUES_WITH_GRACE,
   SORT_VALUES_WITH_HISTORY,
@@ -25,25 +25,27 @@ export const useRaffleList = ({
   isGraceList: boolean;
   isWonList: boolean;
 }): {
-  SORT_COLLECTIONS_VALUES: SortValues[];
+  // SORT_COLLECTIONS_VALUES: SortValues[];
   SORT_VALUES: SortValues[];
 } => {
-  const collectionsRaffleList = useSelector(selectRaffleCollections);
-  const collectionsGraceList = useSelector(selectGraceCollections);
-  const collectionsHistoryList = useSelector(selectHistoryCollections);
+  // const collectionsRaffleList = useSelector(selectRaffleCollections);
+  // const collectionsGraceList = useSelector(selectGraceCollections);
+  // const collectionsHistoryList = useSelector(selectHistoryCollections);
 
-  const getSortCollectionValues = () => {
-    if (withRafflesInfo) return collectionsRaffleList;
-    if (isGraceList) return collectionsGraceList;
-    if (isWonList) return collectionsHistoryList;
-  };
+  // const getSortCollectionValues = () => {
+  //   if (withRafflesInfo) return collectionsRaffleList;
+  //   if (isGraceList) return collectionsGraceList;
+  //   if (isWonList) return collectionsHistoryList;
+  // };
 
-  const currentCollectionsList = getSortCollectionValues();
+  // const currentCollectionsList = getSortCollectionValues();
 
-  const SORT_COLLECTIONS_VALUES = currentCollectionsList?.map((item) => ({
-    label: <span>{item.label}</span>,
-    value: item.value,
-  }));
+  // const SORT_COLLECTIONS_VALUES = (currentCollectionsList || []).map(
+  //   (item) => ({
+  //     label: <span>{item.label}</span>,
+  //     value: item.value,
+  //   }),
+  // );
 
   const getSortValues = (): SortValues[] => {
     if (isGraceList) return SORT_VALUES_WITH_GRACE;
@@ -53,5 +55,8 @@ export const useRaffleList = ({
 
   const SORT_VALUES = getSortValues();
 
-  return { SORT_COLLECTIONS_VALUES, SORT_VALUES };
+  return {
+    // SORT_COLLECTIONS_VALUES,
+    SORT_VALUES,
+  };
 };
