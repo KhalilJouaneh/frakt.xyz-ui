@@ -5,6 +5,7 @@
   max-width: 415px;
   width: 100%;
   height: 100%;
+  position: relative;
 
   @media screen and (max-width: 1430px) {
     max-width: unset;
@@ -249,4 +250,18 @@
       font-size: 10px;
     }
   }
+}
+
+.badge {
+  background-color: var(--orange-color);
+  font: var(--font-text-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  position: absolute;
+  left: 18px;
+  top: -15px;
+  height: 30px;
+  max-width: 170px;
 }
