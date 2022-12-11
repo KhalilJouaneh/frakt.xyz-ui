@@ -186,11 +186,17 @@ const LoanCardValues: FC<{
       </div>
 
       <div className={styles.valueWrapper}>
-        {!isPriceBasedAndGracePeriod && isPriceBased ? (
+        {!isGracePeriod && isPriceBased && (
           <div className={styles.valueWithTooltip}>
             <p className={styles.valueTitle}>Health</p>
           </div>
-        ) : (
+        )}
+        {isGracePeriod && (
+          <p className={classNames(styles.valueTitle, styles.graceTitle)}>
+            Grace Period
+          </p>
+        )}
+        {!isGracePeriod && !isPriceBased && (
           <p className={styles.valueTitle}>Time to return</p>
         )}
         {!isPriceBasedAndGracePeriod && isPriceBased ? (
@@ -216,7 +222,12 @@ const TimeToReturn: FC<{
   return (
     <div className={classNames(styles.valueInfo, styles.valueInfoHealth)}>
       <div className={styles.timerWrapper}>
-        <Timer className={styles.icon} />
+        <Timer
+          className={classNames(
+            styles.icon,
+            loan?.isGracePeriod && styles.graceIcon,
+          )}
+        />
         <div className={styles.countdown}>
           <p>{timeLeft.days}d</p>
           <span className={styles.timeDelim}>:</span>
