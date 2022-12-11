@@ -78,7 +78,7 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
             </div>
           </StatsRaffleValues>
           <StatsRaffleValues label="Participating">
-            <span>{raffle?.totalTickets} TICKETS</span>
+            <span>{raffle?.totalTickets || 0} TICKETS</span>
           </StatsRaffleValues>
         </div>
         <div className={styles.ticketsWrapper}>
