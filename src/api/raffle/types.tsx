@@ -18,6 +18,7 @@ export interface RaffleListItem {
   liquidationPriceBN: string;
   tickets: number;
   expiredAt: string;
+  totalTickets: number;
 }
 
 export interface GraceListItem {
@@ -47,6 +48,8 @@ export interface WonRaffleListItem {
   user: string;
   expiredAt: string;
   startedAt: string;
+  totalTickets: number;
+  winnerTickets: number;
 }
 
 export interface CollectionsListItem {
