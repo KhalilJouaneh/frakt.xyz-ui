@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { GraceListItem } from '@frakt/state/liquidations/types';
 import { createTimerJSX } from '@frakt/components/Timer';
 import Button from '../../../../components/Button';
+import { GraceListItem } from '@frakt/api/raffle';
 import { PATHS } from '../../../../constants';
 import styles from './GraceList.module.scss';
 import { Timer } from '../../../../icons';
