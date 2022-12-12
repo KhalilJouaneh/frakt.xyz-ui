@@ -7,9 +7,9 @@ import {
 } from '@frakt/utils/raffles';
 import { useConnection } from '../../../../hooks';
 import { useLoadingModal } from '../../../../components/LoadingModal';
-import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
+import { RaffleListItem } from '@frakt/api/raffle';
 
 export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
   const wallet = useWallet();

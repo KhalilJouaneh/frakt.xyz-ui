@@ -10,9 +10,9 @@ import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 import EmptyList from '@frakt/componentsNew/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
-import { RaffleListItem } from '@frakt/state/liquidations/types';
-import RafflesList from '../RafflesList';
+import { RaffleListItem } from '@frakt/api/raffle';
 import { useLiquidationRaffles } from './hooks';
+import RafflesList from '../RafflesList';
 
 const OngoingRaffleTab: FC = () => {
   const lotteryTickets = useSelector(selectLotteryTickets);

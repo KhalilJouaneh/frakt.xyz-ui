@@ -6,7 +6,7 @@ import {
   InfiniteQueryObserverResult,
   useInfiniteQuery,
 } from '@tanstack/react-query';
-import { FetchItemsParams } from '@frakt/state/liquidations/types';
+import { FetchItemsParams } from '@frakt/api/raffle';
 
 const LIMIT = 20;
 
