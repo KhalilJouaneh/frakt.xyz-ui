@@ -16,7 +16,7 @@ export const fetchGraceRaffleCollections = async (): Promise<
   CollectionsListItem[]
 > => {
   const response = await fetch(
-    `https://${process.env.BACKEND_DOMAIN}/liquidation/raffle-collections`,
+    `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-collections`,
   );
   if (!response.ok) {
     throw new Error('Network response was not ok');
@@ -39,7 +39,7 @@ export const fetchHistoryRaffleCollections = async (): Promise<
 export const fetchAllRaffleCollections = async (): Promise<any> => {
   const [raffleCollections, graceCollections, historyCollections] =
     await Promise.all([
-      fetchGraceRaffleCollections(),
+      fetchRaffleCollections(),
       fetchGraceRaffleCollections(),
       fetchHistoryRaffleCollections(),
     ]);

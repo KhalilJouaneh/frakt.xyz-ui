@@ -1,5 +1,5 @@
 import { CollectionsListItem } from '@frakt/api/raffle';
-import { useRaffleCollections } from '../../hooks';
+import { useFetchAllRaffleCollections } from '../../hooks';
 import {
   SORT_VALUES_WITH_GRACE,
   SORT_VALUES_WITH_HISTORY,
@@ -23,7 +23,7 @@ export const useRaffleList = ({
   SORT_COLLECTIONS_VALUES: SortValues[];
   SORT_VALUES: SortValues[];
 } => {
-  const { collections } = useRaffleCollections();
+  const { data: collections } = useFetchAllRaffleCollections();
 
   const getSortCollectionValues = (): CollectionsListItem[] => {
     if (withRafflesInfo) return collections?.raffleCollections || [];
