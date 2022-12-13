@@ -55,21 +55,27 @@ const BondPage: FC = () => {
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
+
   return (
     <AppLayout>
       <div className={styles.bondPage}>
         <div>
           <div className={styles.wrapper}>
-            <div>
+            <div className={styles.btnWrapper}>
               <div onClick={goBack} className={styles.btnBack}>
                 <Arrow />
               </div>
             </div>
 
-            {/* <RoundButton icon={<Arrow />} /> */}
-
             <div className={styles.bondMarket}>
               <div className={styles.bondMarketInfo}>
+                <RoundButton
+                  onClick={goBack}
+                  className={styles.roundBtn}
+                  icon={<Arrow width={17} height={14} />}
+                  size={28}
+                />
+
                 <img src={mockImg} className={styles.image} />
                 <div className={styles.title}>Solana Monkey Business</div>
               </div>

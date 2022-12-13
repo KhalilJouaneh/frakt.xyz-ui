@@ -5,7 +5,7 @@
   margin: 20px 0;
 
   @media screen and (max-width: 1023px) {
-    margin-bottom: 0;
+    margin: 0;
   }
 }
 
@@ -27,11 +27,18 @@
   @media screen and (max-width: 1440px) {
     grid-template-columns: repeat(3, 1fr);
   }
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @media screen and (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     padding-top: 24px;
+  }
+  @media screen and (max-width: 550px) {
+    margin-top: 0;
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -39,10 +46,6 @@
   max-width: 173px;
   margin-right: 20px;
   width: unset;
-
-  @media screen and (max-width: 468px) {
-    margin-bottom: 20px;
-  }
 }
 
 .filtersWrapper {

@@ -10,8 +10,10 @@
   --black-color: #000000;
   --blue-color: #007aff;
   --red-color: #ff1f47;
-  --red-color-hover: #ffdee4;
+  --red-color-2: var(--black-color);
   --red-error-color: #ff1f47;
+  --light-red-color: #ffdee433;
+  --light-red-color-hover: #ffdee4;
   --orange-color: #ff701f;
   --light-green-hover: #8cea15;
   --light-green-color: #9cff1f;
@@ -28,6 +30,7 @@
   --primary-background: var(--white-color);
   --primary-text: var(--black-color);
   --primary-border: var(--gray-color-2);
+  --primary-border-2: var(--gray-color-2);
   --primary-icon: var(--black-color);
 
   --secondary-background: var(--gray-color-4);
@@ -43,6 +46,7 @@
   --border-black-1: 1px solid #000000;
   --border-light-green-1: 1px solid #9cff1f;
   --border-slider-grey: 1px solid #aeaeb2;
+  --border-red: 1px solid var(--red-error-color);
 
   --transition-1: 0.2s ease-in;
 
@@ -103,6 +107,7 @@
   --primary-background: #19191c;
   --primary-text: #ffffff;
   --primary-border: #636366;
+  --primary-border-2: var(--black-color);
   --primary-icon: #ffffff;
 
   --secondary-background: #141415;
@@ -114,8 +119,10 @@
 
   --blue-color: #0a84ff;
   --red-color: #ff1f47;
-  --red-color-hover: #ffdee4;
+  --red-color-2: #ff3257;
   --red-error-color: #ff1f47;
+  --light-red-color: #4a1e2633;
+  --light-red-color-hover: #4a1e26;
   --orange-color: #ff701f;
   --light-green-hover: #8cea15;
   --light-green-color: #a4ff31;
@@ -132,6 +139,7 @@
   --border-black-1: 1px solid #000000;
   --border-light-green-1: 1px solid #a4ff31;
   --border-slider-grey: 1px solid #aeaeb2;
+  --border-red: 1px solid var(--red-color-2);
 
   --blur-background: rgba(20, 20, 21, 0.64);
 

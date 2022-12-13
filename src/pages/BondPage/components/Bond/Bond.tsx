@@ -1,9 +1,9 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import Button from '@frakt/components/Button';
-import { SolanaIcon, Timer } from '@frakt/icons';
-import { Tooltip } from 'antd';
-import classNames from 'classnames';
 import { FC } from 'react';
+import { Tooltip } from 'antd';
+import Button from '@frakt/components/Button';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { SolanaIcon, Timer } from '@frakt/icons';
+import classNames from 'classnames';
 
 import mockImg from '../../mockImg.jpg';
 
@@ -11,6 +11,7 @@ import styles from './Bond.module.scss';
 
 const Bond: FC = () => {
   const negative = true;
+  const isExpirationGone = false;
   return (
     <div className={styles.bond}>
       <div className={styles.bondName}>
@@ -36,7 +37,7 @@ const Bond: FC = () => {
           YIELD{' '}
           <Tooltip
             placement="bottom"
-            overlay="Yearly rewards based on the current utilization rate and borrow interest"
+            overlay="Analyzed profit from repaying the loan"
           >
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
@@ -49,7 +50,7 @@ const Bond: FC = () => {
           P&L{' '}
           <Tooltip
             placement="bottom"
-            overlay="Yearly rewards based on the current utilization rate and borrow interest"
+            overlay="Profit and loss from exiting position instantly"
           >
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
@@ -68,7 +69,7 @@ const Bond: FC = () => {
           EXPIRATION{' '}
           <Tooltip
             placement="bottom"
-            overlay="Yearly rewards based on the current utilization rate and borrow interest"
+            overlay="Time left until bond will get liquidated."
           >
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
@@ -78,12 +79,16 @@ const Bond: FC = () => {
         </div>
       </div>
       <div className={styles.btnWrapper}>
-        <Button className={styles.btn} disabled={negative} type="secondary">
+        <Button
+          className={styles.btn}
+          disabled={isExpirationGone}
+          type="secondary"
+        >
           Redeem
         </Button>
         <Button
           className={classNames(styles.btn, styles.btnExit)}
-          disabled={!negative}
+          disabled={!isExpirationGone}
           type="primary"
         >
           Exit

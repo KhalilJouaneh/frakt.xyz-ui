@@ -28,15 +28,18 @@ const PoolsCreationPage: FC = () => {
     notEnoughBalanceError,
   } = useBorrowPage();
 
-  const width = document.body.clientWidth;
-
   const goBack = () => {
     history.goBack();
   };
   return (
     <AppLayout>
       <div className={styles.poolsCreation}>
-        <Header title="Pools creation" onClick={goBack} />
+        <Header
+          className={styles.headerWrapper}
+          title="Pools creation"
+          subtitle="description"
+          onClick={goBack}
+        />
 
         <div className={styles.block}>
           <div className={styles.wrapper}>
@@ -93,7 +96,7 @@ const PoolsCreationPage: FC = () => {
           </Button>
         </div>
       </div>
-      {width > 767 ? <OrderBook /> : null}
+      <OrderBook />
     </AppLayout>
   );
 };

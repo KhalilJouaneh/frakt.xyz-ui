@@ -5,11 +5,17 @@ interface RoundButtonProps {
   size: number;
   icon: JSX.Element;
   onClick?: any;
+  className?: string;
 }
 
-const RoundButton: FC<RoundButtonProps> = ({ size, icon, onClick }) => {
+const RoundButton: FC<RoundButtonProps> = ({
+  size,
+  icon,
+  onClick,
+  className,
+}) => {
   return (
-    <div onClick={onClick}>
+    <div onClick={onClick} className={className}>
       <div
         style={{ width: `${size}px`, height: `${size}px` }}
         className={styles.roundButton}

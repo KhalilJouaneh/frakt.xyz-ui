@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import Button from '@frakt/components/Button';
 import RoundButton from '@frakt/components/RoundButton/RoundButton';
 import Toggle from '@frakt/components/Toggle';
+import { useWindowSize } from '@frakt/hooks';
 import { useLendingPoolsFiltering } from '@frakt/pages/LendPage/hooks/useLendingPoolsFiltering';
 import { Controller } from 'react-hook-form';
 import classNames from 'classnames/bind';
@@ -36,6 +37,19 @@ const arrOrdersMock: arrOrdersProps[] = [
   { size: '206,324.01', price: '2212.021' },
   { size: '206,324.01', price: '2212.021' },
   { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
+  { size: '206,324.01', price: '2212.021' },
 ];
 
 const OrderBook: FC<OrderBookProps> = ({ onClick }) => {
@@ -44,18 +58,19 @@ const OrderBook: FC<OrderBookProps> = ({ onClick }) => {
   const { control, sort, setSearch, pools, setValue, showStakedOnlyToggle } =
     useLendingPoolsFiltering();
 
-  const width = document.body.clientWidth;
+  const isMyLoans = false;
+  const size = useWindowSize();
 
   useEffect(() => {
-    if (width > 767) {
+    if (size.width > 768) {
       setShowOrderBook(true);
     } else {
       setShowOrderBook(false);
     }
-  }, [width]);
+  }, [size.width]);
 
-  const removeOrder = (idx) => () => {
-    setArrOrders((prev) => [...prev].filter((el, id) => id !== idx));
+  const removeOrder = (idx: number) => () => {
+    setArrOrders((prev) => [...prev].filter((_, id) => id !== idx));
   };
 
   return (
@@ -94,24 +109,38 @@ const OrderBook: FC<OrderBookProps> = ({ onClick }) => {
           <>
             <div className={styles.col}>
               <div className={styles.colName}>
-                SIZE (fndSMB) <div className={styles.arrowTriangle} />
+                <div>SIZE (fndSMB)</div>
+                <div className={styles.arrowTriangle} />
               </div>
               <div className={styles.colName}>
-                PRICE (SOL)
+                <div>PRICE (SOL)</div>
                 <div className={styles.arrowTriangle} />
               </div>
             </div>
             <ul className={styles.list}>
               {arrOrders.map(({ size, price }, idx) => (
-                <li className={styles.listItem} key={idx}>
+                <li
+                  className={styles.listItem}
+                  key={idx}
+                  style={{
+                    background: `linear-gradient(
+                  to left,
+                  var(--light-green-color-1) ${50}%,
+                  var(--primary-background) ${50}%
+                )`,
+                  }}
+                >
                   <div className={styles.value}>{size}</div>
                   <div className={styles.btnTrashWrapper}>
                     <div className={styles.value}>{price}</div>
-                    <RoundButton
-                      icon={<Trash />}
-                      size={32}
-                      onClick={removeOrder(idx)}
-                    />
+                    {isMyLoans && (
+                      <RoundButton
+                        icon={<Trash />}
+                        size={32}
+                        onClick={removeOrder(idx)}
+                        className={styles.roundBtn}
+                      />
+                    )}
                   </div>
                 </li>
               ))}

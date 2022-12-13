@@ -1,8 +1,9 @@
 .bond {
-  background-color: var(--primary-background);
   padding: 24px;
+  background-color: var(--primary-background);
   border: 1px solid var(--primary-border);
 }
+
 .bondName {
   display: flex;
   align-items: center;
@@ -14,10 +15,12 @@
   max-width: 48px;
   margin-right: 16px;
 }
+
 .title {
   font: var(--font-h6);
   font-size: 18px !important;
 }
+
 .bondDesc {
   margin-bottom: 8px;
   width: 100%;
@@ -47,8 +50,9 @@
 .infoValueLP {
   display: flex;
   align-items: center;
-  font: var(--font-text-8);
   margin-top: 4px;
+
+  font: var(--font-text-8);
   font-size: 14px;
   text-transform: uppercase;
   color: var(--light-green-color);
@@ -57,6 +61,7 @@
     color: var(--red-error-color);
   }
 }
+
 .questionIcon {
   svg {
     fill: var(--blue-color);
@@ -75,9 +80,13 @@
   width: 100%;
   padding: 14px 0px;
 }
+
 .btnExit {
   border-color: var(--red-color);
+  background: var(--light-red-color);
+  color: var(--red-color-2);
+
   &:hover {
-    background: #ffdee4;
+    background: var(--light-red-color-hover);
   }
 }
