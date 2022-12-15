@@ -61,7 +61,7 @@ export const useRaffleInfo = (params: {
     [id, publicKey, queryData],
     ({ pageParam = 0 }) => fetchData({ pageParam, queryString }),
     {
-      enabled: !!publicKey && !!queryData,
+      enabled: !!queryData,
       getPreviousPageParam: (firstPage) => {
         return firstPage.pageParam - 1 ?? undefined;
       },
