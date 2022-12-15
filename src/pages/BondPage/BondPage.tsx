@@ -59,9 +59,9 @@ const BondPage: FC = () => {
   return (
     <AppLayout>
       <div className={styles.bondPage}>
-        <div>
+        <>
           <div className={styles.wrapper}>
-            <div className={styles.btnWrapper}>
+            <div>
               <div onClick={goBack} className={styles.btnBack}>
                 <Arrow />
               </div>
@@ -69,20 +69,13 @@ const BondPage: FC = () => {
 
             <div className={styles.bondMarket}>
               <div className={styles.bondMarketInfo}>
-                <RoundButton
-                  onClick={goBack}
-                  className={styles.roundBtn}
-                  icon={<Arrow width={17} height={14} />}
-                  size={28}
-                />
-
                 <img src={mockImg} className={styles.image} />
                 <div className={styles.title}>Solana Monkey Business</div>
               </div>
               <div className={styles.info}>
                 <div className={styles.infoItem}>
-                  <div>
-                    <div className={styles.infoName}>TOTAL SIZE</div>
+                  <div className={styles.infoItemBalance}>
+                    <div className={styles.infoName}>BALANCE</div>
                     <div className={styles.infoValue}>4,356,456.7 fndSMB</div>
                   </div>
                 </div>
@@ -155,7 +148,7 @@ const BondPage: FC = () => {
             <Bond />
             <Bond />
           </div>
-        </div>
+        </>
         <OrderBook onClick={openCreatePool} />
       </div>
     </AppLayout>

@@ -55,12 +55,16 @@ const Bond: FC = () => {
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
         </div>
-        <div
-          className={classNames(styles.infoValueLP, {
-            [styles.negative]: negative,
-          })}
-        >
-          {negative ? `- ${321} %` : `+ ${123} %`}
+        <div className={styles.infoValue}>
+          <span
+            className={classNames(styles.infoValueSpan, {
+              [styles.negative]: negative,
+            })}
+          >
+            <sup>{negative ? `-${321} %` : `+${123} %`}</sup>
+          </span>
+          <div>206 </div>
+          <SolanaIcon />
         </div>
       </div>
 

@@ -2,6 +2,7 @@
 
 .bondPage {
   width: calc(100% - 344px);
+
   @media screen and (max-width: 768px) {
     margin-bottom: 145px;
     width: 100%;
@@ -11,6 +12,11 @@
 .wrapper {
   display: flex;
   gap: 32px;
+
+  @media screen and (max-width: 550px) {
+    width: calc(100% - 44px);
+    gap: 16px;
+  }
 }
 
 .btnBack {
@@ -41,28 +47,34 @@
   background-color: var(--primary-background);
   border: 1px solid var(--primary-border);
 
-  @media screen and (max-width: 468px) {
+  @media screen and (max-width: 550px) {
     padding: 16px;
   }
 }
 
 .bondMarketInfo {
   display: flex;
+
+  @media screen and (max-width: 550px) {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
 }
 
 .image {
   width: 80px;
   height: 80px;
   margin-right: 16px;
+
   @media screen and (max-width: 550px) {
-    width: 87px;
-    height: 87px;
-    margin: 0 8px;
+    width: 40px;
+    height: 40px;
   }
 }
 
 .title {
-  font-family: 'Syne';
+  font-family: var(--font-family-syne);
   font-weight: 800;
   font-size: 32px;
   line-height: 38px;
@@ -70,6 +82,7 @@
   @media screen and (max-width: 550px) {
     font-size: 24px;
     line-height: 29px;
+    text-align: center;
   }
 }
 
@@ -77,8 +90,18 @@
   margin-top: 17px;
   display: flex;
   gap: 16px;
+
   @media screen and (max-width: 1200px) {
     flex-direction: column;
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+  }
+
+  @media screen and (max-width: 670px) {
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
@@ -89,43 +112,74 @@
   align-items: center;
   padding: 16px;
   border: 1px solid var(--primary-border);
-  @media screen and (max-width: 768px) {
+
+  @media screen and (max-width: 550px) {
     padding: 8px;
+  }
+}
+.infoItemBalance {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  @media screen and (max-width: 550px) {
+    align-items: center;
   }
 }
 
 .infoName {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-
-  color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
+  text-align: center;
+  color: var(--secondary-text);
 }
 
 .infoValue {
   margin-top: 4px;
-  display: flex;
-  align-items: center;
+
   font: var(--font-text-8);
   font-size: 14px;
   text-transform: uppercase;
 }
 
-.roundBtn {
-  display: none;
+.btnBack {
+  @include flex(row, nowrap, center, center);
 
-  @media screen and (max-width: 550px) {
-    display: block;
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  cursor: pointer;
+
+  height: 40px;
+  width: 40px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
   }
-}
 
-.btnWrapper {
-  display: block;
+  &:hover {
+    border-color: var(--secondary-border);
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 32px;
+    width: 32px;
+    svg {
+      height: 19px;
+      width: 16px;
+    }
+  }
 
   @media screen and (max-width: 550px) {
-    display: none;
+    height: 28px;
+    width: 28px;
+    svg {
+      height: 14px;
+      width: 17px;
+    }
   }
 }
 
