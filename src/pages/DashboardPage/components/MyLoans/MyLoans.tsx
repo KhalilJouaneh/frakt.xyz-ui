@@ -21,6 +21,7 @@ const MyLoans: FC = () => {
   const liquidityPools = useSelector(selectLiquidityPools);
 
   const loanToValue = ({ loanValue }) => loanValue;
+  const repayValue = ({ repayValue }) => repayValue;
   const isPriceBased = ({ isPriceBased }) => isPriceBased;
   const isTimeBased = (loan) => !loan?.isPriceBased;
   const isGracePeriod = (loan) => loan?.isGracePeriod;
@@ -32,9 +33,9 @@ const MyLoans: FC = () => {
   const flipLoans = filter(isTimeBased, userLoans);
   const graceLoans = filter(isGracePeriod, userLoans);
 
-  const perpetualLoansValue = sum(map(loanToValue, perpetualLoans));
-  const flipLoansValue = sum(map(loanToValue, flipLoans));
-  const graceLoansValue = sum(map(loanToValue, graceLoans));
+  const perpetuaRepayValue = sum(map(repayValue, perpetualLoans));
+  const flipRepayValue = sum(map(repayValue, flipLoans));
+  const graceRepayValue = sum(map(repayValue, graceLoans));
 
   const countLoans = userLoans.length;
   const totalBorrowed = sum(map(loanToValue, userLoans));
@@ -46,9 +47,9 @@ const MyLoans: FC = () => {
   const otherPoolsCount = flipPool[0]?.collectionsAmount - 7;
 
   const loansInfo = [
-    { name: 'Flip', value: flipLoansValue?.toFixed(3) },
-    { name: 'Perpetual', value: perpetualLoansValue?.toFixed(3) },
-    { name: 'On grace', value: graceLoansValue?.toFixed(3) },
+    { name: 'Flip', value: flipRepayValue?.toFixed(3) },
+    { name: 'Perpetual', value: perpetuaRepayValue?.toFixed(3) },
+    { name: 'On grace', value: graceRepayValue?.toFixed(3) },
     { name: 'Bond', value: 0 },
   ];
 
