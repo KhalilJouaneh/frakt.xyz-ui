@@ -4,10 +4,10 @@ import moment from 'moment';
 import cx from 'classnames';
 
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
-import { WonRaffleListItem } from '@frakt/state/liquidations/types';
 import { shortenAddress } from '@frakt/utils/solanaUtils';
 import styles from './WonRaffleCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { WonRaffleListItem } from '@frakt/api/raffle';
 
 interface WonRaffleCardProps {
   raffle: WonRaffleListItem;
@@ -47,6 +47,12 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
                 {raffle?.user && shortenAddress(raffle?.user)}
               </p>
             )}
+          </StatsRaffleValues>
+          <StatsRaffleValues label="Winner spent">
+            <span>{raffle?.winnerTickets} TICKETS</span>
+          </StatsRaffleValues>
+          <StatsRaffleValues label="Total spent">
+            <span>{raffle?.totalTickets} TICKETS</span>
           </StatsRaffleValues>
           <StatsRaffleValues label="Ended">
             <span>{moment(raffle?.expiredAt).fromNow(false)}</span>

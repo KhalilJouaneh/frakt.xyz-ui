@@ -2,7 +2,6 @@ import { FC } from 'react';
 import cx from 'classnames';
 
 import { ConfirmModal } from '@frakt/components/ConfirmModal';
-import { RaffleListItem } from '@frakt/state/liquidations/types';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import styles from './LiquidationRaffleCard.module.scss';
 import { createTimerJSX } from '@frakt/components/Timer';
@@ -15,6 +14,7 @@ import {
   StatsRaffleValues,
 } from '../StatsRaffleValues/StatsRaffleValues';
 import Tooltip from '@frakt/components/Tooltip';
+import { RaffleListItem } from '@frakt/api/raffle';
 
 interface LiquidationRaffleCard {
   raffle: RaffleListItem;
@@ -76,6 +76,9 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
                 {createTimerJSX(raffle.expiredAt)}
               </div>
             </div>
+          </StatsRaffleValues>
+          <StatsRaffleValues label="Participating">
+            <span>{raffle?.totalTickets || 0} TICKETS</span>
           </StatsRaffleValues>
         </div>
         <div className={styles.ticketsWrapper}>

@@ -35,7 +35,7 @@ const RafflesList: FC<RafflesListProps> = ({
   const { control, setValue, collections, sort, setCollections } =
     useLiquidationsPage(isGraceList, isWonList);
 
-  const { SORT_COLLECTIONS_VALUES, SORT_VALUES } = useRaffleList({
+  const { SORT_VALUES, SORT_COLLECTIONS_VALUES } = useRaffleList({
     withRafflesInfo,
     isGraceList,
     isWonList,
