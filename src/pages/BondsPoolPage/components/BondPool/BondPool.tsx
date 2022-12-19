@@ -1,38 +1,38 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import { SolanaIcon } from '../../../../icons';
-import mockImage from './mockImage.png';
+import { SolanaIcon } from '@frakt/icons';
 import styles from './BondPool.module.scss';
+import { BondPreview } from '@frakt/api/bonds';
 
 interface BondPoolProps {
-  onClick?: () => void;
+  bondPreview: BondPreview;
 }
 
-const BondPool: FC<BondPoolProps> = ({ onClick }) => {
-  return (
-    <>
-      <div className={styles.pool} onClick={onClick}>
-        <div className={styles.poolCard}>
-          <div className={styles.tokenInfo}>
-            <img src={mockImage} className={styles.image} />
-            <div className={styles.subtitle}>Solana Monkey Business</div>
-          </div>
-          <div className={styles.statsValue}>
-            <div className={styles.totalValue}>
-              <p className={styles.title}>Offer TVL</p>
-              <p className={styles.value}>
-                <span>345.364 </span> <SolanaIcon />
-              </p>
-            </div>
+const BondPool: FC<BondPoolProps> = ({ bondPreview }) => {
+  const { marketPubkey, collectionImage, collectionName, offerTVL } =
+    bondPreview;
 
-            <div className={styles.toRedeem}>
-              <p className={styles.title}>To Redeem</p>
-              <p className={styles.value}>3 Bonds</p>
-            </div>
-          </div>
-        </div>
+  return (
+    <NavLink to={marketPubkey} className={styles.pool}>
+      <div className={styles.tokenInfo}>
+        <img src={collectionImage} className={styles.image} />
+        <div className={styles.subtitle}>{collectionName}</div>
       </div>
-    </>
+      <div className={styles.statsValue}>
+        <div className={styles.totalValue}>
+          <p className={styles.title}>Offer TVL</p>
+          <p className={styles.value}>
+            <span>{parseFloat(offerTVL).toFixed(2)}</span> <SolanaIcon />
+          </p>
+        </div>
+
+        {/* <div className={styles.toRedeem}>
+          <p className={styles.title}>To Redeem</p>
+          <p className={styles.value}>3 Bonds</p>
+        </div> */}
+      </div>
+    </NavLink>
   );
 };
 

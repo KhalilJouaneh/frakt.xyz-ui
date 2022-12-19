@@ -1,4 +1,10 @@
 .pool {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
   background: var(--primary-background);
   border: 1px solid var(--primary-border);
   cursor: pointer;
@@ -10,14 +16,12 @@
   @media (max-width: 767px) {
     width: 100%;
   }
-}
 
-.poolCard {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
+  &,
+  &:hover,
+  &:focus {
+    color: inherit;
+  }
 }
 
 .tokenInfo {
