@@ -1,5 +1,4 @@
 import { FC, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
@@ -16,10 +15,11 @@ import {
   useLendingPoolsFiltering,
 } from '../LendPage/hooks/useLendingPoolsFiltering';
 import { useOnClickOutside } from '@frakt/hooks';
+import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
-import { PATHS } from '@frakt/constants';
 import styles from './BondsPoolPage.module.scss';
+import { useBondsPreview } from './hooks';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -33,19 +33,22 @@ const collectionsMock = [
 ];
 
 const BondsPoolPage: FC = () => {
-  const history = useHistory();
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  const { control, sort, setSearch, pools, setValue, showStakedOnlyToggle } =
-    useLendingPoolsFiltering();
+  const {
+    control,
+    sort,
+    /* setSearch, pools, */ setValue,
+    showStakedOnlyToggle,
+  } = useLendingPoolsFiltering();
   const {
     visible: filtersModalVisible,
     close: closeFiltersModal,
     toggle: toggleFiltersModal,
   } = useFiltersModal();
 
-  const openBondPool = () => {
-    history.push(PATHS.BOND);
-  };
+  const { bondsPreview, isLoading } = useBondsPreview({
+    /* //? Pass wallet pubkey to get user's bonds */
+  });
 
   const ref = useRef();
   useOnClickOutside(ref, closeFiltersModal);
@@ -103,14 +106,14 @@ const BondsPoolPage: FC = () => {
         </div>
       </div>
       <div className={styles.pools}>
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
-        <BondPool onClick={openBondPool} />
+        {isLoading && <Loader size="large" />}
+        {!isLoading &&
+          bondsPreview.map((bondPreview) => (
+            <BondPool
+              key={bondPreview.marketPubkey}
+              bondPreview={bondPreview}
+            />
+          ))}
       </div>
     </AppLayout>
   );
