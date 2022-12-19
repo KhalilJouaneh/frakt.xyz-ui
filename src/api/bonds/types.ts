@@ -35,3 +35,10 @@ export interface Market {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BondPreview {
+  marketPubkey: string;
+  collectionName: string;
+  collectionImage: string;
+  offerTVL: string;
+}
