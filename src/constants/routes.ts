@@ -42,7 +42,7 @@ export const routes: Route[] = [
   },
   {
     exact: true,
-    path: PATHS.BOND,
+    path: `${PATHS.BOND}/:marketPubkey`,
     component: BondPage,
   },
   {

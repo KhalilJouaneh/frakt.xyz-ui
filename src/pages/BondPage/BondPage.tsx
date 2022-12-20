@@ -4,7 +4,6 @@ import mockImg from './mockImg.jpg';
 
 import styles from './BondPage.module.scss';
 import Button from '@frakt/components/Button';
-import { ArrowLeftIcon } from '@frakt/icons/ArrowLeftIcon';
 import { useLendingPoolsFiltering } from '../LendPage/hooks/useLendingPoolsFiltering';
 import FiltersDropdown, {
   useFiltersModal,
@@ -18,9 +17,7 @@ import { SearchInput } from '@frakt/components/SearchInput';
 import Bond from './components/Bond/Bond';
 import OrderBook from './components/OrderBook/OrderBook';
 import { Arrow } from '@frakt/iconsNew/Arrow';
-import RoundButton from '@frakt/components/RoundButton/RoundButton';
-import { PATHS } from '@frakt/constants';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useOnClickOutside } from '@frakt/hooks';
 
 export enum InputControlsNames {
@@ -35,19 +32,21 @@ const collectionsMock = [
 ];
 
 const BondPage: FC = () => {
+  const { marketPubkey } = useParams<{ marketPubkey: string }>();
+
   const history = useHistory();
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  const { control, sort, setSearch, pools, setValue, showStakedOnlyToggle } =
-    useLendingPoolsFiltering();
+  const {
+    control,
+    sort,
+    /*setSearch, pools,*/ setValue,
+    showStakedOnlyToggle,
+  } = useLendingPoolsFiltering();
   const {
     visible: filtersModalVisible,
     close: closeFiltersModal,
     toggle: toggleFiltersModal,
   } = useFiltersModal();
-
-  const openCreatePool = () => {
-    history.push(PATHS.POOLS_CREATION);
-  };
 
   const goBack = () => {
     history.goBack();
@@ -149,7 +148,7 @@ const BondPage: FC = () => {
             <Bond />
           </div>
         </>
-        <OrderBook onClick={openCreatePool} />
+        <OrderBook marketPubkey={marketPubkey} />
       </div>
     </AppLayout>
   );

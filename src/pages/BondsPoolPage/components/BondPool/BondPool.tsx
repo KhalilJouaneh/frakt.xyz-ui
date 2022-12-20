@@ -15,7 +15,7 @@ const BondPool: FC<BondPoolProps> = ({ bondPreview }) => {
     bondPreview;
 
   return (
-    <NavLink to={`${PATHS.BONDS}/${marketPubkey}`} className={styles.pool}>
+    <NavLink to={`${PATHS.BOND}/${marketPubkey}`} className={styles.pool}>
       <div className={styles.tokenInfo}>
         <img src={collectionImage} className={styles.image} />
         <div className={styles.subtitle}>{collectionName}</div>

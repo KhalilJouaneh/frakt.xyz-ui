@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
 import Button from '@frakt/components/Button';
 import RoundButton from '@frakt/components/RoundButton/RoundButton';
@@ -9,21 +10,23 @@ import classNames from 'classnames/bind';
 import { Trash } from '@frakt/iconsNew/Trash';
 import { Chevron } from '@frakt/iconsNew/Chevron';
 import styles from './OrderBook.module.scss';
+import { PATHS } from '@frakt/constants';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
   SORT = 'sort',
 }
 interface OrderBookProps {
-  onClick?: () => void;
+  marketPubkey: string;
+  hideCreateBtn?: boolean;
 }
 
-interface arrOrdersProps {
+interface Order {
   size: string;
   price: string;
 }
 
-const arrOrdersMock: arrOrdersProps[] = [
+const ordersMock: Order[] = [
   { size: '206,324.01', price: '2212.021' },
   { size: '206,324.01', price: '2212.021' },
   { size: '206,324.01', price: '2212.021' },
@@ -52,11 +55,15 @@ const arrOrdersMock: arrOrdersProps[] = [
   { size: '206,324.01', price: '2212.021' },
 ];
 
-const OrderBook: FC<OrderBookProps> = ({ onClick }) => {
-  const [arrOrders, setArrOrders] = useState(arrOrdersMock);
+const OrderBook: FC<OrderBookProps> = ({
+  marketPubkey,
+  hideCreateBtn = false,
+}) => {
+  const [arrOrders, setArrOrders] = useState(ordersMock);
   const [showOrderBook, setShowOrderBook] = useState<boolean>(false);
-  const { control, sort, setSearch, pools, setValue, showStakedOnlyToggle } =
-    useLendingPoolsFiltering();
+  const {
+    control /* sort, setSearch, pools, setValue, showStakedOnlyToggle */,
+  } = useLendingPoolsFiltering();
 
   const isMyLoans = false;
   const size = useWindowSize();
@@ -148,17 +155,18 @@ const OrderBook: FC<OrderBookProps> = ({ onClick }) => {
           </>
         )}
       </div>
-
-      <div
-        className={classNames(styles.btnWrapper, {
-          [styles.active]: !showOrderBook,
-        })}
-        onClick={onClick}
-      >
-        <Button className={styles.btn} type="secondary">
-          Place orders
-        </Button>
-      </div>
+      {!hideCreateBtn && (
+        <NavLink
+          to={`${PATHS.BOND}/${marketPubkey}/create`}
+          className={classNames(styles.btnWrapper, {
+            [styles.active]: !showOrderBook,
+          })}
+        >
+          <Button className={styles.btn} type="secondary">
+            Place orders
+          </Button>
+        </NavLink>
+      )}
     </div>
   );
 };

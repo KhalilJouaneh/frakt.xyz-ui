@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import TokenField from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
@@ -13,19 +13,21 @@ import { SOL_TOKEN } from '../../utils';
 import styles from './PoolsCreationPage.module.scss';
 
 const PoolsCreationPage: FC = () => {
+  const { marketPubkey } = useParams<{ marketPubkey: string }>();
+
   const history = useHistory();
   const [tokenValue, setTokenValue] = useState('0');
   const [risk, setRisk] = useState(1);
   const {
-    bulks,
-    borrowValue,
-    loading,
-    availableBorrowValue,
-    onSubmit,
     onBorrowPercentChange,
     percentValue,
-    onBorrowValueChange,
-    notEnoughBalanceError,
+    // bulks,
+    // borrowValue,
+    // loading,
+    // availableBorrowValue,
+    // onSubmit,
+    // onBorrowValueChange,
+    // notEnoughBalanceError,
   } = useBorrowPage();
 
   const goBack = () => {
@@ -96,7 +98,7 @@ const PoolsCreationPage: FC = () => {
           </Button>
         </div>
       </div>
-      <OrderBook />
+      <OrderBook marketPubkey={marketPubkey} hideCreateBtn />
     </AppLayout>
   );
 };
