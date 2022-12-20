@@ -10,6 +10,6 @@ export const PATHS = {
   BONDS: '/bonds',
   BOND: '/bonds/:marketPubkey',
   LOANS: '/loans',
-  POOLS_CREATION: '/poolscreation',
+  POOLS_CREATION: '/bonds/:marketPubkey/create',
   ROADMAP: 'https://trello.com/b/jt9JRdLg/frakt-public-roadmap',
 };
