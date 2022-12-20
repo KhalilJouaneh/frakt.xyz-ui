@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { SolanaIcon } from '@frakt/icons';
-import styles from './BondPool.module.scss';
+import { PATHS } from '@frakt/constants';
 import { BondPreview } from '@frakt/api/bonds';
+import styles from './BondPool.module.scss';
 
 interface BondPoolProps {
   bondPreview: BondPreview;
@@ -14,7 +15,7 @@ const BondPool: FC<BondPoolProps> = ({ bondPreview }) => {
     bondPreview;
 
   return (
-    <NavLink to={marketPubkey} className={styles.pool}>
+    <NavLink to={`${PATHS.BONDS}/${marketPubkey}`} className={styles.pool}>
       <div className={styles.tokenInfo}>
         <img src={collectionImage} className={styles.image} />
         <div className={styles.subtitle}>{collectionName}</div>
@@ -26,7 +27,6 @@ const BondPool: FC<BondPoolProps> = ({ bondPreview }) => {
             <span>{parseFloat(offerTVL).toFixed(2)}</span> <SolanaIcon />
           </p>
         </div>
-
         {/* <div className={styles.toRedeem}>
           <p className={styles.title}>To Redeem</p>
           <p className={styles.value}>3 Bonds</p>

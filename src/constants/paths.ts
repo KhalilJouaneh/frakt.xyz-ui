@@ -7,9 +7,9 @@ export const PATHS = {
   BORROW: '/borrow',
   LEND: '/lend',
   LIQUIDATIONS: '/liquidations',
-  BOND: '/bond',
-  LOANS: '/loans',
   BONDS: '/bonds',
+  BOND: '/bonds/:marketPubkey',
+  LOANS: '/loans',
   POOLS_CREATION: '/poolscreation',
   ROADMAP: 'https://trello.com/b/jt9JRdLg/frakt-public-roadmap',
 };
