@@ -11,6 +11,11 @@ import { riskMarks, durationMarks } from './hooks/usePoolCreation';
 import OrderBook from '../BondPage/components/OrderBook/OrderBook';
 import { SOL_TOKEN } from '../../utils';
 import styles from './PoolsCreationPage.module.scss';
+// import { TokenAmountInput } from '@frakt/components/TokenAmountInput';
+// import { makeCreatePairTransaction } from '@frakt/utils/bonds';
+// import { signAndConfirmTransaction } from '@frakt/utils/transactions';
+// import { useWallet } from '@solana/wallet-adapter-react';
+// import { web3 } from 'fbonds-core';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -30,6 +35,38 @@ const PoolsCreationPage: FC = () => {
     // notEnoughBalanceError,
   } = useBorrowPage();
 
+  //TODO: Bind with form params to generate transaction
+  // const wallet = useWallet();
+  // useEffect(() => {
+  //   if (marketPubkey && wallet.publicKey) {
+  //     (async () => {
+  //       try {
+  //         const connection = new web3.Connection(
+  //           'https://api.devnet.solana.com',
+  //         );
+
+  //         const { transaction, signers } = await makeCreatePairTransaction({
+  //           marketPubkey: new web3.PublicKey(marketPubkey),
+  //           maxDuration: 7,
+  //           maxLTV: 30,
+  //           solDeposit: 0.02,
+  //           solFee: 10,
+  //           connection,
+  //           wallet,
+  //         });
+  //         await signAndConfirmTransaction({
+  //           transaction,
+  //           signers,
+  //           wallet,
+  //           connection,
+  //         });
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     })();
+  //   }
+  // }, [marketPubkey, wallet]);
+
   const goBack = () => {
     history.goBack();
   };
@@ -38,8 +75,7 @@ const PoolsCreationPage: FC = () => {
       <div className={styles.poolsCreation}>
         <Header
           className={styles.headerWrapper}
-          title="Pools creation"
-          subtitle="description"
+          title="Order creation"
           onClick={goBack}
         />
 
@@ -63,7 +99,7 @@ const PoolsCreationPage: FC = () => {
                 className={styles.slider}
                 marks={durationMarks}
                 label="DURATION"
-                step={33}
+                step={100}
                 min={0}
                 max={100}
               />
@@ -79,7 +115,6 @@ const PoolsCreationPage: FC = () => {
             </div>
             <div className={styles.col}>
               <h5 className={styles.blockTitle}>Assets</h5>
-
               <TokenField
                 value={tokenValue}
                 onValueChange={(e: any) => setTokenValue(e)}
