@@ -227,3 +227,7 @@ export const compareNumbers = (
     if (numberA > numberB) return -1;
   } else if (numberB > numberA) return -1;
 };
+
+//? Placeholder for sendTxn callback in SDK methods
+export const sendTxnPlaceHolder = async (): Promise<null> =>
+  await Promise.resolve(null);
