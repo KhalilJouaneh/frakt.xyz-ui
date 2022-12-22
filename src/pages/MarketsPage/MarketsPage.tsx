@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../componentsNew/FiltersDropdown';
-import MarketPreviewCard from './components/MarketPreviewCard';
+import MarketPreviewCard from './components/MarketCard';
 import SortControl from '@frakt/componentsNew/SortControl';
 import {
   SORT_VALUES,
@@ -18,7 +18,7 @@ import { useOnClickOutside } from '@frakt/hooks';
 import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
-import styles from './MarketsPreviewPage.module.scss';
+import styles from './MarketsPage.module.scss';
 import { useMarketsPreview } from './hooks';
 
 export enum InputControlsNames {
@@ -46,7 +46,7 @@ const MarketsPreviewPage: FC = () => {
     toggle: toggleFiltersModal,
   } = useFiltersModal();
 
-  const { marketsPreview: bondsPreview, isLoading } = useMarketsPreview({
+  const { marketsPreview, isLoading } = useMarketsPreview({
     /* //? Pass wallet pubkey to get user's bonds */
   });
 
@@ -108,10 +108,10 @@ const MarketsPreviewPage: FC = () => {
       <div className={styles.pools}>
         {isLoading && <Loader size="large" />}
         {!isLoading &&
-          bondsPreview.map((bondPreview) => (
+          marketsPreview.map((marketPreview) => (
             <MarketPreviewCard
-              key={bondPreview.marketPubkey}
-              bondPreview={bondPreview}
+              key={marketPreview.marketPubkey}
+              marketPreview={marketPreview}
             />
           ))}
       </div>

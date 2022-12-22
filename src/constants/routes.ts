@@ -8,7 +8,7 @@ import {
   LiquidationsPage,
   LoansPage,
   BorrowPage,
-  MarketsPreviewPage,
+  MarketsPage,
   MarketPage,
   PoolsCreationPage,
 } from '../pages';
@@ -38,7 +38,7 @@ export const routes: Route[] = [
   {
     exact: true,
     path: PATHS.BONDS,
-    component: MarketsPreviewPage,
+    component: MarketsPage,
   },
   {
     exact: true,

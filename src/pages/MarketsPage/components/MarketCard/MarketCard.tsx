@@ -4,13 +4,13 @@ import { NavLink } from 'react-router-dom';
 import { SolanaIcon } from '@frakt/icons';
 import { PATHS } from '@frakt/constants';
 import { MarketPreview } from '@frakt/api/bonds';
-import styles from './MarketPreviewCard.module.scss';
+import styles from './MarketCard.module.scss';
 
-interface MarketPreviewCardProps {
-  bondPreview: MarketPreview;
+interface MarketCardProps {
+  marketPreview: MarketPreview;
 }
 
-const MarketPreviewCard: FC<MarketPreviewCardProps> = ({ bondPreview }) => {
+const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
   const { marketPubkey, collectionImage, collectionName, offerTVL } =
     bondPreview;
 
@@ -36,4 +36,4 @@ const MarketPreviewCard: FC<MarketPreviewCardProps> = ({ bondPreview }) => {
   );
 };
 
-export default MarketPreviewCard;
+export default MarketCard;
