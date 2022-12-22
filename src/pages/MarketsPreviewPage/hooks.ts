@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { BondPreview, fetchBondsPreview } from '@frakt/api/bonds';
+import { MarketPreview, fetchMarketsPreview } from '@frakt/api/bonds';
 import { web3 } from 'fbonds-core';
 
-type UseBondsPreview = (props: { walletPublicKey?: web3.PublicKey }) => {
-  bondsPreview: BondPreview[];
+type UseMarketsPreview = (props: { walletPublicKey?: web3.PublicKey }) => {
+  marketsPreview: MarketPreview[];
   isLoading: boolean;
 };
 
-export const useBondsPreview: UseBondsPreview = ({ walletPublicKey }) => {
+export const useMarketsPreview: UseMarketsPreview = ({ walletPublicKey }) => {
   const { data, isLoading } = useQuery(
     ['bondsPreview', walletPublicKey],
     () =>
-      fetchBondsPreview({
+      fetchMarketsPreview({
         walletPubkey: walletPublicKey,
       }),
     {
@@ -21,7 +21,7 @@ export const useBondsPreview: UseBondsPreview = ({ walletPublicKey }) => {
   );
 
   return {
-    bondsPreview: data || [],
+    marketsPreview: data || [],
     isLoading,
   };
 };

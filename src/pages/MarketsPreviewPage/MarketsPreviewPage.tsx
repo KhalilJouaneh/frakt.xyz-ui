@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../componentsNew/FiltersDropdown';
-import BondPool from './components/BondPool';
+import MarketPreviewCard from './components/MarketPreviewCard';
 import SortControl from '@frakt/componentsNew/SortControl';
 import {
   SORT_VALUES,
@@ -18,8 +18,8 @@ import { useOnClickOutside } from '@frakt/hooks';
 import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/componentsNew/FilterCollections';
-import styles from './BondsPoolPage.module.scss';
-import { useBondsPreview } from './hooks';
+import styles from './MarketsPreviewPage.module.scss';
+import { useMarketsPreview } from './hooks';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -32,7 +32,7 @@ const collectionsMock = [
   { value: 'Solpunks' },
 ];
 
-const BondsPoolPage: FC = () => {
+const MarketsPreviewPage: FC = () => {
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const {
     control,
@@ -46,7 +46,7 @@ const BondsPoolPage: FC = () => {
     toggle: toggleFiltersModal,
   } = useFiltersModal();
 
-  const { bondsPreview, isLoading } = useBondsPreview({
+  const { marketsPreview: bondsPreview, isLoading } = useMarketsPreview({
     /* //? Pass wallet pubkey to get user's bonds */
   });
 
@@ -109,7 +109,7 @@ const BondsPoolPage: FC = () => {
         {isLoading && <Loader size="large" />}
         {!isLoading &&
           bondsPreview.map((bondPreview) => (
-            <BondPool
+            <MarketPreviewCard
               key={bondPreview.marketPubkey}
               bondPreview={bondPreview}
             />
@@ -119,4 +119,4 @@ const BondsPoolPage: FC = () => {
   );
 };
 
-export default BondsPoolPage;
+export default MarketsPreviewPage;

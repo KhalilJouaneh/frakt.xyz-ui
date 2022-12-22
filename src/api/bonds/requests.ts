@@ -1,7 +1,7 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
 import axios from 'axios';
 
-import { BondPreview, Market } from './types';
+import { MarketPreview, Market } from './types';
 
 const BACKEND_DOMAIN = process.env.BACKEND_DEVNET_DOMAIN; //TODO: replace to MAINNET
 
@@ -27,13 +27,13 @@ export const fetchCertainMarket: FetchCertainMarket = async ({
   return data;
 };
 
-type FetchBondsPreview = (props: {
+type FetchMarketsPreview = (props: {
   walletPubkey?: web3.PublicKey;
-}) => Promise<BondPreview[]>;
-export const fetchBondsPreview: FetchBondsPreview = async ({
+}) => Promise<MarketPreview[]>;
+export const fetchMarketsPreview: FetchMarketsPreview = async ({
   walletPubkey,
 }) => {
-  const { data } = await axios.get<BondPreview[]>(
+  const { data } = await axios.get<MarketPreview[]>(
     `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
   );
 

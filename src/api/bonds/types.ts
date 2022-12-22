@@ -36,7 +36,7 @@ export interface Market {
   updatedAt: string;
 }
 
-export interface BondPreview {
+export interface MarketPreview {
   marketPubkey: string;
   collectionName: string;
   collectionImage: string;
