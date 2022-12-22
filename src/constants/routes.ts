@@ -9,7 +9,7 @@ import {
   LoansPage,
   BorrowPage,
   MarketsPreviewPage,
-  BondPage,
+  MarketPage,
   PoolsCreationPage,
 } from '../pages';
 
@@ -43,7 +43,7 @@ export const routes: Route[] = [
   {
     exact: true,
     path: `${PATHS.BOND}/:marketPubkey`,
-    component: BondPage,
+    component: MarketPage,
   },
   {
     exact: true,

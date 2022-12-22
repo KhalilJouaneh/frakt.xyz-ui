@@ -6,7 +6,6 @@ import { SolanaIcon, Timer } from '@frakt/icons';
 import classNames from 'classnames';
 
 import mockImg from '../../mockImg.jpg';
-
 import styles from './Bond.module.scss';
 
 const Bond: FC = () => {

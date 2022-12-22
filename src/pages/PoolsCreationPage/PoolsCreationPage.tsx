@@ -8,7 +8,7 @@ import { Slider } from '../../components/Slider';
 import Header from '../BorrowPage/components/Header';
 import { useBorrowPage } from '../BorrowPage';
 import { riskMarks, durationMarks } from './hooks/usePoolCreation';
-import OrderBook from '../BondPage/components/OrderBook/OrderBook';
+import OrderBook from '../MarketPage/components/OrderBook/OrderBook';
 import { SOL_TOKEN } from '../../utils';
 import styles from './PoolsCreationPage.module.scss';
 // import { TokenAmountInput } from '@frakt/components/TokenAmountInput';

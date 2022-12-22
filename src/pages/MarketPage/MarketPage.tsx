@@ -2,7 +2,7 @@ import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { FC, useRef, useState } from 'react';
 import mockImg from './mockImg.jpg';
 
-import styles from './BondPage.module.scss';
+import styles from './MarketPage.module.scss';
 import Button from '@frakt/components/Button';
 import { useLendingPoolsFiltering } from '../LendPage/hooks/useLendingPoolsFiltering';
 import FiltersDropdown, {
@@ -31,7 +31,7 @@ const collectionsMock = [
   { value: 'Solpunks' },
 ];
 
-const BondPage: FC = () => {
+const MarketPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
 
   const history = useHistory();
@@ -154,4 +154,4 @@ const BondPage: FC = () => {
   );
 };
 
-export default BondPage;
+export default MarketPage;

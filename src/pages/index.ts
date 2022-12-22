@@ -5,5 +5,5 @@ export { default as LiquidationsPage } from './LiquidationsPage';
 export { default as LoansPage } from './LoansPage';
 export { default as BorrowPage } from './BorrowPage';
 export { default as MarketsPreviewPage } from './MarketsPreviewPage';
-export { default as BondPage } from './BondPage';
+export { default as MarketPage } from './MarketPage';
 export { default as PoolsCreationPage } from './PoolsCreationPage';
