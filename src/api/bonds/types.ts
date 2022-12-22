@@ -18,10 +18,20 @@ enum MarketPairValidationType {
   CustomValidation = 'customValidation',
 }
 
+interface FMarket {
+  publicKey: string;
+  authority: string;
+  createdAt: string;
+  isRemoved: false;
+  state: 'initialized'; //TODO what's this?
+  updatedAt: string;
+  whitelistQuantity: number;
+  hadoMarket: string;
+}
+
 export interface Market {
-  marketPubkey: string;
-  collectionName: string;
-  collectionImage: string;
+  publicKey: string;
+  createdAt: string;
   isRemoved: boolean;
   marketAuthority: string;
   marketDecimals: number;
@@ -31,9 +41,11 @@ export interface Market {
   pairTokenMint: string;
   pairTokenType: MarketPairTokenType;
   pairValidationType: MarketPairValidationType;
-  validationAdapterProgram: string;
-  createdAt: string;
   updatedAt: string;
+  validationAdapterProgram: string;
+  image: string;
+  name: string;
+  fraktMarket: FMarket;
 }
 
 export interface MarketPreview {
