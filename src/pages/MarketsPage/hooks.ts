@@ -9,7 +9,7 @@ type UseMarketsPreview = (props: { walletPublicKey?: web3.PublicKey }) => {
 
 export const useMarketsPreview: UseMarketsPreview = ({ walletPublicKey }) => {
   const { data, isLoading } = useQuery(
-    ['bondsPreview', walletPublicKey],
+    ['marketsPreview', walletPublicKey],
     () =>
       fetchMarketsPreview({
         walletPubkey: walletPublicKey,
