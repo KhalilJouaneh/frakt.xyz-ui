@@ -1,22 +1,13 @@
-enum MarketState {
-  Initializing = 'initializing',
-  Available = 'available',
-}
-
-enum MarketTrustType {
-  Unverified = 'unverified',
-  Verified = 'verified',
-}
-
-enum MarketPairTokenType {
-  NativeSol = 'nativeSol',
-  Spl = 'spl',
-}
-
-enum MarketPairValidationType {
-  ClassicValidation = 'classicValidation',
-  CustomValidation = 'customValidation',
-}
+import {
+  BondingCurveType,
+  PairAuthorityType,
+  MarketState,
+  MarketTrustType,
+  PairTokenType,
+  PairValidationType,
+  PairState,
+  PairType,
+} from 'fbonds-core/lib/cross-mint-amm/types';
 
 interface FMarket {
   publicKey: string;
@@ -39,8 +30,8 @@ export interface Market {
   marketTrustType: MarketTrustType;
   minBidCap: number;
   pairTokenMint: string;
-  pairTokenType: MarketPairTokenType;
-  pairValidationType: MarketPairValidationType;
+  pairTokenType: PairTokenType;
+  pairValidationType: PairValidationType;
   updatedAt: string;
   validationAdapterProgram: string;
   image: string;
