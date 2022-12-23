@@ -45,3 +45,51 @@ export interface MarketPreview {
   collectionImage: string;
   offerTVL: string;
 }
+
+export interface Pair {
+  publicKey: string;
+  assetReceiver: string;
+  baseSpotPrice: number;
+  bidCap: number;
+  bidSettlement: number;
+  bondingCurve: {
+    delta: number;
+    bondingType: BondingCurveType;
+  };
+  buyOrdersQuantity: number;
+  concentrationIndex: number;
+  createdAt: string;
+  currentSpotPrice: number;
+  edgeSettlement: number;
+  fee: number;
+  feeTokenAccount: string;
+  feeVaultSeed: number;
+  fundsSolOrTokenBalance: number;
+  fundsSolVaultSeed: number;
+  fundsTokenAccount: string;
+  hadoMarket: string;
+  initialFundsSolOrTokenBalance: number;
+  isRemoved: boolean;
+  lastTransactedAt: number;
+  lpTokensInCirculation: number;
+  lpTokensMint: string;
+  mathCounter: number;
+  nftsSeed: number;
+  pairAuthorityAdapterProgram: string;
+  pairAuthorityType: PairAuthorityType;
+  pairState: PairState;
+  pairType: PairType;
+  sellOrdersCount: number;
+  solOrTokenFeeAmount: number;
+  updatedAt: string;
+  validation: {
+    publicKey: string;
+    createdAt: string;
+    durationFilter: number;
+    isRemoved: boolean;
+    loanToValueFilter: number;
+    pair: string;
+    updatedAt: string;
+    user: string;
+  };
+}
