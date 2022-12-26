@@ -109,6 +109,16 @@
 
   border-bottom: 1px solid var(--primary-border-2);
 
+  background: linear-gradient(
+    to left,
+    var(--light-green-color-1) 50%,
+    var(--primary-background) 50%
+  );
+
+  &:last-child {
+    border-bottom: unset;
+  }
+
   @media screen and (max-width: 768px) {
     padding: 11px 0;
     margin: 0;

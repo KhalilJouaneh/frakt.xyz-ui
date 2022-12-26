@@ -4,68 +4,29 @@ import Button from '@frakt/components/Button';
 import RoundButton from '@frakt/components/RoundButton/RoundButton';
 import Toggle from '@frakt/components/Toggle';
 import { useWindowSize } from '@frakt/hooks';
-import { useLendingPoolsFiltering } from '@frakt/pages/LendPage/hooks/useLendingPoolsFiltering';
-import { Controller } from 'react-hook-form';
 import classNames from 'classnames/bind';
 import { Trash } from '@frakt/iconsNew/Trash';
 import { Chevron } from '@frakt/iconsNew/Chevron';
 import styles from './OrderBook.module.scss';
 import { PATHS } from '@frakt/constants';
+import { useMarketOrders } from './hooks';
+import { web3 } from 'fbonds-core';
+import { MarketOrder } from './types';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Loader } from '@frakt/components/Loader';
 
-export enum InputControlsNames {
-  SHOW_STAKED = 'showStaked',
-  SORT = 'sort',
-}
 interface OrderBookProps {
   marketPubkey: string;
   hideCreateBtn?: boolean;
 }
 
-interface Order {
-  size: string;
-  price: string;
-}
-
-const ordersMock: Order[] = [
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-  { size: '206,324.01', price: '2212.021' },
-];
-
 const OrderBook: FC<OrderBookProps> = ({
   marketPubkey,
   hideCreateBtn = false,
 }) => {
-  const [arrOrders, setArrOrders] = useState(ordersMock);
+  const wallet = useWallet();
   const [showOrderBook, setShowOrderBook] = useState<boolean>(false);
-  const {
-    control /* sort, setSearch, pools, setValue, showStakedOnlyToggle */,
-  } = useLendingPoolsFiltering();
 
-  const isMyLoans = false;
   const size = useWindowSize();
 
   useEffect(() => {
@@ -76,9 +37,25 @@ const OrderBook: FC<OrderBookProps> = ({
     }
   }, [size.width]);
 
-  const removeOrder = (idx: number) => () => {
-    setArrOrders((prev) => [...prev].filter((_, id) => id !== idx));
+  const removeOrder = (publicKey: string) => () => {
+    //? Removing order logic here
+    publicKey;
   };
+
+  const isOwnOrder = (order: MarketOrder) =>
+    order.assetReceiver === wallet?.publicKey?.toBase58();
+
+  const [showOwnOrders, setShowOwnOrders] = useState(false);
+  //TODO: Implement sorting
+  const [sort /* setSort */] = useState<'asc' | 'desc'>('desc');
+
+  const { orders, isLoading } = useMarketOrders({
+    marketPubkey: new web3.PublicKey(marketPubkey),
+    sortDirection: sort,
+    walletOwned: showOwnOrders,
+  });
+
+  if (isLoading) return <Loader size="large" />;
 
   return (
     <div
@@ -98,17 +75,11 @@ const OrderBook: FC<OrderBookProps> = ({
         <div className={styles.header}>
           <div className={styles.title}>Order Book</div>
           {showOrderBook && (
-            <Controller
-              control={control}
-              name={InputControlsNames.SHOW_STAKED}
-              render={({ field: { ref, ...field } }) => (
-                <Toggle
-                  label="My pools only"
-                  className={styles.toggle}
-                  name={InputControlsNames.SHOW_STAKED}
-                  {...field}
-                />
-              )}
+            <Toggle
+              label="My pools only"
+              className={styles.toggle}
+              defaultChecked={showOwnOrders}
+              onChange={(nextValue) => setShowOwnOrders(nextValue)}
             />
           )}
         </div>
@@ -125,26 +96,18 @@ const OrderBook: FC<OrderBookProps> = ({
               </div>
             </div>
             <ul className={styles.list}>
-              {arrOrders.map(({ size, price }, idx) => (
-                <li
-                  className={styles.listItem}
-                  key={idx}
-                  style={{
-                    background: `linear-gradient(
-                  to left,
-                  var(--light-green-color-1) ${50}%,
-                  var(--primary-background) ${50}%
-                )`,
-                  }}
-                >
-                  <div className={styles.value}>{size}</div>
+              {orders.map((order) => (
+                <li className={styles.listItem} key={order.publicKey}>
+                  <div className={styles.value}>{order.size.toFixed(3)}</div>
                   <div className={styles.btnTrashWrapper}>
-                    <div className={styles.value}>{price}</div>
-                    {isMyLoans && (
+                    <div className={styles.value}>
+                      {order.interest.toFixed(3)}
+                    </div>
+                    {isOwnOrder(order) && (
                       <RoundButton
                         icon={<Trash />}
                         size={32}
-                        onClick={removeOrder(idx)}
+                        onClick={removeOrder(order.publicKey)}
                         className={styles.roundBtn}
                       />
                     )}
