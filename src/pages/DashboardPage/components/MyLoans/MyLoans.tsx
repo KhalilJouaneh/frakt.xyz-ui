@@ -55,6 +55,11 @@ const MyLoans: FC = () => {
 
   return (
     <Block className={styles.block}>
+      {graceLoans?.length && (
+        <div className={styles.badge}>
+          Soon liquidate: {graceLoans?.length} NFTs
+        </div>
+      )}
       <div className={styles.poolsConainer}>
         <h3 className={styles.title}>My loans</h3>
         {userLoans.length ? (
