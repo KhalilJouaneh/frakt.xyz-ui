@@ -1,6 +1,6 @@
 .slider {
   margin: 0 !important;
-  padding: 0px 5px 64px !important;
+  padding: 0px 5px 36px !important;
   :global {
     .ant-slider {
       margin: 0;
@@ -115,24 +115,92 @@
 }
 
 .label {
-  margin-left: -5px;
-  margin-bottom: 8px;
-  height: 21px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
   font: var(--font-text-6);
   text-transform: uppercase;
   transition: var(--transition-1);
   color: var(--gray-color-2);
+}
 
+.labelWrapper {
+  height: 21px;
+  margin-bottom: 8px;
+  margin-left: -6px;
+  width: 103%;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+}
 
-  span {
-    font: var(--font-text-8);
-    color: var(--secondary-border);
+.riskLevel {
+  font: var(--font-text-6);
+
+  &.one {
+    color: rgba(156, 255, 31);
+  }
+
+  &.two {
+    color: rgba(197, 255, 31);
+  }
+
+  &.three {
+    color: rgba(224, 255, 31);
+  }
+
+  &.four {
+    color: rgba(251, 255, 31);
+  }
+
+  &.five {
+    color: rgba(255, 233, 31);
+  }
+
+  &.six {
+    color: rgba(255, 206, 31);
+  }
+
+  &.seven {
+    color: rgba(255, 165, 31);
+  }
+
+  &.eight {
+    color: rgba(255, 112, 31);
+  }
+
+  &.nine {
+    color: rgba(255, 31, 71);
   }
 }
 
-.labelFlex {
-  width: 100%;
+.gradient {
+  margin-bottom: -4px;
+  width: 101%;
+  margin-left: -4px;
+  height: 33px;
+  opacity: 0.1;
+  background: rgb(156, 255, 31);
+  background: linear-gradient(
+    90deg,
+    rgba(156, 255, 31, 1) 0%,
+    rgba(156, 255, 31, 1) 11%,
+    rgba(197, 255, 31, 1) 11%,
+    rgba(197, 255, 31, 1) 22%,
+    rgba(224, 255, 31, 1) 22%,
+    rgba(224, 255, 31, 1) 33%,
+    rgba(251, 255, 31, 1) 33%,
+    rgba(251, 255, 31, 1) 44%,
+    rgba(255, 233, 31, 1) 44%,
+    rgba(255, 233, 31, 1) 55%,
+    rgba(255, 206, 31, 1) 55%,
+    rgba(255, 206, 31, 1) 66%,
+    rgba(255, 165, 31, 1) 66%,
+    rgba(255, 165, 31, 1) 76%,
+    rgba(255, 112, 31, 1) 76%,
+    rgba(255, 112, 31, 1) 88%,
+    rgba(255, 31, 71, 1) 88%,
+    rgba(255, 31, 71, 1) 100%
+  );
 }
