@@ -75,6 +75,7 @@ export interface Pair {
   lpTokensMint: string;
   mathCounter: number;
   nftsSeed: number;
+  authorityAdapterPublicKey: string;
   pairAuthorityAdapterProgram: string;
   pairAuthorityType: PairAuthorityType;
   pairState: PairState;

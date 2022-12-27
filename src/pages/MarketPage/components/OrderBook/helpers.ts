@@ -6,11 +6,15 @@ import { MarketOrder } from './types';
 //? validation.loanToValueFilter -- LTV
 export const parseMarketOrder = (pair: Pair): MarketOrder => {
   return {
-    publicKey: pair?.publicKey || '',
     ltv: (pair?.validation?.loanToValueFilter || 0) / 100,
     size: pair?.edgeSettlement / 1e6 || 0,
     interest:
       (pair?.currentSpotPrice * (pair?.edgeSettlement / 1e6)) / 1e3 || 0,
-    assetReceiver: pair?.assetReceiver || '',
+    rawData: {
+      publicKey: pair?.publicKey || '',
+      assetReceiver: pair?.assetReceiver || '',
+      edgeSettlement: pair?.edgeSettlement || 0,
+      authorityAdapter: pair?.authorityAdapterPublicKey || '',
+    },
   };
 };

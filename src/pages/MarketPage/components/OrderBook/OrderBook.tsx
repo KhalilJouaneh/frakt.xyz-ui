@@ -14,6 +14,8 @@ import { web3 } from 'fbonds-core';
 import { MarketOrder } from './types';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Loader } from '@frakt/components/Loader';
+import { makeRemoveOrderTransaction } from '@frakt/utils/bonds';
+import { signAndConfirmTransaction } from '@frakt/utils/transactions';
 
 interface OrderBookProps {
   marketPubkey: string;
@@ -37,13 +39,34 @@ const OrderBook: FC<OrderBookProps> = ({
     }
   }, [size.width]);
 
-  const removeOrder = (publicKey: string) => () => {
-    //? Removing order logic here
-    publicKey;
+  const removeOrder = (order: MarketOrder) => async () => {
+    try {
+      //TODO: Replace to mainnet(hook) when contract appears on mainnet
+      const connection = new web3.Connection('https://api.devnet.solana.com');
+
+      const { transaction, signers } = await makeRemoveOrderTransaction({
+        pairPubkey: new web3.PublicKey(order.rawData.publicKey),
+        authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),
+        edgeSettlement: order.rawData.edgeSettlement,
+        wallet,
+        connection,
+      });
+
+      await signAndConfirmTransaction({
+        connection,
+        transaction,
+        signers,
+        wallet,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
+      console.error(error);
+    }
   };
 
   const isOwnOrder = (order: MarketOrder) =>
-    order.assetReceiver === wallet?.publicKey?.toBase58();
+    order.rawData.assetReceiver === wallet?.publicKey?.toBase58();
 
   const [showOwnOrders, setShowOwnOrders] = useState(false);
   //TODO: Implement sorting
@@ -97,7 +120,7 @@ const OrderBook: FC<OrderBookProps> = ({
             </div>
             <ul className={styles.list}>
               {orders.map((order) => (
-                <li className={styles.listItem} key={order.publicKey}>
+                <li className={styles.listItem} key={order.rawData.publicKey}>
                   <div className={styles.value}>{order.size.toFixed(3)}</div>
                   <div className={styles.btnTrashWrapper}>
                     <div className={styles.value}>
@@ -107,7 +130,7 @@ const OrderBook: FC<OrderBookProps> = ({
                       <RoundButton
                         icon={<Trash />}
                         size={32}
-                        onClick={removeOrder(order.publicKey)}
+                        onClick={removeOrder(order)}
                         className={styles.roundBtn}
                       />
                     )}
