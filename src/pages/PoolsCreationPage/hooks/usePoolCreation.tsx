@@ -16,7 +16,22 @@ export const riskMarks: { [key: string]: string | JSX.Element } = {
   100: '100%',
 };
 
-export const usePoolCreation = () => {
+type UsePoolCreation = () => {
+  loadingModalVisible: boolean;
+  closeLoadingModal: () => void;
+  maxLTV: number;
+  duration: number;
+  solDeposit: number;
+  solFee: number;
+  handleMaxLTV: (value: number) => void;
+  handleDuration: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSolDeposit: (value: string) => void;
+  handleSolFee: (value: string) => void;
+  onSubmit: () => Promise<void>;
+  isValid: boolean;
+};
+
+export const usePoolCreation: UsePoolCreation = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
   const wallet = useWallet();
 
@@ -26,6 +41,7 @@ export const usePoolCreation = () => {
   const [solFee, setSolFee] = useState<number>(0);
 
   const handleMaxLTV = useCallback((value: number) => setMaxLTV(value), []);
+  const handleSolFee = (value: string) => setSolFee(+value);
 
   const handleDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(+e.target.value);
@@ -33,10 +49,6 @@ export const usePoolCreation = () => {
 
   const handleSolDeposit = (value: string) => {
     setSolDeposit(+value);
-  };
-
-  const handleSolFee = (value: string) => {
-    setSolFee(+value);
   };
 
   const {
