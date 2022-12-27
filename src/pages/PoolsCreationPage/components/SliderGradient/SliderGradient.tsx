@@ -17,6 +17,18 @@ interface SliderGradientProps {
   label?: string;
 }
 
+const riskCheck = (value: number) => {
+  if (value < 40) {
+    return 'low';
+  }
+  if (40 <= value && value <= 70) {
+    return 'medium';
+  }
+  if (value > 70 && value <= 100) {
+    return 'high';
+  }
+};
+
 export const SliderGradient: FC<SliderGradientProps> = ({
   className,
   marks,
@@ -29,18 +41,6 @@ export const SliderGradient: FC<SliderGradientProps> = ({
   disabled,
   label,
 }) => {
-  const riskCheck = (value: number) => {
-    if (value < 40) {
-      return 'low';
-    }
-    if (40 <= value && value <= 70) {
-      return 'medium';
-    }
-    if (value > 70 && value <= 100) {
-      return 'high';
-    }
-  };
-
   return (
     <div
       className={classNames(
@@ -53,7 +53,7 @@ export const SliderGradient: FC<SliderGradientProps> = ({
         <div className={styles.labelWrapper}>
           <div className={styles.label}>{label}</div>
           <div className={styles.label}>
-            RISK LEVEL
+            risk level
             <span
               className={classNames(styles.riskLevel, {
                 [styles.one]: value <= 11,
@@ -72,9 +72,7 @@ export const SliderGradient: FC<SliderGradientProps> = ({
           </div>
         </div>
       )}
-      <div className={styles.gradient}>
-        <></>
-      </div>
+      <div className={styles.gradient}></div>
       <SliderAntd
         marks={marks}
         value={value}

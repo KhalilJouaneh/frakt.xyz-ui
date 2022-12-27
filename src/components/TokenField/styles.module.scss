@@ -1,12 +1,4 @@
-@mixin resetBtnStyle {
-  &,
-  &:focus {
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-  }
-}
+@import '@frakt/scss/abstracts/mixins';
 
 .root {
   background: var(--secondary-background);

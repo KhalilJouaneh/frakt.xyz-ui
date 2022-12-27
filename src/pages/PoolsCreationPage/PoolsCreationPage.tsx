@@ -1,101 +1,68 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { web3 } from 'fbonds-core';
 
 import TokenField from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
-import Button from '../../components/Button';
-
-import Header from '../BorrowPage/components/Header';
-
-import { riskMarks } from './hooks/usePoolCreation';
 import OrderBook from '../MarketPage/components/OrderBook/OrderBook';
+import { SliderGradient } from './components/SliderGradient/SliderGradient';
+import Header from '../BorrowPage/components/Header';
+import Button from '../../components/Button';
+import Tooltip from '@frakt/components/Tooltip';
+import { LoadingModal } from '@frakt/components/LoadingModal';
+import SizeField from './components/SizeFiled/SizeField';
+
+import { riskMarks, usePoolCreation } from './hooks/usePoolCreation';
 import { SOL_TOKEN } from '../../utils';
+import { formatNumber } from '@frakt/utils/solanaUtils';
+import { useNativeAccount } from '@frakt/utils/accounts';
 
 import { SolanaIcon } from '@frakt/icons';
-import Tooltip from '@frakt/components/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import SizeField from './components/SizeFiled/SizeField';
-import { SliderGradient } from './components/SliderGradient/SliderGradient';
 import styles from './PoolsCreationPage.module.scss';
-
-// import { TokenAmountInput } from '@frakt/components/TokenAmountInput';
-// import { makeCreatePairTransaction } from '@frakt/utils/bonds';
-// import { signAndConfirmTransaction } from '@frakt/utils/transactions';
-// import { useWallet } from '@solana/wallet-adapter-react';
-// import { web3 } from 'fbonds-core';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
 
   const history = useHistory();
+  const { account } = useNativeAccount();
 
-  const [maxLTV, setMaxLTV] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(7);
-  const [solDeposit, setSolDeposit] = useState<number>(0);
-  const [solFee, setSolFee] = useState<number>(0);
-
-  const handleMaxLTV = useCallback((value: number) => setMaxLTV(value), []);
-
-  const handleDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDuration(+e.target.value);
-  };
-
-  const handleSolDeposit = (value: string) => {
-    setSolDeposit(+value);
-  };
-
-  const handleSolFee = (value: string) => {
-    setSolFee(+value);
-  };
-
-  //TODO: Bind with form params to generate transaction
-  // const wallet = useWallet();
-  // useEffect(() => {
-  //   if (marketPubkey && wallet.publicKey) {
-  //     (async () => {
-  //       try {
-  //         const connection = new web3.Connection(
-  //           'https://api.devnet.solana.com',
-  //         );
-
-  //         const { transaction, signers } = await makeCreatePairTransaction({
-  //           marketPubkey: new web3.PublicKey(marketPubkey),
-  //           maxDuration: 7,
-  //           maxLTV: 30,
-  //           solDeposit: 0.02,
-  //           solFee: 10,
-  //           connection,
-  //           wallet,
-  //         });
-  //         await signAndConfirmTransaction({
-  //           transaction,
-  //           signers,
-  //           wallet,
-  //           connection,
-  //         });
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     })();
-  //   }
-  // }, [marketPubkey, wallet]);
+  const {
+    loadingModalVisible,
+    closeLoadingModal,
+    maxLTV,
+    duration,
+    solDeposit,
+    solFee,
+    handleMaxLTV,
+    handleDuration,
+    handleSolDeposit,
+    handleSolFee,
+    onSubmit,
+    isValid,
+  } = usePoolCreation();
 
   const goBack = () => {
     history.goBack();
   };
+
+  const valueStr = +formatNumber.format(
+    (account?.lamports || 0) / web3.LAMPORTS_PER_SOL,
+  );
+
   return (
     <AppLayout>
       <div className={styles.poolsCreation}>
         <Header
           className={styles.headerWrapper}
-          title="Order creation"
+          title="Offer parameters"
           onClick={goBack}
         />
 
         <div className={styles.block}>
           <div className={styles.floorPriceWrapper}>
             <h5 className={styles.floorPrice}>232.5 SOL</h5>
-            <span>FLOOR</span>
+            <span className={styles.floor}>floor</span>
           </div>
           <div className={styles.wrapper}>
             <div className={styles.col}>
@@ -107,7 +74,7 @@ const PoolsCreationPage: FC = () => {
                 marks={riskMarks}
                 label="LTV"
                 step={1}
-                min={0}
+                min={10}
                 max={100}
                 withTooltip
               />
@@ -147,8 +114,7 @@ const PoolsCreationPage: FC = () => {
                 onValueChange={handleSolDeposit}
                 label="SIZE"
                 currentToken={SOL_TOKEN}
-                onUseMaxButtonClick={() => {}}
-                lpBalance={123}
+                lpBalance={valueStr}
                 toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
               />
 
@@ -157,7 +123,7 @@ const PoolsCreationPage: FC = () => {
                 onValueChange={handleSolFee}
                 label="INTEREST"
                 currentToken={SOL_TOKEN}
-                tokensList={[SOL_TOKEN, SOL_TOKEN]}
+                tokensList={[SOL_TOKEN]}
                 toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
               />
             </div>
@@ -166,12 +132,14 @@ const PoolsCreationPage: FC = () => {
           <div className={styles.total}>
             <h5 className={styles.blockTitle}>Your total is 232.5 SOL</h5>
             <div className={styles.totalItem}>
-              <div className={styles.totalTitle}>YOU CAN FUND</div>
+              <div className={styles.totalTitle}>
+                <span>you can fund</span>
+              </div>
               <div className={styles.totalValue}>5 Loans</div>
             </div>
             <div className={styles.totalItem}>
               <div className={styles.totalTitle}>
-                <span>APY</span>
+                <span>apy</span>
                 <Tooltip
                   placement="bottom"
                   overlay="Analyzed profit from repaying the loan"
@@ -183,7 +151,7 @@ const PoolsCreationPage: FC = () => {
             </div>
             <div className={styles.totalItem}>
               <div className={styles.totalTitle}>
-                <span>ESTIMATED PROFIT</span>
+                <span>estimated profit</span>
                 <Tooltip
                   placement="bottom"
                   overlay="Analyzed profit from repaying the loan"
@@ -197,7 +165,8 @@ const PoolsCreationPage: FC = () => {
             </div>
           </div>
           <Button
-            // disabled={!borrowValue}
+            disabled={!isValid}
+            onClick={onSubmit}
             className={styles.btn}
             type="secondary"
           >
@@ -206,6 +175,12 @@ const PoolsCreationPage: FC = () => {
         </div>
       </div>
       <OrderBook marketPubkey={marketPubkey} hideCreateBtn />
+      <LoadingModal
+        title="Please approve transaction"
+        visible={loadingModalVisible}
+        onCancel={closeLoadingModal}
+        subtitle="In order to create Bond"
+      />
     </AppLayout>
   );
 };

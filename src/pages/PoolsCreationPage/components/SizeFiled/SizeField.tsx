@@ -24,7 +24,6 @@ export interface SizeFieldProps {
   placeholder?: string;
   amountMaxLength?: number;
   disabled?: boolean;
-
   lpBalance?: number;
   toolTipText?: string;
 }
@@ -38,7 +37,6 @@ const SizeField: FC<SizeFieldProps> = ({
   label,
   style,
   className,
-  onUseMaxButtonClick,
   error,
   amountMaxLength,
   placeholder = '0.0',
@@ -47,6 +45,10 @@ const SizeField: FC<SizeFieldProps> = ({
   toolTipText,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
+
+  const onUseMaxButtonClick = () => {
+    lpBalance && onValueChange(String(lpBalance));
+  };
 
   return (
     <div

@@ -12,16 +12,17 @@
 .floorPriceWrapper {
   display: flex;
   flex-direction: column;
-
-  span {
-    font: var(--font-text-6);
-    color: var(--black-color);
-  }
 }
 
 .floorPrice {
   font: var(--font-subtitle);
   color: var(--gray-color-2);
+}
+
+.floor {
+  font: var(--font-text-6);
+  color: var(--black-color);
+  text-transform: uppercase;
 }
 
 .wrapper {
@@ -125,8 +126,6 @@
   }
 
   input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
   }
 }
