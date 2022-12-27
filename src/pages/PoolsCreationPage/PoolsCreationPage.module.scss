@@ -115,56 +115,6 @@
   text-transform: uppercase;
 }
 
-.btnWrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  input:checked + label {
-    background: var(--light-green-color);
-    color: var(--button-text);
-  }
-
-  input {
-    appearance: none;
-  }
-}
-
-.btnRadio {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-
-  label {
-    display: block;
-    flex-grow: 1;
-    margin: 0;
-    padding: 8px;
-
-    width: 100%;
-
-    background: var(--primary-background);
-    border: 1px solid var(--primary-border);
-    border-radius: 100px;
-
-    font-family: var(--font-family-chakra);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 21px;
-    color: var(--secondary-border);
-
-    text-align: center;
-    cursor: pointer;
-
-    transition: background-color var(--transition-1),
-      border-color var(--transition-1), color var(--transition-1);
-
-    &:hover {
-      border: 1px solid var(--black-color);
-    }
-  }
-}
-
 .total {
   padding: 16px;
   display: flex;

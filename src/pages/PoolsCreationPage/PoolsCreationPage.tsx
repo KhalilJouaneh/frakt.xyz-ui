@@ -20,6 +20,7 @@ import { useNativeAccount } from '@frakt/utils/accounts';
 import { SolanaIcon } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
+import RadioButton from './components/RadioButton/RadioButton';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -81,30 +82,11 @@ const PoolsCreationPage: FC = () => {
 
               <div className={styles.duration}>
                 <h6 className={styles.subtitle}>duration</h6>
-                <div className={styles.btnWrapper}>
-                  <div className={styles.btnRadio}>
-                    <input
-                      type="radio"
-                      id="7"
-                      name="maxDuration"
-                      value="7"
-                      checked={duration === 7 ? true : false}
-                      onChange={handleDuration}
-                    />
-                    <label htmlFor="7">7 days</label>
-                  </div>
-                  <div className={styles.btnRadio}>
-                    <input
-                      type="radio"
-                      id="14"
-                      name="maxDuration"
-                      value="14"
-                      checked={duration === 14 ? true : false}
-                      onChange={handleDuration}
-                    />
-                    <label htmlFor="14">14 days</label>
-                  </div>
-                </div>
+                <RadioButton
+                  duration={duration}
+                  handleDuration={handleDuration}
+                  buttons={[{ value: '7' }, { value: '14' }]}
+                />
               </div>
             </div>
             <div className={styles.col}>
