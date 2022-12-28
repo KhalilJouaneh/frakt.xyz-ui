@@ -11,6 +11,7 @@ import Button from '../../components/Button';
 import Tooltip from '@frakt/components/Tooltip';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import SizeField from './components/SizeFiled/SizeField';
+import RadioButton from './components/RadioButton/RadioButton';
 
 import { riskMarks, usePoolCreation } from './hooks/usePoolCreation';
 import { SOL_TOKEN } from '../../utils';
@@ -20,7 +21,6 @@ import { useNativeAccount } from '@frakt/utils/accounts';
 import { SolanaIcon } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
-import RadioButton from './components/RadioButton/RadioButton';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -92,7 +92,7 @@ const PoolsCreationPage: FC = () => {
             <div className={styles.col}>
               <h5 className={styles.blockTitle}>Offer parameters</h5>
               <SizeField
-                value={String(solDeposit)}
+                value={solDeposit}
                 onValueChange={handleSolDeposit}
                 label="SIZE"
                 currentToken={SOL_TOKEN}
@@ -101,7 +101,7 @@ const PoolsCreationPage: FC = () => {
               />
 
               <TokenField
-                value={String(solFee)}
+                value={solFee}
                 onValueChange={handleSolFee}
                 label="INTEREST"
                 currentToken={SOL_TOKEN}
