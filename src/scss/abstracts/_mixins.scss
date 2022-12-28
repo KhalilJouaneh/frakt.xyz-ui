@@ -1,4 +1,9 @@
-@mixin flex($direction: row, $wrap: nowrap, $justify: flex-start, $align: center) {
+@mixin flex(
+  $direction: row,
+  $wrap: nowrap,
+  $justify: flex-start,
+  $align: center
+) {
   display: flex;
   flex-flow: $direction $wrap;
   justify-content: $justify;
@@ -20,5 +25,15 @@
   }
   & :last-child {
     margin-bottom: 0;
+  }
+}
+
+@mixin resetBtnStyle {
+  &,
+  &:focus {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
   }
 }

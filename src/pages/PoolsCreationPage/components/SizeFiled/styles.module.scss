@@ -152,35 +152,27 @@ body input.valueInput {
   fill: var(--white-color);
 }
 
-.label {
+.labelWrapper {
   margin-bottom: 8px;
-  height: 21px;
-  font: var(--font-text-6);
-  text-transform: uppercase;
-  transition: var(--transition-1);
-  color: var(--gray-color-2);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font: var(--font-text-8);
+  color: var(--secondary-border);
 
   display: flex;
   align-items: center;
   gap: 8px;
-
-  span {
-    font: var(--font-text-8);
-    color: var(--gray-color-2);
-  }
 }
 
-.labelFlex {
-  width: 100%;
-}
-
-.labelWrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.labelPositionRight {
-  justify-content: flex-end;
+.labelName {
+  font: var(--font-text-6);
+  text-transform: uppercase;
+  color: var(--gray-color-2);
 }
 
 .disabledTokens {
@@ -208,4 +200,10 @@ body input.valueInput {
     width: 18px;
     height: 18px;
   }
+}
+
+.fndSMB {
+  font: var(--font-btn-middle);
+  letter-spacing: 0.02em;
+  color: var(--gray-color-2);
 }
