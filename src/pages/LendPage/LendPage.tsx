@@ -14,7 +14,7 @@ import {
 import Toggle from '../../components/Toggle';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../componentsNew/FiltersDropdown';
+} from '../../components/FiltersDropdown';
 import Button from '../../components/Button';
 import SortControl from '../../componentsNew/SortControl';
 

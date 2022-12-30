@@ -7,7 +7,7 @@ import Button from '@frakt/components/Button';
 import { useLendingPoolsFiltering } from '../LendPage/hooks/useLendingPoolsFiltering';
 import FiltersDropdown, {
   useFiltersModal,
-} from '@frakt/componentsNew/FiltersDropdown';
+} from '@frakt/components/FiltersDropdown';
 import FilterCollections from '@frakt/components/FilterCollections';
 import SortControl from '@frakt/componentsNew/SortControl';
 import { Controller } from 'react-hook-form';

@@ -7,7 +7,7 @@ import Header from '../BorrowPage/components/Header';
 import Button from '../../components/Button';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../componentsNew/FiltersDropdown';
+} from '../../components/FiltersDropdown';
 import MarketPreviewCard from './components/MarketCard';
 import SortControl from '@frakt/componentsNew/SortControl';
 import {

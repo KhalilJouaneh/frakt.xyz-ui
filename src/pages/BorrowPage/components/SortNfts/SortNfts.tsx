@@ -15,7 +15,7 @@ import {
 } from '../../hooks';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../../../componentsNew/FiltersDropdown';
+} from '../../../../components/FiltersDropdown';
 
 interface SortNftsProps {
   searchQuery: string;
@@ -43,6 +43,7 @@ const SortNfts: FC<SortNftsProps> = ({
 
   useEffect(() => {
     setSortValue(sort);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
   return (

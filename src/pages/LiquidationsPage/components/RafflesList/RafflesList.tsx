@@ -11,7 +11,7 @@ import Toggle from '@frakt/components/Toggle';
 import Button from '@frakt/components/Button';
 import FiltersDropdown, {
   useFiltersModal,
-} from '@frakt/componentsNew/FiltersDropdown';
+} from '@frakt/components/FiltersDropdown';
 import { useLiquidationsPage } from '../Liquidations';
 import { useRaffleList } from './useRaffleList';
 import { useSelector } from 'react-redux';
