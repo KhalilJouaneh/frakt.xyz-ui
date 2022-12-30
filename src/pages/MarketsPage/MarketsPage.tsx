@@ -17,7 +17,7 @@ import {
 import { useOnClickOutside } from '@frakt/hooks';
 import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
-import FilterCollections from '@frakt/componentsNew/FilterCollections';
+import FilterCollections from '@frakt/components/FilterCollections';
 import styles from './MarketsPage.module.scss';
 import { useMarketsPreview } from './hooks';
 

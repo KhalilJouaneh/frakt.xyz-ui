@@ -16,7 +16,7 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
-import FilterCollections from '../../../../componentsNew/FilterCollections';
+import FilterCollections from '../../../../components/FilterCollections';
 import SortControl from '../../../../componentsNew/SortControl';
 
 export const MyLoansList: FC = () => {
