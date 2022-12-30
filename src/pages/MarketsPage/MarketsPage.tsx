@@ -9,7 +9,7 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '../../components/FiltersDropdown';
 import MarketPreviewCard from './components/MarketCard';
-import SortControl from '@frakt/componentsNew/SortControl';
+import SortControl from '@frakt/components/SortControl';
 import {
   SORT_VALUES,
   useLendingPoolsFiltering,

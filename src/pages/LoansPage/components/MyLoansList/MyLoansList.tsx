@@ -17,7 +17,7 @@ import {
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
 import FilterCollections from '../../../../components/FilterCollections';
-import SortControl from '../../../../componentsNew/SortControl';
+import SortControl from '../../../../components/SortControl';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();

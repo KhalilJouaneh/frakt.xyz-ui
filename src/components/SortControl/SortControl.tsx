@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Controller } from 'react-hook-form';
 
-import SortOrderButton from '../SortOrderButton';
+import SortOrderButton from '../../componentsNew/SortOrderButton';
 import styles from './SortControl.module.scss';
 
 interface SortControlProps {

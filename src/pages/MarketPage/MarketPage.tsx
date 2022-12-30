@@ -9,7 +9,7 @@ import FiltersDropdown, {
   useFiltersModal,
 } from '@frakt/components/FiltersDropdown';
 import FilterCollections from '@frakt/components/FilterCollections';
-import SortControl from '@frakt/componentsNew/SortControl';
+import SortControl from '@frakt/components/SortControl';
 import { Controller } from 'react-hook-form';
 import Toggle from '@frakt/components/Toggle';
 import { SORT_VALUES } from '../BorrowPage';

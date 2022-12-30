@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 
 import { FilterFormInputsNames, RafflesListFormNames } from '../../model';
 import FilterCollections from '@frakt/components/FilterCollections';
-import SortControl from '@frakt/componentsNew/SortControl';
+import SortControl from '@frakt/components/SortControl';
 import { TicketsCounter } from '../TicketsCounter';
 import { useOnClickOutside } from '@frakt/hooks';
 import styles from './RafflesList.module.scss';
