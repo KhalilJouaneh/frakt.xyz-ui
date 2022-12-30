@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
-import ThemeSwitcher from '../../componentsNew/ThemeSwitcher';
+import ThemeSwitcher from '../ThemeSwitcher';
 import styles from './BurgerMenu.module.scss';
 import {
   community,

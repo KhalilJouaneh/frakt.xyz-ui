@@ -5,7 +5,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { selectWalletModalVisible } from '../../state/common/selectors';
 import ConnectButton from '@frakt/components/ConnectButton';
 import WalletContent from '@frakt/components/WalletContent';
-import ThemeSwitcher from '@frakt/componentsNew/ThemeSwitcher';
+import ThemeSwitcher from '@frakt/components/ThemeSwitcher';
 import { Logo } from '@frakt/icons';
 import styles from './Header.module.scss';
 import BurgerMenu from '@frakt/components/BurgerMenu';
