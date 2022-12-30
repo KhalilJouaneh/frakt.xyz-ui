@@ -2,7 +2,7 @@ import { FC } from 'react';
 import cx from 'classnames';
 
 import { ArrowUp } from '../../icons';
-import Button from '../../components/Button';
+import Button from '../Button';
 import styles from './SortOrderButton.module.scss';
 
 export enum SORT_ORDER {
