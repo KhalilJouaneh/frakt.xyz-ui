@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { routes } from './constants/routes';
-import Header from './componentsNew/Header';
+import Header from './components/Header';
 import { Navigation } from '@frakt/components/Navigation';
 import {
   useConnectionInit,
