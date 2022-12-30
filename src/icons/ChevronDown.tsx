@@ -4,11 +4,7 @@ const icon = (
 
 //TODO: Describe type
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const ChevronDownIcon = ({
-  className,
-  fill,
-  stroke,
-}: any): JSX.Element => (
+export const ChevronDown = ({ className, fill, stroke }: any): JSX.Element => (
   <svg
     className={className || ''}
     fill={fill}
@@ -18,5 +14,3 @@ export const ChevronDownIcon = ({
     {icon}
   </svg>
 );
-
-export default ChevronDownIcon;

@@ -6,7 +6,7 @@ import { selectWalletModalVisible } from '../../state/common/selectors';
 import ConnectButton from '@frakt/components/ConnectButton';
 import WalletContent from '@frakt/components/WalletContent';
 import ThemeSwitcher from '@frakt/componentsNew/ThemeSwitcher';
-import { Logo } from '@frakt/iconsNew/Logo';
+import { Logo } from '@frakt/icons';
 import styles from './Header.module.scss';
 import BurgerMenu from '@frakt/components/BurgerMenu';
 import { NotificationsButton } from '@frakt/components/NotificationsButton';

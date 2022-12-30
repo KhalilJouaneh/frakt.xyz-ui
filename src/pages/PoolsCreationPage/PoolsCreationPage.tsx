@@ -18,7 +18,7 @@ import { SOL_TOKEN } from '../../utils';
 import { formatNumber } from '@frakt/utils/solanaUtils';
 import { useNativeAccount } from '@frakt/utils/accounts';
 
-import { SolanaIcon } from '@frakt/icons';
+import { Solana } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
 
@@ -142,7 +142,7 @@ const PoolsCreationPage: FC = () => {
                 </Tooltip>
               </div>
               <div className={styles.totalValue}>
-                58.4 <SolanaIcon />
+                58.4 <Solana />
               </div>
             </div>
           </div>

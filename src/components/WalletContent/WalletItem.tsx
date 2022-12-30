@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icons from '../../iconsNew/';
+import { Ledger, MathWallet } from '@frakt/icons';
 import styles from './styles.module.scss';
 
 interface WalletItemProps {
@@ -18,8 +18,8 @@ export const WalletItem: FC<WalletItemProps> = ({
   return (
     <div className={styles.walletItemContainer}>
       <div className={styles.walletItem} onClick={onClick}>
-        {name === 'Ledger' && <Icons.Ledger className={styles.icon} />}
-        {name === 'MathWallet' && <Icons.MathWallet className={styles.icon} />}
+        {name === 'Ledger' && <Ledger className={styles.icon} />}
+        {name === 'MathWallet' && <MathWallet className={styles.icon} />}
         {name !== 'Ledger' && name !== 'MathWallet' && (
           <img alt={imageAlt} src={imageSrc} />
         )}

@@ -5,7 +5,7 @@ import { useOnClickOutside } from '@frakt/hooks';
 import NumericInput from '../../components/NumericInput';
 import Button from '../../components/Button';
 import styles from './SlippageModal.module.scss';
-import Icons from '../../iconsNew';
+import { Settings } from '@frakt/icons';
 
 interface SlippageModalProps {
   slippage: string;
@@ -53,7 +53,7 @@ const SlippageModal: FC<SlippageModalProps> = ({ slippage, setSlippage }) => {
         className={styles.settings}
         onClick={() => setSlippageModalVisible(!slippageModalVisible)}
       >
-        <Icons.Settings />
+        <Settings />
         <p>Slippage settings</p>
       </div>
       {slippageModalVisible && (

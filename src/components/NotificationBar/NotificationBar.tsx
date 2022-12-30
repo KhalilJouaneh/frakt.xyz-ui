@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { selectNotification } from '../../state/common/selectors';
 import { commonActions } from '../../state/common/actions';
 import { initialNotificationState } from '../../state/common/reducers';
-import { CloseIcon } from '../../icons';
+import { Close } from '@frakt/icons';
 import styles from './styles.module.scss';
 
 export const NotificationBar = (): JSX.Element => {
@@ -24,7 +24,7 @@ export const NotificationBar = (): JSX.Element => {
     >
       {notification?.config?.content}
       <div className={styles.close} onClick={handleClose}>
-        <CloseIcon width="12px" height="12px" className={styles.icon} />
+        <Close width="12px" height="12px" className={styles.icon} />
       </div>
     </div>
   );

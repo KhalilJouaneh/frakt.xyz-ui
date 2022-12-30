@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { DoneIcon } from '../../icons';
+import { Done } from '@frakt/icons';
 import styles from './styles.module.scss';
 
 export const VerifiedBadge = (): JSX.Element => (
@@ -10,6 +10,6 @@ export const VerifiedBadge = (): JSX.Element => (
       styles.labelVerified,
     )}
   >
-    <DoneIcon /> <span>Verified</span>
+    <Done /> <span>Verified</span>
   </div>
 );

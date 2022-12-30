@@ -7,10 +7,8 @@ const icon = (
 
 //TODO: Describe type
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const ArrowRightIcon = (props): JSX.Element => (
+export const ArrowRight = (props): JSX.Element => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
     {icon}
   </svg>
 );
-
-export default ArrowRightIcon;

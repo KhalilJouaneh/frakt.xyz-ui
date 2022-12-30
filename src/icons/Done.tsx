@@ -11,6 +11,6 @@ const icon = (
 
 //TODO: Describe type
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const DoneIcon = (props: any): JSX.Element => (
+export const Done = (props: any): JSX.Element => (
   <IconSvg icon={icon} width={24} viewBox="0 0 24 24" {...props} />
 );

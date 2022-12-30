@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Tooltip } from 'antd';
 import Button from '@frakt/components/Button';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { SolanaIcon, Timer } from '@frakt/icons';
+import { Solana, Timer } from '@frakt/icons';
 import classNames from 'classnames';
 
 import mockImg from '../../mockImg.jpg';
@@ -27,7 +27,7 @@ const Bond: FC = () => {
         <div className={styles.infoName}>PRICE</div>
         <div className={styles.infoValue}>
           <div>206,324.01 </div>
-          <SolanaIcon />
+          <Solana />
         </div>
       </div>
 
@@ -63,7 +63,7 @@ const Bond: FC = () => {
             <sup>{negative ? `-${321} %` : `+${123} %`}</sup>
           </span>
           <div>206 </div>
-          <SolanaIcon />
+          <Solana />
         </div>
       </div>
 

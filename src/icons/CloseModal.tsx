@@ -1,4 +1,4 @@
-export const CloseModalIcon = ({ className }: { className?: string }) => (
+export const CloseModal = ({ className }: { className?: string }) => (
   <svg
     width="32"
     height="32"

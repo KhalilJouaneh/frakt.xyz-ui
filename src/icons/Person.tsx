@@ -14,7 +14,7 @@ const icon = (
   </>
 );
 
-export const PersonIcon = ({
+export const Person = ({
   className,
   width,
 }: React.SVGProps<SVGSVGElement>): JSX.Element => (

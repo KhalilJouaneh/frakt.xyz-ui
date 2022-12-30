@@ -5,7 +5,7 @@ import { selectWalletModalVisible } from '../../state/common/selectors';
 import { commonActions } from '../../state/common/actions';
 import styles from './styles.module.scss';
 import { Modal, ModalProps } from '../Modal/Modal';
-import { ArrowRightIcon } from '../../icons';
+import { ArrowRight } from '@frakt/icons';
 
 export const ConnectWalletModal = ({
   title,
@@ -41,7 +41,7 @@ export const ConnectWalletModal = ({
               <img src={adapter.icon} alt="Wallet icon" />
               <span>{adapter.name}</span>
             </div>
-            <ArrowRightIcon fill="white" />
+            <ArrowRight fill="white" />
           </div>
         );
       })}

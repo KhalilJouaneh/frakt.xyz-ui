@@ -5,7 +5,7 @@ import Switch from 'react-switch';
 import { selectTheme } from '../../state/theme/selectors';
 import { themeActions } from '../../state/theme/actions';
 import styles from './styles.module.scss';
-import Icons from '../../iconsNew';
+import { Sun, Moon } from '@frakt/icons';
 import classNames from 'classnames';
 
 export const ThemeSwitcher: FC = () => {
@@ -32,8 +32,8 @@ export const ThemeSwitcher: FC = () => {
       checked={checked}
       offColor={'#fff'}
       offHandleColor={'#fff'}
-      uncheckedHandleIcon={<Icons.Sun />}
-      checkedHandleIcon={<Icons.Moon />}
+      uncheckedHandleIcon={<Sun />}
+      checkedHandleIcon={<Moon />}
     />
   );
 };

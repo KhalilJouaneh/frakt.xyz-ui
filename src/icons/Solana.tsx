@@ -57,7 +57,7 @@ const icon = (
   </>
 );
 
-export const SolanaIcon = ({
+export const Solana = ({
   className,
   width,
 }: React.SVGProps<SVGSVGElement>): JSX.Element => (

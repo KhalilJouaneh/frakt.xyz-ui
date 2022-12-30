@@ -2,7 +2,7 @@ import { FC } from 'react';
 import cx from 'classnames';
 
 import styles from './Header.module.scss';
-import Icons from '../../../../iconsNew';
+import { Arrow } from '@frakt/icons';
 
 interface HeaderProps {
   onClick?: () => void;
@@ -17,7 +17,7 @@ const Header: FC<HeaderProps> = ({ onClick, title, subtitle, className }) => {
       {onClick && (
         <div>
           <div onClick={onClick} className={styles.btnBack}>
-            <Icons.Arrow />
+            <Arrow />
           </div>
         </div>
       )}

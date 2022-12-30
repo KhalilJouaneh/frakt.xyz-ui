@@ -4,7 +4,7 @@ import Tooltip from '@frakt/components/Tooltip';
 import Button from '@frakt/components/Button';
 import styles from './Rewards.module.scss';
 import { useLoansPage } from '../../hooks';
-import { SolanaIcon } from '@frakt/icons';
+import { Solana } from '@frakt/icons';
 
 const MIN_AVAILABLE_VALUE_FOR_HARVEST = 0.001;
 
@@ -28,7 +28,7 @@ const Rewards: FC<RewardsProps> = ({ liquidityPool }) => {
         Rewards:{' '}
         <span>
           {userDeposit?.harvestAmount?.toFixed(3)}
-          <SolanaIcon />
+          <Solana />
         </span>
       </div>
       {isDisabledBtn ? (

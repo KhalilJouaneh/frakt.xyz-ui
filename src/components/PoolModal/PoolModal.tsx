@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { usePoolModal } from './hooks/usePoolModal';
-import { CloseModalIcon } from '../../icons';
+import { CloseModal } from '@frakt/icons';
 import styles from './PoolModal.module.scss';
 import WithdrawTab from './WithdrawTab';
 import DepositTab from './DepositTab';
@@ -43,7 +43,7 @@ export const PoolModal: FC<PoolModalProps> = ({
     >
       <div className={styles.closeModalSection}>
         <div className={styles.closeModalIcon} onClick={onCancel}>
-          <CloseModalIcon className={styles.closeIcon} />
+          <CloseModal className={styles.closeIcon} />
         </div>
       </div>
 

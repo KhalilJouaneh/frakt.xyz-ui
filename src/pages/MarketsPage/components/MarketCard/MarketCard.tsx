@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { SolanaIcon } from '@frakt/icons';
+import { Solana } from '@frakt/icons';
 import { PATHS } from '@frakt/constants';
 import { MarketPreview } from '@frakt/api/bonds';
 import styles from './MarketCard.module.scss';
@@ -24,7 +24,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
         <div className={styles.totalValue}>
           <p className={styles.title}>Offer TVL</p>
           <p className={styles.value}>
-            <span>{parseFloat(offerTVL).toFixed(2)}</span> <SolanaIcon />
+            <span>{parseFloat(offerTVL).toFixed(2)}</span> <Solana />
           </p>
         </div>
         {/* <div className={styles.toRedeem}>

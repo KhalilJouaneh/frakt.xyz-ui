@@ -9,7 +9,7 @@ const icon = (
 
 //TODO: Describe type
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const CloseIcon = ({
+export const Close = ({
   className,
   fill,
   stroke,
@@ -27,5 +27,3 @@ export const CloseIcon = ({
     {icon}
   </svg>
 );
-
-export default CloseIcon;

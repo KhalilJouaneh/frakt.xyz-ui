@@ -16,7 +16,7 @@ import { SORT_VALUES } from '../BorrowPage';
 import { SearchInput } from '@frakt/components/SearchInput';
 import Bond from './components/Bond/Bond';
 import OrderBook from './components/OrderBook/OrderBook';
-import { Arrow } from '@frakt/iconsNew/Arrow';
+import { Arrow } from '@frakt/icons';
 import { NavLink, useParams } from 'react-router-dom';
 import { useOnClickOutside } from '@frakt/hooks';
 import { useMarket } from './hooks';

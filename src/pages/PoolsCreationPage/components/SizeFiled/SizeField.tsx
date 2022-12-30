@@ -5,7 +5,7 @@ import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import NumericInput from '@frakt/components/NumericInput';
-import { ChevronDownIcon, SolanaIcon } from '@frakt/icons';
+import { ChevronDown, Solana } from '@frakt/icons';
 
 import styles from './styles.module.scss';
 
@@ -110,7 +110,7 @@ const SizeField: FC<SizeFieldProps> = ({
             })}
           >
             {currentToken ? (
-              <SolanaIcon width={16} />
+              <Solana width={16} />
             ) : (
               <div className={styles.noTokenImg} />
             )}
@@ -121,7 +121,7 @@ const SizeField: FC<SizeFieldProps> = ({
             >
               {currentToken?.symbol || '---'}
             </span>
-            <ChevronDownIcon className={styles.arrowDownIcon} />
+            <ChevronDown className={styles.arrowDownIcon} />
           </button>
         </div>
       </div>

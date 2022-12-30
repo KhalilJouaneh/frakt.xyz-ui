@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { FC, ReactNode } from 'react';
-import { CloseModalIcon } from '../../icons';
+import { CloseModal } from '@frakt/icons';
 import styles from './FiltersDropdown.module.scss';
 
 interface FiltersDropdownProps {
@@ -18,7 +18,7 @@ const FiltersDropdown: FC<FiltersDropdownProps> = ({
     <div className={classNames(styles.wrapper, className)}>
       <div className={styles.header}>
         <div className={styles.closeModalIcon} onClick={onCancel}>
-          <CloseModalIcon className={styles.closeIcon} />
+          <CloseModal className={styles.closeIcon} />
         </div>
       </div>
       {children}

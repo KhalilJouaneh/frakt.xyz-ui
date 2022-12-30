@@ -1,17 +1,40 @@
 import { PATHS } from '../../constants';
-import Icons from '../../iconsNew';
+import {
+  Discord,
+  DiscordDark,
+  Twitter,
+  TwitterDark,
+  Medium,
+  MediumDark,
+  Github,
+  GithubDark,
+  Docs,
+  DocsDark,
+  Dashboard,
+  DashboardDark,
+  Borrow,
+  BorrowDark,
+  Lending,
+  LendingDark,
+  Raffles,
+  RafflesDark,
+  MyLoans,
+  MyLoansDark,
+  Bonds,
+  BondsDark,
+} from '@frakt/icons';
 
 export const community = [
   {
     label: 'Discord',
-    icon: Icons.Discord,
-    iconDark: Icons.DiscordDark,
+    icon: Discord,
+    iconDark: DiscordDark,
     href: process.env.FRAKT_DISCORD_SERVER,
   },
   {
     label: 'Twitter',
-    icon: Icons.Twitter,
-    iconDark: Icons.TwitterDark,
+    icon: Twitter,
+    iconDark: TwitterDark,
     href: 'https://twitter.com/FRAKT_HQ',
   },
 ];
@@ -19,20 +42,20 @@ export const community = [
 export const documentation = [
   {
     label: 'Medium',
-    icon: Icons.Medium,
-    iconDark: Icons.MediumDark,
+    icon: Medium,
+    iconDark: MediumDark,
     href: 'https://medium.com/@frakt_HQ',
   },
   {
     label: 'GitHub',
-    icon: Icons.Github,
-    iconDark: Icons.GithubDark,
+    icon: Github,
+    iconDark: GithubDark,
     href: 'https://github.com/frakt-solana',
   },
   {
     label: 'Docs',
-    icon: Icons.Docs,
-    iconDark: Icons.DocsDark,
+    icon: Docs,
+    iconDark: DocsDark,
     href: 'https://docs.frakt.xyz/frakt/',
   },
 ];
@@ -42,8 +65,8 @@ export const NAVIGATION_LINKS = [
     pathname: PATHS.ROOT,
     to: PATHS.ROOT,
     label: 'Dashboard',
-    icon: Icons.Dashboard,
-    iconDark: Icons.DashboardDark,
+    icon: Dashboard,
+    iconDark: DashboardDark,
     fillIcon: true,
   },
   {
@@ -51,8 +74,8 @@ export const NAVIGATION_LINKS = [
     to: PATHS.BORROW,
     label: 'Borrow',
     event: 'navigation-borrow',
-    icon: Icons.Borrow,
-    iconDark: Icons.BorrowDark,
+    icon: Borrow,
+    iconDark: BorrowDark,
   },
 
   {
@@ -60,16 +83,16 @@ export const NAVIGATION_LINKS = [
     to: PATHS.LEND,
     label: 'Lending',
     event: 'navigation-lend',
-    icon: Icons.Lending,
-    iconDark: Icons.LendingDark,
+    icon: Lending,
+    iconDark: LendingDark,
   },
   {
     pathname: PATHS.LIQUIDATIONS,
     to: PATHS.LIQUIDATIONS,
     label: 'Raffles',
     event: 'navigation-liquidation',
-    icon: Icons.Raffles,
-    iconDark: Icons.RafflesDark,
+    icon: Raffles,
+    iconDark: RafflesDark,
     fillIcon: true,
   },
   {
@@ -77,15 +100,15 @@ export const NAVIGATION_LINKS = [
     to: PATHS.LOANS,
     label: 'My loans',
     event: 'navigation-loans',
-    icon: Icons.MyLoans,
-    iconDark: Icons.MyLoansDark,
+    icon: MyLoans,
+    iconDark: MyLoansDark,
   },
   {
     pathname: PATHS.BONDS,
     to: PATHS.BONDS,
     label: 'My bonds',
     event: 'navigation-bonds',
-    icon: Icons.Bonds,
-    iconDark: Icons.BondsDark,
+    icon: Bonds,
+    iconDark: BondsDark,
   },
 ];

@@ -4,7 +4,7 @@ import { sum, map } from 'ramda';
 
 import styles from './AvailableBorrow.module.scss';
 import Button from '../../../../components/Button';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -36,7 +36,7 @@ const AvailableBorrow: FC = () => {
       <h3 className={styles.title}>Available to borrow</h3>
       <div className={styles.valueWrapper}>
         <p className={styles.value}>{availableBorrowValue}</p>
-        <SolanaIcon className={styles.icon} />
+        <Solana className={styles.icon} />
       </div>
       <NavLink style={{ width: '100%' }} to={PATHS.BORROW}>
         <Button className={styles.btn} type="secondary">
