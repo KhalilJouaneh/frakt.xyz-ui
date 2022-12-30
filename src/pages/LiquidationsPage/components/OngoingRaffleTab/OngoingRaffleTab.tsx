@@ -7,7 +7,7 @@ import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 import { useIntersection } from '@frakt/hooks/useIntersection';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
-import EmptyList from '@frakt/componentsNew/EmptyList';
+import EmptyList from '@frakt/components/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
 import { RaffleListItem } from '@frakt/api/raffle';
@@ -44,6 +44,7 @@ const OngoingRaffleTab: FC = () => {
 
   useEffect(() => {
     setRaffles(raffleList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   return (

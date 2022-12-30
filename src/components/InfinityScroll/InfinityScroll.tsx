@@ -5,7 +5,7 @@ import InfiniteScrollComponent, {
 import styles from './styles.module.scss';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
-import EmptyList from '../../componentsNew/EmptyList';
+import EmptyList from '../EmptyList';
 
 interface InfinityScrollProps {
   itemsToShow?: number;
