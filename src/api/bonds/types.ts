@@ -7,6 +7,7 @@ import {
   PairValidationType,
   PairState,
   PairType,
+  WhitelistType,
 } from 'fbonds-core/lib/cross-mint-amm/types';
 
 interface FMarket {
@@ -18,6 +19,27 @@ interface FMarket {
   updatedAt: string;
   whitelistQuantity: number;
   hadoMarket: string;
+}
+
+interface MarketWhitelistEntry {
+  _id: string;
+  publicKey: string;
+  createdAt: string;
+  fraktMarket: string;
+  isDeployed: boolean;
+  isRemoved: boolean;
+  updatedAt: string;
+  whitelistType: WhitelistType;
+  whitelistedAddress: string;
+}
+
+interface MarketOracle {
+  publicKey: string;
+  fraktMarket: string;
+  oracleAuthority: string;
+  oracleInfo: string;
+  floor: number;
+  lastUpdatedAt: number;
 }
 
 export interface Market {
@@ -37,6 +59,8 @@ export interface Market {
   image: string;
   name: string;
   fraktMarket: FMarket;
+  whitelistEntries: Array<MarketWhitelistEntry>;
+  oracleFloor: Array<MarketOracle>;
 }
 
 export interface MarketPreview {
