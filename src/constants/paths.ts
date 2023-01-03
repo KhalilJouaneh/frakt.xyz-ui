@@ -10,4 +10,5 @@ export const PATHS = {
   LOANS: '/loans',
   BONDS: '/bonds',
   ROADMAP: 'https://trello.com/b/jt9JRdLg/frakt-public-roadmap',
+  STAKING: 'https://staking.frakt.xyz/',
 };

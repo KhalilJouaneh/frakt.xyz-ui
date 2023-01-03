@@ -88,4 +88,11 @@ export const NAVIGATION_LINKS = [
   //   icon: Icons.Bonds,
   //   iconDark: Icons.BondsDark,
   // },
+  {
+    href: PATHS.STAKING,
+    label: 'Staking',
+    event: 'navigation-staking',
+    icon: Icons.Staking,
+    iconDark: Icons.StakingDark,
+  },
 ];

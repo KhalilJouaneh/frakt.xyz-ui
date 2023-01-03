@@ -95,6 +95,7 @@ export const Navigation: FC = () => {
             label={item.label}
             key={item.label}
             to={item.to}
+            href={item?.href}
             icon={(item as any).icon}
             iconDark={(item as any).iconDark}
             pathname={item.pathname}

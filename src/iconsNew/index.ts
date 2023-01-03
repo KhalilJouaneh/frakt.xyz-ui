@@ -31,6 +31,7 @@ import { Bonds, BondsDark } from './Bonds';
 import { Ticket } from './Ticket';
 import { Minus } from './Minus';
 import { Plus } from './Plus';
+import { Staking, StakingDark } from './Staking';
 
 export default {
   Chart,
@@ -77,4 +78,6 @@ export default {
   Ticket,
   Minus,
   Plus,
+  Staking,
+  StakingDark,
 };
