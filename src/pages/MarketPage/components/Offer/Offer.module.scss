@@ -1,0 +1,213 @@
+.listItem {
+  position: relative;
+  padding: 18px 48px 18px 8px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &.highlightBest {
+    position: relative;
+    outline: 3px solid var(--yellow-color);
+    outline-offset: -3px;
+
+    &::before {
+      content: 'Best';
+      position: absolute;
+      top: 0px;
+      left: -51px;
+      z-index: 99;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 52px;
+      height: 55px;
+
+      background: var(--yellow-color);
+
+      font: var(--font-text-6);
+      color: var(--button-text);
+      text-align: center;
+    }
+  }
+
+  &.highlightYourOffer {
+    position: relative;
+    outline: 3px solid var(--light-green-color);
+    outline-offset: -3px;
+
+    &::before {
+      content: 'Your offer';
+      position: absolute;
+      top: 0px;
+      left: -51px;
+      z-index: 99;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 52px;
+      height: 55px;
+
+      background: var(--light-green-color);
+
+      font: var(--font-text-6);
+      color: var(--button-text);
+      text-align: center;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 1px;
+    background: var(--primary-border-2);
+  }
+
+  background: linear-gradient(
+    90deg,
+    rgba(156, 255, 31, 0.1) 0%,
+    rgba(156, 255, 31, 0.1) 11%,
+    rgba(197, 255, 31, 0.1) 11%,
+    rgba(197, 255, 31, 0.1) 22%,
+    rgba(224, 255, 31, 0.1) 22%,
+    rgba(224, 255, 31, 0.1) 33%,
+    rgba(251, 255, 31, 0.1) 33%,
+    rgba(251, 255, 31, 0.1) 44%,
+    rgba(255, 233, 31, 0.1) 44%,
+    rgba(255, 233, 31, 0.1) 55%,
+    rgba(255, 206, 31, 0.1) 55%,
+    rgba(255, 206, 31, 0.1) 66%,
+    rgba(255, 165, 31, 0.1) 66%,
+    rgba(255, 165, 31, 0.1) 76%,
+    rgba(255, 112, 31, 0.1) 76%,
+    rgba(255, 112, 31, 0.1) 88%,
+    rgba(255, 31, 71, 0.1) 88%,
+    rgba(255, 31, 71, 0.1) 100%
+  );
+
+  @media screen and (max-width: 768px) {
+    padding: 14px 44px 14px 8px;
+
+    &.highlightBest,
+    &.highlightYourOffer {
+      &::before {
+        left: -42px;
+
+        width: 43px;
+        height: 47px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    &.highlightBest,
+    &.highlightYourOffer {
+      &::before {
+        left: -34px;
+
+        width: 35px;
+        height: 47px;
+      }
+    }
+  }
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 100%;
+  border: 1px dashed var(--yellow-color);
+}
+
+.ltv {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+
+  width: 64px;
+  height: 14px;
+  background: var(--yellow-color);
+
+  font: var(--font-text-6);
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.valueWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.value {
+  display: flex;
+  gap: 4px;
+  font: var(--font-text-8);
+  position: relative;
+}
+
+.loans {
+  font-family: var(--font-family-chakra);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: var(--black-color);
+}
+
+.btn {
+  padding: 14px;
+  width: 100%;
+}
+
+.roundBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+
+  svg {
+    & path {
+      fill: var(--black-color);
+    }
+  }
+}
+
+.btnTrash {
+  display: flex;
+  flex-shrink: 0;
+
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+    svg {
+      width: 16.8px;
+      height: 16.8px;
+    }
+  }
+}

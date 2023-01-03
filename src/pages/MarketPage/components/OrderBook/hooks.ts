@@ -1,8 +1,8 @@
+import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { fetchMarketPairs, Pair } from '@frakt/api/bonds';
 import { useQuery } from '@tanstack/react-query';
 import { web3 } from 'fbonds-core';
-import { useMemo } from 'react';
 import { parseMarketOrder } from './helpers';
 import { MarketOrder } from './types';
 
@@ -34,6 +34,9 @@ type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
   sortDirection?: 'desc' | 'asc'; //? Sort by interest only
   walletOwned?: boolean;
+  ltv: number;
+  size: number;
+  interest: number;
 }) => {
   orders: MarketOrder[];
   isLoading: boolean;
@@ -42,6 +45,9 @@ export const useMarketOrders: UseMarketOrders = ({
   marketPubkey,
   sortDirection = 'desc',
   walletOwned = false,
+  ltv,
+  size,
+  interest,
 }) => {
   const { publicKey } = useWallet();
 
@@ -53,14 +59,22 @@ export const useMarketOrders: UseMarketOrders = ({
     if (!pairs) return [];
     const sortedOrdersByInterest = pairs
       .filter((pair) => {
-        return !walletOwned || pair.assetReceiver === publicKey?.toBase58();
+        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
       })
-      .map(parseMarketOrder)
-      .sort((a, b) => b.interest - a.interest);
-    return sortDirection === 'desc'
-      ? sortedOrdersByInterest
-      : sortedOrdersByInterest.reverse();
-  }, [pairs, sortDirection, walletOwned, publicKey]);
+      .map(parseMarketOrder);
+
+    const myOffer: MarketOrder = {
+      ltv,
+      size,
+      interest,
+    };
+
+    const newArr = [...sortedOrdersByInterest, myOffer].sort(
+      (a, b) => b.interest - a.interest,
+    );
+
+    return sortDirection === 'desc' ? newArr : newArr.reverse();
+  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
 
   return {
     orders,

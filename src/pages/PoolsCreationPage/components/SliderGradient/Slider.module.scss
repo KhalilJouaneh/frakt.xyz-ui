@@ -137,42 +137,6 @@
 
 .riskLevel {
   font: var(--font-text-6);
-
-  &.one {
-    color: rgba(156, 255, 31);
-  }
-
-  &.two {
-    color: rgba(197, 255, 31);
-  }
-
-  &.three {
-    color: rgba(224, 255, 31);
-  }
-
-  &.four {
-    color: rgba(251, 255, 31);
-  }
-
-  &.five {
-    color: rgba(255, 233, 31);
-  }
-
-  &.six {
-    color: rgba(255, 206, 31);
-  }
-
-  &.seven {
-    color: rgba(255, 165, 31);
-  }
-
-  &.eight {
-    color: rgba(255, 112, 31);
-  }
-
-  &.nine {
-    color: rgba(255, 31, 71);
-  }
 }
 
 .gradient {

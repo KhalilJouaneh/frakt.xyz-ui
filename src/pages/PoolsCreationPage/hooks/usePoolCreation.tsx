@@ -35,7 +35,7 @@ export const usePoolCreation: UsePoolCreation = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
   const wallet = useWallet();
 
-  const [maxLTV, setMaxLTV] = useState<number>(0);
+  const [maxLTV, setMaxLTV] = useState<number>(10);
   const [duration, setDuration] = useState<number>(7);
   const [solDeposit, setSolDeposit] = useState<number>(0);
   const [solFee, setSolFee] = useState<number>(0);
