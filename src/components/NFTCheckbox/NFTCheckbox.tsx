@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.scss';
-import { SolanaIcon } from '../../icons';
+import { Solana } from '@frakt/icons';
 
 interface NFTCheckboxInterface {
   className?: string;
@@ -70,7 +70,7 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
               <p className={styles.ltvTitle}>To borrow</p>
               <div className={styles.ltvContent}>
                 <p className={styles.ltvText}>{loanValue}</p>
-                <SolanaIcon />
+                <Solana />
               </div>
             </div>
           )}

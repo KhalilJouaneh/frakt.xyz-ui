@@ -10,7 +10,7 @@ import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import Button from '../../../../components/Button';
 import styles from './SidebarForm.module.scss';
-import Icons from '../../../../iconsNew/';
+import { Chevron, Trash } from '@frakt/icons';
 import BorrowForm from '../BorrowForm';
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 
@@ -97,14 +97,14 @@ const SidebarForm: FC<SidebarFormProps> = ({
           type="tertiary"
           onClick={() => onPrevNft(currentNftId - 1)}
         >
-          <Icons.Chevron />
+          <Chevron />
         </Button>
         <Button
           className={cx(styles.btn, styles.rotateRight)}
           type="tertiary"
           onClick={() => onNextNft(currentNftId + 1)}
         >
-          <Icons.Chevron />
+          <Chevron />
         </Button>
       </div>
     );
@@ -127,7 +127,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                 type="tertiary"
                 onClick={() => setVisible(!visible)}
               >
-                <Icons.Chevron />
+                <Chevron />
               </Button>
             </div>
           )}
@@ -159,7 +159,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                           className={styles.removeBtn}
                           onClick={() => onDeselect(nft)}
                         >
-                          <Icons.Trash />
+                          <Trash />
                         </button>
                         {isBulkLoan && <SliderButtons />}
                       </div>
@@ -178,7 +178,7 @@ const SidebarForm: FC<SidebarFormProps> = ({
                         className={styles.removeBtnMobile}
                         onClick={() => onDeselect(nft)}
                       >
-                        <Icons.Trash />
+                        <Trash />
                       </button>
                       {isBulkLoan && <SliderButtons />}
                     </div>

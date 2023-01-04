@@ -14,9 +14,9 @@ import {
 import Toggle from '../../components/Toggle';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../componentsNew/FiltersDropdown';
+} from '../../components/FiltersDropdown';
 import Button from '../../components/Button';
-import SortControl from '../../componentsNew/SortControl';
+import SortControl from '../../components/SortControl';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',

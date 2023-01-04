@@ -6,7 +6,7 @@ import { useOnClickOutside } from '@frakt/hooks';
 import { ConnectWalletSection } from '../../../../components/ConnectWalletSection';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../../../componentsNew/FiltersDropdown';
+} from '../../../../components/FiltersDropdown';
 import { LoansList } from '../LoansList';
 import { selectTotalDebt } from '../../../../state/loans/selectors';
 import Button from '../../../../components/Button';
@@ -16,8 +16,8 @@ import {
   SORT_VALUES,
   useLoansFiltering,
 } from '../../hooks/useLoansFiltering';
-import FilterCollections from '../../../../componentsNew/FilterCollections';
-import SortControl from '../../../../componentsNew/SortControl';
+import FilterCollections from '../../../../components/FilterCollections';
+import SortControl from '../../../../components/SortControl';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();

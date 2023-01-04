@@ -16,3 +16,4 @@ export { useWebSocketSubscriptions } from './useWebSocketSubscriptions';
 export { useUserInfo } from './useUserInfo';
 export { useUserNotifications } from './useUserNotifications';
 export { useOnClickOutside } from './useOnClickOutside';
+export { useWindowSize } from './useWindowSize';

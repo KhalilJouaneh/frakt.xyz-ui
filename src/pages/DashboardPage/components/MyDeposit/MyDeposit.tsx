@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { selectLiquidityPools } from '../../../../state/loans/selectors';
 import Button from '../../../../components/Button';
 import styles from './MyDeposit.module.scss';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import { PATHS } from '../../../../constants';
 import Block from '../Block';
 
@@ -43,8 +43,7 @@ const MyDeposit: FC = () => {
             </div>
             <div className={styles.loansInfo}>
               <div className={styles.loansValue}>
-                {totalLiquidity.toFixed(3)}{' '}
-                <SolanaIcon className={styles.icon} />
+                {totalLiquidity.toFixed(3)} <Solana className={styles.icon} />
               </div>
               <p className={styles.subtitle}>Total liquidity</p>
             </div>
@@ -89,7 +88,7 @@ const MyDeposit: FC = () => {
                     <div className={styles.tableStats}>
                       <p>{depositApr.toFixed(2)} %</p>
                       <p>
-                        {userDeposit?.depositAmount.toFixed(2)} <SolanaIcon />
+                        {userDeposit?.depositAmount.toFixed(2)} <Solana />
                       </p>
                     </div>
                   </div>

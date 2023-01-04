@@ -6,7 +6,7 @@ import {
 import classNames from 'classnames';
 
 import styles from './styles.module.scss';
-import { CloseModalIcon } from '../../iconsNew/Close';
+import { CloseModal } from '@frakt/icons';
 
 export interface ModalProps extends ModalAntProps {
   className?: string;
@@ -22,7 +22,7 @@ export const ConfirmModal = (
 ): { update: any; destroy: any } =>
   ModalAnt.confirm({
     className: classNames(styles.modal, props.className),
-    closeIcon: <CloseModalIcon className={styles.close} />,
+    closeIcon: <CloseModal className={styles.close} />,
     okButtonProps: { className: styles.okButton },
     cancelButtonProps: { className: styles.cancelButton },
     content: props.content,
@@ -42,7 +42,7 @@ export const Modal = ({
       transitionName={null}
       className={classNames(styles.modal, className)}
       wrapClassName={styles.wrap}
-      closeIcon={<CloseModalIcon className={styles.close} />}
+      closeIcon={<CloseModal className={styles.close} />}
     >
       {children}
     </ModalAnt>

@@ -6,7 +6,7 @@ import { caclTimeToRepay } from '../../utils/loans';
 import { RewardState, useLoans } from './hooks';
 import { LoadingModal } from '../LoadingModal';
 import { Loan } from '../../state/loans/types';
-import { SolanaIcon, Timer } from '../../icons';
+import { Solana, Timer } from '../../icons';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
 import Button from '../Button';
@@ -133,7 +133,7 @@ const LoanCardValues: FC<{
             <p className={styles.valueTitle}>Borrowed</p>
             <div className={styles.valueInfo}>
               <p>{loanValue && loanValue.toFixed(2)}</p>
-              <SolanaIcon />
+              <Solana />
             </div>
           </div>
 
@@ -147,7 +147,7 @@ const LoanCardValues: FC<{
                   ? liquidationPrice.toFixed(2)
                   : repayValue && repayValue.toFixed(2)}
               </p>
-              <SolanaIcon />
+              <Solana />
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ const LoanCardValues: FC<{
               <p className={styles.valueTitle}>Liquidation price</p>
               <div className={styles.valueInfo}>
                 <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
-                <SolanaIcon />
+                <Solana />
               </div>
             </div>
             <div

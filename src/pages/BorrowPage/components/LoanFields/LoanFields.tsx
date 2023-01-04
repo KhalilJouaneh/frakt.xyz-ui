@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import { BorrowNft } from '@frakt/api/nft';
 import Tooltip from '../../../../components/Tooltip';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import styles from './LoanFields.module.scss';
 import { Risk } from './hooks';
 import { feeOnDayByType, getLiquidationValues } from './helpers';
@@ -74,14 +74,14 @@ const LoansFields: FC<LoansFieldsProps> = ({
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>Fee on 1d</p>
           <p className={styles.staticValueData}>
-            {feeOnDay.toFixed(3)} <SolanaIcon />
+            {feeOnDay.toFixed(3)} <Solana />
           </p>
         </div>
         {isPriceBasedType ? (
           <div className={styles.staticValue}>
             <p className={styles.staticValueTitle}>Fee on 7d</p>
             <p className={styles.staticValueData}>
-              {(feeOnDay * 7).toFixed(3)} <SolanaIcon />
+              {(feeOnDay * 7).toFixed(3)} <Solana />
             </p>
           </div>
         ) : (
@@ -90,8 +90,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
               Fee on {timeBased.returnPeriodDays}d
             </p>
             <p className={styles.staticValueData}>
-              {(feeOnDay * timeBased.returnPeriodDays).toFixed(3)}{' '}
-              <SolanaIcon />
+              {(feeOnDay * timeBased.returnPeriodDays).toFixed(3)} <Solana />
             </p>
           </div>
         )}
@@ -100,7 +99,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
           <div className={styles.staticValue}>
             <p className={styles.staticValueTitle}>Fee on 30d</p>
             <p className={styles.staticValueData}>
-              {(feeOnDay * 30).toFixed(3)} <SolanaIcon />
+              {(feeOnDay * 30).toFixed(3)} <Solana />
             </p>
           </div>
         )}
@@ -117,7 +116,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
               </Tooltip>
             </p>
             <p className={styles.staticValueData}>
-              {(feeOnDay * 365).toFixed(3)} <SolanaIcon />
+              {(feeOnDay * 365).toFixed(3)} <Solana />
             </p>
           </div>
         )}
@@ -126,7 +125,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
             {isPriceBasedType ? 'Upfront fee' : 'Fee'}
           </p>
           <p className={styles.staticValueData}>
-            {fee.toFixed(3)} <SolanaIcon />
+            {fee.toFixed(3)} <Solana />
           </p>
         </div>
         {!isPriceBasedType && (
@@ -141,7 +140,7 @@ const LoansFields: FC<LoansFieldsProps> = ({
           <div className={styles.staticValue}>
             <p className={styles.staticValueTitle}>To repay</p>
             <p className={styles.staticValueData}>
-              {solLoanValue?.toFixed(3) || 0} <SolanaIcon />
+              {solLoanValue?.toFixed(3) || 0} <Solana />
             </p>
           </div>
         )}

@@ -5,15 +5,13 @@ import { sum, filter, map } from 'ramda';
 
 import { UserAvatar } from '@frakt/components/UserAvatar';
 import { formatNumber, shortenAddress } from '../../utils/solanaUtils';
-import { SolanaIcon } from '../../icons';
+import { Solana, FRKT, Copy, SignOut, ChangeWallet } from '@frakt/icons';
 import { copyToClipboard } from '../../utils';
 import { setAmplitudeUserId } from '../../utils/amplitude';
 import styles from './styles.module.scss';
 import { useNativeAccount } from '../../utils/accounts/useNativeAccount';
 import { networkRequest } from '../../utils/state';
-import { FRKT } from '../../iconsNew/FRKT';
 import { WalletsItems } from '../WalletContent/WalletContent';
-import Icons from '../../iconsNew/';
 import { useUserInfo } from '@frakt/hooks';
 
 interface CurrentUserTableProps {
@@ -79,7 +77,7 @@ const CurrentUserTable = ({
       <div className={styles.column}>
         <p className={styles.columnTitle}>Balance</p>
         <p className={styles.columnValue}>
-          {valueStr} <SolanaIcon />
+          {valueStr} <Solana />
         </p>
       </div>
     );
@@ -102,7 +100,7 @@ const CurrentUserTable = ({
                 <p className={styles.address}>
                   {shortenAddress(`${publicKey || ''}`)}
                 </p>
-                <Icons.Copy />
+                <Copy />
               </div>
             </div>
           </div>
@@ -123,11 +121,11 @@ const CurrentUserTable = ({
               className={styles.btnWrapper}
               onClick={() => setVisibleWalletItems(true)}
             >
-              <Icons.ChangeWallet />
+              <ChangeWallet />
               Change wallet
             </div>
             <div className={styles.btnWrapper} onClick={disconnect}>
-              <Icons.SignOut />
+              <SignOut />
               Sign out
             </div>
           </div>

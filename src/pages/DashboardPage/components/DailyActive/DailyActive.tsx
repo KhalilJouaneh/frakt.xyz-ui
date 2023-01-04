@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { DailyActivity } from '../../../../state/stats/types';
 import styles from './DailyActive.module.scss';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import Block from '../Block';
 
 interface DailyStatsProps {
@@ -24,7 +24,7 @@ const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
         <div className={styles.block}>
           <h3 className={styles.subtitle}>Volume</h3>
           <p className={styles.value}>
-            {dailyVolume?.toFixed(0)} <SolanaIcon className={styles.icon} />
+            {dailyVolume?.toFixed(0)} <Solana className={styles.icon} />
           </p>
         </div>
         <div className={styles.block}>
