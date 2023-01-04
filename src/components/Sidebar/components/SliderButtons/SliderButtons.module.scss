@@ -1,0 +1,41 @@
+.btnWrapper {
+  position: absolute;
+  bottom: -20px;
+  left: 4px;
+  display: flex;
+  gap: 10px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    display: flex;
+    transform: translate(-50%);
+    gap: 10px;
+  }
+}
+
+.btn {
+  min-width: 35px;
+  min-height: 35px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.rotateLeft {
+  transform: rotate(90deg);
+}
+
+.rotateRight {
+  transform: rotate(270deg);
+}

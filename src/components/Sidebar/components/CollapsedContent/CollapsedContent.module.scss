@@ -1,0 +1,18 @@
+@media screen and (max-width: 767px) {
+  .collapsedContentVisible {
+    display: flex !important;
+    justify-content: center;
+    padding: 30px 16px 16px;
+  }
+
+  .collapsedBtn {
+    display: block !important;
+    height: 40px;
+    width: 100%;
+  }
+}
+
+.collapsedContent,
+.collapsedBtn {
+  display: none;
+}

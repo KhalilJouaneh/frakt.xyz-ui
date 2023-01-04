@@ -2,11 +2,11 @@ import { FC, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import cx from 'classnames';
 
-// import CollapsedContent from '@frakt/components/Sidebar/components/CollapsedContent';
-// import { useSidebarVisible } from '@frakt/components/Sidebar/hooks';
-// import Slider from '@frakt/componentsSidebar/components/Slider';
+import CollapsedContent from '@frakt/components/Sidebar/components/CollapsedContent';
+import { useSidebarVisible } from '@frakt/components/Sidebar/hooks';
+import Slider from '@frakt/components/Sidebar/components/Slider';
 import { LoadingModal } from '@frakt/components/LoadingModal';
-// import SidebarLayout from '@frakt/components/Sidebar';
+import SidebarLayout from '@frakt/components/Sidebar';
 import { useSidebarForm } from './useSidebarForm';
 import styles from './SidebarForm.module.scss';
 import RepayForm from '../RepayForm';
@@ -21,8 +21,8 @@ const SidebarForm: FC = () => {
   const { currentSelectedId, setSelectedNfts, selectedNfts } =
     useSelectableNftsState();
 
-  //   const { visible: sidebarVisible, toggle: toggleSidebar } =
-  //     useSidebarVisible();
+  const { visible: sidebarVisible, toggle: toggleSidebar } =
+    useSidebarVisible();
 
   useEffect(() => {
     setSelectedNfts([]);
@@ -40,7 +40,7 @@ const SidebarForm: FC = () => {
 
   return (
     <>
-      {/* <SidebarLayout
+      <SidebarLayout
         contentVisible={sidebarVisible}
         setVisible={toggleSidebar}
         isSidebarVisible={!!selectedNfts.length}
@@ -69,7 +69,7 @@ const SidebarForm: FC = () => {
             isBulkRepay={selectedNfts.length > 1}
           />
         </div>
-      </SidebarLayout> */}
+      </SidebarLayout>
       <LoadingModal
         title="Please approve transaction"
         visible={loadingModalVisible}
