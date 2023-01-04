@@ -20,8 +20,8 @@ import {
   RafflesDark,
   MyLoans,
   MyLoansDark,
-  // Bonds,
-  // BondsDark,
+  Bonds,
+  BondsDark,
 } from '@frakt/icons';
 
 export const community = [
@@ -103,12 +103,12 @@ export const NAVIGATION_LINKS = [
     icon: MyLoans,
     iconDark: MyLoansDark,
   },
-  // {
-  //   pathname: PATHS.BONDS,
-  //   to: PATHS.BONDS,
-  //   label: 'My bonds',
-  //   event: 'navigation-bonds',
-  //   icon: Bonds,
-  //   iconDark: BondsDark,
-  // },
+  {
+    pathname: PATHS.BONDS,
+    to: PATHS.BONDS,
+    label: 'My bonds',
+    event: 'navigation-bonds',
+    icon: Bonds,
+    iconDark: BondsDark,
+  },
 ];
