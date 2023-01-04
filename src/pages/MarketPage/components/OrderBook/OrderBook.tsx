@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import Button from '@frakt/components/Button';
 import RoundButton from '@frakt/components/RoundButton/RoundButton';
 import Toggle from '@frakt/components/Toggle';
-import { useWindowSize } from '@frakt/hooks';
+import { useConnection, useWindowSize } from '@frakt/hooks';
 import classNames from 'classnames/bind';
 import { Trash, Chevron } from '@frakt/icons';
 import styles from './OrderBook.module.scss';
@@ -26,6 +26,7 @@ const OrderBook: FC<OrderBookProps> = ({
   hideCreateBtn = false,
 }) => {
   const wallet = useWallet();
+  const connection = useConnection();
   const [showOrderBook, setShowOrderBook] = useState<boolean>(false);
 
   const size = useWindowSize();
@@ -40,9 +41,6 @@ const OrderBook: FC<OrderBookProps> = ({
 
   const removeOrder = (order: MarketOrder) => async () => {
     try {
-      //TODO: Replace to mainnet(hook) when contract appears on mainnet
-      const connection = new web3.Connection('https://api.devnet.solana.com');
-
       const { transaction, signers } = await makeRemoveOrderTransaction({
         pairPubkey: new web3.PublicKey(order.rawData.publicKey),
         authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),

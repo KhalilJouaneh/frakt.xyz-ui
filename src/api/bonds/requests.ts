@@ -4,7 +4,7 @@ import { BorrowNft } from '../nft';
 
 import { MarketPreview, Market, Pair } from './types';
 
-const BACKEND_DOMAIN = process.env.BACKEND_DEVNET_DOMAIN; //TODO: replace to MAINNET
+const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
 
 type FetchAllMarkets = () => Promise<Market[]>;
 export const fetchAllMarkets: FetchAllMarkets = async () => {

@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
 import { notify } from '@frakt/utils';
 import { NotifyType } from '@frakt/utils/solanaUtils';
+import { useConnection } from '@frakt/hooks';
 
 export const riskMarks: { [key: string]: string | JSX.Element } = {
   10: '10%',
@@ -34,6 +35,7 @@ type UsePoolCreation = () => {
 export const usePoolCreation: UsePoolCreation = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
   const wallet = useWallet();
+  const connection = useConnection();
 
   const [maxLTV, setMaxLTV] = useState<number>(10);
   const [duration, setDuration] = useState<number>(7);
@@ -62,7 +64,6 @@ export const usePoolCreation: UsePoolCreation = () => {
     if (marketPubkey && wallet.publicKey) {
       try {
         openLoadingModal();
-        const connection = new web3.Connection('https://api.devnet.solana.com');
 
         const { transaction, signers } = await makeCreatePairTransaction({
           marketPubkey: new web3.PublicKey(marketPubkey),
