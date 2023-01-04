@@ -68,15 +68,13 @@ const BorrowPage: FC = () => {
                     {notEnoughBalanceError && <p>Not enough NFTs</p>}
                   </div>
 
-                  <div style={{ marginTop: '29px' }}>
-                    <Slider
-                      value={percentValue}
-                      setValue={onBorrowPercentChange}
-                      className={styles.slider}
-                      marks={marks}
-                      withTooltip
-                    />
-                  </div>
+                  <Slider
+                    value={percentValue}
+                    setValue={onBorrowPercentChange}
+                    className={styles.slider}
+                    marks={marks}
+                    withTooltip
+                  />
 
                   <Button
                     onClick={() => {
