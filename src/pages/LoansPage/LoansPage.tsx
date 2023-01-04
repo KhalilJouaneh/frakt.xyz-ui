@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import cx from 'classnames';
 
-import { AppLayout } from '../../components/Layout/AppLayout';
+import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { MyLoansList } from './components/MyLoansList';
 import SidebarForm from './components/SidebarForm';
 import { useSelectableNftsState } from './hooks';

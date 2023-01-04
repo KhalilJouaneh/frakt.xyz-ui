@@ -68,7 +68,7 @@
 }
 
 .slider {
-  padding: 0 5px;
+  padding: 0 5px !important;
   :global {
     .ant-slider-mark-text:first-child {
       left: 25px !important;
