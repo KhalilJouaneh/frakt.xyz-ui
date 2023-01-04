@@ -55,7 +55,14 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />
-            <Button type="secondary" className={styles.btn} onClick={onPayback}>
+            <Button
+              type="secondary"
+              className={styles.btn}
+              onClick={(e) => {
+                onPayback();
+                e.stopPropagation();
+              }}
+            >
               Repay
             </Button>
             {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
