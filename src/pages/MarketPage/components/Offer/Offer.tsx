@@ -2,7 +2,7 @@ import { FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { colorByPercentOffers, getColorByPercent } from '@frakt/utils/bonds';
 import { MarketOrder } from '../OrderBook/types';
-import { Trash } from '@frakt/iconsNew/Trash';
+import { Trash } from '@frakt/icons';
 import styles from './Offer.module.scss';
 
 interface OfferProps {

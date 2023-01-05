@@ -158,7 +158,7 @@ const PoolsCreationPage: FC = () => {
       </div>
       <OrderBook
         marketPubkey={marketPubkey}
-        hideCreateBtn
+        createOffer
         maxLTV={maxLTV}
         solFee={solFee}
         solDeposit={solDeposit}

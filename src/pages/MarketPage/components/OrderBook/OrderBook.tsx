@@ -18,15 +18,15 @@ import { useConnection } from '@frakt/hooks';
 
 interface OrderBookProps {
   marketPubkey: string;
-  hideCreateBtn?: boolean;
-  maxLTV: number;
-  solFee: string;
-  solDeposit: string;
+  createOffer?: boolean;
+  maxLTV?: number;
+  solFee?: string;
+  solDeposit?: string;
 }
 
 const OrderBook: FC<OrderBookProps> = ({
   marketPubkey,
-  hideCreateBtn = false,
+  createOffer = false,
   maxLTV,
   solFee,
   solDeposit,
@@ -70,7 +70,7 @@ const OrderBook: FC<OrderBookProps> = ({
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { offers, isLoading } = useMarketOrders({
+  const { offers, isLoading, isOffersExist } = useMarketOrders({
     marketPubkey: new web3.PublicKey(marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
@@ -90,7 +90,7 @@ const OrderBook: FC<OrderBookProps> = ({
     <div
       className={classNames(styles.orderBook, {
         [styles.active]: openOffersMobile,
-        [styles.create]: hideCreateBtn,
+        [styles.create]: createOffer,
       })}
     >
       <div
@@ -105,7 +105,7 @@ const OrderBook: FC<OrderBookProps> = ({
       <div
         className={classNames(styles.header, {
           [styles.active]: openOffersMobile,
-          [styles.create]: hideCreateBtn,
+          [styles.create]: createOffer,
         })}
       >
         <h5 className={styles.title}>Offers</h5>
@@ -120,7 +120,7 @@ const OrderBook: FC<OrderBookProps> = ({
         <div
           className={classNames(styles.columnWrapper, {
             [styles.active]: openOffersMobile,
-            [styles.create]: hideCreateBtn,
+            [styles.create]: createOffer,
           })}
         >
           <div className={styles.col}>
@@ -142,7 +142,7 @@ const OrderBook: FC<OrderBookProps> = ({
       <div
         className={classNames(styles.content, {
           [styles.active]: openOffersMobile,
-          [styles.create]: hideCreateBtn,
+          [styles.create]: createOffer,
         })}
       >
         {isLoading && (
@@ -150,15 +150,15 @@ const OrderBook: FC<OrderBookProps> = ({
             size="default"
             className={classNames(styles.loader, {
               [styles.active]: openOffersMobile,
-              [styles.create]: hideCreateBtn,
+              [styles.create]: createOffer,
             })}
           />
         )}
 
-        {!isLoading && (
+        {!isLoading && !isOffersExist && createOffer && (
           <ul
             className={classNames(styles.list, {
-              [styles.create]: hideCreateBtn,
+              [styles.create]: createOffer,
               [styles.active]: openOffersMobile,
             })}
           >
@@ -177,7 +177,9 @@ const OrderBook: FC<OrderBookProps> = ({
           </ul>
         )}
 
-        {!hideCreateBtn && (
+        {!isOffersExist && !createOffer && <div>no data</div>}
+
+        {!createOffer && (
           <NavLink to={`${PATHS.BOND}/${marketPubkey}/create`}>
             <Button className={styles.btn} type="secondary">
               Place offers

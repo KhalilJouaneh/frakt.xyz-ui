@@ -38,6 +38,7 @@ type UseMarketOrders = (props: {
   size: number;
   interest: number;
 }) => {
+  isOffersExist: boolean;
   offers: MarketOrder[];
   isLoading: boolean;
 };
@@ -55,6 +56,8 @@ export const useMarketOrders: UseMarketOrders = ({
   const { pairs, isLoading } = useMarketPairs({
     marketPubkey: new web3.PublicKey(marketPubkey),
   });
+
+  const isOffersExist = Boolean(pairs.length);
 
   const offers = useMemo(() => {
     if (!pairs) return [];
@@ -87,6 +90,7 @@ export const useMarketOrders: UseMarketOrders = ({
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
 
   return {
+    isOffersExist,
     offers,
     isLoading,
   };
