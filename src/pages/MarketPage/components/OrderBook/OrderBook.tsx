@@ -177,7 +177,16 @@ const OrderBook: FC<OrderBookProps> = ({
           </ul>
         )}
 
-        {!isOffersExist && !createOffer && <div>no data</div>}
+        {!isOffersExist && !createOffer && (
+          <div
+            className={classNames(styles.noData, {
+              [styles.create]: createOffer,
+              [styles.active]: openOffersMobile,
+            })}
+          >
+            no data
+          </div>
+        )}
 
         {!createOffer && (
           <NavLink to={`${PATHS.BOND}/${marketPubkey}/create`}>

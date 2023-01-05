@@ -234,6 +234,44 @@
   }
 }
 
+.noData {
+  margin: 8px auto 0;
+
+  display: flex;
+  flex-direction: column;
+
+  height: calc(100% - var(--header-height));
+
+  &.create {
+    height: auto;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+
+    &.create {
+      display: flex;
+      height: 47px;
+    }
+
+    &.active {
+      display: flex;
+      height: calc(100% - var(--header-height) - 16px);
+    }
+
+    &.create.active {
+      height: calc(100% - var(--header-height));
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    display: none;
+    &.create {
+      display: flex;
+    }
+  }
+}
+
 .btn {
   padding: 14px;
   width: 100%;
