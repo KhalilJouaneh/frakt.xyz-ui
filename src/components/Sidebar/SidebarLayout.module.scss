@@ -1,0 +1,84 @@
+.sidebarWrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 344px;
+  background-color: var(--primary-background);
+  border-left: 1px solid var(--primary-border);
+  z-index: 2;
+  transform: translateX(calc(100% + 10px));
+  padding-top: 76px;
+
+  &.visible {
+    z-index: 3;
+    transform: translateY(0);
+
+    @media screen and (max-width: 767px) {
+      max-height: 470px;
+      margin: -1px;
+    }
+
+    @media screen and (max-width: 767px) {
+      &.collapsedSidebar {
+        transform: translateY(calc(100% - 86px)) !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 1023px) {
+    transform: translateY(calc(100%));
+    right: 0;
+
+    &.visible.collapsed {
+      transform: translateY(calc(100% - 90px));
+      padding-top: 0;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    top: initial;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 0px;
+    border-top: 1px solid var(--secondary-border);
+  }
+}
+
+.btn {
+  min-width: 35px;
+  min-height: 35px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.dropdown {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    cursor: pointer;
+    display: block;
+    position: fixed;
+    top: -20px;
+    left: 50%;
+    transform: translate(-50%);
+    height: 32px;
+    width: 32px;
+    z-index: 10;
+  }
+}
+
+.dropdownHidden {
+  display: none;
+}
+
+.rotateUp {
+  transform: rotate(180deg);
+}

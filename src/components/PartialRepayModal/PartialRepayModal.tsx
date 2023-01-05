@@ -4,7 +4,7 @@ import { FC, useState } from 'react';
 import Button from '../Button';
 import { Modal } from '../Modal';
 import { Slider } from '../Slider';
-import { CloseModalIcon, SolanaIcon } from '../../icons';
+import { CloseModal, Solana } from '../../icons';
 import { Loan } from '../../state/loans/types';
 import { SOL_TOKEN } from '../../utils';
 import { useNativeAccount } from '../../utils/accounts';
@@ -91,7 +91,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
       closable={false}
     >
       <div className={styles.closeModal} onClick={onCancel}>
-        <CloseModalIcon className={styles.closeIcon} />
+        <CloseModal className={styles.closeIcon} />
       </div>
 
       <div className={styles.lable}>
@@ -110,13 +110,13 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
         <span className={styles.infoTitle}>Repay value</span>
         <span className={styles.infoValue}>
           {repayValue?.toFixed(2)}
-          <SolanaIcon />
+          <Solana />
         </span>
       </div>
       <div className={styles.info}>
         <span className={styles.infoTitle}>Remaining debt</span>
         <span className={styles.infoValue}>
-          {remainingDebt} <SolanaIcon />
+          {remainingDebt} <Solana />
         </span>
       </div>
       <Button

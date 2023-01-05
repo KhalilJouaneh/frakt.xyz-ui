@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { selectLiquidityPools } from '../../../state/loans/selectors';
 import { LiquidityPool } from '../../../state/loans/types';
-import { ArrowDownSmallIcon } from '../../../icons';
+import { ArrowDownSmall } from '@frakt/icons';
 import styles from '../LoansPage.module.scss';
 import { useDebounce } from '../../../hooks';
 import { compareNumbers } from '../../../utils';
@@ -114,7 +114,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
     label: (
       <span className={styles.sortName}>
         Liquidity
-        <ArrowDownSmallIcon className={styles.arrowDown} />
+        <ArrowDownSmall className={styles.arrowDown} />
       </span>
     ),
     value: 'totalLiquidity_asc',
@@ -123,7 +123,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
     label: (
       <span className={styles.sortName}>
         Liquidity
-        <ArrowDownSmallIcon className={styles.arrowUp} />
+        <ArrowDownSmall className={styles.arrowUp} />
       </span>
     ),
     value: 'totalLiquidity_desc',
@@ -132,7 +132,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
   {
     label: (
       <span className={styles.sortName}>
-        Name <ArrowDownSmallIcon className={styles.arrowDown} />
+        Name <ArrowDownSmall className={styles.arrowDown} />
       </span>
     ),
     value: 'name_asc',
@@ -140,7 +140,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
   {
     label: (
       <span className={styles.sortName}>
-        Name <ArrowDownSmallIcon className={styles.arrowUp} />
+        Name <ArrowDownSmall className={styles.arrowUp} />
       </span>
     ),
     value: 'name_desc',
@@ -148,7 +148,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
   {
     label: (
       <span className={styles.sortName}>
-        APR <ArrowDownSmallIcon className={styles.arrowDown} />
+        APR <ArrowDownSmall className={styles.arrowDown} />
       </span>
     ),
     value: 'apr_asc',
@@ -156,7 +156,7 @@ export const SORT_VALUES: PoolsSortValue[] = [
   {
     label: (
       <span className={styles.sortName}>
-        APR <ArrowDownSmallIcon className={styles.arrowUp} />
+        APR <ArrowDownSmall className={styles.arrowUp} />
       </span>
     ),
     value: 'apr_desc',

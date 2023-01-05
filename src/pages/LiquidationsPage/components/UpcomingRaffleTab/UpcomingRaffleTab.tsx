@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 
 import { useIntersection } from '@frakt/hooks/useIntersection';
 import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
-import EmptyList from '@frakt/componentsNew/EmptyList';
+import EmptyList from '@frakt/components/EmptyList';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './UpcomingRaffleTab.module.scss';
 import RafflesList from '../RafflesList';

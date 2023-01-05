@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import Button from '../../../../components/Button';
 import styles from './SidebarBulk.module.scss';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import {
   ConfirmModal,
   useConfirmModal,
@@ -42,13 +42,13 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
             <p className={styles.subtitle}>Fee on day 1</p>
             <p className={styles.value}>
               {feeOnDay.toFixed(3)}
-              <SolanaIcon />
+              <Solana />
             </p>
           </div>
           <div className={styles.feesRow}>
             <p className={styles.subtitle}>Fee on day 7</p>
             <p className={styles.value}>
-              {(feeOnDay * 7).toFixed(3)} <SolanaIcon />
+              {(feeOnDay * 7).toFixed(3)} <Solana />
             </p>
           </div>
           {isMaxReturnPeriodDays && (
@@ -56,7 +56,7 @@ const SidebarBulk: FC<SidebarBulkProps> = ({
               <p className={styles.subtitle}>Fee on day 14</p>
               <p className={styles.value}>
                 {(feesOnMaxDuration * 14).toFixed(3)}
-                <SolanaIcon />
+                <Solana />
               </p>
             </div>
           )}

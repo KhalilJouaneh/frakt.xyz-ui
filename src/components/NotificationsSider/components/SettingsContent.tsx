@@ -6,7 +6,7 @@ import Button from '@frakt/components/Button';
 import Toggle from '@frakt/components/Toggle';
 import { UserAvatar } from '@frakt/components/UserAvatar';
 import { useUserInfo, useUserNotifications } from '@frakt/hooks';
-import { Alert } from '@frakt/iconsNew/Alert';
+import { Alert } from '@frakt/icons';
 import { getDiscordUri } from '@frakt/utils';
 import { shortenAddress } from '@frakt/utils/solanaUtils';
 import { NotificationsSettingsNames } from '../constants';

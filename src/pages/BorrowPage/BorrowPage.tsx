@@ -75,6 +75,7 @@ const BorrowPage: FC = () => {
                     marks={marks}
                     withTooltip
                   />
+
                   <Button
                     onClick={() => {
                       onSubmit();

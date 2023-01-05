@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icons from '@frakt/iconsNew';
+import { Ticket } from '@frakt/icons';
 
 import styles from './TicketsCounter.module.scss';
 import Tooltip from 'rc-tooltip';
@@ -21,7 +21,7 @@ export const TicketsCounter: FC<TicketsCounterProps> = ({
     >
       <div className={styles.ticket}>
         <div className={styles.ticketIcon}>
-          <Icons.Ticket />
+          <Ticket />
         </div>
         <div className={styles.ticketInfo}>
           <div className={styles.title}>Tickets you have</div>

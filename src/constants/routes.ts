@@ -8,7 +8,9 @@ import {
   LiquidationsPage,
   LoansPage,
   BorrowPage,
-  BondsPage,
+  MarketsPage,
+  MarketPage,
+  PoolsCreationPage,
 } from '../pages';
 
 interface Route {
@@ -36,7 +38,17 @@ export const routes: Route[] = [
   {
     exact: true,
     path: PATHS.BONDS,
-    component: BondsPage,
+    component: MarketsPage,
+  },
+  {
+    exact: true,
+    path: `${PATHS.BOND}/:marketPubkey`,
+    component: MarketPage,
+  },
+  {
+    exact: true,
+    path: PATHS.POOLS_CREATION,
+    component: PoolsCreationPage,
   },
   {
     exact: true,

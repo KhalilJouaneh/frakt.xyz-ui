@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { LastLoans } from '../../../../state/stats/types';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import styles from './LastLoans.module.scss';
 import Block from '../Block';
 
@@ -25,7 +25,7 @@ const LastLoans: FC<LastLoansProps> = ({ lastLoans }) => {
               <p className={styles.nftName}>{nftName}</p>
             </div>
             <div className={styles.nftValue}>
-              {loanValue} <SolanaIcon className={styles.icon} />
+              {loanValue} <Solana className={styles.icon} />
             </div>
           </div>
         ))}

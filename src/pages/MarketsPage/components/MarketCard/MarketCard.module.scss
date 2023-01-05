@@ -1,0 +1,123 @@
+.pool {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  background: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid var(--secondary-border);
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+
+  &,
+  &:hover,
+  &:focus {
+    color: inherit;
+  }
+}
+
+.tokenInfo {
+  display: flex;
+  gap: 16px;
+  flex-grow: 1;
+  flex-direction: row;
+  max-width: 100%;
+  align-items: center;
+  padding: 24px 24px 0;
+}
+
+.statsValue {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  order: 1;
+  width: 100%;
+  flex-direction: column;
+  gap: 0;
+
+  .value {
+    margin-top: 0;
+  }
+}
+
+.totalValue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  padding: 16px 24px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-weight: 700 !important;
+  font: var(--font-text-3);
+  max-width: 215px;
+}
+
+.value {
+  display: flex;
+  align-items: center;
+  font: var(--font-text-8);
+  margin-top: 4px;
+  font-size: 14px;
+  text-align: right;
+  text-transform: uppercase;
+  & span {
+    margin-right: 3px;
+  }
+}
+
+.btn {
+  height: 48px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+
+  @media screen and (max-width: 767px) {
+    height: 40px;
+  }
+}
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.image {
+  width: 48px;
+  height: 48px;
+}
+
+.toRedeem {
+  padding: 24px;
+  width: 100%;
+  position: relative;
+
+  border-top: 1px solid var(--primary-border);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

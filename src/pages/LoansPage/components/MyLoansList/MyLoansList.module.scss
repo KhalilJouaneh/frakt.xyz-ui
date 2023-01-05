@@ -22,27 +22,21 @@
   gap: 30px;
 }
 
-.value {
-  @include flex(column, nowrap, flex-start, center);
-  color: var(--secondary-border);
+.valuesWrapperActive {
+  padding-right: 302px;
 
+  @media (max-width: 768px) {
+    padding-right: 0;
+  }
+}
+
+.values {
   @media screen and (max-width: 780px) {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
   }
-}
-
-.valueTitle {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-transform: uppercase;
-}
-
-.valueInfo {
-  color: var(--secondary-border);
-  font: var(--font-text-8);
 }
 
 .filters {
@@ -113,14 +107,4 @@
     top: unset;
     width: 100% !important;
   }
-}
-
-.label {
-  color: var(--secondary-text);
-  font: var(--font-text-6);
-  text-transform: uppercase;
-}
-
-.toggle {
-  min-width: 160px;
 }

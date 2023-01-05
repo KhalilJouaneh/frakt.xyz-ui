@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { useOnClickOutside } from '@frakt/hooks';
 import { BorrowNft } from '@frakt/api/nft';
 import { SearchInput } from '../../../../components/SearchInput';
-import SortControl from '../../../../componentsNew/SortControl';
+import SortControl from '../../../../components/SortControl';
 import Button from '../../../../components/Button';
 import styles from './SortNfts.module.scss';
 import {
@@ -15,7 +15,7 @@ import {
 } from '../../hooks';
 import FiltersDropdown, {
   useFiltersModal,
-} from '../../../../componentsNew/FiltersDropdown';
+} from '../../../../components/FiltersDropdown';
 
 interface SortNftsProps {
   searchQuery: string;
@@ -43,6 +43,7 @@ const SortNfts: FC<SortNftsProps> = ({
 
   useEffect(() => {
     setSortValue(sort);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sort]);
 
   return (

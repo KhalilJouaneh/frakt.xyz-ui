@@ -12,7 +12,7 @@
     "react/react-in-jsx-scope": 0,
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "warn",
-    "no-console": ["warn", { "allow": ["error"] } ],
+    "no-console": ["warn", { "allow": ["error"] }],
     "no-debugger": "warn",
     "require-await": "error",
     "no-undef": "error",
@@ -28,7 +28,8 @@
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

@@ -6,13 +6,13 @@
 
 body {
   background-color: var(--secondary-background);
-  background-image: url(../iconsNew/lightBg.png);
+  background-image: url(../icons/lightBg.png);
   background-size: cover;
   color: var(--secondary-border);
   font: var(--font-text-3);
 
   @media (max-width: 767px) {
-    background-image: url(../iconsNew/tabletBg.png);
+    background-image: url(../icons/tabletBg.png);
   }
 }
 
@@ -34,7 +34,7 @@ h5 {
     left: 177px;
     width: calc(100vw - 187px);
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
       left: 0;
       width: 100vw;
     }

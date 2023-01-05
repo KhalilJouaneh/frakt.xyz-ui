@@ -12,7 +12,7 @@ import Tooltip from '../../../../components/Tooltip';
 import { commonActions } from '../../../../state/common/actions';
 import { LiquidityPool } from '../../../../state/loans/types';
 import { sendAmplitudeData } from '../../../../utils/amplitude';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import Rewards from '../Rewards';
 
 interface LendingPoolProps {
@@ -64,7 +64,7 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
             <div className={styles.totalValue}>
               <p className={styles.title}>Total liquidity</p>
               <p className={styles.value}>
-                {totalLiquidity.toFixed(2)} <SolanaIcon />
+                {totalLiquidity.toFixed(2)} <Solana />
               </p>
             </div>
             <div className={styles.totalValue}>
@@ -94,7 +94,7 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
             <div className={styles.totalValue}>
               <p className={styles.title}>Total borrowed</p>
               <p className={styles.value}>
-                {totalBorrowed.toFixed(2)} <SolanaIcon />
+                {totalBorrowed.toFixed(2)} <Solana />
               </p>
             </div>
             {connected && (
@@ -102,8 +102,7 @@ const LendingPool: FC<LendingPoolProps> = ({ liquidityPool }) => {
                 <div className={styles.totalValue}>
                   <p className={styles.title}>Your liquidity</p>
                   <p className={styles.value}>
-                    {userDeposit?.depositAmount.toFixed(2) || '0.00'}{' '}
-                    <SolanaIcon />
+                    {userDeposit?.depositAmount.toFixed(2) || '0.00'} <Solana />
                   </p>
                 </div>
               </>

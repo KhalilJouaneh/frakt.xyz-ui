@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
-import ThemeSwitcher from '../../componentsNew/ThemeSwitcher';
+import ThemeSwitcher from '../ThemeSwitcher';
 import styles from './BurgerMenu.module.scss';
 import {
   community,
   documentation,
   NAVIGATION_LINKS,
-} from '../../componentsNew/Navigation';
-import { MenuItem } from '../../componentsNew/Navigation/Navigation';
+  MenuItem,
+} from '@frakt/components/Navigation';
 import { selectTheme } from '../../state/theme/selectors';
 import { useBurgerMenu } from './hooks';
 
