@@ -138,6 +138,13 @@
   border-radius: 2px;
 }
 
+.valuesColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 110px;
+}
+
 .valuesWrapper {
   display: flex;
   flex-direction: column;

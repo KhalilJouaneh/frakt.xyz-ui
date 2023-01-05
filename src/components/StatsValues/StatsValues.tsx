@@ -23,7 +23,7 @@ export const StatsValues: FC<StatsValuesProps> = ({
     <div className={cx(styles.info, className)}>
       <p className={styles.label}>{label}</p>
       <span className={styles.value}>
-        {children && children}
+        {children}
         {!children && icon ? <SolAmount solAmount={value} /> : value}
       </span>
     </div>

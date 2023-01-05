@@ -137,15 +137,11 @@ const LoanCardValues: FC<{
 
   const isPriceBasedAndGracePeriod = isPriceBased && isGracePeriod;
 
-  const debtValue = isPriceBased
-    ? liquidationPrice && liquidationPrice
-    : liquidationPrice
-    ? liquidationPrice
-    : repayValue && repayValue;
+  const debtValue = isPriceBased ? liquidationPrice : repayValue;
 
   return (
     <div className={styles.valuesWrapper}>
-      <div style={{ minHeight: 110 }}>
+      <div className={styles.valuesColumn}>
         <div className={styles.valuesWrapperRow}>
           <StatsValuesColumn
             className={styles.values}
@@ -160,7 +156,7 @@ const LoanCardValues: FC<{
         </div>
 
         {isPriceBased && (
-          <div style={{ marginTop: 16 }} className={styles.valuesWrapperRow}>
+          <div className={styles.valuesWrapperRow}>
             <StatsValuesColumn
               className={styles.values}
               label={'Liquidation price'}
