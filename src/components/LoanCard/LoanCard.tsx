@@ -2,20 +2,23 @@ import { FC } from 'react';
 import classNames from 'classnames';
 
 import { PartialRepayModal } from '@frakt/components/PartialRepayModal';
+import { StatsValuesColumn } from '@frakt/components/StatsValues';
 import { caclTimeToRepay } from '../../utils/loans';
 import { RewardState, useLoans } from './hooks';
 import { LoadingModal } from '../LoadingModal';
 import { Loan } from '../../state/loans/types';
-import { Solana, Timer } from '../../icons';
+import { Timer } from '../../icons';
 import styles from './LoanCard.module.scss';
 import { useCountdown } from '../../hooks';
 import Button from '../Button';
 
 interface LoanCardProps {
   loan: Loan;
+  onClick?: () => void;
+  selected?: boolean;
 }
 
-const LoanCard: FC<LoanCardProps> = ({ loan }) => {
+const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
   const {
     closeLoadingModal,
     loadingModalVisible,
@@ -37,8 +40,10 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
     <>
       <div className={styles.cardWrapper}>
         <div
+          onClick={onClick}
           className={classNames(styles.card, {
             [styles.isGracePeriodCard]: isGracePeriod,
+            [styles.isSelected]: selected,
           })}
         >
           <div
@@ -50,7 +55,14 @@ const LoanCard: FC<LoanCardProps> = ({ loan }) => {
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />
-            <Button type="secondary" className={styles.btn} onClick={onPayback}>
+            <Button
+              type="secondary"
+              className={styles.btn}
+              onClick={(e) => {
+                onPayback();
+                e.stopPropagation();
+              }}
+            >
               Repay
             </Button>
             {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
@@ -125,53 +137,37 @@ const LoanCardValues: FC<{
 
   const isPriceBasedAndGracePeriod = isPriceBased && isGracePeriod;
 
+  const debtValue = isPriceBased ? liquidationPrice : repayValue;
+
   return (
     <div className={styles.valuesWrapper}>
-      <div style={{ minHeight: 110 }}>
+      <div className={styles.valuesColumn}>
         <div className={styles.valuesWrapperRow}>
-          <div className={styles.valueWrapper}>
-            <p className={styles.valueTitle}>Borrowed</p>
-            <div className={styles.valueInfo}>
-              <p>{loanValue && loanValue.toFixed(2)}</p>
-              <Solana />
-            </div>
-          </div>
-
-          <div className={styles.valueWrapper}>
-            <p className={styles.valueTitle}>Debt</p>
-            <div className={styles.valueInfo}>
-              <p>
-                {isPriceBased
-                  ? liquidationPrice && liquidationPrice.toFixed(2)
-                  : liquidationPrice
-                  ? liquidationPrice.toFixed(2)
-                  : repayValue && repayValue.toFixed(2)}
-              </p>
-              <Solana />
-            </div>
-          </div>
+          <StatsValuesColumn
+            className={styles.values}
+            label={'Borrowed'}
+            value={loanValue}
+          />
+          <StatsValuesColumn
+            className={classNames(styles.values, styles.textRight)}
+            label={'Debt'}
+            value={debtValue}
+          />
         </div>
 
         {isPriceBased && (
-          <div style={{ marginTop: 16 }} className={styles.valuesWrapperRow}>
-            <div className={styles.valueWrapper}>
-              <p className={styles.valueTitle}>Liquidation price</p>
-              <div className={styles.valueInfo}>
-                <p>{realLiquidationPrice && realLiquidationPrice.toFixed(2)}</p>
-                <Solana />
-              </div>
-            </div>
-            <div
-              className={styles.valueWrapper}
-              style={{ alignItems: 'flex-end' }}
+          <div className={styles.valuesWrapperRow}>
+            <StatsValuesColumn
+              className={styles.values}
+              label={'Liquidation price'}
+              value={realLiquidationPrice}
+            />
+            <StatsValuesColumn
+              className={classNames(styles.values, styles.textRight)}
+              label={'Borrow interest'}
             >
-              <div className={styles.valueWithTooltip}>
-                <p className={styles.valueTitle} style={{ textAlign: 'right' }}>
-                  Borrow interest
-                </p>
-              </div>
-              <p className={styles.valueInfo}>{borrowAPRPercents} %</p>
-            </div>
+              {borrowAPRPercents} %
+            </StatsValuesColumn>
           </div>
         )}
 

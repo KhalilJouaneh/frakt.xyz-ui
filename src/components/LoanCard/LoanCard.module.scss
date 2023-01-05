@@ -1,22 +1,25 @@
 .cardWrapper {
   height: 100%;
+  border: 1px solid var(--primary-border);
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
 }
 
 .card {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  border: 1px solid var(--primary-border);
   position: relative;
   background: var(--primary-background);
   user-select: none;
-  transition: border var(--transition-1);
   display: flex;
   flex-direction: column;
+}
 
-  &:hover {
-    border: 1px solid var(--secondary-border);
-  }
+.isSelected {
+  border: 3px solid var(--light-green-color);
 }
 
 .isGracePeriodCard {
@@ -135,6 +138,13 @@
   border-radius: 2px;
 }
 
+.valuesColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 110px;
+}
+
 .valuesWrapper {
   display: flex;
   flex-direction: column;
@@ -167,6 +177,9 @@
   font: var(--font-text-6);
   margin-bottom: 4px;
   text-transform: uppercase;
+  max-width: 136px;
+}
+.values {
   max-width: 136px;
 }
 .valueInfo {
@@ -202,4 +215,8 @@
   path {
     fill: var(--orange-color);
   }
+}
+
+.textRight {
+  text-align: right;
 }

@@ -1,0 +1,155 @@
+.nftSlider {
+  width: 100%;
+  min-height: 191px;
+  padding: 0 32px;
+
+  :global {
+    .swiper-slide {
+      margin-right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding-top: 20px;
+      min-height: 125px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    padding: 0 24px;
+    padding-top: 4px;
+    min-height: 120px;
+    overflow: unset !important;
+  }
+
+  @media screen and (max-width: 767px) {
+    :global {
+      .swiper-slide {
+        min-height: unset;
+      }
+    }
+  }
+}
+
+.mobileSlide {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    border: 1px solid var(--primary-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.image {
+  width: 90px;
+  height: 90px;
+  background-color: var(--secondary-background);
+  object-fit: fill;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  @media screen and (max-width: 767px) {
+    height: 48px;
+    width: 48px;
+  }
+
+  @media screen and (max-width: 767px) {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+.removeBtn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  background-color: var(--primary-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  z-index: 9;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+
+  &:hover {
+    border-color: var(--secondary-border);
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.nftName {
+  font: var(--font-text-2);
+  text-align: center;
+
+  @media screen and (max-width: 767px) {
+    text-align: left;
+  }
+}
+
+.removeBtnMobile {
+  top: 40px;
+  right: 16px;
+
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  background-color: var(--primary-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.mobileSlideInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  @media screen and (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.icon {
+  height: 28px;
+  width: 28px;
+}
