@@ -6,60 +6,6 @@
   justify-content: space-between;
   align-items: center;
 
-  &.highlightBest {
-    position: relative;
-    outline: 3px solid var(--yellow-color);
-    outline-offset: -3px;
-
-    &::before {
-      content: 'Best';
-      position: absolute;
-      top: 0px;
-      left: -51px;
-      z-index: 99;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: 52px;
-      height: 55px;
-
-      background: var(--yellow-color);
-
-      font: var(--font-text-6);
-      color: var(--button-text);
-      text-align: center;
-    }
-  }
-
-  &.highlightYourOffer {
-    position: relative;
-    outline: 3px solid var(--light-green-color);
-    outline-offset: -3px;
-
-    &::before {
-      content: 'Your offer';
-      position: absolute;
-      top: 0px;
-      left: -51px;
-      z-index: 99;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: 52px;
-      height: 55px;
-
-      background: var(--light-green-color);
-
-      font: var(--font-text-6);
-      color: var(--button-text);
-      text-align: center;
-    }
-  }
-
   &::after {
     content: '';
     position: absolute;
@@ -94,27 +40,95 @@
 
   @media screen and (max-width: 768px) {
     padding: 14px 44px 14px 8px;
+  }
+}
 
-    &.highlightBest,
-    &.highlightYourOffer {
-      &::before {
-        left: -42px;
+.highlightBest {
+  position: relative;
+  outline: 3px solid var(--yellow-color);
+  outline-offset: -3px;
 
-        width: 43px;
-        height: 47px;
-      }
+  &::before {
+    content: 'Best';
+    position: absolute;
+    top: 0px;
+    left: -51px;
+    z-index: 99;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 55px;
+
+    background: var(--yellow-color);
+
+    font: var(--font-text-6);
+    color: var(--button-text);
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    &::before {
+      left: -42px;
+
+      width: 43px;
+      height: 47px;
     }
   }
 
   @media screen and (max-width: 550px) {
-    &.highlightBest,
-    &.highlightYourOffer {
-      &::before {
-        left: -34px;
+    &::before {
+      left: -34px;
 
-        width: 35px;
-        height: 47px;
-      }
+      width: 35px;
+      height: 47px;
+    }
+  }
+}
+
+.highlightYourOffer {
+  position: relative;
+  outline: 3px solid var(--light-green-color);
+  outline-offset: -3px;
+
+  &::before {
+    content: 'Your offer';
+    position: absolute;
+    top: 0px;
+    left: -51px;
+    z-index: 99;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 55px;
+
+    background: var(--light-green-color);
+
+    font: var(--font-text-6);
+    color: var(--button-text);
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    &::before {
+      left: -42px;
+
+      width: 43px;
+      height: 47px;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    &::before {
+      left: -34px;
+
+      width: 35px;
+      height: 47px;
     }
   }
 }
@@ -134,7 +148,7 @@
   left: 0px;
   z-index: 10;
 
-  width: 64px;
+  width: 72px;
   height: 14px;
   background: var(--yellow-color);
 

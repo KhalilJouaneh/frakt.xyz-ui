@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -19,8 +19,8 @@ interface OrderBookProps {
   marketPubkey: string;
   hideCreateBtn?: boolean;
   maxLTV: number;
-  solFee: number;
-  solDeposit: number;
+  solFee: string;
+  solDeposit: string;
 }
 
 const OrderBook: FC<OrderBookProps> = ({
@@ -33,7 +33,7 @@ const OrderBook: FC<OrderBookProps> = ({
   const wallet = useWallet();
 
   const [openOffersMobile, setOpenOffersMobile] = useState<boolean>(false);
-  const toggleOffers = () => setOpenOffersMobile(!openOffersMobile);
+  const toggleOffers = () => setOpenOffersMobile((prev) => !prev);
 
   const removeOrder = (order: MarketOrder) => async () => {
     try {
@@ -65,30 +65,27 @@ const OrderBook: FC<OrderBookProps> = ({
     order?.rawData?.assetReceiver === wallet?.publicKey?.toBase58();
 
   const [showOwnOrders, setShowOwnOrders] = useState(false);
-  //TODO: Implement sorting
   const [sort, setSort] = useState<'asc' | 'desc'>('desc');
 
-  const handleSort = () => {
+  const toggleSort = () => {
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { orders, isLoading } = useMarketOrders({
+  const { offers, isLoading } = useMarketOrders({
     marketPubkey: new web3.PublicKey(marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
     ltv: maxLTV,
-    size: solDeposit,
-    interest: solFee,
+    size: +solDeposit,
+    interest: +solFee,
   });
 
-  const bestOfferCheck = () => {
+  const isBestOffer = useMemo(() => {
     if (sort === 'desc') {
-      return !orders.at(0).rawData ? orders.at(1) : orders.at(0);
+      return !offers.at(0).synthetic ? offers.at(1) : offers.at(0);
     }
-    return !orders.at(-1).rawData ? orders.at(-2) : orders.at(-1);
-  };
-
-  const isBestOffer = bestOfferCheck();
+    return !offers.at(-1).synthetic ? offers.at(-2) : offers.at(-1);
+  }, [offers, sort]);
 
   return (
     <div
@@ -122,19 +119,23 @@ const OrderBook: FC<OrderBookProps> = ({
           onChange={(nextValue) => setShowOwnOrders(nextValue)}
         />
         <div
-          className={classNames(styles.column, {
+          className={classNames(styles.columnWrapper, {
             [styles.active]: openOffersMobile,
             [styles.create]: hideCreateBtn,
           })}
         >
-          <div className={styles.colName}>SIZE (fndSMB)</div>
+          <div className={styles.col}>
+            <span className={styles.colName}>size</span>
+            <span className={styles.colName}>(fndSMB)</span>
+          </div>
           <div
-            className={classNames(styles.colName, {
+            className={classNames(styles.col, {
               [styles.sort]: sort === 'asc',
             })}
-            onClick={handleSort}
+            onClick={toggleSort}
           >
-            INTEREST (SOL)
+            <span className={styles.colName}>interest</span>
+            <span className={styles.colName}>(SOL)</span>
           </div>
         </div>
       </div>
@@ -145,7 +146,7 @@ const OrderBook: FC<OrderBookProps> = ({
           [styles.create]: hideCreateBtn,
         })}
       >
-        {isLoading ? (
+        {isLoading && (
           <Loader
             size="default"
             className={classNames(styles.loader, {
@@ -153,27 +154,30 @@ const OrderBook: FC<OrderBookProps> = ({
               [styles.create]: hideCreateBtn,
             })}
           />
-        ) : (
+        )}
+
+        {!isLoading && (
           <ul
             className={classNames(styles.list, {
               [styles.create]: hideCreateBtn,
               [styles.active]: openOffersMobile,
             })}
           >
-            {orders.map((order, i) => (
+            {offers.map((offer, idx) => (
               <Offer
-                ltv={order.ltv}
-                size={order.size}
-                interest={order.interest}
-                order={order}
+                ltv={offer.ltv}
+                size={offer.size}
+                interest={offer.interest}
+                order={offer}
                 isBestOffer={isBestOffer}
                 removeOrder={removeOrder}
                 isOwnOrder={isOwnOrder}
-                key={i + order.interest}
+                key={idx}
               />
             ))}
           </ul>
         )}
+
         {!hideCreateBtn && (
           <NavLink to={`${PATHS.BOND}/${marketPubkey}/create`}>
             <Button className={styles.btn} type="secondary">

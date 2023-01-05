@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import { FC } from 'react';
 import { Slider as SliderAntd } from 'antd';
 
-import styles from './Slider.module.scss';
 import {
   colorByPercentSlider,
   getColorByPercent,
-  riskCheck,
+  calcRisk,
 } from '@frakt/utils/bonds';
+import styles from './Slider.module.scss';
 
 interface SliderGradientProps {
   value: number;
@@ -48,7 +48,7 @@ export const SliderGradient: FC<SliderGradientProps> = ({
           <div className={styles.label}>{label}</div>
           <div className={styles.label}>
             risk level
-            <span style={{ color: `${colorLTV}` }}>{riskCheck(value)}</span>
+            <span style={{ color: `${colorLTV}` }}>{calcRisk(value)}</span>
           </div>
         </div>
       )}

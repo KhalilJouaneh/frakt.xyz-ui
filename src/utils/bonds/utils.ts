@@ -1,4 +1,4 @@
-export const riskCheck = (value: number) => {
+export const calcRisk = (value: number) => {
   if (value < 40) {
     return 'low';
   }
@@ -10,11 +10,11 @@ export const riskCheck = (value: number) => {
   }
 };
 
-interface ObjWithColors {
+interface ColorBreakpoints {
   [key: number]: string;
 }
 
-export const colorByPercentOffers: ObjWithColors = {
+export const colorByPercentOffers: ColorBreakpoints = {
   11: '#7DCC19',
   22: '#9ECC19',
   33: '#B3CC19',
@@ -26,7 +26,7 @@ export const colorByPercentOffers: ObjWithColors = {
   100: '#CC1939',
 };
 
-export const colorByPercentSlider: ObjWithColors = {
+export const colorByPercentSlider: ColorBreakpoints = {
   11: '#9CFF1F',
   22: '#C5FF1F',
   33: '#E0FF1F',
@@ -40,10 +40,10 @@ export const colorByPercentSlider: ObjWithColors = {
 
 export const getColorByPercent = (
   value: number,
-  objWithColors: ObjWithColors,
+  colorBreakpoints: ColorBreakpoints,
 ): string => {
-  const limit = Object.keys(objWithColors).find(
+  const limit = Object.keys(colorBreakpoints).find(
     (limit) => value <= parseInt(limit),
   );
-  return objWithColors[limit] || objWithColors[10];
+  return colorBreakpoints[limit] || colorBreakpoints[10];
 };

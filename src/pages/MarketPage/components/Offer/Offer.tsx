@@ -31,14 +31,14 @@ const Offer: FC<OfferProps> = ({
       className={classNames(styles.listItem, {
         [styles.highlightBest]:
           order.rawData && interest === isBestOffer.interest,
-        [styles.highlightYourOffer]: !order.rawData,
+        [styles.highlightYourOffer]: order.synthetic,
       })}
     >
       <div
         className={styles.ltv}
         style={{
           background: `${colorLTV}`,
-          left: ltv <= 24 ? `${ltv}%` : `calc(${ltv}%  - 67px)`,
+          left: ltv <= 27 ? `${ltv}%` : `calc(${ltv}%  - 74px)`,
         }}
       >
         ltv: {`${ltv}%`}
@@ -46,16 +46,16 @@ const Offer: FC<OfferProps> = ({
       <div
         className={styles.line}
         style={{
-          left: ltv <= 24 ? `${ltv}%` : `calc(${ltv}%  - 4px)`,
+          left: ltv <= 27 ? `${ltv}%` : `calc(${ltv}%  - 4px)`,
           borderColor: `${colorLTV}`,
         }}
       ></div>
       <div className={styles.valueWrapper}>
         <div className={styles.value}>
-          {size.toFixed(3)}
+          {size?.toFixed(3)}
           <div className={styles.loans}>3.5 loans</div>
         </div>
-        <div className={styles.value}>{interest.toFixed(3)}</div>
+        <div className={styles.value}>{interest?.toFixed(3)}</div>
       </div>
       {isOwnOrder(order) && (
         <div

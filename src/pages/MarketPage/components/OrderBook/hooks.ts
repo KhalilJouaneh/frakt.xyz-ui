@@ -38,9 +38,10 @@ type UseMarketOrders = (props: {
   size: number;
   interest: number;
 }) => {
-  orders: MarketOrder[];
+  offers: MarketOrder[];
   isLoading: boolean;
 };
+
 export const useMarketOrders: UseMarketOrders = ({
   marketPubkey,
   sortDirection = 'desc',
@@ -55,9 +56,9 @@ export const useMarketOrders: UseMarketOrders = ({
     marketPubkey: new web3.PublicKey(marketPubkey),
   });
 
-  const orders = useMemo(() => {
+  const offers = useMemo(() => {
     if (!pairs) return [];
-    const sortedOrdersByInterest = pairs
+    const parsedOffers = pairs
       .filter((pair) => {
         return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
       })
@@ -67,17 +68,26 @@ export const useMarketOrders: UseMarketOrders = ({
       ltv,
       size,
       interest,
+      synthetic: true,
+      rawData: {
+        publicKey: '',
+        assetReceiver: '',
+        edgeSettlement: 0,
+        authorityAdapter: '',
+      },
     };
 
-    const newArr = [...sortedOrdersByInterest, myOffer].sort(
+    const sortedOffersByInterest = [...parsedOffers, myOffer].sort(
       (a, b) => b.interest - a.interest,
     );
 
-    return sortDirection === 'desc' ? newArr : newArr.reverse();
+    return sortDirection === 'desc'
+      ? sortedOffersByInterest
+      : sortedOffersByInterest.reverse();
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
 
   return {
-    orders,
+    offers,
     isLoading,
   };
 };

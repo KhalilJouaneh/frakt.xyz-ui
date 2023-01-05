@@ -21,8 +21,8 @@ type UsePoolCreation = () => {
   closeLoadingModal: () => void;
   maxLTV: number;
   duration: number;
-  solDeposit: number;
-  solFee: number;
+  solDeposit: string;
+  solFee: string;
   handleMaxLTV: (value: number) => void;
   handleDuration: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSolDeposit: (value: string) => void;
@@ -37,18 +37,18 @@ export const usePoolCreation: UsePoolCreation = () => {
 
   const [maxLTV, setMaxLTV] = useState<number>(10);
   const [duration, setDuration] = useState<number>(7);
-  const [solDeposit, setSolDeposit] = useState<number>(0);
-  const [solFee, setSolFee] = useState<number>(0);
+  const [solDeposit, setSolDeposit] = useState<string>('');
+  const [solFee, setSolFee] = useState<string>('');
 
   const handleMaxLTV = useCallback((value: number) => setMaxLTV(value), []);
-  const handleSolFee = (value: string) => setSolFee(+value);
+  const handleSolFee = (value: string) => setSolFee(value);
 
   const handleDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(+e.target.value);
   };
 
   const handleSolDeposit = (value: string) => {
-    setSolDeposit(+value);
+    setSolDeposit(value);
   };
 
   const {
@@ -57,7 +57,7 @@ export const usePoolCreation: UsePoolCreation = () => {
     open: openLoadingModal,
   } = useLoadingModal();
 
-  const isValid = solDeposit && solFee !== 0;
+  const isValid = +solDeposit && +solFee !== 0;
 
   const onSubmit = async (): Promise<void> => {
     if (marketPubkey && wallet.publicKey) {
@@ -69,8 +69,8 @@ export const usePoolCreation: UsePoolCreation = () => {
           marketPubkey: new web3.PublicKey(marketPubkey),
           maxDuration: duration,
           maxLTV: maxLTV,
-          solDeposit: solDeposit,
-          solFee: solFee,
+          solDeposit: Number(solDeposit),
+          solFee: Number(solFee),
           connection,
           wallet,
         });
