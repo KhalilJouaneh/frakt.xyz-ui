@@ -22,10 +22,10 @@ export const LoansList: FC<LoansListProps> = ({ className, loans }) => {
   const { itemsToShow, next } = useFakeInfinityScroll(48);
   const loading: boolean = useSelector(selectUserLoansPending);
 
-  const { setCurrentSelectedId, selectedNfts } = useSelectableNftsState();
+  const { setCurrentSelectedIdx, selectedNfts } = useSelectableNftsState();
   const { onNftClick, isNftSelected } = useSelectableNfts();
 
-  const currentNftId = selectedNfts.length - 1 < 0 ? 0 : selectedNfts.length;
+  const currentNftIdx = selectedNfts.length - 1 < 0 ? 0 : selectedNfts.length;
 
   return (
     <InfinityScroll
@@ -43,7 +43,7 @@ export const LoansList: FC<LoansListProps> = ({ className, loans }) => {
         <LoanCard
           selected={isNftSelected(loan)}
           onClick={() => {
-            setCurrentSelectedId(currentNftId);
+            setCurrentSelectedIdx(currentNftIdx);
             onNftClick(loan);
           }}
           key={loan.mint}

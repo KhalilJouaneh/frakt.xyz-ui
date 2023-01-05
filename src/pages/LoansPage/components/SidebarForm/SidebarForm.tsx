@@ -18,7 +18,7 @@ import {
 const SidebarForm: FC = () => {
   const { publicKey } = useWallet();
   const { onNftClick } = useSelectableNfts();
-  const { currentSelectedId, setSelectedNfts, selectedNfts } =
+  const { currentSelectedIdx, setSelectedNfts, selectedNfts } =
     useSelectableNftsState();
 
   const { visible: sidebarVisible, toggle: toggleSidebar } =
@@ -58,8 +58,8 @@ const SidebarForm: FC = () => {
           <Slider
             nfts={currentNft}
             onDeselect={onNftClick}
-            onPrev={() => onPrevNft(currentSelectedId - 1)}
-            onNext={() => onNextNft(currentSelectedId + 1)}
+            onPrev={() => onPrevNft(currentSelectedIdx - 1)}
+            onNext={() => onNextNft(currentSelectedIdx + 1)}
             isBulkLoan={selectedNfts.length > 1}
           />
           <RepayForm

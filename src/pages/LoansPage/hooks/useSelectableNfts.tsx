@@ -6,16 +6,16 @@ import { Loan } from '@frakt/state/loans/types';
 interface UseSelectableNftsState {
   selectedNfts: Loan[];
   setSelectedNfts: (nft: Loan[]) => void;
-  currentSelectedId: number;
-  setCurrentSelectedId: (id: number) => void;
+  currentSelectedIdx: number;
+  setCurrentSelectedIdx: (idx: number) => void;
 }
 
 export const useSelectableNftsState = create<UseSelectableNftsState>((set) => ({
   selectedNfts: [],
-  currentSelectedId: 0,
+  currentSelectedIdx: 0,
   setSelectedNfts: (nft) => set((state) => ({ ...state, selectedNfts: nft })),
-  setCurrentSelectedId: (id) =>
-    set((state) => ({ ...state, currentSelectedId: id })),
+  setCurrentSelectedIdx: (idx) =>
+    set((state) => ({ ...state, currentSelectedIdx: idx })),
 }));
 
 export const useSelectableNfts = () => {

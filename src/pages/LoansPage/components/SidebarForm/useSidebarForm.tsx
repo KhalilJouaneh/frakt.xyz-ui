@@ -39,14 +39,14 @@ export const useSidebarForm = () => {
   } = useLoadingModal();
 
   const {
-    currentSelectedId,
+    currentSelectedIdx,
     selectedNfts,
     setSelectedNfts,
-    setCurrentSelectedId,
+    setCurrentSelectedIdx,
   } = useSelectableNftsState();
 
   const totalNfts = selectedNfts.length - 1;
-  const currentNftId = currentSelectedId > totalNfts ? 0 : currentSelectedId;
+  const currentNftId = currentSelectedIdx > totalNfts ? 0 : currentSelectedIdx;
   const currentNft = selectedNfts[currentNftId];
 
   const repayValue = (nft: Loan) => nft?.repayValue;
@@ -54,17 +54,17 @@ export const useSidebarForm = () => {
 
   const onNextNft = (idx: number): void => {
     if (idx > totalNfts) {
-      setCurrentSelectedId(0);
+      setCurrentSelectedIdx(0);
     } else {
-      setCurrentSelectedId(idx);
+      setCurrentSelectedIdx(idx);
     }
   };
 
   const onPrevNft = (idx: number): void => {
     if (idx < 0) {
-      setCurrentSelectedId(totalNfts);
+      setCurrentSelectedIdx(totalNfts);
     } else {
-      setCurrentSelectedId(idx);
+      setCurrentSelectedIdx(idx);
     }
   };
 
