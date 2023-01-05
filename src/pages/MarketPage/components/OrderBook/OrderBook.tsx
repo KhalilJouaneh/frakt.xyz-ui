@@ -70,7 +70,7 @@ const OrderBook: FC<OrderBookProps> = ({
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { offers, isLoading, isOffersExist } = useMarketOrders({
+  const { offers, isLoading } = useMarketOrders({
     marketPubkey: new web3.PublicKey(marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
@@ -155,7 +155,7 @@ const OrderBook: FC<OrderBookProps> = ({
           />
         )}
 
-        {!isLoading && !isOffersExist && createOffer && (
+        {!isLoading && (
           <ul
             className={classNames(styles.list, {
               [styles.create]: createOffer,
@@ -175,17 +175,6 @@ const OrderBook: FC<OrderBookProps> = ({
               />
             ))}
           </ul>
-        )}
-
-        {!isOffersExist && !createOffer && (
-          <div
-            className={classNames(styles.noData, {
-              [styles.create]: createOffer,
-              [styles.active]: openOffersMobile,
-            })}
-          >
-            no data
-          </div>
         )}
 
         {!createOffer && (
