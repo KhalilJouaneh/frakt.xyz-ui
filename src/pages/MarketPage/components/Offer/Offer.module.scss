@@ -60,13 +60,19 @@
     justify-content: center;
 
     width: 52px;
-    height: 55px;
+    height: 56px;
 
     background: var(--yellow-color);
 
     font: var(--font-text-6);
     color: var(--button-text);
     text-align: center;
+  }
+
+  @media screen and (max-width: 1024px) {
+    &::before {
+      height: 54px;
+    }
   }
 
   @media screen and (max-width: 768px) {
@@ -105,13 +111,19 @@
     justify-content: center;
 
     width: 52px;
-    height: 55px;
+    height: 56px;
 
     background: var(--light-green-color);
 
     font: var(--font-text-6);
     color: var(--button-text);
     text-align: center;
+  }
+
+  @media screen and (max-width: 1024px) {
+    &::before {
+      height: 54px;
+    }
   }
 
   @media screen and (max-width: 768px) {
