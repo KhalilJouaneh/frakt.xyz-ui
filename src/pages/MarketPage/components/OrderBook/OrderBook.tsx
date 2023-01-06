@@ -19,7 +19,6 @@ import styles from './OrderBook.module.scss';
 
 interface OrderBookProps {
   marketPubkey: string;
-  createOffer?: boolean;
   maxLTV?: number;
   solFee?: string;
   solDeposit?: string;
@@ -27,7 +26,6 @@ interface OrderBookProps {
 
 const OrderBook: FC<OrderBookProps> = ({
   marketPubkey,
-  createOffer = false,
   maxLTV,
   solFee,
   solDeposit,
@@ -71,11 +69,10 @@ const OrderBook: FC<OrderBookProps> = ({
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { offers, isLoading, isOffersExist } = useMarketOrders({
+  const { offers, isLoading, offersExist } = useMarketOrders({
     marketPubkey: new web3.PublicKey(marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
-    createOffer,
     ltv: maxLTV,
     size: Number(solDeposit),
     interest: Number(solFee),
@@ -92,7 +89,7 @@ const OrderBook: FC<OrderBookProps> = ({
     <div
       className={classNames(styles.orderBook, {
         [styles.active]: openOffersMobile,
-        [styles.create]: createOffer,
+        [styles.create]: maxLTV,
       })}
     >
       <div
@@ -107,11 +104,11 @@ const OrderBook: FC<OrderBookProps> = ({
       <div
         className={classNames(styles.header, {
           [styles.active]: openOffersMobile,
-          [styles.create]: createOffer,
+          [styles.create]: maxLTV,
         })}
       >
         <h5 className={styles.title}>Offers</h5>
-        {isOffersExist && (
+        {offersExist && (
           <Toggle
             label="My pools only"
             className={classNames(styles.toggle, {
@@ -122,11 +119,11 @@ const OrderBook: FC<OrderBookProps> = ({
           />
         )}
 
-        {isOffersExist && (
+        {offersExist && (
           <div
             className={classNames(styles.columnWrapper, {
               [styles.active]: openOffersMobile,
-              [styles.create]: createOffer,
+              [styles.create]: maxLTV,
             })}
           >
             <div className={styles.col}>
@@ -149,8 +146,8 @@ const OrderBook: FC<OrderBookProps> = ({
       <div
         className={classNames(styles.content, {
           [styles.active]: openOffersMobile,
-          [styles.create]: createOffer,
-          [styles.visible]: !isOffersExist,
+          [styles.create]: maxLTV,
+          [styles.visible]: !offersExist,
         })}
       >
         {isLoading && (
@@ -158,15 +155,15 @@ const OrderBook: FC<OrderBookProps> = ({
             size="default"
             className={classNames(styles.loader, {
               [styles.active]: openOffersMobile,
-              [styles.create]: createOffer,
+              [styles.create]: maxLTV,
             })}
           />
         )}
 
-        {!isLoading && isOffersExist && (
+        {!isLoading && offersExist && (
           <ul
             className={classNames(styles.list, {
-              [styles.create]: createOffer,
+              [styles.create]: maxLTV,
               [styles.active]: openOffersMobile,
             })}
           >
@@ -184,11 +181,11 @@ const OrderBook: FC<OrderBookProps> = ({
             ))}
           </ul>
         )}
-        {!isLoading && !isOffersExist && !createOffer && (
+        {!isLoading && !offersExist && !maxLTV && (
           <div
             className={classNames(styles.noData, {
               [styles.active]: openOffersMobile,
-              [styles.create]: createOffer,
+              [styles.create]: maxLTV,
             })}
           >
             <PartyHorn />
@@ -201,7 +198,7 @@ const OrderBook: FC<OrderBookProps> = ({
           </div>
         )}
 
-        {!createOffer && (
+        {!maxLTV && (
           <NavLink to={`${PATHS.BOND}/${marketPubkey}/create`}>
             <Button className={styles.btn} type="secondary">
               Place offers

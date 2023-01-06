@@ -34,21 +34,19 @@ type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
   sortDirection?: 'desc' | 'asc'; //? Sort by interest only
   walletOwned?: boolean;
-  createOffer: boolean;
   ltv: number;
   size: number;
   interest: number;
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
-  isOffersExist: boolean;
+  offersExist: boolean;
 };
 
 export const useMarketOrders: UseMarketOrders = ({
   marketPubkey,
   sortDirection = 'desc',
   walletOwned = false,
-  createOffer,
   ltv,
   size,
   interest,
@@ -61,12 +59,6 @@ export const useMarketOrders: UseMarketOrders = ({
 
   const offers = useMemo(() => {
     if (!pairs) return [];
-    const parsedOffers = pairs
-      .filter((pair) => {
-        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
-      })
-      .map(parseMarketOrder);
-
     const myOffer: MarketOrder = {
       ltv,
       size,
@@ -80,28 +72,27 @@ export const useMarketOrders: UseMarketOrders = ({
       },
     };
 
-    const sortedOffersByInterest = (
-      createOffer ? [...parsedOffers, myOffer] : [...parsedOffers]
-    ).sort((a, b) => b.interest - a.interest);
+    const parsedOffers = pairs
+      .filter((pair) => {
+        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
+      })
+      .map(parseMarketOrder);
+
+    if (ltv) parsedOffers.push(myOffer);
+
+    const sortOffersByInterest = parsedOffers.sort(
+      (a, b) => b.interest - a.interest,
+    );
 
     return sortDirection === 'desc'
-      ? sortedOffersByInterest
-      : sortedOffersByInterest.reverse();
-  }, [
-    pairs,
-    sortDirection,
-    walletOwned,
-    publicKey,
-    ltv,
-    size,
-    interest,
-    createOffer,
-  ]);
+      ? sortOffersByInterest
+      : sortOffersByInterest.reverse();
+  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
 
-  const isOffersExist = Boolean(offers.length);
+  const offersExist = Boolean(offers.length);
 
   return {
-    isOffersExist,
+    offersExist,
     offers,
     isLoading,
   };

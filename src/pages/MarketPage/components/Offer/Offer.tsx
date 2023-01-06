@@ -29,7 +29,8 @@ const Offer: FC<OfferProps> = ({
   return (
     <li
       className={classNames(styles.listItem, {
-        [styles.highlightBest]: interest === bestOffer?.interest,
+        [styles.highlightBest]:
+          interest === bestOffer?.interest && size === bestOffer?.size,
         [styles.highlightYourOffer]: order.synthetic,
       })}
     >
