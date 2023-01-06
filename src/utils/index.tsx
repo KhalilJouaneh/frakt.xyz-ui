@@ -231,3 +231,5 @@ export const compareNumbers = (
 //? Placeholder for sendTxn callback in SDK methods
 export const sendTxnPlaceHolder = async (): Promise<null> =>
   await Promise.resolve(null);
+
+export const PUBKEY_PLACEHOLDER = '11111111111111111111111111111111';
