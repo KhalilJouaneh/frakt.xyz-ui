@@ -1,26 +1,18 @@
 export const CloseModal = ({ className }: { className?: string }) => (
-  <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    className={className}
-  >
-    <rect x="0.5" y="0.5" width="31" height="31" rx="15.5" />
-    <path
-      d="M20.5 11.5L11.5 20.5"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+  <svg viewBox="0 0 23 23" fill="none" className={className}>
+    <rect
+      y="21.5625"
+      width="30.494"
+      height="2.03293"
+      transform="rotate(-45 0 21.5625)"
+      fill="black"
     />
-    <path
-      d="M11.5 11.5L20.5 20.5"
-      stroke="black"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <rect
+      x="1.4375"
+      width="30.494"
+      height="2.03293"
+      transform="rotate(45 1.4375 0)"
+      fill="black"
     />
-    <rect x="0.5" y="0.5" width="31" height="31" rx="15.5" stroke="#AEAEB2" />
   </svg>
 );

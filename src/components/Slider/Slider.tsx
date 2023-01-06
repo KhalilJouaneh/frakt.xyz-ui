@@ -14,7 +14,6 @@ interface SliderProps {
   max?: number;
   min?: number;
   disabled?: boolean;
-  label?: string;
 }
 
 export const Slider: FC<SliderProps> = ({
@@ -27,7 +26,6 @@ export const Slider: FC<SliderProps> = ({
   max,
   min,
   disabled,
-  label,
 }) => {
   return (
     <div
@@ -37,16 +35,6 @@ export const Slider: FC<SliderProps> = ({
         className,
       )}
     >
-      {!!label && (
-        <div className={classNames(styles.label, styles.labelFlex)}>
-          {label}
-          {/* {toolTipText && (
-            <Tooltip placement="bottom" overlay={toolTipText}>
-              <QuestionCircleOutlined className={styles.questionIcon} />
-            </Tooltip>
-          )} */}
-        </div>
-      )}
       <SliderAntd
         marks={marks}
         value={value}
