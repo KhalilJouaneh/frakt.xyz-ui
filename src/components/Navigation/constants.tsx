@@ -20,6 +20,8 @@ import {
   RafflesDark,
   MyLoans,
   MyLoansDark,
+  Staking,
+  StakingDark,
   // Bonds,
   // BondsDark,
 } from '@frakt/icons';
@@ -111,4 +113,11 @@ export const NAVIGATION_LINKS = [
   //   icon: Bonds,
   //   iconDark: BondsDark,
   // },
+  {
+    href: PATHS.STAKING,
+    label: 'Staking',
+    event: 'navigation-staking',
+    icon: Staking,
+    iconDark: StakingDark,
+  },
 ];
