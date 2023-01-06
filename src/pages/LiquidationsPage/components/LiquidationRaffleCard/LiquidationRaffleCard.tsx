@@ -7,8 +7,7 @@ import styles from './LiquidationRaffleCard.module.scss';
 import { createTimerJSX } from '@frakt/components/Timer';
 import { useLiquidationsRaffle } from './hooks';
 import Button from '@frakt/components/Button';
-import Icons from '../../../../iconsNew';
-import { Timer } from '@frakt/icons';
+import { Timer, Minus, Plus } from '@frakt/icons';
 import {
   GeneralCardInfo,
   StatsRaffleValues,
@@ -90,7 +89,7 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
               onClick={decrementCounter}
               disabled={ticketCount <= 0}
             >
-              <Icons.Minus />
+              <Minus />
             </Button>
             <input
               value={ticketCount}
@@ -103,7 +102,7 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
               onClick={incrementCounter}
               disabled={isDisabledIncrement}
             >
-              <Icons.Plus />
+              <Plus />
             </Button>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { LoadingModal } from '../../../../components/LoadingModal';
 import { getSelectedBulkValues, getTotalBorrowed } from './helpers';
 import { commonActions } from '../../../../state/common/actions';
 import styles from './SelectedBulk.module.scss';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import SuccessLoan from '../SuccessLoan';
 import SidebarBulk from '../SidebarBulk';
 import { useSeletedBulk } from './hooks';
@@ -96,7 +96,7 @@ const getStatsValue = (
   type?: 'percent' | 'number',
   className?: string,
 ) => {
-  const number = type === 'number' && <SolanaIcon />;
+  const number = type === 'number' && <Solana />;
   const percent = type === 'percent' && '%';
 
   return (

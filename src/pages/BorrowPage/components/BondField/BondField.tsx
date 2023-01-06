@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { BorrowNft } from '@frakt/api/nft';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import styles from './BondField.module.scss';
 
 interface BondFieldProps {
@@ -25,7 +25,7 @@ const BondField: FC<BondFieldProps> = ({ nft }) => {
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>To Borrow</p>
           <p className={styles.staticValueData}>
-            {loanValue} <SolanaIcon />
+            {loanValue} <Solana />
           </p>
         </div>
 
@@ -37,21 +37,21 @@ const BondField: FC<BondFieldProps> = ({ nft }) => {
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>Fee</p>
           <p className={styles.staticValueData}>
-            {feeWithDiscount.toFixed(3)} <SolanaIcon />
+            {feeWithDiscount.toFixed(3)} <Solana />
           </p>
         </div>
 
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>Fee on 1d</p>
           <p className={styles.staticValueData}>
-            {feeOnDayWithDiscount.toFixed(3)} <SolanaIcon />
+            {feeOnDayWithDiscount.toFixed(3)} <Solana />
           </p>
         </div>
         <div className={styles.staticValue}>
           <p className={styles.staticValueTitle}>Fee on 7d</p>
           <p className={styles.staticValueData}>
             {(feeOnDayWithDiscount * returnPeriodDays).toFixed(3)}
-            <SolanaIcon />
+            <Solana />
           </p>
         </div>
       </div>

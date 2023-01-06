@@ -1,7 +1,6 @@
 import { FC, useRef } from 'react';
 
-import { Bell } from '@frakt/iconsNew/Bell';
-import { BellWithBadge } from '@frakt/iconsNew/BellWithBadge';
+import { Bell, BellWithBadge } from '@frakt/icons';
 import { useBurgerMenu } from '@frakt/components/BurgerMenu';
 import { useUserNotifications, useOnClickOutside } from '@frakt/hooks';
 import {

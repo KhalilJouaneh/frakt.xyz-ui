@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { GoBackButton } from '@frakt/components/GoBackButton';
 import { useUserNotifications } from '@frakt/hooks';
-import { Settings } from '@frakt/iconsNew/Settings';
+import { Settings } from '@frakt/icons';
 import { ContentType } from '../constants';
 import { useNotificationsSider } from '../hooks';
 import styles from '../NotificationsSider.module.scss';

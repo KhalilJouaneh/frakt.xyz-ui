@@ -1,0 +1,118 @@
+@import '../../scss/abstracts/mixins';
+@import '../../scss/abstracts/typography';
+
+@mixin wrapper {
+  padding: 32px 16px;
+}
+
+@mixin listItem {
+  border: none;
+  background-color: transparent;
+  height: 34px;
+  padding: 8px 5px;
+  @include flex;
+  user-select: none;
+
+  & > * {
+    cursor: pointer;
+  }
+}
+
+.container {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 177px;
+  height: 100vh;
+  background-color: var(--primary-background);
+  border-right: 1px solid var(--primary-border);
+  @include flex(column, nowrap, flex-start, flex-start);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.navigation {
+  width: 100%;
+  border-bottom: 1px solid var(--primary-border);
+  @include wrapper;
+  @include text-menu-item;
+}
+
+.link {
+  @include listItem;
+
+  &:hover {
+    background: var(--light-green-color-1);
+  }
+}
+
+.active {
+  background: var(--light-green-color-1);
+  user-select: none;
+  cursor: default;
+
+  & > * {
+    cursor: default;
+  }
+}
+
+.section {
+  @include text-menu-section;
+  cursor: default;
+  margin-bottom: 16px;
+}
+
+.community {
+  width: 100%;
+  @include wrapper;
+  @include text-menu-item;
+  padding-bottom: 0;
+
+  & > div {
+    @include listItem;
+  }
+}
+
+.documentation {
+  width: 100%;
+  @include wrapper;
+  @include text-menu-item;
+
+  & > div {
+    @include listItem;
+  }
+}
+
+.active .label {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    linear-gradient(0deg, #9cff1f, #9cff1f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.label {
+  color: var(--primary-text);
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.active .icon {
+  svg {
+    path {
+      stroke: #8cd239;
+    }
+  }
+}
+
+.active .fillIcon {
+  svg {
+    path {
+      fill: #8cd239;
+      stroke: none !important;
+    }
+  }
+}

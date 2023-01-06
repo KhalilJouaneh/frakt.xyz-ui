@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 
-import { BellSlash } from '@frakt/iconsNew/BellSlash';
+import { BellSlash } from '@frakt/icons';
 import { useIntersectionObserver, useUserNotifications } from '@frakt/hooks';
 import { Notification } from '@frakt/api/user';
 import styles from '../NotificationsSider.module.scss';

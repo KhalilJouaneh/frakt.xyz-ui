@@ -1,4 +1,4 @@
-import { Arrow } from '@frakt/iconsNew/Arrow';
+import { Arrow } from '@frakt/icons';
 import classNames from 'classnames';
 import { FC } from 'react';
 

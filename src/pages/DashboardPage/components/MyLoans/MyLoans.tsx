@@ -10,7 +10,7 @@ import {
 } from '../../../../state/loans/selectors';
 import { ChartPie, defaultColors } from '../ChartPie';
 import { Loan } from '../../../../state/loans/types';
-import { SolanaIcon } from '../../../../icons';
+import { Solana } from '@frakt/icons';
 import styles from './MyLoans.module.scss';
 import Block from '../Block';
 import Button from '../../../../components/Button';
@@ -55,7 +55,7 @@ const MyLoans: FC = () => {
 
   return (
     <Block className={styles.block}>
-      {graceLoans?.length && (
+      {!!graceLoans?.length && (
         <div className={styles.badge}>
           Soon liquidate: {graceLoans?.length} NFTs
         </div>
@@ -67,14 +67,13 @@ const MyLoans: FC = () => {
             <div className={styles.loansInfoWrapper}>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalBorrowed.toFixed(3)}{' '}
-                  <SolanaIcon className={styles.icon} />
+                  {totalBorrowed.toFixed(3)} <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total borrowed</p>
               </div>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalDebt.toFixed(3)} <SolanaIcon className={styles.icon} />
+                  {totalDebt.toFixed(3)} <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total debt</p>
               </div>

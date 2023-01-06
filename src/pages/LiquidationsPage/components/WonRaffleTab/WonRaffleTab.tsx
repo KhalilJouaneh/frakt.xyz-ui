@@ -6,7 +6,7 @@ import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './WonRaffleTab.module.scss';
 import WonRaffleCard from '../WonRaffleCard';
 import RafflesList from '../RafflesList';
-import EmptyList from '@frakt/componentsNew/EmptyList';
+import EmptyList from '@frakt/components/EmptyList';
 import { WonRaffleListItem } from '@frakt/api/raffle';
 
 const WonRaffleTab: FC = () => {
