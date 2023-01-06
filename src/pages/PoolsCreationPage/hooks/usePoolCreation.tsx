@@ -39,8 +39,8 @@ export const usePoolCreation: UsePoolCreation = () => {
 
   const [maxLTV, setMaxLTV] = useState<number>(10);
   const [duration, setDuration] = useState<number>(7);
-  const [solFee, setSolFee] = useState<string>('');
-  const [solDeposit, setSolDeposit] = useState<string>('');
+  const [solFee, setSolFee] = useState<string>('0');
+  const [solDeposit, setSolDeposit] = useState<string>('0');
 
   const handleMaxLTV = useCallback((value: number) => setMaxLTV(value), []);
   const handleDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,8 +69,8 @@ export const usePoolCreation: UsePoolCreation = () => {
           marketPubkey: new web3.PublicKey(marketPubkey),
           maxDuration: duration,
           maxLTV: maxLTV,
-          solDeposit: Number(solDeposit),
-          solFee: Number(solFee),
+          solDeposit: parseFloat(solDeposit),
+          solFee: parseFloat(solFee),
           connection,
           wallet,
         });
