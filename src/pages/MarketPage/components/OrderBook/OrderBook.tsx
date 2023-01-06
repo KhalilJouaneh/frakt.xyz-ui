@@ -1,6 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { useConnection } from '@frakt/hooks';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import Button from '@frakt/components/Button';
@@ -12,9 +13,9 @@ import { signAndConfirmTransaction } from '@frakt/utils/transactions';
 import { useMarketOrders } from './hooks';
 import { PATHS } from '@frakt/constants';
 import { MarketOrder } from './types';
-import styles from './OrderBook.module.scss';
 import { Chevron } from '@frakt/icons';
-import { useConnection } from '@frakt/hooks';
+import PartyHorn from '@frakt/icons/PartyHorn';
+import styles from './OrderBook.module.scss';
 
 interface OrderBookProps {
   marketPubkey: string;
@@ -70,20 +71,21 @@ const OrderBook: FC<OrderBookProps> = ({
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { offers, isLoading } = useMarketOrders({
+  const { offers, isLoading, isOffersExist } = useMarketOrders({
     marketPubkey: new web3.PublicKey(marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
+    createOffer,
     ltv: maxLTV,
-    size: +solDeposit,
-    interest: +solFee,
+    size: Number(solDeposit),
+    interest: Number(solFee),
   });
 
-  const isBestOffer = useMemo(() => {
+  const bestOffer = useMemo(() => {
     if (sort === 'desc') {
-      return !offers.at(0).synthetic ? offers.at(1) : offers.at(0);
+      return offers.at(0)?.synthetic ? offers.at(1) : offers.at(0);
     }
-    return !offers.at(-1).synthetic ? offers.at(-2) : offers.at(-1);
+    return offers.at(-1)?.synthetic ? offers.at(-2) : offers.at(-1);
   }, [offers, sort]);
 
   return (
@@ -109,40 +111,46 @@ const OrderBook: FC<OrderBookProps> = ({
         })}
       >
         <h5 className={styles.title}>Offers</h5>
-        <Toggle
-          label="My pools only"
-          className={classNames(styles.toggle, {
-            [styles.active]: openOffersMobile,
-          })}
-          defaultChecked={showOwnOrders}
-          onChange={(nextValue) => setShowOwnOrders(nextValue)}
-        />
-        <div
-          className={classNames(styles.columnWrapper, {
-            [styles.active]: openOffersMobile,
-            [styles.create]: createOffer,
-          })}
-        >
-          <div className={styles.col}>
-            <span className={styles.colName}>size</span>
-            <span className={styles.colName}>(fndSMB)</span>
-          </div>
-          <div
-            className={classNames(styles.col, {
-              [styles.sort]: sort === 'asc',
+        {isOffersExist && (
+          <Toggle
+            label="My pools only"
+            className={classNames(styles.toggle, {
+              [styles.active]: openOffersMobile,
             })}
-            onClick={toggleSort}
+            defaultChecked={showOwnOrders}
+            onChange={(nextValue) => setShowOwnOrders(nextValue)}
+          />
+        )}
+
+        {isOffersExist && (
+          <div
+            className={classNames(styles.columnWrapper, {
+              [styles.active]: openOffersMobile,
+              [styles.create]: createOffer,
+            })}
           >
-            <span className={styles.colName}>interest</span>
-            <span className={styles.colName}>(SOL)</span>
+            <div className={styles.col}>
+              <span className={styles.colName}>size</span>
+              <span>(fndSMB)</span>
+            </div>
+            <div
+              className={classNames(styles.col, {
+                [styles.sort]: sort === 'asc',
+              })}
+              onClick={toggleSort}
+            >
+              <span className={styles.colName}>interest</span>
+              <span>(SOL)</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div
         className={classNames(styles.content, {
           [styles.active]: openOffersMobile,
           [styles.create]: createOffer,
+          [styles.visible]: !isOffersExist,
         })}
       >
         {isLoading && (
@@ -155,7 +163,7 @@ const OrderBook: FC<OrderBookProps> = ({
           />
         )}
 
-        {!isLoading && (
+        {!isLoading && isOffersExist && (
           <ul
             className={classNames(styles.list, {
               [styles.create]: createOffer,
@@ -168,13 +176,29 @@ const OrderBook: FC<OrderBookProps> = ({
                 size={offer.size}
                 interest={offer.interest}
                 order={offer}
-                isBestOffer={isBestOffer}
+                bestOffer={bestOffer}
                 removeOrder={removeOrder}
                 isOwnOrder={isOwnOrder}
                 key={idx}
               />
             ))}
           </ul>
+        )}
+        {!isLoading && !isOffersExist && !createOffer && (
+          <div
+            className={classNames(styles.noData, {
+              [styles.active]: openOffersMobile,
+              [styles.create]: createOffer,
+            })}
+          >
+            <PartyHorn />
+            <div className={styles.noDataTitle}>
+              No active offers at the moment
+            </div>
+            <div className={styles.noDataSubTitle}>
+              Good chance to be first!
+            </div>
+          </div>
         )}
 
         {!createOffer && (

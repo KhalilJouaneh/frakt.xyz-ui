@@ -34,18 +34,21 @@ type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
   sortDirection?: 'desc' | 'asc'; //? Sort by interest only
   walletOwned?: boolean;
+  createOffer: boolean;
   ltv: number;
   size: number;
   interest: number;
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
+  isOffersExist: boolean;
 };
 
 export const useMarketOrders: UseMarketOrders = ({
   marketPubkey,
   sortDirection = 'desc',
   walletOwned = false,
+  createOffer,
   ltv,
   size,
   interest,
@@ -77,16 +80,28 @@ export const useMarketOrders: UseMarketOrders = ({
       },
     };
 
-    const sortedOffersByInterest = [...parsedOffers, myOffer].sort(
-      (a, b) => b.interest - a.interest,
-    );
+    const sortedOffersByInterest = (
+      createOffer ? [...parsedOffers, myOffer] : [...parsedOffers]
+    ).sort((a, b) => b.interest - a.interest);
 
     return sortDirection === 'desc'
       ? sortedOffersByInterest
       : sortedOffersByInterest.reverse();
-  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
+  }, [
+    pairs,
+    sortDirection,
+    walletOwned,
+    publicKey,
+    ltv,
+    size,
+    interest,
+    createOffer,
+  ]);
+
+  const isOffersExist = Boolean(offers.length);
 
   return {
+    isOffersExist,
     offers,
     isLoading,
   };
