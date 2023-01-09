@@ -51,7 +51,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
 
   useEffect(() => {
     selectedBulkNfts.length && setSelectedNfts(selectedBulkNfts);
-  }, [selectedBulkNfts]);
+  }, [selectedBulkNfts, setSelectedNfts]);
 
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
@@ -79,7 +79,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
 
   useEffect(() => {
     dispatch(loansActions.addPerpLoanNft(selectedNfts));
-  }, [dispatch]);
+  }, [dispatch, selectedNfts]);
 
   const updateSelectedNft = (): void => {
     dispatch(loansActions.updatePerpLoanNft({ ...currentLoanNft }));
