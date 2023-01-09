@@ -16,7 +16,7 @@ export const useMarket: UseMarket = ({ marketPubkey }) => {
       }),
     {
       enabled: !!marketPubkey,
-      staleTime: 5000,
+      staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,
     },
   );
