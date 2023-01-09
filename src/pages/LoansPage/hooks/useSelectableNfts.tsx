@@ -18,7 +18,7 @@ export const useSelectableNftsState = create<UseSelectableNftsState>((set) => ({
     set((state) => ({ ...state, currentSelectedIdx: idx })),
 }));
 
-export const useSelectableNfts = (nfts: Loan[]) => {
+export const useSelectableNfts = (nfts?: Loan[]) => {
   const { selectedNfts, setSelectedNfts } = useSelectableNftsState();
 
   const isNftSelected = (nft: Loan) =>
