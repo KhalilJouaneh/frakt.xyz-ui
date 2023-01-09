@@ -18,7 +18,7 @@ export const useSelectableNftsState = create<UseSelectableNftsState>((set) => ({
     set((state) => ({ ...state, currentSelectedIdx: idx })),
 }));
 
-export const useSelectableNfts = () => {
+export const useSelectableNfts = (nfts: Loan[]) => {
   const { selectedNfts, setSelectedNfts } = useSelectableNftsState();
 
   const isNftSelected = (nft: Loan) =>
@@ -33,8 +33,17 @@ export const useSelectableNfts = () => {
     }
   };
 
+  const toggleSelectAllNfts = () => {
+    if (selectedNfts.length) {
+      setSelectedNfts([]);
+    } else {
+      setSelectedNfts([...nfts]);
+    }
+  };
+
   return {
     onNftClick,
     isNftSelected,
+    toggleSelectAllNfts,
   };
 };
