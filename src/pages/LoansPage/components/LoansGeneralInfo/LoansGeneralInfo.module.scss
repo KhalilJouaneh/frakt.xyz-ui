@@ -22,7 +22,7 @@
 }
 
 .headerActive {
-  padding-right: 302px;
+  padding-right: 334px;
 
   @media (max-width: 767px) {
     padding-right: 0;
@@ -33,25 +33,48 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  width: 100%;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+}
+
+.statsActive {
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    width: 100%;
+  }
+  @media (max-width: 767px) {
+    flex-direction: row;
+  }
 }
 
 .title {
   font: var(--font-title-2);
   font-size: 32px;
   text-align: center;
+
+  @media (max-width: 1024px) {
+    font-size: 24px;
+  }
 }
 
 .subtitle {
   font: var(--font-text-1);
   font-size: 24px;
   text-align: center;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
 }
 
 .values {
   border: 1px solid var(--primary-border);
   padding: 16px;
-  min-width: 235px;
   text-align: center;
+  width: 100%;
 }
 
 .btn {

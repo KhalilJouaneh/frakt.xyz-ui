@@ -1,5 +1,7 @@
 import { FC, useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import cx from 'classnames';
+
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import FilterCollections from '@frakt/components/FilterCollections';
 import SortControl from '@frakt/components/SortControl';
@@ -15,9 +17,11 @@ import {
 import FiltersDropdown, {
   useFiltersModal,
 } from '@frakt/components/FiltersDropdown';
+import { useSelectableNftsState } from '../../hooks';
 
 export const MyLoansList: FC = () => {
   const { connected } = useWallet();
+  const { selectedNfts } = useSelectableNftsState();
 
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
@@ -44,14 +48,20 @@ export const MyLoansList: FC = () => {
             <div className={styles.container}>
               <div className={styles.content}>
                 <div ref={ref}>
-                  <div className={styles.filters}>
+                  <div
+                    className={cx(styles.filters, {
+                      [styles.filtersActive]: !!selectedNfts.length,
+                    })}
+                  >
                     <Button type="tertiary" onClick={toggleFiltersModal}>
                       Filters
                     </Button>
                     {filtersModalVisible && (
                       <FiltersDropdown
                         onCancel={closeFiltersModal}
-                        className={styles.filtersDropdown}
+                        className={cx(styles.filtersDropdown, {
+                          [styles.filtersDropdownActive]: !!selectedNfts.length,
+                        })}
                       >
                         <FilterCollections
                           setSelectedCollections={setSelectedCollections}

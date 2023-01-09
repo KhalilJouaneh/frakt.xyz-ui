@@ -31,36 +31,36 @@ const LoansGeneralInfo: FC = () => {
           <h1 className={styles.title}>My Loans</h1>
           <h2 className={styles.subtitle}>JPEGs you borrowed SOL for</h2>
         </div>
-        {connected && (
-          <>
-            <div className={styles.stats}>
-              <StatsValuesColumn
-                className={styles.values}
-                label={'Total borrowed:'}
-                icon={false}
-                textCenter
-              >
-                {totalBorrowed?.toFixed(2)} SOL
-              </StatsValuesColumn>
-              <StatsValuesColumn
-                className={styles.values}
-                label={'Total Debt:'}
-                icon={false}
-                textCenter
-              >
-                {totalDebt?.toFixed(2)} SOL
-              </StatsValuesColumn>
-            </div>
-            <Button
-              onClick={toggleSelectAllNfts}
-              className={styles.btn}
-              disabled={!userLoans.length}
-              type="secondary"
-            >
-              {selectedNfts.length ? 'Deselect all' : 'Select all'}
-            </Button>
-          </>
-        )}
+        <div
+          className={cx(styles.stats, {
+            [styles.statsActive]: !!selectedNfts.length,
+          })}
+        >
+          <StatsValuesColumn
+            className={styles.values}
+            label={'Total borrowed:'}
+            icon={false}
+            textCenter
+          >
+            {connected ? totalBorrowed?.toFixed(2) : '--'} SOL
+          </StatsValuesColumn>
+          <StatsValuesColumn
+            className={styles.values}
+            label={'Total Debt:'}
+            icon={false}
+            textCenter
+          >
+            {connected ? totalDebt?.toFixed(2) : '--'} SOL
+          </StatsValuesColumn>
+        </div>
+        <Button
+          onClick={toggleSelectAllNfts}
+          className={styles.btn}
+          disabled={!userLoans.length}
+          type="secondary"
+        >
+          {selectedNfts.length ? 'Deselect all' : 'Select all'}
+        </Button>
       </div>
     </div>
   );
