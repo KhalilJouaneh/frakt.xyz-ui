@@ -7,7 +7,7 @@ import styles from './Offer.module.scss';
 
 interface OfferProps {
   order: MarketOrder;
-  isBestOffer: MarketOrder;
+  bestOffer: MarketOrder;
   isOwnOrder: (order: MarketOrder) => boolean;
   removeOrder: (order: MarketOrder) => MouseEventHandler<HTMLDivElement>;
   ltv: number;
@@ -17,7 +17,7 @@ interface OfferProps {
 
 const Offer: FC<OfferProps> = ({
   order,
-  isBestOffer,
+  bestOffer,
   isOwnOrder,
   removeOrder,
   ltv,
@@ -30,7 +30,7 @@ const Offer: FC<OfferProps> = ({
     <li
       className={classNames(styles.listItem, {
         [styles.highlightBest]:
-          order.rawData && interest === isBestOffer.interest,
+          interest === bestOffer?.interest && size === bestOffer?.size,
         [styles.highlightYourOffer]: order.synthetic,
       })}
     >

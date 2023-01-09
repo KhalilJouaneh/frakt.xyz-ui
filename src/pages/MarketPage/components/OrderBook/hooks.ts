@@ -40,6 +40,7 @@ type UseMarketOrders = (props: {
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
+  offersExist: boolean;
 };
 
 export const useMarketOrders: UseMarketOrders = ({
@@ -58,12 +59,6 @@ export const useMarketOrders: UseMarketOrders = ({
 
   const offers = useMemo(() => {
     if (!pairs) return [];
-    const parsedOffers = pairs
-      .filter((pair) => {
-        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
-      })
-      .map(parseMarketOrder);
-
     const myOffer: MarketOrder = {
       ltv,
       size,
@@ -77,16 +72,27 @@ export const useMarketOrders: UseMarketOrders = ({
       },
     };
 
-    const sortedOffersByInterest = [...parsedOffers, myOffer].sort(
+    const parsedOffers = pairs
+      .filter((pair) => {
+        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
+      })
+      .map(parseMarketOrder);
+
+    if (ltv) parsedOffers.push(myOffer);
+
+    const sortOffersByInterest = parsedOffers.sort(
       (a, b) => b.interest - a.interest,
     );
 
     return sortDirection === 'desc'
-      ? sortedOffersByInterest
-      : sortedOffersByInterest.reverse();
+      ? sortOffersByInterest
+      : sortOffersByInterest.reverse();
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
 
+  const offersExist = Boolean(offers.length);
+
   return {
+    offersExist,
     offers,
     isLoading,
   };
