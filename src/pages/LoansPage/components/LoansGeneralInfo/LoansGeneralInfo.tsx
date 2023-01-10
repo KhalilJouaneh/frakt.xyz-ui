@@ -1,15 +1,15 @@
 import { FC } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useSelector } from 'react-redux';
 import { map, sum } from 'ramda';
 import cx from 'classnames';
 
 import { selectLoanNfts, selectTotalDebt } from '@frakt/state/loans/selectors';
-import { StatsValuesColumn } from '@frakt/components/StatsValues';
 import { useSelectableNfts, useSelectableNftsState } from '../../hooks';
+import { StatsValuesColumn } from '@frakt/components/StatsValues';
 import styles from './LoansGeneralInfo.module.scss';
 import { Loan } from '@frakt/state/loans/types';
 import Button from '@frakt/components/Button';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 const LoansGeneralInfo: FC = () => {
   const { connected } = useWallet();
