@@ -1,13 +1,18 @@
 import { FC } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 
-import { BorrowNft } from '@frakt/api/nft';
+import { signAndConfirmTransaction } from '@frakt/utils/transactions';
 import { LoadingModal } from '../../../../components/LoadingModal';
 import { ConfirmModal } from '../../../../components/ConfirmModal';
+import { makeCreateBondTransactions } from '@frakt/utils/bonds';
 import { getRisk, useLoanFields } from '../LoanFields/hooks';
 import { Slider } from '../../../../components/Slider';
 import { Select } from '../../../../components/Select';
+import { Loader } from '@frakt/components/Loader';
 import Button from '../../../../components/Button';
 import styles from './BorrowForm.module.scss';
+import { useConnection } from '@frakt/hooks';
+import { BorrowNft } from '@frakt/api/nft';
 import { useBorrowForm } from './hooks';
 import LoansFields from '../LoanFields';
 
@@ -38,7 +43,7 @@ const BorrowForm: FC<BorrowFormProps> = ({
     closeConfirmModal,
     loadingModalVisible,
     closeLoadingModal,
-    onSubmit,
+    onSubmit: onSubmitLoan,
     confirmText,
     selectOptions,
     selectValue,
@@ -51,51 +56,99 @@ const BorrowForm: FC<BorrowFormProps> = ({
     selectedNft,
   });
 
-  const { marks, maxLoanValue, minLoanValueNumber } = useLoanFields(
-    selectedNft,
-    solLoanValue,
-    selectValue,
-  );
+  const wallet = useWallet();
+  const connection = useConnection();
+
+  const {
+    marks,
+    maxLoanValue,
+    minLoanValueNumber,
+    isLoading,
+    market,
+    pairs,
+    existBestOffer,
+  } = useLoanFields(selectedNft, solLoanValue, selectValue);
 
   const ltv = (solLoanValue / parseFloat(selectedNft.valuation)) * 100;
-
   const risk = getRisk({ LTV: ltv, limits: [10, ltv] });
 
   const borrowValue = solLoanValue?.toFixed(3);
+
+  const onBondSubmit = async (nft: BorrowNft) => {
+    const { mint } = nft;
+
+    try {
+      const txnData = await makeCreateBondTransactions({
+        market,
+        pair: pairs[0],
+        nftMint: mint,
+        borrowValue: parseFloat(borrowValue),
+        connection,
+        wallet,
+      });
+
+      await signAndConfirmTransaction({
+        transaction: txnData.transaction,
+        signers: txnData.signers,
+        connection,
+        wallet,
+      });
+
+      if (!txnData) {
+        throw new Error('Loan proposing failed');
+      }
+
+      onDeselect?.();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSubmit = (nft: BorrowNft) => {
+    if (existBestOffer) {
+      onBondSubmit(nft);
+    } else {
+      onSubmitLoan(nft);
+    }
+  };
+
   return (
     <>
-      <div className={styles.details}>
-        <div className={styles.sliderWrapper}>
-          <p className={styles.sliderLabel}>
-            To borrow: {solLoanValue?.toFixed(2)} SOL{' '}
-          </p>
-          <Slider
-            marks={marks}
-            className={styles.slider}
-            value={solLoanValue}
-            step={0.1}
-            setValue={setSolLoanValue}
-            min={minLoanValueNumber}
-            max={maxLoanValue}
+      {isLoading && <Loader size="large" />}
+      {!!market && !!pairs && (
+        <div className={styles.details}>
+          <div className={styles.sliderWrapper}>
+            <p className={styles.sliderLabel}>
+              To borrow: {solLoanValue?.toFixed(2)} SOL{' '}
+            </p>
+            <Slider
+              marks={marks}
+              className={styles.slider}
+              value={solLoanValue}
+              step={0.1}
+              setValue={setSolLoanValue}
+              min={minLoanValueNumber}
+              max={maxLoanValue}
+            />
+          </div>
+          <p className={styles.detailsTitle}>Duration</p>
+          <Select
+            className={styles.select}
+            options={selectOptions}
+            value={selectValue}
+            onChange={({ value }) => setSelectValue(value)}
+            defaultValue={selectOptions[0]}
+            disabled={!selectedNft.priceBased}
+          />
+          <LoansFields
+            risk={risk}
+            ltv={ltv}
+            nft={selectedNft}
+            loanTypeValue={selectValue}
+            solLoanValue={solLoanValue}
           />
         </div>
-        <p className={styles.detailsTitle}>Duration</p>
-        <Select
-          className={styles.select}
-          options={selectOptions}
-          value={selectValue}
-          onChange={({ value }) => setSelectValue(value)}
-          defaultValue={selectOptions[0]}
-          disabled={!selectedNft.priceBased}
-        />
-        <LoansFields
-          risk={risk}
-          ltv={ltv}
-          nft={selectedNft}
-          loanTypeValue={selectValue}
-          solLoanValue={solLoanValue}
-        />
-      </div>
+      )}
       <div className={styles.continueBtnContainer}>
         <Button
           onClick={

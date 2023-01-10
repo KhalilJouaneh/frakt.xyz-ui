@@ -5,6 +5,7 @@ export interface BorrowNft {
   valuation: string; // 2.508
   maxLoanValue: string; // 1.003
   isCanFreeze: boolean;
+  marketPubkey?: string;
   timeBased: {
     returnPeriodDays: number; // 14
     ltvPercents: number; // 40

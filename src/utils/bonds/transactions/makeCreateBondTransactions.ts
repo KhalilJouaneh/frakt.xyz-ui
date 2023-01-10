@@ -95,7 +95,7 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
       crossMintAmmProgramId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
       fbond: bondPubkey,
       fbondTokenMint: bondTokenMint,
-      fraktMarket: new web3.PublicKey(market.fraktMarket),
+      fraktMarket: new web3.PublicKey(market.fraktMarket.publicKey),
       fraktMarketRegistryProgramId: FRAKT_MARKET_PROGRAM_PUBKEY,
       hadoMarket: new web3.PublicKey(pair.hadoMarket),
       oracleFloor: new web3.PublicKey(
