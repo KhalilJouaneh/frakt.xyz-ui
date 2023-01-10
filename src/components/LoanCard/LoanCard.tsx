@@ -51,7 +51,13 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
               [styles.isGracePeriodImage]: isGracePeriod,
             })}
             style={{ backgroundImage: `url(${imageUrl})` }}
-          />
+          >
+            {selected && (
+              <div className={styles.imageShadow}>
+                <div className={styles.line} />
+              </div>
+            )}
+          </div>
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />

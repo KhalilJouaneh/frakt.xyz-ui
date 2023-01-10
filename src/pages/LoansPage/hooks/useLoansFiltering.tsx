@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
-import { uniqBy, prop, sum, map } from 'ramda';
+import { uniqBy, prop } from 'ramda';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
@@ -37,7 +37,6 @@ type UseLoansFiltering = ({
 }) => {
   control: Control<FilterFormFieldsValues>;
   loans: Loan[];
-  totalBorrowed: number;
   sortValueOption: LoansValue[];
   sort: LoansValue;
   setValue: any;
@@ -144,13 +143,10 @@ export const useLoansFiltering: UseLoansFiltering = ({
     return [];
   }, [userLoans, sort, selectedCollectionsName]);
 
-  const totalBorrowed = sum(map(({ loanValue }) => loanValue, filteredLoans));
-
   return {
     control,
     loans: filteredLoans,
     showStakedOnlyToggle: connected,
-    totalBorrowed,
     sortValueOption,
     sort,
     setValue,
