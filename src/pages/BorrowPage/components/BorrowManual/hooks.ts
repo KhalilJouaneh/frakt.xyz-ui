@@ -17,7 +17,7 @@ import { loansActions } from '../../../../state/loans/actions';
 import { useDebounce } from '../../../../hooks';
 import { SortValue } from './../../hooks';
 import { FETCH_LIMIT } from '../../hooks';
-import { BorrowNft } from '@frakt/api/nft';
+import { BorrowNft, fetchWalletBorrowNfts } from '@frakt/api/nft';
 
 export const useBorrowNft = ({
   sort,
@@ -53,14 +53,15 @@ export const useBorrowNft = ({
 
   const { refetch, isLoading } = useQuery(
     ['borrowPageNfts'],
-    async () => {
-      const URL = `https://${process.env.BACKEND_DOMAIN}/nft/meta`;
-      const isSearch = searchQuery ? `search=${searchQuery}&` : '';
-      const response = await fetch(
-        `${URL}/${publicKey?.toBase58()}?${isSearch}skip=${offset}&limit=${FETCH_LIMIT}&sortBy=${sortName}&sort=${sortOrder}`,
-      );
-      return await response.json();
-    },
+    async () =>
+      await fetchWalletBorrowNfts({
+        publicKey,
+        limit: FETCH_LIMIT,
+        offset,
+        search: searchQuery,
+        sortBy: sortName === 'maxLoanValue' ? 'maxLoanValue' : 'name',
+        sortOrder: sortOrder === 'asc' ? 'asc' : 'desc',
+      }),
     {
       refetchOnWindowFocus: false,
       enabled: connected,
@@ -87,6 +88,7 @@ export const useBorrowNft = ({
   const setSearch = useCallback((searchQuery: string): void => {
     setSearchQuery(searchQuery);
     debouncedReFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [selectedNfts, setSelectedNfts] = useState<BorrowNft[]>([]);
@@ -146,6 +148,7 @@ export const useBorrowNft = ({
       refetch();
       setReFetch(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reFetch]);
 
   return {
