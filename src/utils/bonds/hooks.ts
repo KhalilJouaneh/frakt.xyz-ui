@@ -1,6 +1,36 @@
-import { fetchAllMarkets, fetchMarketPairs, Pair } from '@frakt/api/bonds';
+import {
+  fetchAllMarkets,
+  fetchCertainMarket,
+  fetchMarketPairs,
+  Market,
+  Pair,
+} from '@frakt/api/bonds';
 import { useQuery } from '@tanstack/react-query';
 import { web3 } from 'fbonds-core';
+
+type UseMarket = (props: { marketPubkey: web3.PublicKey }) => {
+  market: Market;
+  isLoading: boolean;
+};
+export const useMarket: UseMarket = ({ marketPubkey }) => {
+  const { data, isLoading } = useQuery(
+    ['market', marketPubkey],
+    () =>
+      fetchCertainMarket({
+        marketPubkey: marketPubkey,
+      }),
+    {
+      enabled: !!marketPubkey,
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  return {
+    market: data || null,
+    isLoading,
+  };
+};
 
 export const useMarkets = () => {
   const { data, isLoading } = useQuery(['markets'], () => fetchAllMarkets(), {

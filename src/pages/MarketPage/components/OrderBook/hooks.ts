@@ -1,34 +1,9 @@
 import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { fetchMarketPairs, Pair } from '@frakt/api/bonds';
-import { useQuery } from '@tanstack/react-query';
 import { web3 } from 'fbonds-core';
 import { parseMarketOrder } from './helpers';
 import { MarketOrder } from './types';
-
-type UseMarketPairs = (props: { marketPubkey: web3.PublicKey }) => {
-  pairs: Pair[];
-  isLoading: boolean;
-};
-export const useMarketPairs: UseMarketPairs = ({ marketPubkey }) => {
-  const { data, isLoading } = useQuery(
-    ['marketPairs', marketPubkey.toBase58()],
-    () =>
-      fetchMarketPairs({
-        marketPubkey,
-      }),
-    {
-      enabled: !!marketPubkey,
-      staleTime: 5000,
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  return {
-    pairs: data || [],
-    isLoading,
-  };
-};
+import { useMarketPairs } from '@frakt/utils/bonds';
 
 type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
@@ -54,7 +29,7 @@ export const useMarketOrders: UseMarketOrders = ({
   const { publicKey } = useWallet();
 
   const { pairs, isLoading } = useMarketPairs({
-    marketPubkey: new web3.PublicKey(marketPubkey),
+    marketPubkey: marketPubkey?.toBase58(),
   });
 
   const offers = useMemo(() => {

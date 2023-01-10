@@ -19,9 +19,9 @@ import OrderBook from './components/OrderBook/OrderBook';
 import { Arrow } from '@frakt/icons';
 import { NavLink, useParams } from 'react-router-dom';
 import { useOnClickOutside } from '@frakt/hooks';
-import { useMarket } from './hooks';
 import { PATHS } from '@frakt/constants';
 import { Loader } from '@frakt/components/Loader';
+import { useMarket } from '@frakt/utils/bonds';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
