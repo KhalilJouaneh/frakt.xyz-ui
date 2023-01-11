@@ -74,7 +74,7 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
       fraktMarketRegistryProgramId: FRAKT_MARKET_PROGRAM_PUBKEY,
       hadoMarket: new web3.PublicKey(pair.hadoMarket),
       oracleFloor: new web3.PublicKey(
-        market.oracleFloor?.[0]?.publicKey || PUBKEY_PLACEHOLDER,
+        market.oracleFloor?.publicKey || PUBKEY_PLACEHOLDER,
       ),
       pair: new web3.PublicKey(pair.publicKey),
       userPubkey: wallet.publicKey,
