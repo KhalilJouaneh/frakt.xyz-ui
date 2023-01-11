@@ -22,7 +22,7 @@ type MakeCreateBondTransactions = (params: {
   wallet: WalletContextState;
 }) => Promise<{
   createBondTxn: { transaction: web3.Transaction; signers: web3.Signer[] };
-  sellTxn: { transaction: web3.Transaction; signers: web3.Signer[] };
+  validateAndSellTxn: { transaction: web3.Transaction; signers: web3.Signer[] };
 }>;
 
 export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
@@ -109,14 +109,14 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
 
   return {
     createBondTxn: {
-      transaction: new web3.Transaction().add(
-        ...[createBondIxns, validateBondIxs].flat(),
-      ),
-      signers: [createBondSigners, validateBondSigners].flat(),
+      transaction: new web3.Transaction().add(...createBondIxns),
+      signers: createBondSigners,
     },
-    sellTxn: {
-      transaction: new web3.Transaction().add(...sellIxs),
-      signers: sellSigners,
+    validateAndSellTxn: {
+      transaction: new web3.Transaction().add(
+        ...[validateBondIxs, sellIxs].flat(),
+      ),
+      signers: [validateBondSigners, sellSigners].flat(),
     },
   };
 };
