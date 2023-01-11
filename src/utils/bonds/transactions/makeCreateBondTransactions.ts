@@ -67,7 +67,7 @@ export const makeCreateBondTransactions: any = async ({
 
   console.log({
     args: {
-      amountToReturn,
+      amountToReturn: Math.trunc(amountToReturn * 1e9),
       bondDuration: pair.validation.durationFilter,
     },
     accounts: {
@@ -83,7 +83,7 @@ export const makeCreateBondTransactions: any = async ({
   const { instructions: activateBondIxs, signers: activateBondSigners } =
     await fbondFactory.activateFBond({
       args: {
-        amountToReturn,
+        amountToReturn: Math.trunc(amountToReturn * 1e9),
         bondDuration: pair.validation.durationFilter,
       },
       accounts: {

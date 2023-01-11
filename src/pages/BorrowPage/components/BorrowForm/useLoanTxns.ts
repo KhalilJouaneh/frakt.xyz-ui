@@ -46,9 +46,11 @@ export const useLoanTxns = ({ onDeselect }) => {
       closeConfirmModal();
       openLoadingModal();
 
+      console.log(pairs);
+
       const txn = await makeCreateBondTransactions({
         market,
-        pair: pairs[0],
+        pair: pairs[2],
         nftMint: nft.mint,
         borrowValue,
         connection,

@@ -32,7 +32,7 @@ export const useLoanFields = (
   }, [market, pairs]);
 
   const getBestLoanValue = (nft) => {
-    if (!nft?.marketPubkey) return rawMaxLoanValue;
+    // if (!nft?.marketPubkey) return rawMaxLoanValue;
 
     const valuationNumber = parseFloat(nft.valuation);
     const collectionFloorPriceLamports = valuationNumber * 1e9;
@@ -50,7 +50,7 @@ export const useLoanFields = (
         return maxValueSOLWithFee / 1e9;
       })
       .sort((a, b) => a - b)
-      .at(1);
+      .at(-1);
   };
 
   const isLoading = isLoadingMarket || isLoadingMarketPair;
@@ -65,6 +65,7 @@ export const useLoanFields = (
     selectValue === 'flip' ? maxLoanValueNumber : maxLoanPriceValueNumber;
 
   const bestLoanValue = getBestLoanValue(selectedNftWithMarketInfo);
+  console.log(bestLoanValue);
   const maxLoanValue = bestLoanValue ? bestLoanValue : rawMaxLoanValue;
 
   const existBestOffer = bestLoanValue > rawMaxLoanValue;
