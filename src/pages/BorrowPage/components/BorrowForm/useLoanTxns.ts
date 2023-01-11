@@ -50,7 +50,7 @@ export const useLoanTxns = ({ onDeselect }) => {
 
       const txn = await makeCreateBondTransactions({
         market,
-        pair: pairs[2],
+        pair: pairs[4],
         nftMint: nft.mint,
         borrowValue,
         connection,

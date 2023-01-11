@@ -30,71 +30,28 @@ export const makeCreateBondTransactions: any = async ({
   connection,
   wallet,
 }) => {
-  const {
-    fbond: bondPubkey,
-    fbondTokenMint: bondTokenMint,
-    instructions: initBondIxs,
-    signers: initBondSigners,
-  } = await fbondFactory.initializeFBond({
-    accounts: {
-      userPubkey: wallet.publicKey,
-    },
-    connection,
-    programId: BONDS_PROGRAM_PUBKEY,
-    sendTxn: sendTxnPlaceHolder,
-  });
+  const amountToReturn = (borrowValue * 1e9) / (pair.currentSpotPrice * 1e6);
 
   const {
+    fbond: bondPubkey,
     collateralBox: collateralBoxPubkey,
-    instructions: addCollateralBoxIxs,
-    signers: addCollateralBoxSigners,
-  } = await fbondFactory.addCollateralBox({
-    args: {
-      nextBoxIndex: '0',
-      amountToDeposit: 1,
-    },
+    fbondTokenMint: bondTokenMint,
+    instructions: createBondIxns,
+    signers: createBondSigners,
+  } = await fbondFactory.createBondWithSingleCollateral({
     accounts: {
-      fbond: bondPubkey,
       tokenMint: new web3.PublicKey(nftMint),
       userPubkey: wallet.publicKey,
     },
-    connection,
-    programId: BONDS_PROGRAM_PUBKEY,
-    sendTxn: sendTxnPlaceHolder,
-  });
-
-  const amountToReturn = (borrowValue * 1e9) / (pair.currentSpotPrice * 1e6);
-
-  console.log({
     args: {
-      amountToReturn: Math.trunc(amountToReturn * 1e9),
+      amountToDeposit: 1,
+      amountToReturn,
       bondDuration: pair.validation.durationFilter,
     },
-    accounts: {
-      fbond: bondPubkey,
-      fbondsTokenMint: bondTokenMint,
-      userPubkey: wallet.publicKey,
-    },
     connection,
     programId: BONDS_PROGRAM_PUBKEY,
     sendTxn: sendTxnPlaceHolder,
   });
-
-  const { instructions: activateBondIxs, signers: activateBondSigners } =
-    await fbondFactory.activateFBond({
-      args: {
-        amountToReturn: Math.trunc(amountToReturn * 1e9),
-        bondDuration: pair.validation.durationFilter,
-      },
-      accounts: {
-        fbond: bondPubkey,
-        fbondsTokenMint: bondTokenMint,
-        userPubkey: wallet.publicKey,
-      },
-      connection,
-      programId: BONDS_PROGRAM_PUBKEY,
-      sendTxn: sendTxnPlaceHolder,
-    });
 
   const {
     account: nftValidationAdapter,
@@ -167,22 +124,10 @@ export const makeCreateBondTransactions: any = async ({
   // };
 
   return {
-    createBondTxn: {
-      transaction: new web3.Transaction().add(
-        ...[initBondIxs, addCollateralBoxIxs, activateBondIxs].flat(),
-      ),
-      signers: [
-        initBondSigners,
-        addCollateralBoxSigners,
-        activateBondSigners,
-      ].flat(),
-    },
-    validateAndSellTxn: {
-      transaction: new web3.Transaction().add(
-        ...[validateBondIxs, sellIxs].flat(),
-      ),
-      signers: [validateBondSigners, sellSigners].flat(),
-    },
+    transaction: new web3.Transaction().add(
+      ...[createBondIxns, validateBondIxs, sellIxs].flat(),
+    ),
+    signers: [createBondSigners, validateBondSigners, sellSigners].flat(),
   };
 };
 
