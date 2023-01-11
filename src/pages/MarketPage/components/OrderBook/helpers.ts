@@ -8,8 +8,7 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
   return {
     ltv: (pair?.validation?.loanToValueFilter || 0) / 100,
     size: pair?.edgeSettlement / 1e6 || 0,
-    interest:
-      (pair?.currentSpotPrice * (pair?.edgeSettlement / 1e6)) / 1e3 || 0,
+    interest: pair?.currentSpotPrice / 1e3 || 0,
     rawData: {
       publicKey: pair?.publicKey || '',
       assetReceiver: pair?.assetReceiver || '',

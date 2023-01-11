@@ -33,8 +33,13 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
   connection,
   wallet,
 }) => {
-  const spotPrice = (1 - solFee) * 1e3;
-  const bidCap = (solDeposit * 1e9) / spotPrice;
+  const maxLTVRaw = maxLTV * 100; //? Max LTV (2000 --> 20%)
+  const maxDurationSec = maxDuration * 24 * 60 * 60; //? Max duration (seconds)
+  const solDepositLamports = solDeposit * 1e9;
+  const solFeeLamports = solFee * 1e9;
+
+  const spotPrice = (1 - solFeeLamports / solDepositLamports) * 1e3;
+  const bidCap = Math.floor(solDepositLamports / spotPrice);
 
   const {
     instructions: instructions1,
@@ -80,8 +85,8 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
         userPubkey: wallet.publicKey,
       },
       args: {
-        loanToValueFilter: maxLTV * 100, //? Max LTV (2000 --> 20%)
-        maxDurationFilter: maxDuration * 24 * 60 * 60, //? Max duration (seconds)
+        loanToValueFilter: maxLTVRaw,
+        maxDurationFilter: maxDurationSec,
       },
       connection,
       programId: BONDS_VALIDATION_PROGRAM_PUBKEY,
