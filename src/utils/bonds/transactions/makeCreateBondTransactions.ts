@@ -22,7 +22,7 @@ type MakeCreateBondTransactions = (params: {
   wallet: WalletContextState;
 }) => Promise<{ transaction: web3.Transaction; signers: web3.Signer[] }>;
 
-export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
+export const makeCreateBondTransactions: any = async ({
   market,
   pair,
   nftMint,
@@ -64,6 +64,21 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
   });
 
   const amountToReturn = (borrowValue * 1e9) / (pair.currentSpotPrice * 1e6);
+
+  console.log({
+    args: {
+      amountToReturn,
+      bondDuration: pair.validation.durationFilter,
+    },
+    accounts: {
+      fbond: bondPubkey,
+      fbondsTokenMint: bondTokenMint,
+      userPubkey: wallet.publicKey,
+    },
+    connection,
+    programId: BONDS_PROGRAM_PUBKEY,
+    sendTxn: sendTxnPlaceHolder,
+  });
 
   const { instructions: activateBondIxs, signers: activateBondSigners } =
     await fbondFactory.activateFBond({
@@ -132,43 +147,43 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
       sendTxn: sendTxnPlaceHolder,
     });
 
-  return {
-    transaction: new web3.Transaction().add(
-      ...[
-        initBondIxs,
-        addCollateralBoxIxs,
-        activateBondIxs,
-        validateBondIxs,
-        sellIxs,
-      ].flat(),
-    ),
-    signers: [
-      initBondSigners,
-      addCollateralBoxSigners,
-      activateBondSigners,
-      validateBondSigners,
-      sellSigners,
-    ].flat(),
-  };
-
-  // return {
-  //   createBondTxn: {
-  //     transaction: new web3.Transaction().add(
-  //       ...[initBondIxs, addCollateralBoxIxs, activateBondIxs].flat(),
-  //     ),
-  //     signers: [
-  //       initBondSigners,
-  //       addCollateralBoxSigners,
-  //       activateBondSigners,
+  // const txn = {
+  //   transaction: new web3.Transaction().add(
+  //     ...[
+  //       initBondIxs,
+  //       addCollateralBoxIxs,
+  //       activateBondIxs,
+  //       validateBondIxs,
+  //       sellIxs,
   //     ].flat(),
-  //   },
-  //   validateAndSellTxn: {
-  //     transaction: new web3.Transaction().add(
-  //       ...[validateBondIxs, sellIxs].flat(),
-  //     ),
-  //     signers: [validateBondSigners, sellSigners].flat(),
-  //   },
+  //   ),
+  //   signers: [
+  //     initBondSigners,
+  //     addCollateralBoxSigners,
+  //     activateBondSigners,
+  //     validateBondSigners,
+  //     sellSigners,
+  //   ].flat(),
   // };
+
+  return {
+    createBondTxn: {
+      transaction: new web3.Transaction().add(
+        ...[initBondIxs, addCollateralBoxIxs, activateBondIxs].flat(),
+      ),
+      signers: [
+        initBondSigners,
+        addCollateralBoxSigners,
+        activateBondSigners,
+      ].flat(),
+    },
+    validateAndSellTxn: {
+      transaction: new web3.Transaction().add(
+        ...[validateBondIxs, sellIxs].flat(),
+      ),
+      signers: [validateBondSigners, sellSigners].flat(),
+    },
+  };
 };
 
 //? Min value -- any number less than max
