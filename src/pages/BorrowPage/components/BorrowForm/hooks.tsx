@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
 
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
 import { useLoadingModal } from '../../../../components/LoadingModal';
-import { commonActions } from '../../../../state/common/actions';
 import { loansActions } from '../../../../state/loans/actions';
 import { useSelect } from '../../../../components/Select/hooks';
-import { proposeLoan } from '../../../../utils/loans';
 import { useLoanFields } from '../LoanFields/hooks';
-import { useConnection } from '../../../../hooks';
 import { Tab } from '../../../../components/Tabs';
 
 const getConfirmModalText = (
@@ -32,17 +28,13 @@ const getConfirmModalText = (
   return isFlip ? confirmShortTermText : confirmLongTermText;
 };
 
-type UseBorrowForm = (props: {
-  onDeselect?: () => void;
-  selectedNft?: BorrowNftBulk;
-}) => {
+type UseBorrowForm = (props: { selectedNft?: BorrowNftBulk }) => {
   selectOptions: Tab[];
   openConfirmModal: () => void;
   confirmModalVisible: boolean;
   closeConfirmModal: () => void;
   loadingModalVisible: boolean;
   closeLoadingModal: () => void;
-  onSubmit: (nft: BorrowNft) => void;
   confirmText: string;
   selectValue: string;
   setSelectValue: (value: string) => void;
@@ -51,10 +43,8 @@ type UseBorrowForm = (props: {
   solLoanValue: number;
 };
 
-export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
-  const wallet = useWallet();
+export const useBorrowForm: UseBorrowForm = ({ selectedNft }) => {
   const dispatch = useDispatch();
-  const connection = useConnection();
 
   const currentLoanNft = useSelector(selectCurrentLoanNft) as any;
   const isPriceBased = selectedNft?.isPriceBased;
@@ -131,56 +121,8 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     close: closeConfirmModal,
   } = useConfirmModal();
 
-  const {
-    visible: loadingModalVisible,
-    close: closeLoadingModal,
-    open: openLoadingModal,
-  } = useLoadingModal();
-
-  const removeTokenOptimistic = (mint: string): void => {
-    dispatch(loansActions.addHiddenBorrowNftMint(mint));
-  };
-
-  const showConfetti = (): void => {
-    dispatch(commonActions.setConfetti({ isVisible: true }));
-  };
-
-  const onSubmit = async (nft: BorrowNft) => {
-    const { mint, valuation } = nft;
-
-    const valuationNumber = parseFloat(valuation);
-
-    const loanToValue = (currentLoanNft.solLoanValue / valuationNumber) * 100;
-
-    const isPriceBased = currentLoanNft.type === 'perpetual';
-
-    try {
-      closeConfirmModal();
-      openLoadingModal();
-
-      const result = await proposeLoan({
-        nftMint: mint,
-        connection,
-        wallet,
-        valuation: valuationNumber,
-        isPriceBased,
-        onApprove: showConfetti,
-        loanToValue,
-      });
-
-      if (!result) {
-        throw new Error('Loan proposing failed');
-      }
-
-      removeTokenOptimistic(mint);
-      onDeselect?.();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeConfirmModal();
-      closeLoadingModal();
-    }
-  };
+  const { visible: loadingModalVisible, close: closeLoadingModal } =
+    useLoadingModal();
 
   const confirmText = getConfirmModalText(
     selectedNft,
@@ -197,7 +139,6 @@ export const useBorrowForm: UseBorrowForm = ({ onDeselect, selectedNft }) => {
     closeConfirmModal,
     loadingModalVisible,
     closeLoadingModal,
-    onSubmit,
     confirmText,
     updateCurrentNft,
     solLoanValue,
