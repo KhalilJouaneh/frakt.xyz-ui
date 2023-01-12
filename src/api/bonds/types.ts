@@ -60,7 +60,7 @@ export interface Market {
   name: string;
   fraktMarket: FMarket;
   whitelistEntries: Array<MarketWhitelistEntry>;
-  oracleFloor: Array<MarketOracle>;
+  oracleFloor: MarketOracle;
 }
 
 export interface MarketPreview {

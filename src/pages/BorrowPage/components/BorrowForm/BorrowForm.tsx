@@ -67,12 +67,20 @@ const BorrowForm: FC<BorrowFormProps> = ({
   const { proposeBondLoan, proposeLoan } = useLoanTxns({ onDeselect });
 
   const onSubmit = (nft: BorrowNft) => {
-    if (existBestOffer) {
-      console.log('here');
-      proposeBondLoan({ nft, market, pairs, borrowValue: solLoanValue });
-    } else {
-      proposeLoan(nft);
-    }
+    proposeBondLoan({
+      nft,
+      market,
+      pairs,
+      borrowValue: solLoanValue,
+    });
+
+    // if (existBestOffer) {
+    //   console.log('here');
+
+    //   proposeBondLoan({ nft, market, pairs, borrowValue: solLoanValue });
+    // } else {
+    //   proposeLoan(nft);
+    // }
   };
 
   return (

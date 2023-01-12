@@ -16,6 +16,8 @@ import { Loader } from '../../components/Loader';
 import { Slider } from '../../components/Slider';
 import Header from './components/Header';
 import { SOL_TOKEN } from '../../utils';
+import { useMarket } from '@frakt/utils/bonds';
+import { web3 } from 'fbonds-core';
 
 const BorrowPage: FC = () => {
   const { connected } = useWallet();
@@ -34,6 +36,14 @@ const BorrowPage: FC = () => {
     onBorrowValueChange,
     notEnoughBalanceError,
   } = useBorrowPage();
+
+  const { market } = useMarket({
+    marketPubkey: new web3.PublicKey(
+      'ANvFFdHqB7MLvWebewhohzzNvCRdDNAFKSmbEA8bhL5g',
+    ),
+  });
+
+  console.log(market);
 
   const isBulkExist = !!bulks?.best?.length || !!bulks?.max?.length;
 

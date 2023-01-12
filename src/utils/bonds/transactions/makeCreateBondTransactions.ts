@@ -3,7 +3,10 @@ import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import { fbondFactory } from 'fbonds-core/lib/fbond-protocol/functions';
 import { validation } from 'fbonds-core/lib/fbonds_validation_adapter/functions';
-import { sellNftToTokenToNftPair } from 'fbonds-core/lib/cross-mint-amm/functions/router';
+import {
+  sellNftToTokenToNftPair,
+  validateAndSellNftToTokenToNftPair,
+} from 'fbonds-core/lib/cross-mint-amm/functions/router';
 import { Market, Pair } from '@frakt/api/bonds';
 
 import {
@@ -33,7 +36,8 @@ export const makeCreateBondTransactions: any = async ({
   connection,
   wallet,
 }) => {
-  const amountToReturn = (borrowValue * 1e9) / (pair.currentSpotPrice * 1e6);
+  const amountToReturn =
+    Math.trunc((borrowValue * 1e9) / pair.currentSpotPrice) * 1e3;
 
   const {
     fbond: bondPubkey,
@@ -48,7 +52,7 @@ export const makeCreateBondTransactions: any = async ({
     },
     args: {
       amountToDeposit: 1,
-      amountToReturn,
+      amountToReturn: amountToReturn,
       bondDuration: pair.validation.durationFilter,
     },
     connection,
@@ -56,48 +60,31 @@ export const makeCreateBondTransactions: any = async ({
     sendTxn: sendTxnPlaceHolder,
   });
 
-  const {
-    account: nftValidationAdapter,
-    instructions: validateBondIxs,
-    signers: validateBondSigners,
-  } = await validation.validateFBond({
-    accounts: {
-      whitelistEntry: new web3.PublicKey(
-        market.whitelistEntries?.[0]?.publicKey || PUBKEY_PLACEHOLDER,
-      ),
-      collateralBox: collateralBoxPubkey,
-      collateralTokenMint: new web3.PublicKey(nftMint),
-      crossMintAmmProgramId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
-      fbond: bondPubkey,
-      fbondTokenMint: bondTokenMint,
-      fraktMarket: new web3.PublicKey(market.fraktMarket.publicKey),
-      fraktMarketRegistryProgramId: FRAKT_MARKET_PROGRAM_PUBKEY,
-      hadoMarket: new web3.PublicKey(pair.hadoMarket),
-      oracleFloor: new web3.PublicKey(
-        market.oracleFloor?.[0]?.publicKey || PUBKEY_PLACEHOLDER,
-      ),
-      pair: new web3.PublicKey(pair.publicKey),
-      userPubkey: wallet.publicKey,
-    },
-    args: {
-      proof: [],
-    },
-    connection,
-    programId: BONDS_VALIDATION_PROGRAM_PUBKEY,
-    sendTxn: sendTxnPlaceHolder,
-  });
+  console.log(`bondPubkey: ${bondPubkey.toBase58()}`);
 
-  const { instructions: sellIxs, signers: sellSigners } =
-    await sellNftToTokenToNftPair({
+  const { instructions: validateAndsellIxs, signers: validateAndsellSigners } =
+    await validateAndSellNftToTokenToNftPair({
       accounts: {
-        assetReceiver: new web3.PublicKey(pair.assetReceiver),
-        nftMint: new web3.PublicKey(nftMint),
-        nftValidationAdapter,
+        collateralBox: collateralBoxPubkey,
+        fbond: bondPubkey,
+        fbondTokenMint: bondTokenMint,
+        collateralTokenMint: new web3.PublicKey(nftMint),
+        fraktMarket: new web3.PublicKey(market.fraktMarket.publicKey),
+        oracleFloor: new web3.PublicKey(
+          market.oracleFloor?.publicKey || PUBKEY_PLACEHOLDER,
+        ),
+        whitelistEntry: new web3.PublicKey(
+          market.whitelistEntries?.[0]?.publicKey || PUBKEY_PLACEHOLDER,
+        ),
+        hadoMarket: new web3.PublicKey(pair.hadoMarket),
         pair: new web3.PublicKey(pair.publicKey),
-        protocolFeeReceiver: new web3.PublicKey(PUBKEY_PLACEHOLDER),
         userPubkey: wallet.publicKey,
+        protocolFeeReceiver: new web3.PublicKey(PUBKEY_PLACEHOLDER),
+        assetReceiver: new web3.PublicKey(pair.assetReceiver),
+        bondsValidationAdapterProgram: BONDS_VALIDATION_PROGRAM_PUBKEY,
       },
       args: {
+        proof: [],
         amountToSell: amountToReturn / 1e3, //? amount of fbond tokens decimals
         minAmountToGet: (amountToReturn / 1e3) * pair.currentSpotPrice, //? SOL lamports
         skipFailed: false,
@@ -127,15 +114,16 @@ export const makeCreateBondTransactions: any = async ({
   // };
 
   return {
-    createBondTxn: {
-      transaction: new web3.Transaction().add(...createBondIxns),
-      signers: createBondSigners,
-    },
+    // createBondTxn: {
+    //   transaction: new web3.Transaction().add(...createBondIxns),
+    //   signers: createBondSigners,
+    // },
     validateAndSellTxn: {
       transaction: new web3.Transaction().add(
-        ...[validateBondIxs, sellIxs].flat(),
+        ...createBondIxns,
+        ...validateAndsellIxs,
       ),
-      signers: [validateBondSigners, sellSigners].flat(),
+      signers: [createBondSigners, validateAndsellSigners].flat(),
     },
   };
 };

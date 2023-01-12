@@ -12,13 +12,13 @@ export const useLoanFields = (
   const { valuation, timeBased } = nft;
 
   const { market, isLoading: isLoadingMarket } = useMarket({
-    marketPubkey: nft?.marketPubkey
-      ? new web3.PublicKey(nft?.marketPubkey)
-      : null,
+    marketPubkey: new web3.PublicKey(
+      'ANvFFdHqB7MLvWebewhohzzNvCRdDNAFKSmbEA8bhL5g',
+    ),
   });
 
   const { pairs, isLoading: isLoadingMarketPair } = useMarketPairs({
-    marketPubkey: nft?.marketPubkey,
+    marketPubkey: 'ANvFFdHqB7MLvWebewhohzzNvCRdDNAFKSmbEA8bhL5g',
   });
 
   const selectedNftWithMarketInfo = useMemo(() => {
@@ -32,8 +32,6 @@ export const useLoanFields = (
   }, [market, pairs]);
 
   const getBestLoanValue = (nft) => {
-    // if (!nft?.marketPubkey) return rawMaxLoanValue;
-
     const valuationNumber = parseFloat(nft.valuation);
     const collectionFloorPriceLamports = valuationNumber * 1e9;
 
