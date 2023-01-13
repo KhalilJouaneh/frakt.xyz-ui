@@ -26,9 +26,9 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-    onGemStake,
-    onGemClaim,
-    onGemUnstake,
+    onCardinalStake,
+    onCardinalClaim,
+    onCardinalUnstake,
     transactionsLeft,
   } = useLoans(loan);
 
@@ -76,7 +76,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onGemClaim}
+                  onClick={onCardinalClaim}
                   disabled={!rewardAmount}
                 >
                   Claim {reward?.token}
@@ -84,7 +84,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onGemUnstake}
+                  onClick={onCardinalUnstake}
                   disabled={!rewardAmount}
                 >
                   Unstake
@@ -95,7 +95,7 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
               <Button
                 type="tertiary"
                 className={styles.btn}
-                onClick={onGemStake}
+                onClick={onCardinalStake}
               >
                 Stake
               </Button>
