@@ -46,34 +46,18 @@ export const useLoanTxns = ({ onDeselect }) => {
       closeConfirmModal();
       openLoadingModal();
 
-      console.log({
-        market,
-        pair: pairs[3],
-        nftMint: nft.mint,
-        borrowValue,
-        connection,
-        wallet,
-      });
-
       const txn = await makeCreateBondTransactions({
         market,
-        pair: pairs[3],
+        pair: pairs[3], //TODO: Calc best pair dynamically
         nftMint: nft.mint,
         borrowValue,
         connection,
         wallet,
       });
 
-      // await signAndConfirmTransaction({
-      //   transaction: txn.createBondTxn.transaction,
-      //   signers: txn.createBondTxn.signers,
-      //   connection,
-      //   wallet,
-      // });
-
       await signAndConfirmTransaction({
-        transaction: txn.validateAndSellTxn.transaction,
-        signers: txn.validateAndSellTxn.signers,
+        transaction: txn.transaction,
+        signers: txn.signers,
         connection,
         wallet,
       });
@@ -85,7 +69,8 @@ export const useLoanTxns = ({ onDeselect }) => {
       removeTokenOptimistic(nft.mint);
       onDeselect?.();
     } catch (error) {
-      console.log(error?.logs);
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs);
       console.error(error);
     } finally {
       closeConfirmModal();

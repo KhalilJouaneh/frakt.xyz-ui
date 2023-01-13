@@ -2,18 +2,14 @@ import { PUBKEY_PLACEHOLDER, sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import { fbondFactory } from 'fbonds-core/lib/fbond-protocol/functions';
-import { validation } from 'fbonds-core/lib/fbonds_validation_adapter/functions';
-import {
-  sellNftToTokenToNftPair,
-  validateAndSellNftToTokenToNftPair,
-} from 'fbonds-core/lib/cross-mint-amm/functions/router';
+import { validateAndSellNftToTokenToNftPair } from 'fbonds-core/lib/cross-mint-amm/functions/router';
 import { Market, Pair } from '@frakt/api/bonds';
 
 import {
+  BONDS_ADMIN_PUBKEY,
   BONDS_PROGRAM_PUBKEY,
   BONDS_VALIDATION_PROGRAM_PUBKEY,
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
-  FRAKT_MARKET_PROGRAM_PUBKEY,
 } from '../constants';
 
 type MakeCreateBondTransactions = (params: {
@@ -23,12 +19,9 @@ type MakeCreateBondTransactions = (params: {
   borrowValue: number; //? Normal number (F.e. 1.5 SOL)
   connection: web3.Connection;
   wallet: WalletContextState;
-}) => Promise<{
-  createBondTxn: { transaction: web3.Transaction; signers: web3.Signer[] };
-  validateAndSellTxn: { transaction: web3.Transaction; signers: web3.Signer[] };
-}>;
+}) => Promise<{ transaction: web3.Transaction; signers: web3.Signer[] }>;
 
-export const makeCreateBondTransactions: any = async ({
+export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
   market,
   pair,
   nftMint,
@@ -60,8 +53,6 @@ export const makeCreateBondTransactions: any = async ({
     sendTxn: sendTxnPlaceHolder,
   });
 
-  console.log(`bondPubkey: ${bondPubkey.toBase58()}`);
-
   const { instructions: validateAndsellIxs, signers: validateAndsellSigners } =
     await validateAndSellNftToTokenToNftPair({
       accounts: {
@@ -79,7 +70,9 @@ export const makeCreateBondTransactions: any = async ({
         hadoMarket: new web3.PublicKey(pair.hadoMarket),
         pair: new web3.PublicKey(pair.publicKey),
         userPubkey: wallet.publicKey,
-        protocolFeeReceiver: new web3.PublicKey(PUBKEY_PLACEHOLDER),
+        protocolFeeReceiver: new web3.PublicKey(
+          BONDS_ADMIN_PUBKEY || PUBKEY_PLACEHOLDER,
+        ),
         assetReceiver: new web3.PublicKey(pair.assetReceiver),
         bondsValidationAdapterProgram: BONDS_VALIDATION_PROGRAM_PUBKEY,
       },
@@ -94,37 +87,12 @@ export const makeCreateBondTransactions: any = async ({
       sendTxn: sendTxnPlaceHolder,
     });
 
-  // const txn = {
-  //   transaction: new web3.Transaction().add(
-  //     ...[
-  //       initBondIxs,
-  //       addCollateralBoxIxs,
-  //       activateBondIxs,
-  //       validateBondIxs,
-  //       sellIxs,
-  //     ].flat(),
-  //   ),
-  //   signers: [
-  //     initBondSigners,
-  //     addCollateralBoxSigners,
-  //     activateBondSigners,
-  //     validateBondSigners,
-  //     sellSigners,
-  //   ].flat(),
-  // };
-
   return {
-    // createBondTxn: {
-    //   transaction: new web3.Transaction().add(...createBondIxns),
-    //   signers: createBondSigners,
-    // },
-    validateAndSellTxn: {
-      transaction: new web3.Transaction().add(
-        ...createBondIxns,
-        ...validateAndsellIxs,
-      ),
-      signers: [createBondSigners, validateAndsellSigners].flat(),
-    },
+    transaction: new web3.Transaction().add(
+      ...createBondIxns,
+      ...validateAndsellIxs,
+    ),
+    signers: [createBondSigners, validateAndsellSigners].flat(),
   };
 };
 
