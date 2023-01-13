@@ -1,7 +1,10 @@
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { showSolscanLinkNotification } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '..';
@@ -20,21 +23,32 @@ export const stakeCardinal: StakeCardinal = async ({
   loan,
 }): Promise<boolean> => {
   try {
-    await loans.stakeCardinalIx({
-      programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+    const { stakeIx, additionalComputeBudgetInstructionIx } =
+      await loans.stakeCardinalIx({
+        programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
+        connection,
+        user: wallet.publicKey,
+        payer: wallet.publicKey,
+        cardinalRewardsCenter: new web3.PublicKey(process.env.STAKE_PROGRAM_ID),
+        nftMint: new web3.PublicKey(nftMint),
+        stakePool: new web3.PublicKey(process.env.STAKE_POOL),
+        loan: new web3.PublicKey(loan),
+        stakeRewardsPaymentInfo: new web3.PublicKey(
+          process.env.STAKE_REWARDS_PAYMENT_INFO,
+        ),
+        rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
+        paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1),
+        paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2),
+      });
+
+    const transaction = new web3.Transaction()
+      .add(stakeIx)
+      .add(additionalComputeBudgetInstructionIx);
+
+    await signAndConfirmTransaction({
       connection,
-      user: wallet.publicKey,
-      payer: wallet.publicKey,
-      cardinalRewardsCenter: new web3.PublicKey(process.env.STAKE_PROGRAM_ID),
-      nftMint: new web3.PublicKey(nftMint),
-      stakePool: new web3.PublicKey(process.env.STAKE_POOL),
-      loan: new web3.PublicKey(loan),
-      stakeRewardsPaymentInfo: new web3.PublicKey(
-        process.env.STAKE_REWARDS_PAYMENT_INFO,
-      ),
-      rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
-      paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1),
-      paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2),
+      wallet,
+      transaction,
     });
 
     notify({

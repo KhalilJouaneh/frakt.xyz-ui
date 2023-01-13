@@ -1,3 +1,4 @@
+import { signAndConfirmTransaction } from '@frakt/utils/transactions';
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
@@ -20,7 +21,7 @@ export const claimCardinal: ClaimCardinal = async ({
   loan,
 }): Promise<boolean> => {
   try {
-    await loans.claimCardinalIx({
+    const { claimIx } = await loans.claimCardinalIx({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
       payer: wallet.publicKey,
@@ -38,6 +39,14 @@ export const claimCardinal: ClaimCardinal = async ({
       rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
       paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1),
       paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2),
+    });
+
+    const transaction = new web3.Transaction().add(claimIx);
+
+    await signAndConfirmTransaction({
+      connection,
+      wallet,
+      transaction,
     });
 
     notify({
