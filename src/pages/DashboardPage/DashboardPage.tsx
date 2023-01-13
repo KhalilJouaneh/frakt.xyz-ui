@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import cx from 'classnames';
 
-import { useRaffleSort } from '../LiquidationsPage/components/Liquidations/hooks';
-import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
+// import { useRaffleSort } from '../LiquidationsPage/components/Liquidations/hooks';
+// import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import AvailableBorrow from './components/AvailableBorrow';
 import { selectStats } from '../../state/stats/selectors';
@@ -28,24 +28,24 @@ const DashboardPage: FC = () => {
   const { totalStats, lastLoans, lendingPools, dailyActivity, loading } =
     useSelector(selectStats);
 
-  const { queryData } = useRaffleSort();
+  // const { queryData } = useRaffleSort();
 
-  const {
-    data: graceList,
-    fetchNextPage,
-    isFetchingNextPage,
-    isListEnded,
-  } = useRaffleInfo({
-    url: 'liquidation/grace-list',
-    id: 'graceDashboardList',
-    queryData,
-  });
+  // const {
+  //   data: graceList,
+  //   fetchNextPage,
+  //   isFetchingNextPage,
+  //   isListEnded,
+  // } = useRaffleInfo({
+  //   url: 'liquidation/grace-list',
+  //   id: 'graceDashboardList',
+  //   queryData,
+  // });
 
-  useEffect(() => {
-    if (!isFetchingNextPage && !isListEnded) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, isFetchingNextPage, isListEnded]);
+  // useEffect(() => {
+  //   if (!isFetchingNextPage && !isListEnded) {
+  //     fetchNextPage();
+  //   }
+  // }, [fetchNextPage, isFetchingNextPage, isListEnded]);
 
   useEffect(() => {
     dispatch(statsActions.fetchStats());
@@ -95,7 +95,7 @@ const DashboardPage: FC = () => {
                 <LastLoans lastLoans={lastLoans} />
               </div>
               <div className={cx(styles.row, styles.rowDirection)}>
-                <GraceList graceList={graceList} />
+                <GraceList /*graceList={graceList}*/ graceList={undefined} />
               </div>
             </div>
           </div>
