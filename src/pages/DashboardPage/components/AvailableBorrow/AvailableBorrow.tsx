@@ -38,7 +38,7 @@ const AvailableBorrow: FC = () => {
         <p className={styles.value}>{availableBorrowValue}</p>
         <Solana className={styles.icon} />
       </div>
-      <NavLink style={{ width: '100%' }} to={PATHS.BORROW}>
+      <NavLink style={{ width: '100%' }} to={PATHS.BORROW_ROOT}>
         <Button className={styles.btn} type="secondary">
           Borrow
         </Button>

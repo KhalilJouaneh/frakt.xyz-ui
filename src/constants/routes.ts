@@ -11,7 +11,8 @@ import {
   MarketsPage,
   MarketPage,
   PoolsCreationPage,
-} from '../pages';
+} from '@frakt/pages';
+import { BorrowRootPage } from '@frakt/pages/BorrowPages';
 
 interface Route {
   path: string;
@@ -54,6 +55,11 @@ export const routes: Route[] = [
     exact: true,
     path: PATHS.BORROW,
     component: BorrowPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_ROOT,
+    component: BorrowRootPage,
   },
   {
     exact: true,

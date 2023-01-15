@@ -134,7 +134,7 @@ const MyLoans: FC = () => {
 
       <NavLink
         style={{ width: '100%' }}
-        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW}
+        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW_ROOT}
       >
         <Button className={styles.btn} type="secondary">
           {userLoans.length ? 'Repay' : 'Borrow SOL'}
