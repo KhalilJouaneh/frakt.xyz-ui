@@ -1,6 +1,4 @@
 import { FC } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useHistory } from 'react-router-dom';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { TokenFieldWithBalance } from '@frakt/components/TokenField';
@@ -8,7 +6,6 @@ import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import Button from '@frakt/components/Button';
 import { Slider } from '@frakt/components/Slider';
 import { SOL_TOKEN } from '@frakt//utils';
-import { PATHS } from '@frakt/constants';
 
 import { BorrowHeader } from '../components/BorrowHeader';
 import styles from './BorrowRootPage.module.scss';
@@ -16,9 +13,6 @@ import { useBorrowRootPage } from './hooks';
 import { Loader } from '@frakt/components/Loader';
 
 export const BorrowRootPage: FC = () => {
-  const history = useHistory();
-  const { connected } = useWallet();
-
   const {
     borrowValue,
     borrowPercentValue,
@@ -27,12 +21,10 @@ export const BorrowRootPage: FC = () => {
     maxBorrowValue,
     loading,
     isNotEnoughBalanceError,
+    isWalletConnected,
+    goToBulkSuggestionPage,
+    goToBorrowManualPage,
   } = useBorrowRootPage();
-
-  const goToBulkSuggestionPage = () =>
-    history.push(`${PATHS.BORROW_BULK_SUGGESTION}/?borrowValue=${borrowValue}`);
-
-  const goToBorrowManualPage = () => history.push(PATHS.BORROW_MANUAL);
 
   return (
     <AppLayout>
@@ -41,13 +33,13 @@ export const BorrowRootPage: FC = () => {
         subtitle="Choose how you want to borrow"
       />
 
-      {!connected && (
+      {!isWalletConnected && (
         <ConnectWalletSection text="Connect your wallet to check ..." />
       )}
 
-      {connected && loading && <Loader size="large" />}
+      {isWalletConnected && loading && <Loader size="large" />}
 
-      {connected && !loading && (
+      {isWalletConnected && !loading && (
         <div className={styles.wrapper}>
           <div className={styles.block}>
             <h3 className={styles.blockTitle}>Pick for me</h3>

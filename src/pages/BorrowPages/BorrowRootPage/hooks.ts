@@ -1,12 +1,15 @@
+import { useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 import { sum, map } from 'lodash';
 import { web3 } from 'fbonds-core';
 
 import { fetchWalletBorrowNfts } from '@frakt/api/nft';
-import { useState } from 'react';
+import { PATHS } from '@frakt/constants';
 
 export const useBorrowRootPage = () => {
+  const history = useHistory();
   const wallet = useWallet();
   const { maxBorrowValue, isLoading: maxBorrowValueLoading } =
     useMaxBorrowValue({ walletPublicKey: wallet?.publicKey });
@@ -14,30 +17,41 @@ export const useBorrowRootPage = () => {
   const [borrowValue, setBorrowValue] = useState<string>('');
   const [borrowPercentValue, setBorrowPercentValue] = useState<number>(0);
 
-  const onBorrowPercentChange = (nextValue: number) => {
-    const depositValue =
-      ((nextValue * maxBorrowValue) / 100)?.toFixed(2) || '0';
-    setBorrowValue(depositValue);
-    setBorrowPercentValue(nextValue);
-  };
+  const onBorrowPercentChange = useCallback(
+    (nextValue: number) => {
+      const depositValue =
+        ((nextValue * maxBorrowValue) / 100)?.toFixed(2) || '0';
+      setBorrowValue(depositValue);
+      setBorrowPercentValue(nextValue);
+    },
+    [maxBorrowValue],
+  );
 
-  const onBorrowValueChange = (nextValue: string) => {
-    setBorrowValue(nextValue);
+  const onBorrowValueChange = useCallback(
+    (nextValue: string) => {
+      setBorrowValue(nextValue);
 
-    const balancePercent = (parseFloat(nextValue) / maxBorrowValue) * 100;
+      const balancePercent = (parseFloat(nextValue) / maxBorrowValue) * 100;
 
-    if (balancePercent > 100) {
-      return setBorrowPercentValue(100);
-    }
-    if (balancePercent < 0) {
-      return setBorrowPercentValue(0);
-    }
+      if (balancePercent > 100) {
+        return setBorrowPercentValue(100);
+      }
+      if (balancePercent < 0) {
+        return setBorrowPercentValue(0);
+      }
 
-    return setBorrowPercentValue(balancePercent);
-  };
+      return setBorrowPercentValue(balancePercent);
+    },
+    [maxBorrowValue],
+  );
 
   const isNotEnoughBalanceError =
     parseFloat(borrowValue) > parseFloat(maxBorrowValue.toFixed(2));
+
+  const goToBulkSuggestionPage = () =>
+    history.push(`${PATHS.BORROW_BULK_SUGGESTION}?borrowValue=${borrowValue}`);
+
+  const goToBorrowManualPage = () => history.push(PATHS.BORROW_MANUAL);
 
   return {
     borrowValue,
@@ -47,6 +61,9 @@ export const useBorrowRootPage = () => {
     maxBorrowValue,
     loading: maxBorrowValueLoading,
     isNotEnoughBalanceError,
+    isWalletConnected: wallet.connected,
+    goToBulkSuggestionPage,
+    goToBorrowManualPage,
   };
 };
 
