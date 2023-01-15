@@ -12,7 +12,10 @@ import {
   MarketPage,
   PoolsCreationPage,
 } from '@frakt/pages';
-import { BorrowRootPage } from '@frakt/pages/BorrowPages';
+import {
+  BorrowRootPage,
+  BorrowBulkSuggestionPage,
+} from '@frakt/pages/BorrowPages';
 
 interface Route {
   path: string;
@@ -60,6 +63,11 @@ export const routes: Route[] = [
     exact: true,
     path: PATHS.BORROW_ROOT,
     component: BorrowRootPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_BULK_SUGGESTION,
+    component: BorrowBulkSuggestionPage,
   },
   {
     exact: true,

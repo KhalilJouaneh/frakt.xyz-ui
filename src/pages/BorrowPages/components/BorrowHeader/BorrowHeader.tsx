@@ -5,25 +5,23 @@ import { Arrow } from '@frakt/icons';
 import styles from './BorrowHeader.module.scss';
 
 interface BorrowHeaderProps {
-  onClick?: () => void;
+  onBackBtnClick?: () => void;
   title: string;
   subtitle?: string;
   className?: string;
 }
 
 export const BorrowHeader: FC<BorrowHeaderProps> = ({
-  onClick,
+  onBackBtnClick,
   title,
   subtitle,
   className,
 }) => {
   return (
     <div className={styles.wrapper}>
-      {onClick && (
-        <div>
-          <div onClick={onClick} className={styles.btnBack}>
-            <Arrow />
-          </div>
+      {onBackBtnClick && (
+        <div onClick={onBackBtnClick} className={styles.btnBack}>
+          <Arrow />
         </div>
       )}
       <div className={cx(styles.header, className)}>

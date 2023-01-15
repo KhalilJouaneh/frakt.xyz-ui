@@ -73,7 +73,7 @@ type UseMaxBorrowValue = (props: { walletPublicKey?: web3.PublicKey }) => {
 };
 export const useMaxBorrowValue: UseMaxBorrowValue = ({ walletPublicKey }) => {
   const { data, isLoading } = useQuery(
-    ['borrowNfts', walletPublicKey?.toBase58()],
+    ['maxBorrowValue', walletPublicKey?.toBase58()],
     //TODO: Replace with normal query
     async () => {
       const walletNfts = await fetchWalletBorrowNfts({

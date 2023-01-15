@@ -51,7 +51,7 @@ export const BorrowRootPage: FC = () => {
                 onValueChange={onBorrowValueChange}
                 currentToken={SOL_TOKEN}
                 label="Available to borrow:"
-                lpBalance={Number(maxBorrowValue?.toFixed(2))}
+                lpBalance={parseFloat(maxBorrowValue?.toFixed(2))}
                 showMaxButton
                 error={isNotEnoughBalanceError}
                 labelRight
