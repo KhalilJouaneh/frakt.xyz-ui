@@ -71,12 +71,15 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
             >
               Repay
             </Button>
-            {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+            {!!rewardAmount && reward?.stakeState == RewardState.STAKED && (
               <div className={styles.btnWrapperRow}>
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onCardinalClaim}
+                  onClick={(e) => {
+                    onCardinalClaim();
+                    e.stopPropagation();
+                  }}
                   disabled={!rewardAmount}
                 >
                   Claim {reward?.token}
@@ -84,8 +87,10 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onCardinalUnstake}
-                  disabled={!rewardAmount}
+                  onClick={(e) => {
+                    onCardinalUnstake();
+                    e.stopPropagation();
+                  }}
                 >
                   Unstake
                 </Button>
@@ -93,9 +98,12 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
             )}
             {reward?.stakeState === RewardState.UNSTAKED && (
               <Button
-                type="tertiary"
+                type="primary"
                 className={styles.btn}
-                onClick={onCardinalStake}
+                onClick={(e) => {
+                  onCardinalStake();
+                  e.stopPropagation();
+                }}
               >
                 Stake
               </Button>
