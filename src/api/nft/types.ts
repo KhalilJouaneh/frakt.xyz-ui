@@ -43,7 +43,7 @@ export enum BulkTypes {
   best = 'best',
   cheapest = 'cheapest',
   safest = 'safest',
-  max = 'max',
+  max = 'max', //? Exists when the user wants to borrow more than he has
 }
 
 export type BulkSuggestion = {
