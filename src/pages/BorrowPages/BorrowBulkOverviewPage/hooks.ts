@@ -1,11 +1,9 @@
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
-import { commonActions } from '@frakt/state/common/actions';
 import { proposeBulkLoan } from '@frakt/utils/loans';
 import { useConnection } from '@frakt/hooks';
 import { PATHS } from '@frakt/constants';
@@ -14,7 +12,6 @@ import { useSelectedNfts } from '../hooks';
 
 export const useBorrowBulkOverviewPage = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const wallet = useWallet();
   const connection = useConnection();
   const { selection, clearSelection } = useSelectedNfts();
@@ -54,7 +51,6 @@ export const useBorrowBulkOverviewPage = () => {
       }
 
       history.push(PATHS.BORROW_SUCCESS);
-      showConfetti();
       clearSelection();
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -66,10 +62,6 @@ export const useBorrowBulkOverviewPage = () => {
   };
 
   const onBackBtnClick = () => history.goBack();
-
-  const showConfetti = () => {
-    dispatch(commonActions.setConfetti({ isVisible: true }));
-  };
 
   return {
     selection,
