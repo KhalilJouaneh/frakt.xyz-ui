@@ -1,0 +1,98 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.sidebar {
+  @include flex(column, nowrap, center, center);
+  background-color: var(--primary-background);
+  border-left: 1px solid var(--primary-border);
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 288px;
+  padding: 32px;
+  height: 100vh;
+
+  @media (max-width: 1240px) {
+    border-top: 1px solid var(--primary-border);
+    border-left: 0;
+    padding: 24px;
+    bottom: 0;
+    top: unset;
+    height: 230px;
+    left: 177px;
+    width: calc(100vw - 187px);
+    z-index: 2;
+  }
+  @media (max-width: 767px) {
+    left: unset;
+    border-top: 1px solid var(--secondary-border);
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+.title {
+  color: var(--secondary-border);
+  font: var(--font-text-2);
+  margin-bottom: 27px;
+
+  @media (max-width: 1240px) {
+    margin-bottom: 15px;
+  }
+}
+
+.sidebarSubtitle {
+  color: var(--secondary-border);
+  font: var(--font-text-1);
+  font-size: 32px;
+}
+
+.sidebarBtnWrapper {
+  margin-top: 24px;
+  @include flex(column, nowrap, null, null);
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 1240px) {
+    @include flex(row, nowrap, space-between, null);
+  }
+}
+
+.btn {
+  height: 48px;
+  width: 100%;
+
+  @media (max-width: 1240px) {
+    height: 40px;
+  }
+}
+
+.feesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+
+  @media (max-width: 1240px) {
+    gap: 10px;
+  }
+}
+
+.subtitle {
+  color: var(--primary-border);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--secondary-border);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font: var(--font-text-8);
+}
+
+.feesRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

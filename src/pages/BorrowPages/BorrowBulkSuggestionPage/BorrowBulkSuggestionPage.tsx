@@ -10,8 +10,8 @@ import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
 
 import { BorrowHeader } from '../components/BorrowHeader';
+import { calcBulkTotalValue } from '../helpers';
 import { useBorrowBulkSuggestionPage } from './hooks';
-import { calcBulkTotalValue } from './helpers';
 import styles from './BorrowBulkSuggestionPage.module.scss';
 
 export const BorrowBulkSuggestionPage: FC = () => {

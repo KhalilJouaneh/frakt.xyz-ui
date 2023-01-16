@@ -1,0 +1,167 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.container {
+  padding-right: 280px;
+
+  @media (max-width: 1240px) {
+    padding-bottom: 200px;
+    padding-right: 0;
+  }
+}
+
+.closeContainer {
+  padding-right: 0;
+}
+
+.cardWrapper {
+  background: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  margin-bottom: 24px;
+  width: 100%;
+  padding: 32px;
+
+  @media screen and (max-width: 1180px) {
+    padding: 24px;
+  }
+
+  @media screen and (max-width: 767px) {
+    padding: 16px;
+  }
+}
+
+.hiddenValues {
+  @include flex(row, wrap, null, center);
+  margin-top: 16px;
+  gap: 16px 32px;
+
+  @media screen and (max-width: 1310px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.card {
+  @include flex(row, nowrap, space-between, flex-start);
+
+  @media screen and (max-width: 1310px) {
+    flex-wrap: wrap;
+    position: relative;
+  }
+}
+
+.image {
+  width: 58px;
+  height: 58px;
+
+  @media screen and (max-width: 1024px) {
+    height: 48px;
+    width: 48px;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 38px;
+    width: 38px;
+  }
+}
+
+.name {
+  font: var(--font-subtitle-2);
+  max-width: 254px;
+
+  @media screen and (max-width: 550px) {
+    max-width: 175px;
+  }
+}
+
+.cardInfo {
+  @include flex(row, nowrap, null, center);
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.cardValues {
+  @include flex(row, nowrap, center, center);
+  gap: 32px;
+}
+
+.cardValue {
+  @include flex(column, nowrap, null, null);
+  gap: 4px;
+  min-width: 170px;
+
+  @media screen and (max-width: 1310px) {
+    @include flex(row, nowrap, space-between, center);
+    width: 100%;
+  }
+}
+
+.cardTitle {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-transform: uppercase;
+}
+
+.cardSubtitle {
+  @include flex(row, nowrap, null, center);
+  gap: 3px;
+  font: var(--font-text-8);
+}
+
+.btnWithArrow {
+  @include flex(row, nowrap, center, center);
+
+  background-color: var(--primary-background);
+  border: 1px solid var(--primary-border);
+  border-radius: 50%;
+  cursor: pointer;
+
+  min-height: 40px;
+  min-width: 40px;
+
+  svg {
+    path {
+      fill: var(--secondary-border);
+    }
+  }
+}
+
+.btnVisible {
+  transform: rotate(180deg);
+}
+
+.btn {
+  height: 48px;
+  width: 100%;
+
+  @media (max-width: 1240px) {
+    height: 40px;
+  }
+}
+
+.nftsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(237px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  padding-right: 290px;
+
+  @media (max-width: 1240px) {
+    padding-bottom: 170px;
+    padding-right: 0;
+  }
+}
+
+.editMode {
+  color: var(--blue-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--blue-color);
+  font: var(--font-body-small);
+}
+
+.title {
+  font: var(--font-subtitle);
+  font-family: var(--font-family-syne);
+  text-align: center;
+  margin-bottom: 24px;
+}
