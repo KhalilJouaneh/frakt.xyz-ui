@@ -93,7 +93,7 @@ export const useLoans = (loan: Loan) => {
       setTransactionsLeft(2);
       openLoadingModal();
 
-      const result = await unstakeCardinal({
+      const result = await claimCardinal({
         connection,
         wallet,
         nftMint: mint,
@@ -106,7 +106,7 @@ export const useLoans = (loan: Loan) => {
 
       setTransactionsLeft(1);
 
-      await claimCardinal({
+      await unstakeCardinal({
         connection,
         wallet,
         nftMint: mint,
