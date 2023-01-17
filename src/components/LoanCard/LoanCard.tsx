@@ -186,12 +186,9 @@ const LoanCardValues: FC<{
         )}
 
         {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
-          <div className={styles.reward}>
-            <p className={styles.valueTitle}>Rewards</p>
-            <p>
-              {rewardAmount} {reward?.token}
-            </p>
-          </div>
+          <StatsValuesColumn className={styles.rewardValue} label={'Rewards'}>
+            {rewardAmount} {reward?.token}
+          </StatsValuesColumn>
         )}
       </div>
 
