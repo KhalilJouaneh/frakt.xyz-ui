@@ -2,10 +2,9 @@ import { useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
-import { sum, map } from 'lodash';
 import { web3 } from 'fbonds-core';
 
-import { fetchWalletBorrowNfts } from '@frakt/api/nft';
+import { fetchMaxBorrowValue } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
 export const useBorrowRootPage = () => {
@@ -74,16 +73,10 @@ type UseMaxBorrowValue = (props: { walletPublicKey?: web3.PublicKey }) => {
 export const useMaxBorrowValue: UseMaxBorrowValue = ({ walletPublicKey }) => {
   const { data, isLoading } = useQuery(
     ['maxBorrowValue', walletPublicKey?.toBase58()],
-    //TODO: Replace with normal query
-    async () => {
-      const walletNfts = await fetchWalletBorrowNfts({
+    () =>
+      fetchMaxBorrowValue({
         publicKey: walletPublicKey,
-        limit: 1000,
-        offset: 0,
-      });
-
-      return sum(map(walletNfts, ({ maxLoanValue }) => maxLoanValue)) || 0;
-    },
+      }),
     {
       enabled: !!walletPublicKey,
       staleTime: 5 * 60 * 1000,

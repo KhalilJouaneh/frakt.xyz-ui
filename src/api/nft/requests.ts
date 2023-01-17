@@ -47,3 +47,17 @@ export const fetchBulkSuggestion: FetchBulkSuggestion = async ({
 
   return data;
 };
+
+type FetchMaxBorrowValue = (props: {
+  publicKey: web3.PublicKey;
+}) => Promise<number>;
+
+export const fetchMaxBorrowValue: FetchMaxBorrowValue = async ({
+  publicKey,
+}) => {
+  const { data } = await axios.get<{ maxBorrow: number }>(
+    `https://${BACKEND_DOMAIN}/nft/max-borrow/${publicKey?.toBase58()}`,
+  );
+
+  return data?.maxBorrow ?? 0;
+};
