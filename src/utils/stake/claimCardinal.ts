@@ -26,19 +26,21 @@ export const claimCardinal: ClaimCardinal = async ({
       connection,
       payer: wallet.publicKey,
       user: wallet.publicKey,
-      cardinalRewardsCenter: new web3.PublicKey(process.env.STAKE_PROGRAM_ID),
+      cardinalRewardsCenter: new web3.PublicKey(
+        process.env.STAKE_PROGRAM_ID_PUBKEY,
+      ),
       nftMint: new web3.PublicKey(nftMint),
       rewardDistributor: new web3.PublicKey(
-        process.env.STAKE_REWARD_DISTRIBUTOR,
+        process.env.STAKE_REWARD_DISTRIBUTOR_PUBKEY,
       ),
-      stakePool: new web3.PublicKey(process.env.STAKE_POOL),
+      stakePool: new web3.PublicKey(process.env.STAKE_POOL_PUBKEY),
       loan: new web3.PublicKey(loan),
       claimRewardsPaymentInfo: new web3.PublicKey(
-        process.env.CLAIM_REWARDS_PAYMENT_INFO,
+        process.env.CLAIM_REWARDS_PAYMENT_INFO_PUBKEY,
       ),
-      rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
-      paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1),
-      paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2),
+      rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT_PUBKEY),
+      paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1_PUBKEY),
+      paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
     });
 
     const transaction = new web3.Transaction().add(claimIx);

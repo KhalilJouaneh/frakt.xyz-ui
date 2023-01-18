@@ -29,16 +29,18 @@ export const stakeCardinal: StakeCardinal = async ({
         connection,
         user: wallet.publicKey,
         payer: wallet.publicKey,
-        cardinalRewardsCenter: new web3.PublicKey(process.env.STAKE_PROGRAM_ID),
+        cardinalRewardsCenter: new web3.PublicKey(
+          process.env.STAKE_PROGRAM_ID_PUBKEY,
+        ),
         nftMint: new web3.PublicKey(nftMint),
-        stakePool: new web3.PublicKey(process.env.STAKE_POOL),
+        stakePool: new web3.PublicKey(process.env.STAKE_POOL_PUBKEY),
         loan: new web3.PublicKey(loan),
         stakeRewardsPaymentInfo: new web3.PublicKey(
-          process.env.STAKE_REWARDS_PAYMENT_INFO,
+          process.env.STAKE_REWARDS_PAYMENT_INFO_PUBKEY,
         ),
-        rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
-        paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1),
-        paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2),
+        rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT_PUBKEY),
+        paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1_PUBKEY),
+        paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
       });
 
     const transaction = new web3.Transaction()
