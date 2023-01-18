@@ -1,14 +1,15 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import {
-  useSelectableNfts,
-  useSelectableNftsState,
-} from '@frakt/pages/LoansPage/hooks';
+
 import { selectUserLoansPending } from '@frakt/state/loans/selectors';
 import LoanCard from '@frakt/components/LoanCard';
 import { Loan } from '@frakt/state/loans/types';
 import styles from './LoansList.module.scss';
+import {
+  useSelectableNfts,
+  useSelectableNftsState,
+} from '@frakt/pages/LoansPage/hooks';
 import InfinityScroll, {
   useFakeInfinityScroll,
 } from '@frakt/components/InfinityScroll';

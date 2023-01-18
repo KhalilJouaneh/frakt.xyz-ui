@@ -40,11 +40,12 @@ const BurgerMenu: FC<BurgerMenuProps> = ({ className = '' }) => {
         onClick={toggleVisibility}
       >
         <ul className={styles.navigation}>
-          {NAVIGATION_LINKS.map(({ label, to, pathname }) => (
+          {NAVIGATION_LINKS.map(({ label, to, pathname, href }) => (
             <MenuItem
               key={label}
               label={label}
               to={to}
+              href={href}
               pathname={pathname}
               className={styles.link}
             />

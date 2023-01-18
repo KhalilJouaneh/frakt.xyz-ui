@@ -1,3 +1,3 @@
-export * from './stakeGemFarm';
-export * from './unstakeGemFarm';
-export * from './claimGemFarm';
+export * from './stakeCardinal';
+export * from './unstakeCardinal';
+export * from './claimCardinal';

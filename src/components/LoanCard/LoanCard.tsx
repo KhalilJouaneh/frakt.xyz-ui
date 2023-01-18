@@ -26,9 +26,9 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
     closePartialRepayModal,
     onPartialPayback,
     onPayback,
-    onGemStake,
-    onGemClaim,
-    onGemUnstake,
+    onCardinalStake,
+    onCardinalClaim,
+    onCardinalUnstake,
     transactionsLeft,
   } = useLoans(loan);
 
@@ -51,7 +51,13 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
               [styles.isGracePeriodImage]: isGracePeriod,
             })}
             style={{ backgroundImage: `url(${imageUrl})` }}
-          />
+          >
+            {selected && (
+              <div className={styles.imageShadow}>
+                <div className={styles.line} />
+              </div>
+            )}
+          </div>
           <div className={styles.content}>
             <p className={styles.title}>{name}</p>
             <LoanCardValues loan={loan} />
@@ -65,12 +71,15 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
             >
               Repay
             </Button>
-            {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
+            {!!rewardAmount && reward?.stakeState == RewardState.STAKED && (
               <div className={styles.btnWrapperRow}>
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onGemClaim}
+                  onClick={(e) => {
+                    onCardinalClaim();
+                    e.stopPropagation();
+                  }}
                   disabled={!rewardAmount}
                 >
                   Claim {reward?.token}
@@ -78,8 +87,10 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
                 <Button
                   type="primary"
                   className={styles.btn}
-                  onClick={onGemUnstake}
-                  disabled={!rewardAmount}
+                  onClick={(e) => {
+                    onCardinalUnstake();
+                    e.stopPropagation();
+                  }}
                 >
                   Unstake
                 </Button>
@@ -87,9 +98,12 @@ const LoanCard: FC<LoanCardProps> = ({ loan, onClick, selected }) => {
             )}
             {reward?.stakeState === RewardState.UNSTAKED && (
               <Button
-                type="tertiary"
+                type="primary"
                 className={styles.btn}
-                onClick={onGemStake}
+                onClick={(e) => {
+                  onCardinalStake();
+                  e.stopPropagation();
+                }}
               >
                 Stake
               </Button>
@@ -172,12 +186,9 @@ const LoanCardValues: FC<{
         )}
 
         {!!rewardAmount && reward?.stakeState === RewardState.STAKED && (
-          <div className={styles.reward}>
-            <p className={styles.valueTitle}>Rewards</p>
-            <p>
-              {rewardAmount} {reward?.token}
-            </p>
-          </div>
+          <StatsValuesColumn className={styles.rewardValue} label={'Rewards'}>
+            {rewardAmount} {reward?.token}
+          </StatsValuesColumn>
         )}
       </div>
 

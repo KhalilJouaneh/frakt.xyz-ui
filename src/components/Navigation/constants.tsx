@@ -22,6 +22,8 @@ import {
   MyLoansDark,
   Bonds,
   BondsDark,
+  Staking,
+  StakingDark,
 } from '@frakt/icons';
 
 export const community = [
@@ -110,5 +112,12 @@ export const NAVIGATION_LINKS = [
     event: 'navigation-bonds',
     icon: Bonds,
     iconDark: BondsDark,
+  },
+  {
+    href: PATHS.STAKING,
+    label: 'Staking',
+    event: 'navigation-staking',
+    icon: Staking,
+    iconDark: StakingDark,
   },
 ];
