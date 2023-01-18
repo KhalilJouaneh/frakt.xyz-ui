@@ -36,7 +36,7 @@ const NFTCheckbox: FC<NFTCheckboxInterface> = ({
       <div
         className={classNames([
           styles.root,
-          { [styles.root_isBulk]: isBulk },
+          { [styles.root_isBulk]: selected },
           className,
         ])}
         onClick={onClick}
