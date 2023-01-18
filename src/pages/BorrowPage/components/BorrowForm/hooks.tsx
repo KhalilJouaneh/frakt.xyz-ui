@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft } from '@frakt/api/nft';
 
 import { selectCurrentLoanNft } from '../../../../state/loans/selectors';
 import { useConfirmModal } from '../../../../components/ConfirmModal';
@@ -9,6 +9,7 @@ import { loansActions } from '../../../../state/loans/actions';
 import { useSelect } from '../../../../components/Select/hooks';
 import { useLoanFields } from '../LoanFields/hooks';
 import { Tab } from '../../../../components/Tabs';
+import { BorrowNftSelected } from '@frakt/pages/BorrowPages/selectedNftsState';
 
 const getConfirmModalText = (
   nft: BorrowNft,
@@ -28,7 +29,7 @@ const getConfirmModalText = (
   return isFlip ? confirmShortTermText : confirmLongTermText;
 };
 
-type UseBorrowForm = (props: { selectedNft?: BorrowNftBulk }) => {
+type UseBorrowForm = (props: { selectedNft?: BorrowNftSelected }) => {
   selectOptions: Tab[];
   openConfirmModal: () => void;
   confirmModalVisible: boolean;

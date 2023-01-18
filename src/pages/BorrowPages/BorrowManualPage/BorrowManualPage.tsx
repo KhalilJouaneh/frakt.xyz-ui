@@ -1,16 +1,22 @@
 import { FC } from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import InfinityScroll from '@frakt/components/InfinityScroll';
 import { useDebounce } from '@frakt/hooks';
+import { BorrowNft } from '@frakt/api/nft';
 
+import {
+  convertBorrowNftToSelected,
+  useSelectedNfts,
+} from '../selectedNftsState';
 import { BorrowHeader } from '../components/BorrowHeader';
 import { Filters } from './components/Filters';
 import { useWalletNfts } from './hooks';
 import { NftCard } from './components/NftCard/';
-import { useSelectedNfts } from '../hooks';
 import styles from './BorrowManualPage.module.scss';
+import { Sidebar } from './components/Sidebar';
 
 export const BorrowManualPage: FC = () => {
   const {
@@ -36,18 +42,28 @@ export const BorrowManualPage: FC = () => {
     setSearch(value);
   }, 300);
 
+  const onNftClick = (nft: BorrowNft) => {
+    toggleNftInSelection(convertBorrowNftToSelected(nft));
+  };
+
   return (
     <AppLayout>
-      <BorrowHeader
-        onBackBtnClick={onBackBtnClick}
-        title="Borrow SOL"
-        subtitle={
-          selection.length > 1
-            ? `${selection.length} loans in bulk`
-            : 'I just want to make a loan'
-        }
-      />
-      <div className={styles.content}>
+      {!!highlightedNftMint && <Sidebar />}
+      <div
+        className={classNames([
+          styles.content,
+          { [styles.contentSidebarVisible]: highlightedNftMint },
+        ])}
+      >
+        <BorrowHeader
+          onBackBtnClick={onBackBtnClick}
+          title="Borrow SOL"
+          subtitle={
+            selection.length > 1
+              ? `${selection.length} loans in bulk`
+              : 'I just want to make a loan'
+          }
+        />
         <Filters
           setSearch={setSearchDebounced}
           onSortChange={({ name, order }) => {
@@ -66,7 +82,7 @@ export const BorrowManualPage: FC = () => {
             <NftCard
               key={nft.mint}
               nft={nft}
-              onClick={() => toggleNftInSelection(nft)}
+              onClick={() => onNftClick(nft)}
               selected={!!findNftInSelection(nft.mint)}
               highlighted={nft.mint === highlightedNftMint}
             />

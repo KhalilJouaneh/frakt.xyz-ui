@@ -6,13 +6,16 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 
 import {
-  BorrowNftBulk,
+  BorrowNftSuggested,
   BulkSuggestion,
   fetchBulkSuggestion,
 } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
-import { useSelectedNfts } from '../hooks';
+import {
+  convertSuggestedNftToSelected,
+  useSelectedNfts,
+} from '../selectedNftsState';
 
 type UseBulkSuggestion = (props: {
   walletPublicKey?: web3.PublicKey;
@@ -72,8 +75,8 @@ export const useBorrowBulkSuggestionPage = () => {
 
   const onBackBtnClick = () => history.push(PATHS.BORROW_ROOT);
 
-  const onBulkSuggestionSelect = (bulk: BorrowNftBulk[]) => {
-    setSelection(bulk);
+  const onBulkSuggestionSelect = (bulk: BorrowNftSuggested[]) => {
+    setSelection(bulk.map((nft) => convertSuggestedNftToSelected(nft)));
     history.push(PATHS.BORROW_BULK_OVERVIEW);
   };
 

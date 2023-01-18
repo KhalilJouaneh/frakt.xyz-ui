@@ -24,7 +24,6 @@ export const useWalletNfts = () => {
         search,
         sortOrder,
         sortName,
-        sortOrder,
       ],
       queryFn: ({ pageParam = 0 }) =>
         fetchWalletBorrowNfts({
@@ -38,7 +37,8 @@ export const useWalletNfts = () => {
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages.length + 1;
         const isLastPageBlank = lastPage.length === 0;
-        return !isLastPageBlank ? nextPage : null;
+        //? It's necessary to return undefined (not null) to show react-query that there are no more pages
+        return !isLastPageBlank ? nextPage : undefined;
       },
       staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,

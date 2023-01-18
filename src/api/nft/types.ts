@@ -1,3 +1,26 @@
+interface BorrowNftTimeBasedParams {
+  returnPeriodDays: number; // 14
+  ltvPercents: number; // 40
+  fee: string; // 0.100
+  feeDiscountPercents: string; // 2
+  repayValue: string; // 1.101
+  liquidityPoolPubkey: string;
+  loanValue: string; // 1.020
+  isCanStake: boolean;
+}
+
+interface BorrowNftPriceBasedParams {
+  liquidityPoolPubkey: string;
+  ltvPercents: number; // 40
+  borrowAPRPercents: number; // 10
+  collaterizationRate: number; // 10(%)
+  isCanStake: boolean;
+}
+
+interface BorrowNftPriceBasedParamsSuggested extends BorrowNftPriceBasedParams {
+  suggestedLoanValue: number;
+}
+
 export interface BorrowNft {
   mint: string;
   name: string;
@@ -6,37 +29,13 @@ export interface BorrowNft {
   maxLoanValue: string; // 1.003
   isCanFreeze: boolean;
   marketPubkey?: string;
-  timeBased: {
-    returnPeriodDays: number; // 14
-    ltvPercents: number; // 40
-    fee: string; // 0.100
-    feeDiscountPercents: string; // 2
-    repayValue: string; // 1.101
-    liquidityPoolPubkey: string;
-    loanValue: string; // 1.020
-    isCanStake: boolean;
-  };
-  priceBased?: {
-    liquidityPoolPubkey: string;
-    ltvPercents: number; // 40
-    borrowAPRPercents: number; // 10
-    collaterizationRate: number; // 10(%)
-    isCanStake: boolean;
-  };
+  timeBased: BorrowNftTimeBasedParams;
+  priceBased?: BorrowNftPriceBasedParams;
 }
 
-export interface BorrowNftBulk extends BorrowNft {
-  solLoanValue?: number;
-  isPriceBased?: boolean;
-  priceBased?: {
-    liquidityPoolPubkey: string;
-    ltvPercents: number;
-    borrowAPRPercents: number;
-    collaterizationRate: number;
-    isCanStake: boolean;
-    ltv?: number;
-    suggestedLoanValue?: number;
-  };
+export interface BorrowNftSuggested extends BorrowNft {
+  isPriceBased: boolean;
+  priceBased?: BorrowNftPriceBasedParamsSuggested;
 }
 
 export enum BulkTypes {
@@ -47,5 +46,5 @@ export enum BulkTypes {
 }
 
 export type BulkSuggestion = {
-  [key in BulkTypes]?: BorrowNftBulk[];
+  [key in BulkTypes]?: BorrowNftSuggested[];
 };

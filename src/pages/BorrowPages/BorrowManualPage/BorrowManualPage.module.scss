@@ -3,6 +3,13 @@
 .content {
   display: block;
 }
+.contentSidebarVisible {
+  padding-right: 343px;
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+}
 
 .nftsList {
   display: grid;

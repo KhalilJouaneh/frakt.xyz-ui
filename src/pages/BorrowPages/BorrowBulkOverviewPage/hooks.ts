@@ -8,13 +8,14 @@ import { proposeBulkLoan } from '@frakt/utils/loans';
 import { useConnection } from '@frakt/hooks';
 import { PATHS } from '@frakt/constants';
 
-import { useSelectedNfts } from '../hooks';
+import { useSelectedNfts } from '../selectedNftsState';
 
 export const useBorrowBulkOverviewPage = () => {
   const history = useHistory();
   const wallet = useWallet();
   const connection = useConnection();
-  const { selection, clearSelection } = useSelectedNfts();
+  const { selection, clearSelection, setHighlightedNftMint } =
+    useSelectedNfts();
 
   //? Go to borrow root page if bulk selection doesn't exist
   useEffect(() => {
@@ -63,6 +64,13 @@ export const useBorrowBulkOverviewPage = () => {
 
   const onBackBtnClick = () => history.goBack();
 
+  const onBulkEdit = (mint?: string) => {
+    if (mint) {
+      setHighlightedNftMint(mint);
+    }
+    history.push(PATHS.BORROW_MANUAL);
+  };
+
   return {
     selection,
     onBackBtnClick,
@@ -72,5 +80,6 @@ export const useBorrowBulkOverviewPage = () => {
     closeConfirmModal,
     loadingModalVisible,
     closeLoadingModal,
+    onBulkEdit,
   };
 };

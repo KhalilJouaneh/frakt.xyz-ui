@@ -5,11 +5,12 @@ import cx from 'classnames';
 
 import CollapsedContent from '@frakt/components/Sidebar/components/CollapsedContent';
 import Slider from '@frakt/components/Sidebar/components/Slider';
+import { BorrowNftSelected } from '@frakt/pages/BorrowPages/selectedNftsState';
 import { selectSelectedNftId } from '@frakt/state/common/selectors';
 import { selectCurrentLoanNft } from '@frakt/state/loans/selectors';
 import { commonActions } from '@frakt/state/common/actions';
 import { loansActions } from '@frakt/state/loans/actions';
-import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft } from '@frakt/api/nft';
 import SidebarLayout from '@frakt/components/Sidebar';
 import styles from './SidebarForm.module.scss';
 import BorrowForm from '../BorrowForm';
@@ -18,7 +19,7 @@ export interface SidebarFormProps {
   onDeselect?: (nft?: BorrowNft) => void;
   nfts: BorrowNft[];
   isCloseSidebar: boolean;
-  bulkNfts: BorrowNftBulk[];
+  bulkNfts: BorrowNftSelected[];
   onOpenBulk: () => void;
 }
 

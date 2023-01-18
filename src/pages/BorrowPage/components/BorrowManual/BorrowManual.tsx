@@ -20,7 +20,7 @@ import {
   selectCurrentLoanNft,
   selectPerpLoansNfts,
 } from '../../../../state/loans/selectors';
-import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
 
 interface BorrowNftProps {
   onClick: () => void;
@@ -56,7 +56,7 @@ const BorrowManual: FC<BorrowNftProps> = ({ onClick }) => {
   const [openBulk, setOpenBulk] = useState<boolean>(false);
 
   const bulkNfts = useMemo(() => {
-    return selectedNfts.map((nft: BorrowNftBulk) => {
+    return selectedNfts.map((nft: BorrowNftSuggested) => {
       const currentNft = find(propEq('mint', nft.mint))(
         perpetualNftsInfo,
       ) as any;

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { ConfirmModal } from '@frakt/components/ConfirmModal';
 import { Solana } from '@frakt/icons';
-import { BorrowNftBulk } from '@frakt/api/nft';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 
 import { BorrowHeader } from '../components/BorrowHeader';
@@ -13,6 +12,7 @@ import styles from './BorrowBulkOverviewPage.module.scss';
 import { getLoanFields } from './helpers';
 import { CARD_VALUES_TYPES } from './types';
 import { useBorrowBulkOverviewPage } from './hooks';
+import { BorrowNftSelected } from '../selectedNftsState';
 
 export const BorrowBulkOverviewPage: FC = () => {
   const {
@@ -24,13 +24,14 @@ export const BorrowBulkOverviewPage: FC = () => {
     closeConfirmModal,
     loadingModalVisible,
     closeLoadingModal,
+    onBulkEdit,
   } = useBorrowBulkOverviewPage();
 
   return (
     <AppLayout>
       <OverviewSidebar
         bulkSelection={selection}
-        onChangeAssets={() => {}}
+        onChangeAssets={() => onBulkEdit()}
         onBorrow={openConfirmModal}
       />
 
@@ -46,7 +47,11 @@ export const BorrowBulkOverviewPage: FC = () => {
           subtitle={`${selection?.length} loans in bulk`}
         />
         {selection.map((nft) => (
-          <LoanCard key={nft.mint} nft={nft} onEditClick={() => {}} />
+          <LoanCard
+            key={nft.mint}
+            nft={nft}
+            onEditClick={() => onBulkEdit(nft.mint)}
+          />
         ))}
       </div>
       <LoadingModal
@@ -70,7 +75,7 @@ export const BorrowBulkOverviewPage: FC = () => {
 };
 
 interface LoanCardprops {
-  nft: BorrowNftBulk;
+  nft: BorrowNftSelected;
   onEditClick: () => void;
 }
 const LoanCard: FC<LoanCardprops> = ({ nft, onEditClick }) => {

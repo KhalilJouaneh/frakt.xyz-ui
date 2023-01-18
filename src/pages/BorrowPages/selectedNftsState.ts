@@ -1,15 +1,21 @@
 import create from 'zustand';
 import produce from 'immer';
 
-import { BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
+
+export interface BorrowNftSelected extends BorrowNft {
+  isPriceBased: boolean; //? Did user select priceBased or timeBased
+  solLoanValue: number; //? Selected borrow value by user (in sidebar)
+}
 
 interface SelectedNftsState {
-  selection: BorrowNftBulk[];
-  setSelection: (bulkSelection: BorrowNftBulk[]) => void;
-  findNftInSelection: (mint: string) => BorrowNftBulk | null;
-  addNftToSelection: (nft: BorrowNftBulk) => void;
+  selection: BorrowNftSelected[];
+  setSelection: (bulkSelection: BorrowNftSelected[]) => void;
+  findNftInSelection: (mint: string) => BorrowNftSelected | null;
+  addNftToSelection: (nft: BorrowNftSelected) => void;
   removeNftFromSelection: (mint: string) => void;
-  toggleNftInSelection: (nft: BorrowNftBulk) => void;
+  updateNftInSelection: (nft: BorrowNftSelected) => void;
+  toggleNftInSelection: (nft: BorrowNftSelected) => void;
   clearSelection: () => void;
 
   highlightedNftMint: string | null;
@@ -55,6 +61,15 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
         state.selection = state.selection.filter(
           ({ mint }) => mint !== nftMint,
         );
+      }),
+    );
+  },
+  updateNftInSelection: (nft) => {
+    set(
+      produce((state: SelectedNftsState) => {
+        const nftToReplaceIdx =
+          state.selection.findIndex(({ mint }) => mint === nft.mint) ?? null;
+        state.selection[nftToReplaceIdx] = nft;
       }),
     );
   },
@@ -113,3 +128,27 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
       }),
     ),
 }));
+
+export const convertSuggestedNftToSelected = (
+  nft: BorrowNftSuggested,
+): BorrowNftSelected => {
+  const solLoanValue = nft.isPriceBased
+    ? nft?.priceBased.suggestedLoanValue
+    : parseFloat(nft.timeBased.loanValue);
+
+  return {
+    ...nft,
+    solLoanValue,
+  };
+};
+
+export const convertBorrowNftToSelected = (
+  nft: BorrowNft,
+): BorrowNftSelected => {
+  //? Set timeBased as default
+  return {
+    ...nft,
+    isPriceBased: false,
+    solLoanValue: parseFloat(nft.timeBased.loanValue),
+  };
+};
