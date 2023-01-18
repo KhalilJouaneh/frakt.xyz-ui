@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { claimGemFarm } from './../../utils/stake/claimGemFarm';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { useDispatch } from 'react-redux';
@@ -9,13 +8,13 @@ import { paybackLoan as paybackLoanTx } from '../../utils/loans';
 import { commonActions } from '../../state/common/actions';
 import { loansActions } from '../../state/loans/actions';
 import { useLoadingModal } from '../LoadingModal';
-import { stakeGemFarm, unstakeGemFarm } from '../../utils/stake';
+import {
+  stakeCardinal,
+  unstakeCardinal,
+  claimCardinal,
+} from '../../utils/stake';
 import { Loan } from '../../state/loans/types';
 import { useConnection } from '../../hooks';
-import {
-  DEGODS_BANK_PUBKEY,
-  DEGODS_FARM_PUBKEY,
-} from '../../utils/stake/constants';
 
 export enum RewardState {
   STAKED = 'staked',
@@ -61,7 +60,7 @@ export const useLoans = (loan: Loan) => {
       const isFullPayback = partialPercent === 100;
 
       if (isStaked && isFullPayback) {
-        await onGemUnstake();
+        await onCardinalUnstake();
       }
 
       setTransactionsLeft(null);
@@ -87,23 +86,18 @@ export const useLoans = (loan: Loan) => {
     }
   };
 
-  const onGemUnstake = async (): Promise<boolean> => {
+  const onCardinalUnstake = async (): Promise<boolean> => {
     try {
-      const { pubkey, mint, reward } = loan;
+      const { pubkey, mint } = loan;
 
       setTransactionsLeft(2);
       openLoadingModal();
 
-      const result = await unstakeGemFarm({
+      const result = await claimCardinal({
         connection,
         wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.farm,
-        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
-        isDegod: true,
       });
 
       if (!result) {
@@ -112,19 +106,11 @@ export const useLoans = (loan: Loan) => {
 
       setTransactionsLeft(1);
 
-      await claimGemFarm({
+      await unstakeCardinal({
         connection,
         wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.farm,
-        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
-        isDegod: true,
-        rewardAMint: reward?.rewardAMint,
-        rewardBMint: reward?.rewardBMint,
-        creatorWhitelistProof: reward?.creatorWhitelistProof,
       });
 
       return true;
@@ -147,7 +133,7 @@ export const useLoans = (loan: Loan) => {
       }
 
       if (isStaked) {
-        await onGemUnstake();
+        await onCardinalUnstake();
       }
 
       openLoadingModal();
@@ -173,23 +159,17 @@ export const useLoans = (loan: Loan) => {
     }
   };
 
-  const onGemStake = async (): Promise<void> => {
+  const onCardinalStake = async (): Promise<void> => {
     try {
-      const { pubkey, mint, reward } = loan;
+      const { pubkey, mint } = loan;
 
       openLoadingModal();
 
-      const result = await stakeGemFarm({
+      const result = await stakeCardinal({
         connection,
         wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.farm,
-        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
-        isDegod: true,
-        creatorWhitelistProof: reward?.creatorWhitelistProof,
       });
 
       if (!result) {
@@ -202,25 +182,17 @@ export const useLoans = (loan: Loan) => {
     }
   };
 
-  const onGemClaim = async (): Promise<void> => {
+  const onCardinalClaim = async (): Promise<void> => {
     try {
-      const { pubkey, mint, reward } = loan;
+      const { pubkey, mint } = loan;
 
       openLoadingModal();
 
-      const result = await claimGemFarm({
+      const result = await claimCardinal({
         connection,
         wallet,
-        gemFarm: DEGODS_FARM_PUBKEY,
-        gemBank: DEGODS_BANK_PUBKEY,
-        farm: reward?.farm,
-        bank: reward?.bank,
         nftMint: mint,
         loan: pubkey,
-        isDegod: true,
-        rewardAMint: reward?.rewardAMint,
-        rewardBMint: reward?.rewardBMint,
-        creatorWhitelistProof: reward?.creatorWhitelistProof,
       });
 
       if (!result) {
@@ -238,9 +210,9 @@ export const useLoans = (loan: Loan) => {
     closePartialRepayModal,
     partialRepayModalVisible,
     onPayback,
-    onGemClaim,
-    onGemStake,
-    onGemUnstake,
+    onCardinalClaim,
+    onCardinalStake,
+    onCardinalUnstake,
     closeLoadingModal,
     loadingModalVisible,
     transactionsLeft,
