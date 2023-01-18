@@ -38,7 +38,7 @@ export const claimCardinal: ClaimCardinal = async ({
       claimRewardsPaymentInfo: new web3.PublicKey(
         process.env.CLAIM_REWARDS_PAYMENT_INFO_PUBKEY,
       ),
-      rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT_PUBKEY),
+      rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
       paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1_PUBKEY),
       paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
     });
