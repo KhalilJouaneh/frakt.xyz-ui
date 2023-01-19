@@ -8,7 +8,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { web3 } from 'fbonds-core';
 
-type UseMarket = (props: { marketPubkey: web3.PublicKey }) => {
+type UseMarket = (props: { marketPubkey: string }) => {
   market: Market;
   isLoading: boolean;
 };
@@ -17,7 +17,7 @@ export const useMarket: UseMarket = ({ marketPubkey }) => {
     ['market', marketPubkey],
     () =>
       fetchCertainMarket({
-        marketPubkey: marketPubkey,
+        marketPubkey: new web3.PublicKey(marketPubkey),
       }),
     {
       enabled: !!marketPubkey,

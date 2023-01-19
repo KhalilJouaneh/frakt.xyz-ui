@@ -99,6 +99,6 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
 //? Min value -- any number less than max
 //? Max value -- loop every pair and:
 //? loanToValueSOL = collectionFloorPrice(lamports) * (validation.loanToValueFilter * 0.01 * 0.01)
-//? maxValueBonds = Math.min(bidCap, loanToValueSOL / 1e3)
+//? maxValueBonds = Math.min(edgeSettlement, loanToValueSOL / 1e3)
 //? maxValueSOLWithFee = maxValueBonds * currenSpotPrice
 //? Get biggest across all maxValueSOLWithFee

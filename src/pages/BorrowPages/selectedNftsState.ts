@@ -1,11 +1,18 @@
 import create from 'zustand';
 import produce from 'immer';
 
-import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
+import {
+  BorrowNft,
+  BorrowNftSuggested,
+  BorrowNftBondParams,
+  LoanType,
+} from '@frakt/api/nft';
 
 export interface BorrowNftSelected extends BorrowNft {
-  isPriceBased: boolean; //? Did user select priceBased or timeBased
   solLoanValue: number; //? Selected borrow value by user (in sidebar)
+
+  loanType: LoanType;
+  bondParams?: BorrowNftBondParams;
 }
 
 interface SelectedNftsState {
@@ -132,9 +139,12 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
 export const convertSuggestedNftToSelected = (
   nft: BorrowNftSuggested,
 ): BorrowNftSelected => {
-  const solLoanValue = nft.isPriceBased
-    ? nft?.priceBased.suggestedLoanValue
-    : parseFloat(nft.timeBased.loanValue);
+  const solLoanValue =
+    nft.loanType === LoanType.PRICE_BASED
+      ? nft?.priceBased.suggestedLoanValue
+      : parseFloat(nft.timeBased.loanValue);
+
+  //TODO: Insert bond logic for bulks here
 
   return {
     ...nft,
@@ -148,7 +158,7 @@ export const convertBorrowNftToSelected = (
   //? Set timeBased as default
   return {
     ...nft,
-    isPriceBased: false,
+    loanType: LoanType.TIME_BASED,
     solLoanValue: parseFloat(nft.timeBased.loanValue),
   };
 };

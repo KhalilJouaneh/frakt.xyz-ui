@@ -1,12 +1,14 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 
 import Button from '@frakt/components/Button';
 import { Slider } from '@frakt/components/Slider';
 import { Select } from '@frakt/components/Select';
+import { Market, Pair } from '@frakt/api/bonds';
 
 import { BorrowNftSelected } from '../../../selectedNftsState';
 import styles from './BorrowForm.module.scss';
-import { generateSelectOptions, getBorrowValueRange } from './helpers';
+import { SelectValue } from './helpers';
+import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
   nft: BorrowNftSelected;
@@ -14,6 +16,8 @@ interface BorrowFormProps {
   totalBorrowValue: number;
   isBulk?: boolean;
   onSubmit: () => void;
+  market?: Market;
+  pairs?: Pair[];
 }
 export const BorrowForm: FC<BorrowFormProps> = ({
   nft,
@@ -21,59 +25,46 @@ export const BorrowForm: FC<BorrowFormProps> = ({
   isBulk,
   updateNftInSelection,
   onSubmit,
+  market,
+  pairs,
 }) => {
-  const { solLoanValue } = nft;
-
-  const [minBorrowValue, maxBorrowValue] = useMemo(
-    () => getBorrowValueRange(nft),
-    [nft],
-  );
-
-  const loanTypeSelectOptions = generateSelectOptions(nft);
-
-  const loanTypeOption = loanTypeSelectOptions.find((option) =>
-    nft.isPriceBased
-      ? option.value === 'priceBased'
-      : option.value === 'timeBased',
-  );
+  const {
+    selectedBorrowValue,
+    onSliderUpdate,
+    borrowRange,
+    selectOptions,
+    selectedOption,
+    onOptionChange,
+  } = useBorrowForm({ nft, market, pairs, updateNftInSelection });
 
   return (
     <div className={styles.borrowForm}>
       <div className={styles.borrowFormDetails}>
         <div className={styles.borrowFormLtvSliderWrapper}>
           <p className={styles.borrowFormLtvSliderLabel}>
-            To borrow: {solLoanValue?.toFixed(2)} SOL{' '}
+            To borrow: {selectedBorrowValue?.toFixed(2)} SOL{' '}
           </p>
           <Slider
             marks={{
-              [minBorrowValue]: `${minBorrowValue.toFixed(2)} SOL`,
-              [maxBorrowValue]: `${maxBorrowValue.toFixed(2)} SOL`,
+              [borrowRange[0]]: `${borrowRange[0].toFixed(2)} SOL`,
+              [borrowRange[1]]: `${borrowRange[1].toFixed(2)} SOL`,
             }}
             className={styles.borrowFormLtvSlider}
-            value={solLoanValue}
+            value={selectedBorrowValue}
             step={0.1}
-            setValue={(solLoanValue) =>
-              updateNftInSelection({
-                ...nft,
-                solLoanValue,
-              })
-            }
-            min={minBorrowValue}
-            max={maxBorrowValue}
+            setValue={onSliderUpdate}
+            min={borrowRange[0]}
+            max={borrowRange[1]}
           />
         </div>
         <p className={styles.borrowFormDetailsTitle}>Duration</p>
         <Select
           className={styles.borrowFormSelect}
-          options={loanTypeSelectOptions}
-          value={loanTypeOption.value}
-          onChange={({ value }) => {
-            updateNftInSelection({
-              ...nft,
-              isPriceBased: value === 'priceBased',
-            });
+          options={selectOptions}
+          value={selectedOption}
+          onChange={(value: SelectValue) => {
+            onOptionChange(value);
           }}
-          disabled={!nft.priceBased}
         />
         {/* <LoansFields
           risk={risk}

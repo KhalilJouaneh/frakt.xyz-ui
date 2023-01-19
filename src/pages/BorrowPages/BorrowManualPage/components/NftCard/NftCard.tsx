@@ -4,10 +4,10 @@ import classNames from 'classnames/bind';
 import { Solana } from '@frakt/icons';
 
 import styles from './NftCard.module.scss';
-import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
 
 interface NftCardProps {
-  nft: BorrowNft | BorrowNftBulk;
+  nft: BorrowNft | BorrowNftSuggested;
   selected?: boolean;
   highlighted?: boolean;
   onClick?: () => void;
@@ -37,7 +37,7 @@ export const NftCard: FC<NftCardProps> = ({
 
         {selected && <div className={styles.imageSelectedOverlay} />}
 
-        <div className={styles.badgesWrapper}>
+        <div className={styles.badgesContainer}>
           {isStakeAvailable && <p className={styles.badge}>Staking support</p>}
           {!isCanFreeze && <p className={styles.badge}>Leaves wallet</p>}
         </div>

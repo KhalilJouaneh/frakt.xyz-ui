@@ -1,38 +1,30 @@
-import { FC, useMemo, useState } from 'react';
-import { sum } from 'lodash';
-import { useHistory } from 'react-router-dom';
+import { FC } from 'react';
 
 import SidebarLayout from '@frakt/components/Sidebar';
 import CollapsedContent from '@frakt/components/Sidebar/components/CollapsedContent';
-import { PATHS } from '@frakt/constants';
 import NftsCarousel from '@frakt/components/Sidebar/components/Slider';
+import { Loader } from '@frakt/components/Loader';
 
-import { useSelectedNfts } from '../../../selectedNftsState';
 import { BorrowForm } from '../BorrowForm';
+import { useSidebar } from './hooks';
 import styles from './Sidebar.module.scss';
 
 export const Sidebar: FC = () => {
   const {
-    selection,
-    highlightedNftMint,
-    hightlightNextNftInSelection,
+    nft,
+    market,
+    pairs,
+    minimizedOnMobile,
+    setMinimizedOnMobile,
+    onSubmit,
+    totalBorrowValue,
+    isBulk,
+    loading,
     removeNftFromSelection,
-    findNftInSelection,
+    hightlightNextNftInSelection,
     updateNftInSelection,
-  } = useSelectedNfts();
-
-  const nft = findNftInSelection(highlightedNftMint);
-
-  const [minimizedOnMobile, setMinimizedOnMobile] = useState<boolean>(false);
-
-  const history = useHistory();
-  const goToBulkOverviewPage = () => history.push(PATHS.BORROW_BULK_OVERVIEW);
-
-  const totalBorrowValue = useMemo(() => {
-    return sum(selection.map(({ solLoanValue }) => solLoanValue));
-  }, [selection]);
-
-  const isBulk = selection.length > 1;
+    goToBulkOverviewPage,
+  } = useSidebar();
 
   return (
     <SidebarLayout
@@ -48,20 +40,27 @@ export const Sidebar: FC = () => {
         )} SOL`}
       />
       <div className={styles.sidebar}>
-        <NftsCarousel
-          nfts={nft}
-          onDeselect={() => removeNftFromSelection(nft.mint)}
-          onPrev={() => hightlightNextNftInSelection(true)}
-          onNext={() => hightlightNextNftInSelection()}
-          isBulkLoan={isBulk}
-        />
-        <BorrowForm
-          nft={nft}
-          updateNftInSelection={updateNftInSelection}
-          totalBorrowValue={totalBorrowValue}
-          isBulk={isBulk}
-          onSubmit={goToBulkOverviewPage}
-        />
+        {loading && <Loader size="large" />}
+        {!loading && (
+          <>
+            <NftsCarousel
+              nfts={nft}
+              onDeselect={() => removeNftFromSelection(nft.mint)}
+              onPrev={() => hightlightNextNftInSelection(true)}
+              onNext={() => hightlightNextNftInSelection()}
+              isBulkLoan={isBulk}
+            />
+            <BorrowForm
+              nft={nft}
+              updateNftInSelection={updateNftInSelection}
+              totalBorrowValue={totalBorrowValue}
+              isBulk={isBulk}
+              onSubmit={onSubmit}
+              market={market}
+              pairs={pairs}
+            />
+          </>
+        )}
       </div>
     </SidebarLayout>
   );
