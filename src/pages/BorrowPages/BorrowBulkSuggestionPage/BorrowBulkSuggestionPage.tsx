@@ -2,7 +2,6 @@ import { FC } from 'react';
 import classNames from 'classnames';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
-import NoSuitableNft from '@frakt/pages/BorrowPage/components/NoSuitableNft';
 import { Loader } from '@frakt/components/Loader';
 import { BorrowNft, BulkSuggestion, BulkTypes } from '@frakt/api/nft';
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
@@ -10,6 +9,7 @@ import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
 
 import { BorrowHeader } from '../components/BorrowHeader';
+import { NoSuitableNft } from '../components/NoSuitableNft';
 import { calcBulkTotalValue } from '../helpers';
 import { useBorrowBulkSuggestionPage } from './hooks';
 import styles from './BorrowBulkSuggestionPage.module.scss';

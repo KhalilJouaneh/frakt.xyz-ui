@@ -3,7 +3,14 @@ export { default as HomePage } from './DashboardPage';
 export { default as LendPage } from './LendPage';
 export { default as LiquidationsPage } from './LiquidationsPage';
 export { default as LoansPage } from './LoansPage';
-export { default as BorrowPage } from './BorrowPage';
 export { default as MarketsPage } from './MarketsPage';
 export { default as MarketPage } from './MarketPage';
 export { default as PoolsCreationPage } from './PoolsCreationPage';
+
+export {
+  BorrowRootPage,
+  BorrowManualPage,
+  BorrowBulkSuggestionPage,
+  BorrowBulkOverviewPage,
+  BorrowSuccessPage,
+} from './BorrowPages';

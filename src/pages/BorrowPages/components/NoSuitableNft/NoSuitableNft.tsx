@@ -10,7 +10,7 @@ interface NoSuitableNftProps {
   className?: string;
 }
 
-const NoSuitableNft: FC<NoSuitableNftProps> = () => {
+export const NoSuitableNft: FC<NoSuitableNftProps> = () => {
   return (
     <div className={styles.noSuitableMessageWrapper}>
       <p className={styles.noSuitableMessage}>No suitable NFTs found</p>

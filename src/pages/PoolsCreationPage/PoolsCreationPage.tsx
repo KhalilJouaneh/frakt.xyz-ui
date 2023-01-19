@@ -6,10 +6,9 @@ import TokenField from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import OrderBook from '../MarketPage/components/OrderBook/OrderBook';
 import { SliderGradient } from './components/SliderGradient/SliderGradient';
-import Header from '../BorrowPage/components/Header';
 import Button from '../../components/Button';
-import Tooltip from '@frakt/components/Tooltip';
 import { LoadingModal } from '@frakt/components/LoadingModal';
+import Tooltip from '@frakt/components/Tooltip';
 import SizeField from './components/SizeFiled/SizeField';
 import RadioButton from './components/RadioButton/RadioButton';
 
@@ -21,6 +20,7 @@ import { useNativeAccount } from '@frakt/utils/accounts';
 import { Solana } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
+import { Header } from './components/Header';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -57,7 +57,7 @@ const PoolsCreationPage: FC = () => {
         <Header
           className={styles.headerWrapper}
           title="Offer parameters"
-          onClick={goBack}
+          onBackBtnClick={goBack}
         />
 
         <div className={styles.block}>

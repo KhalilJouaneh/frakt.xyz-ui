@@ -1,6 +1,5 @@
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { FC, useRef, useState } from 'react';
-import { web3 } from 'fbonds-core';
 
 import styles from './MarketPage.module.scss';
 import Button from '@frakt/components/Button';
@@ -12,7 +11,6 @@ import FilterCollections from '@frakt/components/FilterCollections';
 import SortControl from '@frakt/components/SortControl';
 import { Controller } from 'react-hook-form';
 import Toggle from '@frakt/components/Toggle';
-import { SORT_VALUES } from '../BorrowPage';
 import { SearchInput } from '@frakt/components/SearchInput';
 import Bond from './components/Bond/Bond';
 import OrderBook from './components/OrderBook/OrderBook';
@@ -22,6 +20,17 @@ import { useOnClickOutside } from '@frakt/hooks';
 import { PATHS } from '@frakt/constants';
 import { Loader } from '@frakt/components/Loader';
 import { useMarket } from '@frakt/utils/bonds';
+
+const SORT_VALUES = [
+  {
+    label: <span>Name</span>,
+    value: 'name_',
+  },
+  {
+    label: <span>Loan value</span>,
+    value: 'maxLoanValue_',
+  },
+];
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -54,7 +63,7 @@ const MarketPage: FC = () => {
   useOnClickOutside(ref, closeFiltersModal);
 
   const { market, isLoading } = useMarket({
-    marketPubkey: new web3.PublicKey(marketPubkey),
+    marketPubkey,
   });
 
   return (

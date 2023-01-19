@@ -1,12 +1,11 @@
+import { chunk } from 'lodash';
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
 import { captureSentryError } from '../sentry';
-import { showSolscanLinkNotification } from '../transactions';
-import { chunk } from 'lodash';
-import { mergeIxsIntoTxn } from '../../pages/BorrowPage/helpers';
+import { mergeIxsIntoTxn, showSolscanLinkNotification } from '../transactions';
 
 type ProposeLoan = (props: {
   connection: web3.Connection;

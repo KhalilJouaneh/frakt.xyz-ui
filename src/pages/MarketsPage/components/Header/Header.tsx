@@ -1,24 +1,27 @@
 import { FC } from 'react';
 import cx from 'classnames';
 
-import styles from './Header.module.scss';
 import { Arrow } from '@frakt/icons';
+import styles from './Header.module.scss';
 
 interface HeaderProps {
-  onClick?: () => void;
+  onBackBtnClick?: () => void;
   title: string;
   subtitle?: string;
   className?: string;
 }
 
-const Header: FC<HeaderProps> = ({ onClick, title, subtitle, className }) => {
+export const Header: FC<HeaderProps> = ({
+  onBackBtnClick,
+  title,
+  subtitle,
+  className,
+}) => {
   return (
     <div className={styles.wrapper}>
-      {onClick && (
-        <div>
-          <div onClick={onClick} className={styles.btnBack}>
-            <Arrow />
-          </div>
+      {onBackBtnClick && (
+        <div onClick={onBackBtnClick} className={styles.btnBack}>
+          <Arrow />
         </div>
       )}
       <div className={cx(styles.header, className)}>
@@ -30,5 +33,3 @@ const Header: FC<HeaderProps> = ({ onClick, title, subtitle, className }) => {
     </div>
   );
 };
-
-export default Header;

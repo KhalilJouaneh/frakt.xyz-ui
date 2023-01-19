@@ -3,7 +3,6 @@ import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { SearchInput } from '../../components/SearchInput';
-import Header from '../BorrowPage/components/Header';
 import Button from '../../components/Button';
 import FiltersDropdown, {
   useFiltersModal,
@@ -20,6 +19,7 @@ import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/components/FilterCollections';
 import styles from './MarketsPage.module.scss';
 import { useMarketsPreview } from './hooks';
+import { Header } from './components/Header';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',

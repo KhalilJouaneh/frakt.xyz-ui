@@ -4,7 +4,6 @@ export const PATHS = {
   PROFILE: '/profile',
   PAGE_404: '/404',
   WALLET_PUBKEY: '/:walletPubkey',
-  BORROW: '/borrow-old',
   BORROW_ROOT: '/borrow',
   BORROW_BULK_SUGGESTION: '/borrow/bulk-suggestion',
   BORROW_BULK_OVERVIEW: '/borrow/bulk-overview',

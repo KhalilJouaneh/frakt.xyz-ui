@@ -1,11 +1,10 @@
 import { web3, loans as loansService, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
+import { Loan } from '@frakt/state/loans/types';
 import { chunk } from 'lodash';
 
-import { mergeIxsIntoTxn } from '../../pages/BorrowPage/helpers';
-import { showSolscanLinkNotification } from '../transactions';
+import { mergeIxsIntoTxn, showSolscanLinkNotification } from '../transactions';
 import { captureSentryError } from '../sentry';
-import { Loan } from '@frakt/state/loans/types';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '../';
 
