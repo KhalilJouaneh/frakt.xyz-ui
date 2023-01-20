@@ -109,7 +109,7 @@ export const useBorrowForm: UseBorrowForm = ({
     if (type === LoanType.BOND) {
       const cheapestPair = getCheapestPairForBorrowValue({
         borrowValue,
-        valuation: parseFloat(nft.valuation),
+        valuation: nft?.bondParams?.market?.oracleFloor?.floor / 1e9,
         pairs,
         duration: duration,
       });

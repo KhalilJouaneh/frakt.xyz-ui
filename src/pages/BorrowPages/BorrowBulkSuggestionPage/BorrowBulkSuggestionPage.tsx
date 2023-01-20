@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Loader } from '@frakt/components/Loader';
-import { BorrowNft, BulkSuggestion, BulkTypes } from '@frakt/api/nft';
+import { BorrowNftSuggested, BulkSuggestion, BulkTypes } from '@frakt/api/nft';
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
@@ -60,7 +60,7 @@ export const BorrowBulkSuggestionPage: FC = () => {
 };
 
 interface BulkSuggestionProps {
-  bulk: BorrowNft[];
+  bulk: BorrowNftSuggested[];
   type: BulkTypes;
   onSelectClick: () => void;
 }

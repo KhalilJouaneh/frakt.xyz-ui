@@ -1,7 +1,9 @@
-import { BorrowNftBulk } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/nft';
+
+import { BorrowNftSelected } from '../selectedNftsState';
 import { CARD_VALUES_TYPES } from './types';
 
-const getParsedTimeBasedLoanValues = (nft: BorrowNftBulk) => {
+const getParsedTimeBasedLoanValues = (nft: BorrowNftSelected) => {
   const { timeBased, valuation } = nft;
   const valuationNumber = parseFloat(valuation);
 
@@ -34,24 +36,19 @@ const getParsedTimeBasedLoanValues = (nft: BorrowNftBulk) => {
   };
 };
 
-const getParsedPriceBasedLoanValues = (nft: BorrowNftBulk) => {
+const getParsedPriceBasedLoanValues = (nft: BorrowNftSelected) => {
   const { valuation: valuationString, priceBased, maxLoanValue } = nft;
 
   const valuation = parseFloat(valuationString);
-  const suggestedLoanValue = priceBased?.suggestedLoanValue;
 
   const currentLtvPercent = (nft?.solLoanValue / valuation) * 100;
 
   const currentLoanValue = (valuation * currentLtvPercent) / 100;
-  const loanValue = currentLoanValue || suggestedLoanValue;
+  const loanValue = currentLoanValue;
 
-  const isPriceBased = !!nft?.priceBased;
+  const fee = parseFloat(maxLoanValue) * 0.01;
 
-  const suggestedFee = priceBased?.suggestedLoanValue * 0.01;
-  const fee = (isPriceBased && suggestedFee) || parseFloat(maxLoanValue) * 0.01;
-
-  const suggestedLtvPersent = (suggestedLoanValue / valuation) * 100;
-  const ltv = currentLtvPercent || parseFloat(suggestedLtvPersent.toFixed(0));
+  const ltv = currentLtvPercent;
 
   const borrowAPY = priceBased?.borrowAPRPercents;
   const collaterizationRateValue = priceBased?.collaterizationRate / 100;
@@ -68,13 +65,15 @@ const getParsedPriceBasedLoanValues = (nft: BorrowNftBulk) => {
 };
 
 export const getLoanFields = (
-  nft: BorrowNftBulk,
+  nft: BorrowNftSelected,
 ): Array<{
   title: string;
   value: string;
   valueType: CARD_VALUES_TYPES;
 }> => {
-  const { isPriceBased } = nft;
+  const { loanType } = nft;
+
+  const isPriceBased = loanType === LoanType.PRICE_BASED;
 
   const {
     timeBasedFee,

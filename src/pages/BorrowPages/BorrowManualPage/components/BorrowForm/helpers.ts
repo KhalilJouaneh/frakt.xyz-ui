@@ -94,10 +94,10 @@ export const getBorrowValueRange: GetBorrowValueRange = ({
     return getPairMaxValue({
       pair: getPairWithMaxBorrowValue({
         pairs: bondsParams.pairs,
-        collectionFloor: bondsParams.market.oracleFloor.floor,
+        collectionFloor: bondsParams.market.oracleFloor.floor / 1e9,
         duration: bondsParams?.duration,
       }),
-      collectionFloor: valuation,
+      collectionFloor: bondsParams.market.oracleFloor.floor / 1e9,
     });
   })();
 

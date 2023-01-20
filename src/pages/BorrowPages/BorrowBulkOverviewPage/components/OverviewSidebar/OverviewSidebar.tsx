@@ -2,8 +2,8 @@ import { FC, useMemo } from 'react';
 
 import { Solana } from '@frakt/icons';
 import Button from '@frakt/components/Button';
-import { BorrowNftBulk } from '@frakt/api/nft';
 import { MAX_TIME_BASED_LOAN_DURATION } from '@frakt/utils/loans';
+import { BorrowNftSelected } from '@frakt/pages/BorrowPages/selectedNftsState';
 
 import styles from './OverviewSidebar.module.scss';
 import {
@@ -11,9 +11,10 @@ import {
   calcFeePerDay,
   getFeesOnCertainDay,
 } from '../../../helpers';
+import { LoanType } from '@frakt/api/nft';
 
 interface OverviewSidebarProps {
-  bulkSelection: BorrowNftBulk[];
+  bulkSelection: BorrowNftSelected[];
   onChangeAssets: () => void;
   onBorrow: () => void;
 }
@@ -32,9 +33,9 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
 
   const hideFeeOnMaxTimeBasedDay = useMemo(() => {
     return !!bulkSelection.find(
-      ({ timeBased, isPriceBased }) =>
+      ({ timeBased, loanType }) =>
         timeBased.returnPeriodDays === MAX_TIME_BASED_LOAN_DURATION ||
-        isPriceBased,
+        loanType === LoanType.PRICE_BASED,
     );
   }, [bulkSelection]);
 

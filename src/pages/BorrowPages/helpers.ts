@@ -1,19 +1,27 @@
 import { filter, sum, map } from 'lodash';
 
-import { BorrowNft, BorrowNftBulk } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested, LoanType } from '@frakt/api/nft';
+import { BorrowNftSelected } from './selectedNftsState';
 
-export const calcBulkTotalValue = (bulk: BorrowNftBulk[]) => {
-  const priceBasedLoans: BorrowNftBulk[] = filter(
+export const calcBulkTotalValue = (
+  bulk: Array<BorrowNftSuggested | BorrowNftSelected>,
+) => {
+  const priceBasedLoans = filter(
     bulk,
-    (nft) => nft?.isPriceBased,
+    (nft) => nft?.loanType === LoanType.PRICE_BASED,
   );
-  const timeBasedLoans: BorrowNftBulk[] = filter(
+  const timeBasedLoans = filter(
     bulk,
-    (nft) => !nft?.isPriceBased,
+    (nft) => nft?.loanType === LoanType.TIME_BASED,
   );
 
   const priceBasedLoansValue =
-    sum(map(priceBasedLoans, (nft) => nft?.priceBased.suggestedLoanValue)) || 0;
+    sum(
+      map(
+        priceBasedLoans,
+        (nft) => (nft?.priceBased as any)?.suggestedLoanValue,
+      ),
+    ) || 0;
 
   const timeBasedLoansValue =
     sum(map(timeBasedLoans, ({ maxLoanValue }) => parseFloat(maxLoanValue))) ||
@@ -52,24 +60,20 @@ export const calcFeesForPriceBasedLoan = (nft: BorrowNft, ltv: number) => {
   return { feePerDay, upfrontFee };
 };
 
-export const calcFeePerDay = (selectedBulk: BorrowNftBulk[]): number => {
+export const calcFeePerDay = (selectedBulk: BorrowNftSelected[]): number => {
   return sum(
     selectedBulk.map((nft): number => {
       const { valuation, timeBased } = nft;
       const valuationNumber = parseFloat(valuation);
-
-      const suggestedLoanValue = nft?.priceBased?.suggestedLoanValue;
-      const suggestedLtvPersent = (suggestedLoanValue / valuationNumber) * 100;
 
       const rawLtv = (nft?.solLoanValue / valuationNumber) * 100;
 
       const timeBasedLtv = timeBased.ltvPercents;
       const priceBasedLtv = nft?.priceBased?.ltvPercents;
 
-      const ltv =
-        rawLtv || suggestedLtvPersent || priceBasedLtv || timeBasedLtv;
+      const ltv = rawLtv || priceBasedLtv || timeBasedLtv;
 
-      if (nft.isPriceBased) {
+      if (nft.loanType === LoanType.PRICE_BASED) {
         return calcFeesForPriceBasedLoan(nft, ltv).feePerDay;
       }
 
@@ -79,13 +83,14 @@ export const calcFeePerDay = (selectedBulk: BorrowNftBulk[]): number => {
 };
 
 export const getFeesOnCertainDay = (
-  selectedBulk: BorrowNftBulk[],
+  selectedBulk: BorrowNftSelected[],
   day: number,
 ) => {
-  const filteredLoans = selectedBulk.filter(
-    ({ isPriceBased, timeBased }) =>
-      isPriceBased || day <= timeBased.returnPeriodDays,
-  );
+  const filteredLoans = selectedBulk.filter(({ loanType, timeBased }) => {
+    return (
+      loanType === LoanType.PRICE_BASED || day <= timeBased.returnPeriodDays
+    );
+  });
 
   return calcFeePerDay(filteredLoans) * day;
 };
