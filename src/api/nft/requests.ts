@@ -1,5 +1,6 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
 import axios from 'axios';
+
 import { BorrowNft, BulkSuggestion } from './types';
 
 //TODO: Change to main backend on release
@@ -60,4 +61,17 @@ export const fetchMaxBorrowValue: FetchMaxBorrowValue = async ({
   );
 
   return data?.maxBorrow ?? 0;
+};
+
+type GetNftMerkleTreeProof = (props: {
+  mint: web3.PublicKey;
+}) => Promise<Buffer[] | null>;
+export const getNftMerkleTreeProof: GetNftMerkleTreeProof = async ({
+  mint,
+}) => {
+  const { data } = await axios.get<{ proof: Buffer[] | null }>(
+    `https://${BACKEND_DOMAIN}/nft/proof/${mint?.toBase58()}`,
+  );
+
+  return data.proof || null;
 };

@@ -7,7 +7,6 @@ import {
   PairValidationType,
   PairState,
   PairType,
-  WhitelistType,
 } from 'fbonds-core/lib/cross-mint-amm/types';
 
 interface FMarket {
@@ -19,6 +18,12 @@ interface FMarket {
   updatedAt: string;
   whitelistQuantity: number;
   hadoMarket: string;
+}
+
+export enum WhitelistType {
+  NFT = 'nft',
+  CREATOR = 'creator',
+  MERKLE_TREE = 'merkleTree',
 }
 
 interface MarketWhitelistEntry {
@@ -59,7 +64,7 @@ export interface Market {
   image: string;
   name: string;
   fraktMarket: FMarket;
-  whitelistEntries: Array<MarketWhitelistEntry>;
+  whitelistEntry: MarketWhitelistEntry;
   oracleFloor: MarketOracle;
 }
 

@@ -1,9 +1,11 @@
-import { PUBKEY_PLACEHOLDER, sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import { fbondFactory } from 'fbonds-core/lib/fbond-protocol/functions';
 import { validateAndSellNftToTokenToNftPair } from 'fbonds-core/lib/cross-mint-amm/functions/router';
-import { Market, Pair } from '@frakt/api/bonds';
+
+import { Market, Pair, WhitelistType } from '@frakt/api/bonds';
+import { getNftMerkleTreeProof } from '@frakt/api/nft';
+import { PUBKEY_PLACEHOLDER, sendTxnPlaceHolder } from '@frakt/utils';
 
 import {
   BONDS_ADMIN_PUBKEY,
@@ -31,6 +33,13 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
 }) => {
   const amountToReturn =
     Math.trunc((borrowValue * 1e9) / pair.currentSpotPrice) * 1e3;
+
+  const proof = await (async () => {
+    if (market.whitelistEntry?.whitelistType !== WhitelistType.MERKLE_TREE) {
+      return [];
+    }
+    return await getNftMerkleTreeProof({ mint: new web3.PublicKey(nftMint) });
+  })();
 
   const {
     fbond: bondPubkey,
@@ -65,7 +74,7 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
           market.oracleFloor?.publicKey || PUBKEY_PLACEHOLDER,
         ),
         whitelistEntry: new web3.PublicKey(
-          market.whitelistEntries?.[0]?.publicKey || PUBKEY_PLACEHOLDER,
+          market.whitelistEntry?.publicKey || PUBKEY_PLACEHOLDER,
         ),
         hadoMarket: new web3.PublicKey(pair.hadoMarket),
         pair: new web3.PublicKey(pair.publicKey),
@@ -77,7 +86,7 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
         bondsValidationAdapterProgram: BONDS_VALIDATION_PROGRAM_PUBKEY,
       },
       args: {
-        proof: [],
+        proof: proof,
         amountToSell: amountToReturn / 1e3, //? amount of fbond tokens decimals
         minAmountToGet: (amountToReturn / 1e3) * pair.currentSpotPrice, //? SOL lamports
         skipFailed: false,

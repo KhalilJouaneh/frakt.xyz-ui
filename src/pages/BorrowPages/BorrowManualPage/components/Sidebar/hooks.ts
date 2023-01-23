@@ -52,28 +52,34 @@ export const useSidebar = () => {
   const wallet = useWallet();
 
   const onSubmit = async () => {
-    if (isBulk) {
-      return goToBulkOverviewPage();
-    }
+    try {
+      if (isBulk) {
+        return goToBulkOverviewPage();
+      }
 
-    if (selection[0] && selection[0].loanType === LoanType.BOND) {
-      const nft = selection[0];
-      const { bondParams, solLoanValue } = nft;
-      const { transaction, signers } = await makeCreateBondTransactions({
-        nftMint: nft.mint,
-        market: bondParams.market,
-        pair: bondParams.pair,
-        borrowValue: solLoanValue,
-        connection,
-        wallet,
-      });
+      if (selection[0] && selection[0].loanType === LoanType.BOND) {
+        const nft = selection[0];
+        const { bondParams, solLoanValue } = nft;
+        const { transaction, signers } = await makeCreateBondTransactions({
+          nftMint: nft.mint,
+          market: bondParams.market,
+          pair: bondParams.pair,
+          borrowValue: solLoanValue,
+          connection,
+          wallet,
+        });
 
-      await signAndConfirmTransaction({
-        connection,
-        transaction,
-        signers,
-        wallet,
-      });
+        await signAndConfirmTransaction({
+          connection,
+          transaction,
+          signers,
+          wallet,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      // eslint-disable-next-line no-console
+      console.warn(error.logs?.join('\n'));
     }
   };
 
