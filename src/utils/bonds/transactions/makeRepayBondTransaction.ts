@@ -1,3 +1,4 @@
+import { Loan } from '@frakt/api/loans';
 import { sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
@@ -5,10 +6,7 @@ import { management } from 'fbonds-core/lib/fbond-protocol/functions/';
 import { BONDS_ADMIN_PUBKEY, BONDS_PROGRAM_PUBKEY } from '../constants';
 
 type MakeRepayBondTransaction = (params: {
-  bondPubkey: string;
-  bondTokenMint: string;
-  bondCollateralOrSolReceiver: string;
-  collateralTokenMint: string;
+  loan: Loan;
   connection: web3.Connection;
   wallet: WalletContextState;
 }) => Promise<{
@@ -17,10 +15,7 @@ type MakeRepayBondTransaction = (params: {
 }>;
 
 export const makeRepayBondTransaction: MakeRepayBondTransaction = async ({
-  bondPubkey,
-  bondTokenMint,
-  bondCollateralOrSolReceiver,
-  collateralTokenMint,
+  loan,
   wallet,
   connection,
 }) => {
@@ -28,11 +23,11 @@ export const makeRepayBondTransaction: MakeRepayBondTransaction = async ({
     await management.repayFBond({
       accounts: {
         adminPubkey: BONDS_ADMIN_PUBKEY,
-        fbond: new web3.PublicKey(bondPubkey),
-        fbondsTokenMint: new web3.PublicKey(bondTokenMint),
-        bondCollateralOrSolReceiver: new web3.PublicKey(
-          bondCollateralOrSolReceiver,
-        ),
+        fbond: new web3.PublicKey(loan.pubkey),
+        fbondsTokenMint: new web3.PublicKey(loan.bondParams.bondTokenMint),
+        bondCollateralOrSolReceiver: loan.bondParams.collateralOrSolReceiver
+          ? new web3.PublicKey(loan.bondParams.collateralOrSolReceiver)
+          : undefined,
         userPubkey: wallet.publicKey,
       },
       connection,
@@ -43,8 +38,8 @@ export const makeRepayBondTransaction: MakeRepayBondTransaction = async ({
   const { instructions: getCollateralIxs, signers: getCollateralSigners } =
     await management.getRepaidCollateral({
       accounts: {
-        collateralTokenMint: new web3.PublicKey(collateralTokenMint),
-        fbond: new web3.PublicKey(bondPubkey),
+        collateralTokenMint: new web3.PublicKey(loan.nft.mint),
+        fbond: new web3.PublicKey(loan.pubkey),
         userPubkey: wallet.publicKey,
       },
       args: {

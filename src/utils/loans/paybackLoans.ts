@@ -1,97 +1,61 @@
-import { web3, loans as loansService, BN } from '@frakt-protocol/frakt-sdk';
+import { web3 } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { Loan } from '@frakt/state/loans/types';
-import { chunk } from 'lodash';
 
-import { mergeIxsIntoTxn, showSolscanLinkNotification } from '../transactions';
+import { Loan, LoanType } from '@frakt/api/loans';
+
+import { showSolscanLinkNotification } from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '../';
+import { makeRepayBondTransaction } from '../bonds';
+import { makePaybackLoanTransaction } from './makePaybackLoanTransaction';
 
 type PaybackLoans = (props: {
   connection: web3.Connection;
   wallet: WalletContextState;
   loans: Loan[];
-  paybackAmount?: BN;
 }) => Promise<boolean>;
-
-const IX_PER_TXN = 3;
 
 export const paybackLoans: PaybackLoans = async ({
   connection,
   wallet,
   loans,
-  paybackAmount,
 }): Promise<boolean> => {
-  const transactions = [];
-
   try {
-    for (let index = 0; index < loans.length; index++) {
-      const {
-        mint,
-        pubkey,
-        isGracePeriod,
-        liquidityPool,
-        collectionInfo,
-        royaltyAddress,
-        liquidationLot,
-      } = loans[index];
-
-      if (isGracePeriod) {
-        const { ixs } = await loansService.paybackLoanWithGraceIx({
-          programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-          connection,
-          user: wallet.publicKey,
-          admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
-          liquidationLot: new web3.PublicKey(liquidationLot),
-          loan: new web3.PublicKey(pubkey),
-          nftMint: new web3.PublicKey(mint),
-          liquidityPool: new web3.PublicKey(liquidityPool),
-          collectionInfo: new web3.PublicKey(collectionInfo),
-          royaltyAddress: new web3.PublicKey(royaltyAddress),
-        });
-
-        transactions.push({ instructions: ixs });
-      } else {
-        const { paybackLoanIx } = await loansService.paybackLoanIx({
-          programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
-          connection,
-          user: wallet?.publicKey,
-          admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
-          loan: new web3.PublicKey(pubkey),
-          nftMint: new web3.PublicKey(mint),
-          liquidityPool: new web3.PublicKey(liquidityPool),
-          collectionInfo: new web3.PublicKey(collectionInfo),
-          royaltyAddress: new web3.PublicKey(royaltyAddress),
-          paybackAmount,
-        });
-
-        transactions.push({ instructions: paybackLoanIx });
-      }
-    }
-
-    const ixsDataChunks = chunk(transactions, IX_PER_TXN);
-
-    const txnData = ixsDataChunks.map((ixsAndSigners) =>
-      mergeIxsIntoTxn(ixsAndSigners),
+    const transactionsAndSigners = await Promise.all(
+      loans.map(async (loan) => {
+        if (loan.loanType === LoanType.BOND) {
+          return await makeRepayBondTransaction({
+            loan,
+            wallet,
+            connection,
+          });
+        } else {
+          return await makePaybackLoanTransaction({
+            loan,
+            wallet,
+            connection,
+          });
+        }
+      }),
     );
 
     const { blockhash, lastValidBlockHeight } =
       await connection.getLatestBlockhash();
 
-    txnData.forEach(({ transaction }) => {
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = wallet?.publicKey;
-    });
+    const transactions = transactionsAndSigners.map(
+      ({ transaction, signers }) => {
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = wallet?.publicKey;
+        if (signers.length) {
+          transaction.sign(...signers);
+        }
 
-    const txn = await txnData.map(({ transaction, signers }) => {
-      if (signers[0]) {
-        transaction.sign(...signers);
-      }
-      return transaction;
-    });
+        return transaction;
+      },
+    );
 
-    const signedTransactions = await wallet?.signAllTransactions(txn);
+    const signedTransactions = await wallet?.signAllTransactions(transactions);
 
     const txids = await Promise.all(
       signedTransactions.map((signedTransaction) =>

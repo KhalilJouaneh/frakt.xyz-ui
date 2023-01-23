@@ -5,8 +5,8 @@ import {
   BorrowNft,
   BorrowNftSuggested,
   BorrowNftBondParams,
-  LoanType,
 } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
 
 export interface BorrowNftSelected extends BorrowNft {
   solLoanValue: number; //? Selected borrow value by user (in sidebar)

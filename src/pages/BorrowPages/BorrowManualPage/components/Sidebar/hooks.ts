@@ -10,7 +10,7 @@ import {
   useMarket,
   useMarketPairs,
 } from '@frakt/utils/bonds';
-import { LoanType } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
 import { useConnection } from '@frakt/hooks';
 
 import { useSelectedNfts } from '../../../selectedNftsState';

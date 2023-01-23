@@ -4,6 +4,7 @@ import { Solana } from '@frakt/icons';
 import Button from '@frakt/components/Button';
 import { MAX_TIME_BASED_LOAN_DURATION } from '@frakt/utils/loans';
 import { BorrowNftSelected } from '@frakt/pages/BorrowPages/selectedNftsState';
+import { LoanType } from '@frakt/api/loans';
 
 import styles from './OverviewSidebar.module.scss';
 import {
@@ -11,7 +12,6 @@ import {
   calcFeePerDay,
   getFeesOnCertainDay,
 } from '../../../helpers';
-import { LoanType } from '@frakt/api/nft';
 
 interface OverviewSidebarProps {
   bulkSelection: BorrowNftSelected[];

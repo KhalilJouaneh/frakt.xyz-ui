@@ -3,32 +3,31 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { useDispatch } from 'react-redux';
 
-import { usePartialRepayModal } from '../PartialRepayModal';
-import { paybackLoan as paybackLoanTx } from '../../utils/loans';
-import { commonActions } from '../../state/common/actions';
-import { loansActions } from '../../state/loans/actions';
-import { useLoadingModal } from '../LoadingModal';
+import { Loan, RewardState, LoanType } from '@frakt/api/loans';
+
+import { usePartialRepayModal } from '../../../../components/PartialRepayModal';
+import { paybackLoan } from '../../../../utils/loans';
+import { commonActions } from '../../../../state/common/actions';
+import { useLoadingModal } from '../../../../components/LoadingModal';
 import {
   stakeCardinal,
   unstakeCardinal,
   claimCardinal,
-} from '../../utils/stake';
-import { Loan } from '../../state/loans/types';
-import { useConnection } from '../../hooks';
+} from '../../../../utils/stake';
+import { useConnection } from '../../../../hooks';
+import { useHiddenLoansPubkeys } from '../../loansState';
 
-export enum RewardState {
-  STAKED = 'staked',
-  UNSTAKED = 'unstaked',
-}
-
-export const useLoans = (loan: Loan) => {
+export const useLoanCard = (loan: Loan) => {
   const wallet = useWallet();
   const connection = useConnection();
   const dispatch = useDispatch();
 
+  const { addHiddenLoansPubkeys } = useHiddenLoansPubkeys();
+
   const [transactionsLeft, setTransactionsLeft] = useState<number>(null);
 
-  const isStaked = loan?.reward?.stakeState === RewardState.STAKED;
+  const isStaked =
+    loan?.classicParams?.rewards?.stakeState === RewardState.STAKED;
 
   const {
     visible: loadingModalVisible,
@@ -42,8 +41,8 @@ export const useLoans = (loan: Loan) => {
     close: closePartialRepayModal,
   } = usePartialRepayModal();
 
-  const removeTokenOptimistic = (mint: string) => {
-    dispatch(loansActions.addHiddenLoanNftMint(mint));
+  const removeTokenOptimistic = (pubkey: string) => {
+    addHiddenLoansPubkeys(pubkey);
   };
 
   const showConfetti = (): void => {
@@ -66,7 +65,7 @@ export const useLoans = (loan: Loan) => {
       setTransactionsLeft(null);
       openLoadingModal();
 
-      const result = await paybackLoanTx({
+      const result = await paybackLoan({
         connection,
         wallet,
         loan,
@@ -78,17 +77,22 @@ export const useLoans = (loan: Loan) => {
       }
 
       showConfetti();
+      if (isFullPayback) {
+        removeTokenOptimistic(loan.pubkey);
+      }
     } catch (error) {
       console.error(error);
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
     } finally {
       setTransactionsLeft(null);
       closeLoadingModal();
     }
   };
 
-  const onCardinalUnstake = async (): Promise<boolean> => {
+  const onCardinalUnstake = async () => {
     try {
-      const { pubkey, mint } = loan;
+      const { pubkey, nft } = loan;
 
       setTransactionsLeft(2);
       openLoadingModal();
@@ -96,7 +100,7 @@ export const useLoans = (loan: Loan) => {
       const result = await claimCardinal({
         connection,
         wallet,
-        nftMint: mint,
+        nftMint: nft.mint,
         loan: pubkey,
       });
 
@@ -109,7 +113,7 @@ export const useLoans = (loan: Loan) => {
       await unstakeCardinal({
         connection,
         wallet,
-        nftMint: mint,
+        nftMint: nft.mint,
         loan: pubkey,
       });
 
@@ -125,9 +129,9 @@ export const useLoans = (loan: Loan) => {
 
   const onPayback = async () => {
     try {
-      const { isPriceBased, isGracePeriod } = loan;
+      const { loanType, gracePeriod } = loan;
 
-      if (isPriceBased && !isGracePeriod) {
+      if (loanType === LoanType.PRICE_BASED && !gracePeriod) {
         openPartialRepayModal();
         return;
       }
@@ -138,7 +142,7 @@ export const useLoans = (loan: Loan) => {
 
       openLoadingModal();
 
-      const result = await paybackLoanTx({
+      const result = await paybackLoan({
         connection,
         wallet,
         loan,
@@ -149,10 +153,11 @@ export const useLoans = (loan: Loan) => {
       }
 
       showConfetti();
-      removeTokenOptimistic(loan.mint);
+      removeTokenOptimistic(loan.pubkey);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error(error);
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
     } finally {
       setTransactionsLeft(null);
       closeLoadingModal();
@@ -161,14 +166,14 @@ export const useLoans = (loan: Loan) => {
 
   const onCardinalStake = async (): Promise<void> => {
     try {
-      const { pubkey, mint } = loan;
+      const { pubkey, nft } = loan;
 
       openLoadingModal();
 
       const result = await stakeCardinal({
         connection,
         wallet,
-        nftMint: mint,
+        nftMint: nft.mint,
         loan: pubkey,
       });
 
@@ -177,6 +182,8 @@ export const useLoans = (loan: Loan) => {
       }
     } catch (error) {
       console.error(error);
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
     } finally {
       closeLoadingModal();
     }
@@ -184,14 +191,14 @@ export const useLoans = (loan: Loan) => {
 
   const onCardinalClaim = async (): Promise<void> => {
     try {
-      const { pubkey, mint } = loan;
+      const { pubkey, nft } = loan;
 
       openLoadingModal();
 
       const result = await claimCardinal({
         connection,
         wallet,
-        nftMint: mint,
+        nftMint: nft.mint,
         loan: pubkey,
       });
 
@@ -200,6 +207,8 @@ export const useLoans = (loan: Loan) => {
       }
     } catch (error) {
       console.error(error);
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
     } finally {
       closeLoadingModal();
     }

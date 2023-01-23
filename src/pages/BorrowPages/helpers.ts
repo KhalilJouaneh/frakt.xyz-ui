@@ -1,6 +1,8 @@
 import { filter, sum, map } from 'lodash';
 
-import { BorrowNft, BorrowNftSuggested, LoanType } from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
+
 import { BorrowNftSelected } from './selectedNftsState';
 
 export const calcBulkTotalValue = (

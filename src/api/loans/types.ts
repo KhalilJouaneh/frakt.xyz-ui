@@ -1,4 +1,13 @@
-import { LoanType } from '../nft';
+export enum LoanType {
+  TIME_BASED = 'timeBased',
+  PRICE_BASED = 'priceBased',
+  BOND = 'bond',
+}
+
+export enum RewardState {
+  STAKED = 'staked',
+  UNSTAKED = 'unstaked',
+}
 
 export interface Loan {
   pubkey: string;
@@ -9,7 +18,11 @@ export interface Loan {
 
   startedAt: number; //? unix timestamp
 
-  isGracePeriod: boolean;
+  gracePeriod?: {
+    startedAt: number; //? unix timestamp
+    expiredAt: number; //? unix timestamp
+    liquidationLot?: string; //? For classic loans only
+  };
 
   nft: {
     mint: string;
@@ -22,7 +35,6 @@ export interface Loan {
     liquidityPool: string;
     collectionInfo: string;
     royaltyAddress: string;
-    liquidationLot?: string; //? For GracePeriod loans only
 
     timeBased?: {
       expiredAt: number; //? unix timestamp
@@ -36,7 +48,7 @@ export interface Loan {
     };
 
     rewards?: {
-      stakeState: 'staked' | 'unstaked';
+      stakeState: RewardState;
       amount: number; //? Lamports
       token: string;
     };

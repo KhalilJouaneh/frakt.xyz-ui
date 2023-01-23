@@ -1,4 +1,5 @@
 import { Market, Pair } from '../bonds';
+import { LoanType } from '../loans';
 
 interface BorrowNftTimeBasedParams {
   returnPeriodDays: number; // 14
@@ -56,9 +57,3 @@ export enum BulkTypes {
 export type BulkSuggestion = {
   [key in BulkTypes]?: BorrowNftSuggested[];
 };
-
-export enum LoanType {
-  TIME_BASED = 'timeBased',
-  PRICE_BASED = 'priceBased',
-  BOND = 'bond',
-}

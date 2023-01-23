@@ -1,7 +1,7 @@
 import { uniq, maxBy } from 'lodash';
 
 import { Market, Pair } from '@frakt/api/bonds';
-import { LoanType } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
 
 import { BorrowNftSelected } from '../../../selectedNftsState';
 

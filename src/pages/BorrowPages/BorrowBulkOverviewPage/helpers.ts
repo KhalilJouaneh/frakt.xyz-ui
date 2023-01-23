@@ -1,4 +1,4 @@
-import { LoanType } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
 
 import { BorrowNftSelected } from '../selectedNftsState';
 import { CARD_VALUES_TYPES } from './types';
