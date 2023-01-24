@@ -58,6 +58,8 @@ const PoolsCreationPage: FC = () => {
     (account?.lamports || 0) / web3.LAMPORTS_PER_SOL,
   );
 
+  console.log(123);
+
   return (
     <AppLayout>
       <div className={styles.poolsCreation}>
