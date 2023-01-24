@@ -27,6 +27,7 @@
 
 .btnBack {
   @include flex(row, nowrap, center, center);
+  flex-shrink: 0;
 
   background-color: var(--primary-background);
   border: 1px solid var(--primary-border);

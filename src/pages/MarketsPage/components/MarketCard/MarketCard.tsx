@@ -1,9 +1,12 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import classNames from 'classnames/bind';
 
-import { Solana } from '@frakt/icons';
 import { PATHS } from '@frakt/constants';
 import { MarketPreview } from '@frakt/api/bonds';
+import Tooltip from '@frakt/components/Tooltip';
+import { Solana } from '@frakt/icons';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './MarketCard.module.scss';
 
 interface MarketCardProps {
@@ -15,22 +18,62 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
     bondPreview;
 
   return (
-    <NavLink to={`${PATHS.BOND}/${marketPubkey}`} className={styles.pool}>
-      <div className={styles.tokenInfo}>
-        <img src={collectionImage} className={styles.image} />
-        <div className={styles.subtitle}>{collectionName}</div>
-      </div>
-      <div className={styles.statsValue}>
-        <div className={styles.totalValue}>
-          <p className={styles.title}>Offer TVL</p>
-          <p className={styles.value}>
-            <span>{parseFloat(offerTVL).toFixed(2)}</span> <Solana />
-          </p>
+    <NavLink to={`${PATHS.BOND}/${marketPubkey}`} className={styles.market}>
+      <div className={styles.wrapper}>
+        <div className={styles.tokenInfo}>
+          <img src={collectionImage} className={styles.image} />
+          <div className={styles.title}>{collectionName}</div>
         </div>
-        {/* <div className={styles.toRedeem}>
-          <p className={styles.title}>To Redeem</p>
-          <p className={styles.value}>3 Bonds</p>
-        </div> */}
+        <div className={styles.infoWrapper}>
+          <div className={styles.info}>
+            <div className={styles.infoTitle}>
+              <span>offer tvl </span>{' '}
+              <Tooltip
+                placement="bottom"
+                overlay="Analyzed profit from repaying the loan"
+              >
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+            </div>
+            <div className={styles.infoValue}>
+              <span>{Number(offerTVL).toFixed(3)}</span> <Solana />
+            </div>
+          </div>
+          <div className={styles.info}>
+            <div className={styles.infoTitle}>
+              {' '}
+              <span>best offer</span>
+              <Tooltip
+                placement="bottom"
+                overlay="Analyzed profit from repaying the loan"
+              >
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+            </div>
+            <div className={styles.infoValue}>
+              <span>{Number(offerTVL).toFixed(3)}</span> <Solana />
+            </div>
+          </div>
+          <div className={styles.info}>
+            <div className={styles.infoTitle}>duration</div>
+            <div className={styles.infoValue}>7 / 14 days</div>
+          </div>
+          <div className={styles.info}>
+            <div className={styles.infoTitle}>apy</div>
+            <div
+              className={classNames(styles.infoValue, styles.green, {
+                [styles.negative]: false,
+              })}
+            >
+              up to 180 %
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.toRedeem}>
+        <div className={styles.infoTitle}>To Redeem</div>
+        <div className={styles.infoValue}>12 bonds</div>
       </div>
     </NavLink>
   );
