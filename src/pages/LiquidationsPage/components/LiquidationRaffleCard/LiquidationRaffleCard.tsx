@@ -57,6 +57,7 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
         <GeneralCardInfo
           nftName={raffle.nftName}
           nftImageUrl={raffle.nftImageUrl}
+          nftCollectionName={raffle.nftCollectionName}
         />
         <div className={styles.statsValue}>
           <StatsRaffleValues
