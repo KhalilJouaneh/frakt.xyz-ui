@@ -29,9 +29,7 @@ export const GeneralCardInfo: FC<GeneralCardInfoProps> = ({
     <img className={styles.nftImage} src={nftImageUrl} />
     <div className={styles.content}>
       <p className={styles.nftName}>{nftName}</p>
-      <a href="/" className={styles.nftCollectionName}>
-        {nftCollectionName}
-      </a>
+      <p className={styles.nftCollectionName}>{nftCollectionName}</p>
     </div>
   </div>
 );
