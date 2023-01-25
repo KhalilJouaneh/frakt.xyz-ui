@@ -22,6 +22,7 @@ import { useMarket } from '@frakt/utils/bonds';
 import { Solana } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
+import { SliderGradient } from './components/SliderGradient/SliderGradient';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -93,12 +94,10 @@ const PoolsCreationPage: FC = () => {
             </div>
           </div>
           <h5 className={styles.blockTitle}>Loan parameters</h5>
-          <Slider
+          <SliderGradient
             value={maxLTV}
             setValue={handleMaxLTV}
-            className={styles.slider}
             marks={riskMarks}
-            label="LTV"
             step={1}
             min={10}
             max={100}

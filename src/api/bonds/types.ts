@@ -48,10 +48,10 @@ interface MarketOracle {
 }
 
 export interface Market {
+  publicKey: string;
   collectionImage: string;
   collectionName: string;
   createdAt: string;
-  publicKey: string;
   isRemoved: boolean;
   marketAuthority: string;
   marketDecimals: number;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import Button from '@frakt/components/Button';
+import Tooltip from '@frakt/components/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Solana, Timer } from '@frakt/icons';
 

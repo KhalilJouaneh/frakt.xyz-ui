@@ -1,12 +1,16 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 import { Slider as SliderAntd } from 'antd';
+import {
+  colorByPercentSlider,
+  getColorByPercent,
+  calcRisk,
+} from '@frakt/utils/bonds';
 
-import styles from './Slider.module.scss';
+import styles from './SliderGradient.module.scss';
 
-interface SliderProps {
-  value?: number;
-  defaultValue?: number;
+interface SliderGradientProps {
+  value: number;
   setValue?: (nextValue: number) => void;
   className?: string;
   marks?: { [key: number]: string | JSX.Element };
@@ -17,10 +21,9 @@ interface SliderProps {
   disabled?: boolean;
 }
 
-export const Slider: FC<SliderProps> = ({
+export const SliderGradient: FC<SliderGradientProps> = ({
   className,
   marks,
-  defaultValue,
   value,
   setValue,
   step,
@@ -29,6 +32,7 @@ export const Slider: FC<SliderProps> = ({
   min,
   disabled,
 }) => {
+  const colorLTV = getColorByPercent(value, colorByPercentSlider);
   return (
     <div
       className={classNames(
@@ -37,9 +41,16 @@ export const Slider: FC<SliderProps> = ({
         className,
       )}
     >
+      <div className={styles.labelWrapper}>
+        <div className={styles.label}>ltv</div>
+        <div className={styles.label}>
+          risk level
+          <span style={{ color: `${colorLTV}` }}>{calcRisk(value)}</span>
+        </div>
+      </div>
+      <div className={styles.gradient}></div>
       <SliderAntd
         marks={marks}
-        defaultValue={defaultValue}
         value={value}
         onChange={setValue}
         tooltipVisible={false}
