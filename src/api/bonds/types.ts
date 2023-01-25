@@ -49,6 +49,8 @@ interface MarketOracle {
 
 export interface Market {
   publicKey: string;
+  collectionImage: string;
+  collectionName: string;
   createdAt: string;
   isRemoved: boolean;
   marketAuthority: string;

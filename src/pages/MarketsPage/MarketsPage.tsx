@@ -4,6 +4,7 @@ import { Controller } from 'react-hook-form';
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { SearchInput } from '../../components/SearchInput';
 import Button from '../../components/Button';
+import { Header } from './components/Header';
 import FiltersDropdown, {
   useFiltersModal,
 } from '../../components/FiltersDropdown';
@@ -14,12 +15,11 @@ import {
   useLendingPoolsFiltering,
 } from '../LendPage/hooks/useLendingPoolsFiltering';
 import { useOnClickOutside } from '@frakt/hooks';
+import { useMarketsPreview } from './hooks';
 import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/components/FilterCollections';
 import styles from './MarketsPage.module.scss';
-import { useMarketsPreview } from './hooks';
-import { Header } from './components/Header';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -105,7 +105,7 @@ const MarketsPreviewPage: FC = () => {
           </div>
         </div>
       </div>
-      <div className={styles.pools}>
+      <div className={styles.markets}>
         {isLoading && <Loader size="large" />}
         {!isLoading &&
           marketsPreview.map((marketPreview) => (

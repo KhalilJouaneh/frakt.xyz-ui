@@ -73,31 +73,33 @@ const MarketPage: FC = () => {
         <div className={styles.bondPage}>
           <>
             <div className={styles.wrapper}>
-              <div>
-                <NavLink to={PATHS.BONDS} className={styles.btnBack}>
-                  <Arrow />
-                </NavLink>
-              </div>
+              <NavLink to={PATHS.BONDS} className={styles.btnBack}>
+                <Arrow />
+              </NavLink>
 
               <div className={styles.bondMarket}>
                 <div className={styles.bondMarketInfo}>
-                  <img src={market.image} className={styles.image} />
-                  <div className={styles.title}>{market.name}</div>
+                  <img src={market.collectionImage} className={styles.image} />
+                  <div className={styles.title}>{market.collectionName}</div>
                 </div>
-                <div className={styles.info}>
-                  <div className={styles.infoItem}>
-                    <div className={styles.infoItemBalance}>
-                      <div className={styles.infoName}>BALANCE</div>
+                <div className={styles.infoWrapper}>
+                  <div className={styles.info}>
+                    <div className={styles.balance}>
+                      <div className={styles.infoName}>balance</div>
                       <div className={styles.infoValue}>4,356,456.7 fndSMB</div>
                     </div>
+                    <div className={styles.funded}>
+                      <div className={styles.infoName}>funded</div>
+                      <div className={styles.infoValue}>5 loans</div>
+                    </div>
                   </div>
-                  <div className={styles.infoItem}>
+                  <div className={styles.rewards}>
                     <div>
-                      <div className={styles.infoName}>REWARDS</div>
-                      <div className={styles.infoValue}>345 SOL</div>
+                      <div className={styles.infoName}>rewards</div>
+                      <div className={styles.infoValue}>345 sol</div>
                     </div>
                     <Button className={styles.btn} type="primary">
-                      Redeem
+                      Claim all
                     </Button>
                   </div>
                 </div>

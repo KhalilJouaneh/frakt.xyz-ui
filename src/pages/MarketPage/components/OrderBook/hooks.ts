@@ -59,7 +59,7 @@ export const useMarketOrders: UseMarketOrders = ({
       (a, b) => b.interest - a.interest,
     );
 
-    return sortDirection === 'desc'
+    return sortDirection === 'asc'
       ? sortOffersByInterest
       : sortOffersByInterest.reverse();
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);

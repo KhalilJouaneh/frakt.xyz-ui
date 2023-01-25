@@ -2,12 +2,12 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 
-import { Tooltip } from 'antd';
+import Tooltip from '@frakt/components/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import NumericInput from '@frakt/components/NumericInput';
 import { ChevronDown, Solana } from '@frakt/icons';
 
-import styles from './styles.module.scss';
+import styles from './SizeField.module.scss';
 
 export interface SizeFieldProps {
   tokensList?: TokenInfo[];
@@ -68,7 +68,7 @@ const SizeField: FC<SizeFieldProps> = ({
           </div>
         )}
         <div className={styles.label}>
-          <span className={styles.labelName}>BALANCE:</span>
+          <span className={styles.labelName}>balance:</span>
           <span>
             {lpBalance ? lpBalance : 0} {currentToken?.symbol}
           </span>

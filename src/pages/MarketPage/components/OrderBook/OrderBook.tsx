@@ -108,16 +108,14 @@ const OrderBook: FC<OrderBookProps> = ({
         })}
       >
         <h5 className={styles.title}>Offers</h5>
-        {offersExist && (
-          <Toggle
-            label="My pools only"
-            className={classNames(styles.toggle, {
-              [styles.active]: openOffersMobile,
-            })}
-            defaultChecked={showOwnOrders}
-            onChange={(nextValue) => setShowOwnOrders(nextValue)}
-          />
-        )}
+        <Toggle
+          label="My pools only"
+          className={classNames(styles.toggle, {
+            [styles.active]: openOffersMobile,
+          })}
+          defaultChecked={showOwnOrders}
+          onChange={(nextValue) => setShowOwnOrders(nextValue)}
+        />
 
         {offersExist && (
           <div

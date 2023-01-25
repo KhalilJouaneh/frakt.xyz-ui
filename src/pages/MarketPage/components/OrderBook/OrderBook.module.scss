@@ -265,7 +265,7 @@
 
     &.active {
       display: flex;
-      height: calc(100% - var(--header-height) - 16px);
+      height: calc(100% - var(--header-height) - 64px);
     }
 
     &.create.active {
