@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux';
 import { sum, map, filter } from 'ramda';
 import classNames from 'classnames';
 
-import { selectLiquidityPools } from '../../../../state/loans/selectors';
-import Button from '../../../../components/Button';
-import styles from './MyDeposit.module.scss';
+import { selectLiquidityPools } from '@frakt/state/loans/selectors';
+import { weightedAverage } from '@frakt/utils';
+import Button from '@frakt/components/Button';
+import { PATHS } from '@frakt/constants';
 import { Solana } from '@frakt/icons';
-import { PATHS } from '../../../../constants';
+
+import styles from './MyDeposit.module.scss';
 import Block from '../Block';
 
 const MyDeposit: FC = () => {
@@ -31,12 +33,26 @@ const MyDeposit: FC = () => {
 
   const otherPoolsCount = liquidityPools.length - 9;
 
+  const depositedAmountNumberArray = map(depositAmount, depositedPools);
+  const depositedAprNumberArray = map(depositApr, depositedPools);
+
+  const weightedApy = weightedAverage(
+    depositedAprNumberArray,
+    depositedAmountNumberArray,
+  );
+
   return (
     <Block className={styles.block}>
       <h3 className={styles.title}>My deposits</h3>
       {isDeposited ? (
         <>
           <div className={styles.loansInfoWrapper}>
+            <div className={styles.loansInfo}>
+              <div className={styles.loansValue}>
+                {weightedApy.toFixed(0)} %
+              </div>
+              <p className={styles.subtitle}>Weighted APY</p>
+            </div>
             <div className={styles.loansInfo}>
               <div className={styles.loansValue}>{totalApy.toFixed(0)} %</div>
               <p className={styles.subtitle}>Average APY</p>
