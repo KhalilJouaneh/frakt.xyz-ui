@@ -234,12 +234,14 @@ export const sendTxnPlaceHolder = async (): Promise<null> =>
 
 export const calcWeightedAverage = (nums: number[], weights: number[]) => {
   const [sum, weightSum] = weights.reduce(
-    (acc, w, i) => {
-      acc[0] = acc[0] + nums[i] * w;
-      acc[1] = acc[1] + w;
+    (acc, weight, i) => {
+      acc[0] = acc[0] + nums[i] * weight;
+      acc[1] = acc[1] + weight;
       return acc;
     },
     [0, 0],
   );
-  return sum / weightSum;
+
+  const weightedAverage = sum / weightSum;
+  return weightedAverage || 0;
 };
