@@ -232,7 +232,7 @@ export const compareNumbers = (
 export const sendTxnPlaceHolder = async (): Promise<null> =>
   await Promise.resolve(null);
 
-export const weightedAverage = (nums: number[], weights: number[]) => {
+export const calcWeightedAverage = (nums: number[], weights: number[]) => {
   const [sum, weightSum] = weights.reduce(
     (acc, w, i) => {
       acc[0] = acc[0] + nums[i] * w;

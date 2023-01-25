@@ -5,7 +5,7 @@ import { sum, map, filter } from 'ramda';
 import classNames from 'classnames';
 
 import { selectLiquidityPools } from '@frakt/state/loans/selectors';
-import { weightedAverage } from '@frakt/utils';
+import { calcWeightedAverage } from '@frakt/utils';
 import Button from '@frakt/components/Button';
 import { PATHS } from '@frakt/constants';
 import { Solana } from '@frakt/icons';
@@ -36,7 +36,7 @@ const MyDeposit: FC = () => {
   const depositedAmountNumberArray = map(depositAmount, depositedPools);
   const depositedAprNumberArray = map(depositApr, depositedPools);
 
-  const weightedApy = weightedAverage(
+  const weightedAvarageApy = calcWeightedAverage(
     depositedAprNumberArray,
     depositedAmountNumberArray,
   );
@@ -49,7 +49,7 @@ const MyDeposit: FC = () => {
           <div className={styles.loansInfoWrapper}>
             <div className={styles.loansInfo}>
               <div className={styles.loansValue}>
-                {weightedApy.toFixed(0)} %
+                {weightedAvarageApy.toFixed(0)} %
               </div>
               <p className={styles.subtitle}>Weighted APY</p>
             </div>
