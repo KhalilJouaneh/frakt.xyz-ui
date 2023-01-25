@@ -37,6 +37,7 @@ export { Raffles, RafflesDark } from './Raffles';
 export { Settings } from './Settings';
 export { SignOut } from './SignOut';
 export { Solana } from './Solana';
+export { Solscan } from './Solscan';
 export { Staking, StakingDark } from './Staking';
 export { Sun } from './Sun';
 export { Ticket } from './Ticket';
