@@ -161,3 +161,11 @@
     rgba(255, 31, 71, 1) 100%
   );
 }
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
+  }
+}

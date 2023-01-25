@@ -8,6 +8,8 @@ import {
 } from '@frakt/utils/bonds';
 
 import styles from './SliderGradient.module.scss';
+import Tooltip from '@frakt/components/Tooltip';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface SliderGradientProps {
   value: number;
@@ -42,7 +44,15 @@ export const SliderGradient: FC<SliderGradientProps> = ({
       )}
     >
       <div className={styles.labelWrapper}>
-        <div className={styles.label}>ltv</div>
+        <div className={styles.label}>
+          ltv{' '}
+          <Tooltip
+            placement="bottom"
+            overlay="Analyzed profit from repaying the loan"
+          >
+            <QuestionCircleOutlined className={styles.questionIcon} />
+          </Tooltip>
+        </div>
         <div className={styles.label}>
           risk level
           <span style={{ color: `${colorLTV}` }}>{calcRisk(value)}</span>
