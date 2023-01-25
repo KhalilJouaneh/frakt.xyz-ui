@@ -33,12 +33,12 @@ const MyDeposit: FC = () => {
 
   const otherPoolsCount = liquidityPools.length - 9;
 
-  const depositedAmountNumberArray = map(depositAmount, depositedPools);
-  const depositedAprNumberArray = map(depositApr, depositedPools);
+  const depositedAmountsNumbers = map(depositAmount, depositedPools);
+  const depositedAPRsNumbers = map(depositApr, depositedPools);
 
   const weightedAvarageApy = calcWeightedAverage(
-    depositedAprNumberArray,
-    depositedAmountNumberArray,
+    depositedAPRsNumbers,
+    depositedAmountsNumbers,
   );
 
   return (
