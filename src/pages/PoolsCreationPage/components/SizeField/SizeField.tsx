@@ -7,7 +7,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import NumericInput from '@frakt/components/NumericInput';
 import { ChevronDown, Solana } from '@frakt/icons';
 
-import styles from './styles.module.scss';
+import styles from './SizeField.module.scss';
 
 export interface SizeFieldProps {
   tokensList?: TokenInfo[];

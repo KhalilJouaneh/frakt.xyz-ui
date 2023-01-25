@@ -1,48 +1,30 @@
-import classNames from 'classnames';
 import { FC } from 'react';
-import { Slider as SliderAntd } from 'antd';
 import {
   colorByPercentSlider,
   getColorByPercent,
   calcRisk,
 } from '@frakt/utils/bonds';
 
-import styles from './SliderGradient.module.scss';
+import { riskMarks } from '../../hooks/usePoolCreation';
+import { Slider } from '@frakt/components/Slider';
 import Tooltip from '@frakt/components/Tooltip';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import styles from './SliderGradient.module.scss';
 
 interface SliderGradientProps {
   value: number;
   setValue?: (nextValue: number) => void;
-  className?: string;
-  marks?: { [key: number]: string | JSX.Element };
-  step?: number;
-  withTooltip?: boolean;
-  max?: number;
-  min?: number;
   disabled?: boolean;
 }
 
 export const SliderGradient: FC<SliderGradientProps> = ({
-  className,
-  marks,
   value,
   setValue,
-  step,
-  withTooltip,
-  max,
-  min,
   disabled,
 }) => {
   const colorLTV = getColorByPercent(value, colorByPercentSlider);
   return (
-    <div
-      className={classNames(
-        withTooltip && styles.withTooltip,
-        styles.slider,
-        className,
-      )}
-    >
+    <div>
       <div className={styles.labelWrapper}>
         <div className={styles.label}>
           ltv{' '}
@@ -59,14 +41,15 @@ export const SliderGradient: FC<SliderGradientProps> = ({
         </div>
       </div>
       <div className={styles.gradient}></div>
-      <SliderAntd
-        marks={marks}
+      <Slider
+        className={styles.slider}
+        marks={riskMarks}
         value={value}
-        onChange={setValue}
-        tooltipVisible={false}
-        step={step}
-        max={max}
-        min={min}
+        setValue={setValue}
+        withTooltip
+        step={1}
+        min={10}
+        max={100}
         disabled={disabled}
       />
     </div>

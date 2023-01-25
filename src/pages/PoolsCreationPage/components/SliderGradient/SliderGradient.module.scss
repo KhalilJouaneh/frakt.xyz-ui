@@ -1,110 +1,6 @@
 .slider {
   margin: 0;
   padding: 0px 5px 36px;
-  :global {
-    .ant-slider {
-      margin: 0;
-    }
-    .ant-slider-dot {
-      background-color: var(--secondary-background);
-      border: 0;
-      margin-top: -1px;
-      height: 10px;
-      width: 10px;
-    }
-    .ant-slider-mark {
-      top: 22px !important;
-    }
-    .ant-slider-mark-text-active {
-      color: var(--secondary-border) !important;
-    }
-    .ant-slider-mark-text {
-      color: var(--secondary-text);
-      font: var(--font-text-8);
-    }
-    .ant-slider-mark-text:first-child {
-      left: 7px !important;
-    }
-    .ant-slider-mark-text:last-child {
-      left: 96.5% !important;
-      width: 43px;
-    }
-    .ant-slider-dot-active {
-      background-color: var(--light-green-color);
-      border: var(--border-black-1);
-    }
-    .ant-slider-rail {
-      background-color: var(--secondary-background);
-      height: 4px;
-    }
-    .ant-slider-track {
-      background-color: var(--light-green-color);
-      border: var(--border-black-1);
-      height: 4px;
-    }
-    .ant-slider:hover .ant-slider-rail {
-      background-color: var(--secondary-background);
-    }
-    .ant-slider:hover .ant-slider-track {
-      background-color: var(--light-green-color);
-    }
-
-    .ant-slider-handle {
-      background-color: var(--light-green-color);
-      border: 1px solid #000;
-      position: relative;
-      margin-top: -8px;
-      height: 18px;
-      width: 18px;
-
-      &:focus,
-      &:hover {
-        box-shadow: unset;
-      }
-    }
-    .ant-slider-handle.ant-tooltip-open {
-      border-color: var(--light-green-color);
-    }
-  }
-}
-
-.withTooltip {
-  :global {
-    .ant-slider-handle {
-      background-color: var(--light-green-color);
-      border: var(--border-black-1);
-      position: relative;
-      margin-top: -8px;
-      height: 18px;
-      width: 18px;
-
-      &::before {
-        content: attr(aria-valuenow) ' %';
-        background: rgba(118, 118, 128, 1);
-        border-radius: 4px;
-        width: 43px;
-        height: 22px;
-        position: absolute;
-        font: var(--font-text-9);
-        color: #f3f3f3;
-        transform: translateX(-13px);
-        text-align: center;
-        padding: 4px 0;
-        top: -29px;
-        left: 0px;
-      }
-      &::after {
-        content: '';
-        position: absolute;
-        top: -8px;
-        left: 2px;
-        border: 6px solid transparent;
-        border-top: 6px solid rgba(118, 118, 128, 1);
-        width: 12px;
-        height: 6px;
-      }
-    }
-  }
 }
 
 .label {
@@ -134,8 +30,8 @@
 
 .gradient {
   margin-bottom: -4px;
-  width: 101%;
-  margin-left: -4px;
+  width: 99%;
+  margin-left: 3px;
   height: 33px;
   opacity: 0.1;
   background: rgb(156, 255, 31);

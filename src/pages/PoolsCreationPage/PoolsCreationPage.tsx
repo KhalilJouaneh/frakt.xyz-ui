@@ -9,12 +9,12 @@ import OrderBook from '../MarketPage/components/OrderBook/OrderBook';
 import Button from '../../components/Button';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import Tooltip from '@frakt/components/Tooltip';
-import SizeField from './components/SizeFiled/SizeField';
+import SizeField from './components/SizeField/SizeField';
 import RadioButton from './components/RadioButton/RadioButton';
-import { Slider } from '@frakt/components/Slider';
+import { SliderGradient } from './components/SliderGradient/SliderGradient';
 import { Header } from './components/Header';
 
-import { riskMarks, usePoolCreation } from './hooks/usePoolCreation';
+import { usePoolCreation } from './hooks/usePoolCreation';
 import { SOL_TOKEN } from '../../utils';
 import { formatNumber } from '@frakt/utils/solanaUtils';
 import { useNativeAccount } from '@frakt/utils/accounts';
@@ -22,7 +22,6 @@ import { useMarket } from '@frakt/utils/bonds';
 import { Solana } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
-import { SliderGradient } from './components/SliderGradient/SliderGradient';
 
 const PoolsCreationPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
@@ -94,15 +93,7 @@ const PoolsCreationPage: FC = () => {
             </div>
           </div>
           <h5 className={styles.blockTitle}>Loan parameters</h5>
-          <SliderGradient
-            value={maxLTV}
-            setValue={handleMaxLTV}
-            marks={riskMarks}
-            step={1}
-            min={10}
-            max={100}
-            withTooltip
-          />
+          <SliderGradient value={maxLTV} setValue={handleMaxLTV} />
 
           <div className={styles.duration}>
             <h6 className={styles.subtitle}>duration</h6>
