@@ -1,21 +1,57 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import classNames from 'classnames';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+
 import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Solana, Timer } from '@frakt/icons';
+import { Bond, Pair } from '@frakt/api/bonds';
+import { useCountdown } from '@frakt/hooks';
+import {
+  getBestPairForExit,
+  isBondAvailableToRedeem,
+} from '@frakt/utils/bonds';
 
-import mockImg from '../../mockImg.jpg';
-import styles from './Bond.module.scss';
+import styles from './BondCard.module.scss';
 
-const Bond: FC = () => {
-  const negative = false;
-  const isExpirationGone = false;
+interface BondCardProps {
+  bond: Bond;
+  pairs: Pair[];
+  onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
+  onRedeem: (bond: Bond) => void;
+}
+
+export const BondCard: FC<BondCardProps> = ({
+  bond,
+  pairs,
+  onExit,
+  onRedeem,
+}) => {
+  const { walletBalance, collateralBox, fbond } = bond;
+
+  const { timeLeft } = useCountdown(fbond.liquidatingAt);
+
+  const interest = 1; //TODO
+  const apy = 2; //TODO
+  const pnl = 3; //TODO: get info from bestPair
+  const pnlProfit = -12.34; //TODO: get info from bestPair
+
+  const redeemAvailable = isBondAvailableToRedeem(bond);
+
+  const bestPair = useMemo(() => {
+    const { fbond, walletBalance } = bond;
+    return getBestPairForExit({
+      pairs,
+      fbondTokenAmount: walletBalance,
+      duration: (fbond.liquidatingAt - fbond.activatedAt) / (24 * 60 * 60),
+    });
+  }, [pairs, bond]);
+
   return (
     <div className={styles.bond}>
       <div className={styles.bondName}>
-        <img src={mockImg} className={styles.image} />
-        <div className={styles.title}>SMB #1356</div>
+        <img src={collateralBox?.nft?.imageUrl} className={styles.image} />
+        <div className={styles.title}>{collateralBox?.nft?.name}</div>
       </div>
 
       <div className={styles.wrapper}>
@@ -29,13 +65,15 @@ const Bond: FC = () => {
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
           </div>
-          <div className={styles.infoValue}>2.021 fndSMB</div>
+          <div className={styles.infoValue}>
+            {(walletBalance / 1e6).toFixed(2)} fndSMB??
+          </div>
         </div>
 
         <div className={styles.info}>
           <div className={styles.infoName}>interest</div>
           <div className={styles.infoValue}>
-            <div>206,324.01 </div>
+            <div>{interest.toFixed()} </div>
             <Solana />
           </div>
         </div>
@@ -50,7 +88,7 @@ const Bond: FC = () => {
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
           </div>
-          <div className={styles.infoValue}>123.11 %</div>
+          <div className={styles.infoValue}>{apy.toFixed(2)} %</div>
         </div>
 
         <div className={styles.info}>
@@ -64,14 +102,16 @@ const Bond: FC = () => {
             </Tooltip>
           </div>
           <div className={styles.infoValue}>
-            206 <Solana />
-            <span
-              className={classNames(styles.infoValueSpan, {
-                [styles.negative]: negative,
-              })}
-            >
-              {negative ? `-${321} %` : `+${144.02} %`}
-            </span>
+            {pnl.toFixed(2)} <Solana />
+            {!!pnlProfit && (
+              <span
+                className={classNames(styles.infoValueSpan, {
+                  [styles.negative]: pnlProfit < 0,
+                })}
+              >
+                {pnlProfit.toFixed(2)} %
+              </span>
+            )}
           </div>
         </div>
 
@@ -86,7 +126,13 @@ const Bond: FC = () => {
             </Tooltip>
           </div>
           <div className={styles.infoValue}>
-            <Timer className={styles.timer} /> 0d : 0h : 0m
+            <Timer className={styles.timer} />{' '}
+            <div className={styles.countdown}>
+              <span>{timeLeft.days}d </span>
+              <span>: {timeLeft.hours}h</span>
+              <span>: {timeLeft.minutes}m</span>
+              <span>: {timeLeft.seconds}s</span>
+            </div>
           </div>
         </div>
       </div>
@@ -94,15 +140,17 @@ const Bond: FC = () => {
       <div className={styles.btnWrapper}>
         <Button
           className={styles.btn}
-          disabled={isExpirationGone}
+          disabled={!redeemAvailable}
           type="secondary"
+          onClick={() => onRedeem(bond)}
         >
           Redeem
         </Button>
         <Button
           className={classNames(styles.btn, styles.btnExit)}
-          disabled={isExpirationGone}
+          disabled={!bestPair}
           type="primary"
+          onClick={() => onExit({ bond, pair: bestPair })}
         >
           Exit
         </Button>
@@ -110,5 +158,3 @@ const Bond: FC = () => {
     </div>
   );
 };
-
-export default Bond;

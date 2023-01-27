@@ -44,13 +44,15 @@ export const useCountdown: UseCountdown = (endTime: number) => {
     timeDifference.asSeconds() < 0 && clearInterval(intervalIdRef.current);
   }, [timeDifference]);
 
+  const isExpired = timeDifference.asSeconds() < 0;
+
   return {
     timeLeft: {
-      days: formatDateUnit(timeDifference.days()),
-      hours: formatDateUnit(timeDifference.hours()),
-      minutes: formatDateUnit(timeDifference.minutes()),
-      seconds: formatDateUnit(timeDifference.seconds()),
+      days: isExpired ? '0' : formatDateUnit(timeDifference.days()),
+      hours: isExpired ? '0' : formatDateUnit(timeDifference.hours()),
+      minutes: isExpired ? '0' : formatDateUnit(timeDifference.minutes()),
+      seconds: isExpired ? '0' : formatDateUnit(timeDifference.seconds()),
     },
-    leftTimeInSeconds: timeDifference.asSeconds(),
+    leftTimeInSeconds: isExpired ? 0 : timeDifference.asSeconds(),
   };
 };

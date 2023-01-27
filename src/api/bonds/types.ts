@@ -8,6 +8,10 @@ import {
   PairState,
   PairType,
 } from 'fbonds-core/lib/cross-mint-amm/types';
+import {
+  CollateralBoxType,
+  FraktBondState,
+} from 'fbonds-core/lib/fbond-protocol/types';
 
 interface FMarket {
   publicKey: string;
@@ -124,4 +128,45 @@ export interface Pair {
     updatedAt: string;
     user: string;
   };
+}
+
+interface FBond {
+  publicKey: string;
+  activatedAt: number;
+  liquidatingAt: number;
+  actualReturnedAmount: number; //? in lamports
+  amountToReturn: number;
+  bondProgramAuthoritySeed: number;
+  collateralBoxesQuantity: number;
+  fbondIssuer: string;
+  fbondTokenMint: string;
+  fbondTokenSupply: number;
+  fraktBondState: FraktBondState;
+  isRemoved: boolean;
+  redeemedAt: number;
+  returnFundsOwnerSeed: number;
+  returnTokenAccount: string;
+  returnTokenMint: string;
+  bondCollateralOrSolReceiver: string;
+}
+
+interface CollateralBox {
+  publicKey: string;
+  collateralAmount: number;
+  collateralBoxType: CollateralBoxType;
+  collateralTokenAccount: string;
+  collateralTokenMint: string;
+  fbond: string;
+  isRemoved: boolean;
+  nft: {
+    mint: string;
+    name: string;
+    imageUrl: string;
+  };
+}
+
+export interface Bond {
+  fbond: FBond;
+  collateralBox: CollateralBox;
+  walletBalance: number;
 }

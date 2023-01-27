@@ -1,173 +1,124 @@
+import { FC } from 'react';
+import { filter } from 'lodash';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { NavLink, useParams } from 'react-router-dom';
+
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
-import { FC, useRef, useState } from 'react';
+import { Loader } from '@frakt/components/Loader';
+import { PATHS } from '@frakt/constants';
+import { Arrow } from '@frakt/icons';
+import {
+  isBondAvailableToRedeem,
+  useMarket,
+  useMarketPairs,
+  useWalletBonds,
+} from '@frakt/utils/bonds';
+import {
+  exitBond,
+  redeemAllBonds,
+  redeemBond,
+} from '@frakt/utils/bonds/transactions';
+import { useConnection } from '@frakt/hooks';
+import { Bond, Pair } from '@frakt/api/bonds';
 
 import styles from './MarketPage.module.scss';
-import Button from '@frakt/components/Button';
-import { useLendingPoolsFiltering } from '../LendPage/hooks/useLendingPoolsFiltering';
-import FiltersDropdown, {
-  useFiltersModal,
-} from '@frakt/components/FiltersDropdown';
-import FilterCollections from '@frakt/components/FilterCollections';
-import SortControl from '@frakt/components/SortControl';
-import { Controller } from 'react-hook-form';
-import Toggle from '@frakt/components/Toggle';
-import { SearchInput } from '@frakt/components/SearchInput';
-import Bond from './components/Bond/Bond';
 import OrderBook from './components/OrderBook/OrderBook';
-import { Arrow } from '@frakt/icons';
-import { NavLink, useParams } from 'react-router-dom';
-import { useOnClickOutside } from '@frakt/hooks';
-import { PATHS } from '@frakt/constants';
-import { Loader } from '@frakt/components/Loader';
-import { useMarket } from '@frakt/utils/bonds';
+import { BondsList } from './components/BondsList';
+import { MarketInfo } from './components/MarketInfo';
 
-const SORT_VALUES = [
-  {
-    label: <span>Name</span>,
-    value: 'name_',
-  },
-  {
-    label: <span>Loan value</span>,
-    value: 'maxLoanValue_',
-  },
-];
+export const MarketPage: FC = () => {
+  const wallet = useWallet();
+  const connection = useConnection();
 
-export enum InputControlsNames {
-  SHOW_STAKED = 'showStaked',
-  SORT = 'sort',
-}
-
-const collectionsMock = [
-  { value: 'Frakt' },
-  { value: 'Pawnshop gnomies' },
-  { value: 'Solpunks' },
-];
-
-const MarketPage: FC = () => {
   const { marketPubkey } = useParams<{ marketPubkey: string }>();
 
-  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  const {
-    control,
-    sort,
-    /*setSearch, pools,*/ setValue,
-    showStakedOnlyToggle,
-  } = useLendingPoolsFiltering();
-  const {
-    visible: filtersModalVisible,
-    close: closeFiltersModal,
-    toggle: toggleFiltersModal,
-  } = useFiltersModal();
-
-  const ref = useRef();
-  useOnClickOutside(ref, closeFiltersModal);
-
-  const { market, isLoading } = useMarket({
+  const { market, isLoading: marketLoading } = useMarket({
     marketPubkey,
   });
 
+  const { bonds, isLoading: bondsLoanding } = useWalletBonds({
+    walletPubkey: wallet.publicKey,
+  });
+
+  const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
+    marketPubkey: marketPubkey,
+  });
+
+  //? Filter wallet pairs (to prevent selling to yourself)
+  const pairs = rawPairs.filter(
+    ({ assetReceiver }) => assetReceiver !== wallet?.publicKey?.toBase58(),
+  );
+
+  const loading = marketLoading || bondsLoanding || pairsLoading;
+
+  const onClaimAll = async () => {
+    try {
+      const bondsAvailableToRedeem = filter(bonds, isBondAvailableToRedeem);
+
+      await redeemAllBonds({
+        bonds: bondsAvailableToRedeem,
+        wallet,
+        connection,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
+      console.error(error);
+    }
+  };
+
+  const onRedeem = async (bond: Bond) => {
+    try {
+      await redeemBond({
+        bond,
+        wallet,
+        connection,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
+      console.error(error);
+    }
+  };
+
+  const onExit = async ({ bond, pair }: { bond: Bond; pair: Pair }) => {
+    try {
+      await exitBond({
+        bond,
+        pair,
+        market,
+        wallet,
+        connection,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
+      console.error(error);
+    }
+  };
+
   return (
     <AppLayout>
-      {isLoading && <Loader size="large" />}
-      {!!market && (
+      {loading && <Loader size="large" />}
+      {!loading && (
         <div className={styles.bondPage}>
-          <>
-            <div className={styles.wrapper}>
-              <NavLink to={PATHS.BONDS} className={styles.btnBack}>
-                <Arrow />
-              </NavLink>
+          <div className={styles.wrapper}>
+            <NavLink to={PATHS.BONDS} className={styles.btnBack}>
+              <Arrow />
+            </NavLink>
 
-              <div className={styles.bondMarket}>
-                <div className={styles.bondMarketInfo}>
-                  <img src={market.collectionImage} className={styles.image} />
-                  <div className={styles.title}>{market.collectionName}</div>
-                </div>
-                <div className={styles.infoWrapper}>
-                  <div className={styles.info}>
-                    <div className={styles.balance}>
-                      <div className={styles.infoName}>balance</div>
-                      <div className={styles.infoValue}>4,356,456.7 fndSMB</div>
-                    </div>
-                    <div className={styles.funded}>
-                      <div className={styles.infoName}>funded</div>
-                      <div className={styles.infoValue}>5 loans</div>
-                    </div>
-                  </div>
-                  <div className={styles.rewards}>
-                    <div>
-                      <div className={styles.infoName}>rewards</div>
-                      <div className={styles.infoValue}>345 sol</div>
-                    </div>
-                    <Button className={styles.btn} type="primary">
-                      Claim all
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.sortWrapper}>
-              <SearchInput
-                className={styles.searchInput}
-                placeholder="Search by name"
-              />
-              <div ref={ref}>
-                <div className={styles.filtersWrapper}>
-                  <Button type="tertiary" onClick={toggleFiltersModal}>
-                    Filters
-                  </Button>
+            <MarketInfo market={market} bonds={bonds} onClaimAll={onClaimAll} />
+          </div>
+          <BondsList
+            bonds={bonds}
+            pairs={pairs}
+            onExit={onExit}
+            onRedeem={onRedeem}
+          />
 
-                  {filtersModalVisible && (
-                    <FiltersDropdown
-                      onCancel={closeFiltersModal}
-                      className={styles.filtersDropdown}
-                    >
-                      <div>
-                        {showStakedOnlyToggle && (
-                          <Controller
-                            control={control}
-                            name={InputControlsNames.SHOW_STAKED}
-                            render={({ field: { ref, ...field } }) => (
-                              <Toggle
-                                label="My bag only"
-                                className={styles.toggle}
-                                name={InputControlsNames.SHOW_STAKED}
-                                {...field}
-                              />
-                            )}
-                          />
-                        )}
-                        <FilterCollections
-                          options={collectionsMock}
-                          selectedCollections={selectedCollections}
-                          setSelectedCollections={setSelectedCollections}
-                        />
-                        <SortControl
-                          control={control}
-                          name={InputControlsNames.SORT}
-                          options={SORT_VALUES}
-                          sort={sort}
-                          setValue={setValue}
-                        />
-                      </div>
-                    </FiltersDropdown>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.bondList}>
-              <Bond />
-              <Bond />
-              <Bond />
-              <Bond />
-              <Bond />
-            </div>
-          </>
           <OrderBook marketPubkey={marketPubkey} />
         </div>
       )}
     </AppLayout>
   );
 };
-
-export default MarketPage;

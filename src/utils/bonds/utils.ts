@@ -1,3 +1,8 @@
+import { maxBy } from 'lodash';
+import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
+
+import { Bond, Pair } from '@frakt/api/bonds';
+
 export const calcRisk = (value: number) => {
   if (value < 40) {
     return 'low';
@@ -46,4 +51,50 @@ export const getColorByPercent = (
     (limit) => value <= parseInt(limit),
   );
   return colorBreakpoints[limit] || colorBreakpoints[10];
+};
+
+export const calcBondRedeemLamports = (bond: Bond) => {
+  const { fbond, walletBalance } = bond;
+  return walletBalance * (fbond.actualReturnedAmount / fbond.fbondTokenSupply);
+};
+
+export const isBondAvailableToRedeem = (bond: Bond) => {
+  const { fbond } = bond;
+
+  return (
+    fbond.fraktBondState === FraktBondState.Repaid ||
+    fbond.fraktBondState === FraktBondState.Liquidated
+  );
+};
+
+type PairLoanDurationFilter = (props: {
+  pair: Pair;
+  duration?: number;
+}) => boolean;
+export const pairLoanDurationFilter: PairLoanDurationFilter = ({
+  pair,
+  duration = 7, //? Days
+}) => duration * (24 * 60 * 60) <= pair.validation.durationFilter;
+
+type GetBestPairForExit = (params: {
+  fbondTokenAmount: number;
+  duration: number;
+  pairs: Pair[];
+}) => Pair | null;
+export const getBestPairForExit: GetBestPairForExit = ({
+  fbondTokenAmount,
+  duration,
+  pairs,
+}) => {
+  const suitablePairsByDuration = pairs.filter((p) =>
+    pairLoanDurationFilter({ pair: p, duration }),
+  );
+
+  const suitablePairsBySettlement = suitablePairsByDuration.filter((pair) => {
+    return fbondTokenAmount <= pair.edgeSettlement;
+  });
+
+  return (
+    maxBy(suitablePairsBySettlement, (pair) => pair.currentSpotPrice) ?? null
+  );
 };

@@ -2,6 +2,7 @@ import { uniq, maxBy } from 'lodash';
 
 import { Market, Pair } from '@frakt/api/bonds';
 import { LoanType } from '@frakt/api/loans';
+import { pairLoanDurationFilter } from '@frakt/utils/bonds';
 
 import { BorrowNftSelected } from '../../../selectedNftsState';
 
@@ -103,15 +104,6 @@ export const getBorrowValueRange: GetBorrowValueRange = ({
 
   return [Math.min(minBorrowValue, maxBorrowValue), maxBorrowValue];
 };
-
-type PairLoanDurationFilter = (props: {
-  pair: Pair;
-  duration?: number;
-}) => boolean;
-export const pairLoanDurationFilter: PairLoanDurationFilter = ({
-  pair,
-  duration = 7, //? Days
-}) => duration * (24 * 60 * 60) === pair.validation.durationFilter;
 
 type GetPairWithMaxBorrowValue = (params: {
   pairs: Pair[];

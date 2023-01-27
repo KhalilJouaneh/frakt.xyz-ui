@@ -2,3 +2,8 @@ export * from './makeCreatePairTransaction';
 export * from './makeRemoveOrderTransaction';
 export * from './makeCreateBondTransactions';
 export * from './makeRepayBondTransaction';
+export * from './makeRedeemBondTransaction';
+export * from './makeExitBondTransaction';
+export * from './redeemAllBonds';
+export * from './redeemBond';
+export * from './exitBond';

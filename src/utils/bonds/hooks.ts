@@ -1,7 +1,9 @@
 import {
+  Bond,
   fetchAllMarkets,
   fetchCertainMarket,
   fetchMarketPairs,
+  fetchWalletBonds,
   Market,
   Pair,
 } from '@frakt/api/bonds';
@@ -61,6 +63,27 @@ export const useMarketPairs: UseMarketPairs = ({ marketPubkey }) => {
 
   return {
     pairs: data || [],
+    isLoading,
+  };
+};
+
+type UseWalletBonds = (props: { walletPubkey: web3.PublicKey }) => {
+  bonds: Bond[];
+  isLoading: boolean;
+};
+export const useWalletBonds: UseWalletBonds = ({ walletPubkey }) => {
+  const { data, isLoading } = useQuery(
+    ['walletBonds', walletPubkey],
+    () => fetchWalletBonds({ walletPubkey }),
+    {
+      enabled: !!walletPubkey,
+      staleTime: 60 * 1000, //? 1 min
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  return {
+    bonds: data || [],
     isLoading,
   };
 };

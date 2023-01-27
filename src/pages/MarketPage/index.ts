@@ -1,1 +1,1 @@
-export { default } from './MarketPage';
+export * from './MarketPage';
