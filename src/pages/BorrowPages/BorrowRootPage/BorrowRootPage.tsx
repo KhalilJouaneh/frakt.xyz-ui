@@ -6,11 +6,11 @@ import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import Button from '@frakt/components/Button';
 import { Slider } from '@frakt/components/Slider';
 import { SOL_TOKEN } from '@frakt//utils';
+import { Loader } from '@frakt/components/Loader';
 
 import { BorrowHeader } from '../components/BorrowHeader';
 import styles from './BorrowRootPage.module.scss';
 import { useBorrowRootPage } from './hooks';
-import { Loader } from '@frakt/components/Loader';
 
 export const BorrowRootPage: FC = () => {
   const {

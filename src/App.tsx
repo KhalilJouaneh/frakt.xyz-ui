@@ -22,12 +22,13 @@ import { FC } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Router } from './router';
-import store from './state/store';
-import { ENDPOINT } from './config';
-import { initSentry } from './utils/sentry';
-import { initAmplitude } from './utils/amplitude';
-import Confetti from './components/Confetti';
+import { Router } from '@frakt/router';
+import store from '@frakt/state/store';
+import { ENDPOINT } from '@frakt/config';
+import { initSentry } from '@frakt/utils/sentry';
+import { initAmplitude } from '@frakt/utils/amplitude';
+import Confetti from '@frakt/components/Confetti';
+import { ErrorBoundary } from '@frakt/components/ErrorBoundary';
 
 initSentry();
 initAmplitude();
@@ -51,16 +52,18 @@ const queryClient = new QueryClient();
 
 const App: FC = () => {
   return (
-    <ReduxProvider store={store}>
-      <ConnectionProvider endpoint={ENDPOINT}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <QueryClientProvider client={queryClient}>
-            <Router />
-            <Confetti />
-          </QueryClientProvider>
-        </WalletProvider>
-      </ConnectionProvider>
-    </ReduxProvider>
+    <ErrorBoundary>
+      <ReduxProvider store={store}>
+        <ConnectionProvider endpoint={ENDPOINT}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <QueryClientProvider client={queryClient}>
+              <Router />
+              <Confetti />
+            </QueryClientProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </ReduxProvider>
+    </ErrorBoundary>
   );
 };
 
