@@ -8,6 +8,7 @@ import { shortenAddress } from '@frakt/utils/solanaUtils';
 import styles from './WonRaffleCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WonRaffleListItem } from '@frakt/api/raffle';
+import SolscanNftLink from '../SolscanNftLink';
 
 interface WonRaffleCardProps {
   raffle: WonRaffleListItem;
@@ -20,10 +21,14 @@ const WonRaffleCard: FC<WonRaffleCardProps> = ({ raffle }) => {
   return (
     <div className={styles.cardWrapper}>
       <div className={cx(styles.card, isWinner && styles.cardWinner)}>
-        <GeneralCardInfo
-          nftName={raffle?.nftName}
-          nftImageUrl={raffle?.nftImageUrl}
-        />
+        <div className={styles.content}>
+          <GeneralCardInfo
+            nftName={raffle?.nftName}
+            nftImageUrl={raffle?.nftImageUrl}
+            nftCollectionName={raffle?.nftCollectionName}
+          />
+          <SolscanNftLink nftMint={raffle?.nftMint} />
+        </div>
         <div className={styles.statsValue}>
           <StatsRaffleValues
             className={styles.opacity}

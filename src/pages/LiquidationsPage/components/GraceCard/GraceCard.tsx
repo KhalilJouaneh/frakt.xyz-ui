@@ -16,6 +16,7 @@ const GraceCard: FC<GraceCardProps> = ({ raffle }) => {
       <GeneralCardInfo
         nftName={raffle.nftName}
         nftImageUrl={raffle.nftImageUrl}
+        nftCollectionName={raffle.nftCollectionName}
       />
       <div className={styles.statsValue}>
         <StatsRaffleValues
