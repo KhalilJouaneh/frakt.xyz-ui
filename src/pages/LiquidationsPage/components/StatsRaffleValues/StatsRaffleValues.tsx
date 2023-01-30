@@ -16,17 +16,20 @@ interface GeneralCardInfoProps {
   className?: string;
   nftImageUrl: string;
   nftName: string;
+  nftCollectionName: string;
 }
 
 export const GeneralCardInfo: FC<GeneralCardInfoProps> = ({
   className,
   nftImageUrl,
+  nftCollectionName,
   nftName,
 }) => (
   <div className={cx(styles.nftInfo, className)}>
     <img className={styles.nftImage} src={nftImageUrl} />
-    <div>
+    <div className={styles.content}>
       <p className={styles.nftName}>{nftName}</p>
+      <p className={styles.nftCollectionName}>{nftCollectionName}</p>
     </div>
   </div>
 );
