@@ -41,7 +41,18 @@
   }
 }
 
+.nftCollectionName {
+  font: var(--font-text-9);
+  font-weight: 400;
+}
+
 .nftImage {
   height: 48px;
   width: 48px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
