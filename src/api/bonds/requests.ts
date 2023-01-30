@@ -54,11 +54,15 @@ export const fetchMarketPairs: FetchMarketPairs = async ({ marketPubkey }) => {
 
 type FetchWalletBonds = (props: {
   walletPubkey: web3.PublicKey;
+  marketPubkey: web3.PublicKey;
 }) => Promise<Bond[]>;
 
-export const fetchWalletBonds: FetchWalletBonds = async ({ walletPubkey }) => {
+export const fetchWalletBonds: FetchWalletBonds = async ({
+  walletPubkey,
+  marketPubkey,
+}) => {
   const { data } = await axios.get<Bond[]>(
-    `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}`,
+    `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}/${marketPubkey.toBase58()}`,
   );
 
   return data ?? [];

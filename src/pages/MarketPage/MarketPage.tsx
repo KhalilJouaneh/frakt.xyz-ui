@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { filter } from 'lodash';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { NavLink, useParams } from 'react-router-dom';
+import { web3 } from 'fbonds-core';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Loader } from '@frakt/components/Loader';
@@ -38,6 +39,7 @@ export const MarketPage: FC = () => {
 
   const { bonds, isLoading: bondsLoanding } = useWalletBonds({
     walletPubkey: wallet.publicKey,
+    marketPubkey: new web3.PublicKey(marketPubkey),
   });
 
   const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
@@ -116,7 +118,7 @@ export const MarketPage: FC = () => {
             onRedeem={onRedeem}
           />
 
-          <OrderBook marketPubkey={marketPubkey} />
+          <OrderBook market={market} />
         </div>
       )}
     </AppLayout>

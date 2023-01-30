@@ -67,16 +67,22 @@ export const useMarketPairs: UseMarketPairs = ({ marketPubkey }) => {
   };
 };
 
-type UseWalletBonds = (props: { walletPubkey: web3.PublicKey }) => {
+type UseWalletBonds = (props: {
+  walletPubkey: web3.PublicKey;
+  marketPubkey: web3.PublicKey;
+}) => {
   bonds: Bond[];
   isLoading: boolean;
 };
-export const useWalletBonds: UseWalletBonds = ({ walletPubkey }) => {
+export const useWalletBonds: UseWalletBonds = ({
+  walletPubkey,
+  marketPubkey,
+}) => {
   const { data, isLoading } = useQuery(
-    ['walletBonds', walletPubkey],
-    () => fetchWalletBonds({ walletPubkey }),
+    ['walletBonds', walletPubkey?.toBase58(), marketPubkey?.toBase58()],
+    () => fetchWalletBonds({ walletPubkey, marketPubkey }),
     {
-      enabled: !!walletPubkey,
+      enabled: !!walletPubkey && !!marketPubkey,
       staleTime: 60 * 1000, //? 1 min
       refetchOnWindowFocus: false,
     },

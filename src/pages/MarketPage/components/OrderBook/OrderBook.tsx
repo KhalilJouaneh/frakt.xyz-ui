@@ -15,17 +15,18 @@ import { PATHS } from '@frakt/constants';
 import { MarketOrder } from './types';
 import { Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
+import { Market } from '@frakt/api/bonds';
 import styles from './OrderBook.module.scss';
 
 interface OrderBookProps {
-  marketPubkey: string;
+  market: Market;
   maxLTV?: number;
   solFee?: string;
   solDeposit?: string;
 }
 
 const OrderBook: FC<OrderBookProps> = ({
-  marketPubkey,
+  market,
   maxLTV,
   solFee,
   solDeposit,
@@ -70,7 +71,7 @@ const OrderBook: FC<OrderBookProps> = ({
   };
 
   const { offers, isLoading, offersExist } = useMarketOrders({
-    marketPubkey: new web3.PublicKey(marketPubkey),
+    marketPubkey: new web3.PublicKey(market?.marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
     ltv: maxLTV,
@@ -126,7 +127,7 @@ const OrderBook: FC<OrderBookProps> = ({
           >
             <div className={styles.col}>
               <span className={styles.colName}>size</span>
-              <span>(fndSMB)</span>
+              <span>({market.fbondTokenName})</span>
             </div>
             <div
               className={classNames(styles.col, {
@@ -197,7 +198,7 @@ const OrderBook: FC<OrderBookProps> = ({
         )}
 
         {!maxLTV && (
-          <NavLink to={`${PATHS.BOND}/${marketPubkey}/create`}>
+          <NavLink to={`${PATHS.BOND}/${market?.marketPubkey}/create`}>
             <Button className={styles.btn} type="secondary">
               Place offers
             </Button>

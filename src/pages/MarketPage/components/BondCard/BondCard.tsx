@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import classNames from 'classnames';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
 
 import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
@@ -47,6 +48,9 @@ export const BondCard: FC<BondCardProps> = ({
     });
   }, [pairs, bond]);
 
+  const exitAvailable =
+    !bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
+
   return (
     <div className={styles.bond}>
       <div className={styles.bondName}>
@@ -66,7 +70,7 @@ export const BondCard: FC<BondCardProps> = ({
             </Tooltip>
           </div>
           <div className={styles.infoValue}>
-            {(walletBalance / 1e6).toFixed(2)} fndSMB??
+            {(walletBalance / 1e6).toFixed(2)} {bond?.fbond?.fbondTokenName}
           </div>
         </div>
 
@@ -148,7 +152,7 @@ export const BondCard: FC<BondCardProps> = ({
         </Button>
         <Button
           className={classNames(styles.btn, styles.btnExit)}
-          disabled={!bestPair}
+          disabled={!exitAvailable}
           type="primary"
           onClick={() => onExit({ bond, pair: bestPair })}
         >

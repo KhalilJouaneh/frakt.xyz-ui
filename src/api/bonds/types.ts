@@ -52,7 +52,7 @@ interface MarketOracle {
 }
 
 export interface Market {
-  publicKey: string;
+  marketPubkey: string;
   collectionImage: string;
   collectionName: string;
   createdAt: string;
@@ -72,6 +72,7 @@ export interface Market {
   fraktMarket: FMarket;
   whitelistEntry: MarketWhitelistEntry;
   oracleFloor: MarketOracle;
+  fbondTokenName: string;
 }
 
 export interface MarketPreview {
@@ -148,6 +149,7 @@ interface FBond {
   returnTokenAccount: string;
   returnTokenMint: string;
   bondCollateralOrSolReceiver: string;
+  fbondTokenName: string;
 }
 
 interface CollateralBox {
