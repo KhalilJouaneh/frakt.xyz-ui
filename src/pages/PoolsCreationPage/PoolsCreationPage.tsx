@@ -185,12 +185,14 @@ const PoolsCreationPage: FC = () => {
           </Button>
         </div>
       </div>
-      <OrderBook
-        marketPubkey={marketPubkey}
-        maxLTV={maxLTV}
-        solFee={solFee}
-        solDeposit={solDeposit}
-      />
+      {!isLoading && !!market && (
+        <OrderBook
+          market={market}
+          maxLTV={maxLTV}
+          solFee={solFee}
+          solDeposit={solDeposit}
+        />
+      )}
       <LoadingModal
         title="Please approve transaction"
         visible={loadingModalVisible}
