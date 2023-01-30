@@ -1,19 +1,38 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { createTimerJSX } from '@frakt/components/Timer';
 import Button from '../../../../components/Button';
-import { GraceListItem } from '@frakt/api/raffle';
 import { PATHS } from '../../../../constants';
 import styles from './GraceList.module.scss';
 import { Timer } from '../../../../icons';
 import Block from '../Block';
+import { useRaffleSort } from '@frakt/pages/LiquidationsPage/components/Liquidations/hooks';
+import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
+import { useIntersection } from '@frakt/hooks/useIntersection';
 
-interface GraceListProps {
-  graceList: GraceListItem[];
-}
+const GraceList: FC = () => {
+  const { queryData } = useRaffleSort();
 
-const GraceList: FC<GraceListProps> = ({ graceList }) => {
+  const { ref, inView } = useIntersection();
+
+  const {
+    data: graceList,
+    fetchNextPage,
+    isFetchingNextPage,
+    isListEnded,
+  } = useRaffleInfo({
+    url: 'liquidation/grace-list',
+    id: 'graceDashboardList',
+    queryData,
+  });
+
+  useEffect(() => {
+    if (inView && !isFetchingNextPage && !isListEnded) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
+
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Grace list</h3>
@@ -22,7 +41,7 @@ const GraceList: FC<GraceListProps> = ({ graceList }) => {
         <p className={styles.headerTitle}>Grace period</p>
       </div>
       {graceList?.length ? (
-        <div className={styles.content}>
+        <div className={styles.content} ref={ref}>
           {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
             <div key={nftName} className={styles.card}>
               <div className={styles.nftInfo}>
