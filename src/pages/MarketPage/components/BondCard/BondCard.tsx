@@ -49,7 +49,7 @@ export const BondCard: FC<BondCardProps> = ({
   }, [pairs, bond]);
 
   const exitAvailable =
-    !bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
+    bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
 
   return (
     <div className={styles.bond}>
