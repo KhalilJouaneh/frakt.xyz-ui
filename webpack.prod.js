@@ -21,7 +21,6 @@ module.exports = {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
