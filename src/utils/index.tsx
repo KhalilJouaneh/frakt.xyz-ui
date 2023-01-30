@@ -231,3 +231,17 @@ export const compareNumbers = (
 //? Placeholder for sendTxn callback in SDK methods
 export const sendTxnPlaceHolder = async (): Promise<null> =>
   await Promise.resolve(null);
+
+export const calcWeightedAverage = (nums: number[], weights: number[]) => {
+  const [sum, weightSum] = weights.reduce(
+    (acc, weight, i) => {
+      acc[0] = acc[0] + nums[i] * weight;
+      acc[1] = acc[1] + weight;
+      return acc;
+    },
+    [0, 0],
+  );
+
+  const weightedAverage = sum / weightSum;
+  return weightedAverage || 0;
+};
