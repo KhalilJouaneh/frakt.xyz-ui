@@ -1,18 +1,17 @@
 import create from 'zustand';
 import produce from 'immer';
 
-import {
-  BorrowNft,
-  BorrowNftSuggested,
-  BorrowNftBondParams,
-} from '@frakt/api/nft';
+import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
 import { LoanType } from '@frakt/api/loans';
+import { Market, Pair } from '@frakt/api/bonds';
 
-export interface BorrowNftSelected extends BorrowNft {
-  solLoanValue: number; //? Selected borrow value by user (in sidebar)
+export interface BorrowNftSelected extends BorrowNftSuggested {
+  loanValue: number; //? lamports
 
-  loanType: LoanType;
-  bondParams?: BorrowNftBondParams;
+  bondAccounts?: {
+    market: Market;
+    pair: Pair;
+  };
 }
 
 interface SelectedNftsState {
@@ -41,7 +40,7 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
       }),
     );
     const { setHighlightedNftMint } = get();
-    setHighlightedNftMint(bulkSelection[0].mint);
+    setHighlightedNftMint(bulkSelection[0]?.borrowNft?.mint);
   },
   addNftToSelection: (nft) => {
     set(
@@ -50,7 +49,7 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
       }),
     );
     const { setHighlightedNftMint } = get();
-    setHighlightedNftMint(nft.mint);
+    setHighlightedNftMint(nft.borrowNft.mint);
   },
   removeNftFromSelection: (nftMint) => {
     const {
@@ -66,7 +65,7 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
     set(
       produce((state: SelectedNftsState) => {
         state.selection = state.selection.filter(
-          ({ mint }) => mint !== nftMint,
+          ({ borrowNft }) => borrowNft.mint !== nftMint,
         );
       }),
     );
@@ -75,7 +74,9 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
     set(
       produce((state: SelectedNftsState) => {
         const nftToReplaceIdx =
-          state.selection.findIndex(({ mint }) => mint === nft.mint) ?? null;
+          state.selection.findIndex(
+            ({ borrowNft }) => borrowNft.mint === nft.borrowNft.mint,
+          ) ?? null;
         state.selection[nftToReplaceIdx] = nft;
       }),
     );
@@ -91,14 +92,16 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
   },
   findNftInSelection: (nftMint) => {
     const { selection } = get();
-    return selection.find(({ mint }) => mint === nftMint) ?? null;
+    return (
+      selection.find(({ borrowNft }) => borrowNft.mint === nftMint) ?? null
+    );
   },
   toggleNftInSelection: (nft) => {
     const { findNftInSelection, addNftToSelection, removeNftFromSelection } =
       get();
-    const isNftInSelection = !!findNftInSelection(nft.mint);
+    const isNftInSelection = !!findNftInSelection(nft.borrowNft.mint);
     isNftInSelection
-      ? removeNftFromSelection(nft.mint)
+      ? removeNftFromSelection(nft.borrowNft.mint)
       : addNftToSelection(nft);
   },
 
@@ -113,14 +116,16 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
     const { selection, highlightedNftMint } = get();
     if (selection.length === 0) return;
     const currenHighlightedNftIdx =
-      selection.findIndex(({ mint }) => highlightedNftMint === mint) ?? 0;
+      selection.findIndex(
+        ({ borrowNft }) => highlightedNftMint === borrowNft.mint,
+      ) ?? 0;
     const shift = !reverse ? 1 : -1;
     const nextHighlightedNft =
       selection.at(currenHighlightedNftIdx + shift) ?? selection.at(0);
 
     set(
       produce((state: SelectedNftsState) => {
-        state.highlightedNftMint = nextHighlightedNft.mint;
+        state.highlightedNftMint = nextHighlightedNft.borrowNft.mint;
       }),
     );
   },
@@ -139,16 +144,16 @@ export const useSelectedNfts = create<SelectedNftsState>((set, get) => ({
 export const convertSuggestedNftToSelected = (
   nft: BorrowNftSuggested,
 ): BorrowNftSelected => {
-  const solLoanValue =
+  const loandValue =
     nft.loanType === LoanType.PRICE_BASED
-      ? nft?.priceBased.suggestedLoanValue
-      : parseFloat(nft.timeBased.loanValue);
+      ? nft?.priceBasedSuggestion.loandValue
+      : nft.borrowNft?.classicParams?.maxLoanValue;
 
   //TODO: Insert bond logic for bulks here
 
   return {
     ...nft,
-    solLoanValue,
+    loanValue: loandValue,
   };
 };
 
@@ -156,9 +161,10 @@ export const convertBorrowNftToSelected = (
   nft: BorrowNft,
 ): BorrowNftSelected => {
   //? Set timeBased as default
+  //TODO set with other logic
   return {
-    ...nft,
     loanType: LoanType.TIME_BASED,
-    solLoanValue: parseFloat(nft.timeBased.loanValue),
+    borrowNft: nft,
+    loanValue: nft?.classicParams?.maxLoanValue,
   };
 };

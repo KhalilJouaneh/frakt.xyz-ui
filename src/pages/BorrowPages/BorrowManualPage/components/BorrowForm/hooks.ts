@@ -51,7 +51,7 @@ export const useBorrowForm: UseBorrowForm = ({
 
         if (type === LoanType.BOND) {
           return (
-            nft.bondParams?.pair?.validation?.durationFilter /
+            nft.bondAccounts?.pair?.validation?.durationFilter /
               (24 * 60 * 60) ===
             duration
           );
@@ -79,15 +79,15 @@ export const useBorrowForm: UseBorrowForm = ({
     updateNftInSelection({
       ...nft,
       loanType: type,
-      solLoanValue: maxBorrowValue,
-      bondParams:
+      loanValue: maxBorrowValue,
+      bondAccounts:
         type === LoanType.BOND
           ? {
               market,
               pair: getPairWithMaxBorrowValue({
                 pairs,
-                collectionFloor: parseFloat(nft.valuation),
-                duration: duration,
+                collectionFloor: market?.oracleFloor?.floor,
+                duration,
               }),
             }
           : null,
@@ -98,7 +98,7 @@ export const useBorrowForm: UseBorrowForm = ({
   useEffect(() => {
     return updateNftInSelection({
       ...nft,
-      solLoanValue: maxBorrowValue,
+      loanValue: maxBorrowValue,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maxBorrowValue, updateNftInSelection]);
@@ -109,15 +109,15 @@ export const useBorrowForm: UseBorrowForm = ({
     if (type === LoanType.BOND) {
       const cheapestPair = getCheapestPairForBorrowValue({
         borrowValue,
-        valuation: nft?.bondParams?.market?.oracleFloor?.floor / 1e9,
+        valuation: market?.oracleFloor?.floor,
         pairs,
         duration: duration,
       });
 
       return updateNftInSelection({
         ...nft,
-        solLoanValue: borrowValue,
-        bondParams: {
+        loanValue: borrowValue,
+        bondAccounts: {
           market,
           pair: cheapestPair,
         },
@@ -126,12 +126,12 @@ export const useBorrowForm: UseBorrowForm = ({
 
     updateNftInSelection({
       ...nft,
-      solLoanValue: borrowValue,
+      loanValue: borrowValue,
     });
   };
 
   return {
-    selectedBorrowValue: nft.solLoanValue,
+    selectedBorrowValue: nft.loanValue,
     onSliderUpdate,
     borrowRange: [minBorrowValue, maxBorrowValue],
     selectOptions,

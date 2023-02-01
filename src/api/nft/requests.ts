@@ -27,7 +27,7 @@ export const fetchWalletBorrowNfts: FetchWalletBorrowNfts = async ({
   const searchQuery = search ? `search=${search}&` : '';
 
   const { data } = await axios.get<BorrowNft[]>(
-    `https://${BACKEND_DOMAIN}/nft/meta/${publicKey?.toBase58()}?${searchQuery}limit=${limit}&skip=${offset}&sortBy=${sortBy}&sort=${sortOrder}`,
+    `https://${BACKEND_DOMAIN}/nft/meta2/${publicKey?.toBase58()}?${searchQuery}limit=${limit}&skip=${offset}&sortBy=${sortBy}&sort=${sortOrder}`,
   );
 
   return data;

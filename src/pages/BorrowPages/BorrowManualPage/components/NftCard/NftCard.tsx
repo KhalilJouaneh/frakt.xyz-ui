@@ -2,12 +2,12 @@ import { FC } from 'react';
 import classNames from 'classnames/bind';
 
 import { Solana } from '@frakt/icons';
+import { BorrowNft } from '@frakt/api/nft';
 
 import styles from './NftCard.module.scss';
-import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
 
 interface NftCardProps {
-  nft: BorrowNft | BorrowNftSuggested;
+  nft: BorrowNft;
   selected?: boolean;
   highlighted?: boolean;
   onClick?: () => void;
@@ -19,9 +19,9 @@ export const NftCard: FC<NftCardProps> = ({
   highlighted = false,
   onClick = () => {},
 }) => {
-  const { name, imageUrl, timeBased, maxLoanValue, isCanFreeze } = nft;
+  const { name, imageUrl, classicParams, freezable, stakingAvailable } = nft;
 
-  const isStakeAvailable = timeBased?.isCanStake || nft.priceBased?.isCanStake;
+  const maxLoanValue = classicParams?.maxLoanValue; //TODO Calc dynamic max loan value here
 
   return (
     <div
@@ -38,8 +38,8 @@ export const NftCard: FC<NftCardProps> = ({
         {selected && <div className={styles.imageSelectedOverlay} />}
 
         <div className={styles.badgesContainer}>
-          {isStakeAvailable && <p className={styles.badge}>Staking support</p>}
-          {!isCanFreeze && <p className={styles.badge}>Leaves wallet</p>}
+          {stakingAvailable && <p className={styles.badge}>Staking support</p>}
+          {!freezable && <p className={styles.badge}>Leaves wallet</p>}
         </div>
       </div>
       <div className={styles.rootContent}>
@@ -48,7 +48,9 @@ export const NftCard: FC<NftCardProps> = ({
           <div>
             <p className={styles.ltvTitle}>To borrow</p>
             <div className={styles.ltvContent}>
-              <p className={styles.ltvText}>{maxLoanValue}</p>
+              <p className={styles.ltvText}>
+                {(maxLoanValue / 1e9)?.toFixed(2)}
+              </p>
               <Solana />
             </div>
           </div>

@@ -27,15 +27,15 @@ export const generateSelectOptions: GenerateSelectOptions = ({
 }) => {
   const options: SelectValue[] = [
     {
-      label: `${nft.timeBased.returnPeriodDays} days`,
+      label: `${nft.borrowNft?.classicParams.timeBased.returnPeriodDays} days`,
       value: {
         type: LoanType.TIME_BASED,
-        duration: nft.timeBased.returnPeriodDays,
+        duration: nft.borrowNft.classicParams.timeBased.returnPeriodDays,
       },
     },
   ];
 
-  if (nft?.priceBased) {
+  if (nft.borrowNft?.classicParams?.priceBased) {
     options.push({
       label: 'Perpetual',
       value: {
@@ -78,13 +78,14 @@ export const getBorrowValueRange: GetBorrowValueRange = ({
   nft,
   bondsParams,
 }) => {
-  const { valuation: rawValuation, timeBased, loanType } = nft;
+  const { loanType, borrowNft } = nft;
 
-  const valuation = parseFloat(rawValuation);
+  const { valuation, classicParams } = borrowNft;
 
-  const maxBorrowValueTimeBased = valuation * (timeBased?.ltvPercents / 100);
+  const maxBorrowValueTimeBased =
+    valuation * (classicParams?.timeBased?.ltvPercent / 100);
   const maxBorrowValuePriceBased =
-    valuation * (nft?.priceBased?.ltvPercents / 100);
+    valuation * (classicParams?.priceBased?.ltvPercent / 100);
   const minBorrowValue = valuation / 10;
 
   const maxBorrowValue = (() => {
@@ -95,10 +96,10 @@ export const getBorrowValueRange: GetBorrowValueRange = ({
     return getPairMaxValue({
       pair: getPairWithMaxBorrowValue({
         pairs: bondsParams.pairs,
-        collectionFloor: bondsParams.market.oracleFloor.floor / 1e9,
+        collectionFloor: bondsParams.market.oracleFloor.floor,
         duration: bondsParams?.duration,
       }),
-      collectionFloor: bondsParams.market.oracleFloor.floor / 1e9,
+      collectionFloor: bondsParams.market.oracleFloor.floor,
     });
   })();
 
@@ -129,15 +130,15 @@ export const getPairWithMaxBorrowValue: GetPairWithMaxBorrowValue = ({
 type GetPairMaxValue = (params: {
   pair: Pair;
   collectionFloor: number;
-}) => number;
+}) => number; //? lamports
 const getPairMaxValue: GetPairMaxValue = ({ pair, collectionFloor }) => {
   const loanToValueLamports =
-    collectionFloor * 1e9 * (pair.validation.loanToValueFilter / 1e4);
+    collectionFloor * (pair.validation.loanToValueFilter / 1e4);
   const maxValueBonds = Math.min(
     pair.edgeSettlement,
     loanToValueLamports / 1e3,
   );
-  return (maxValueBonds * pair.currentSpotPrice) / 1e9;
+  return maxValueBonds * pair.currentSpotPrice;
 };
 
 type GetCheapestPairForBorrowValue = (params: {
@@ -158,9 +159,9 @@ export const getCheapestPairForBorrowValue: GetCheapestPairForBorrowValue = ({
 
   const suitableBySettlementAndValidation = suitablePairsByDuration.filter(
     (pair) => {
-      const borrowValueBonds = (borrowValue * 1e9) / pair.currentSpotPrice;
+      const borrowValueBonds = borrowValue / pair.currentSpotPrice;
       const loanToValueLamports =
-        valuation * 1e9 * (pair.validation.loanToValueFilter * 0.01 * 0.01);
+        valuation * (pair.validation.loanToValueFilter * 0.01 * 0.01);
 
       return (
         borrowValueBonds <= pair.edgeSettlement &&

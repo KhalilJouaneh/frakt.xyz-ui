@@ -18,7 +18,7 @@ type MakeCreateBondTransactions = (params: {
   market: Market;
   pair: Pair;
   nftMint: string;
-  borrowValue: number; //? Normal number (F.e. 1.5 SOL)
+  borrowValue: number; //? lamports
   connection: web3.Connection;
   wallet: WalletContextState;
 }) => Promise<{ transaction: web3.Transaction; signers: web3.Signer[] }>;
@@ -27,12 +27,11 @@ export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
   market,
   pair,
   nftMint,
-  borrowValue,
+  borrowValue, //? lamports
   connection,
   wallet,
 }) => {
-  const amountToReturn =
-    Math.trunc((borrowValue * 1e9) / pair.currentSpotPrice) * 1e3;
+  const amountToReturn = Math.trunc(borrowValue / pair.currentSpotPrice) * 1e3;
 
   const proof = await (async () => {
     if (market.whitelistEntry?.whitelistType !== WhitelistType.MERKLE_TREE) {

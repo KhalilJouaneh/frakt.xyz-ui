@@ -5,9 +5,7 @@ import { LoanType } from '@frakt/api/loans';
 
 import { BorrowNftSelected } from './selectedNftsState';
 
-export const calcBulkTotalValue = (
-  bulk: Array<BorrowNftSuggested | BorrowNftSelected>,
-) => {
+export const calcBulkTotalValue = (bulk: Array<BorrowNftSuggested>) => {
   const priceBasedLoans = filter(
     bulk,
     (nft) => nft?.loanType === LoanType.PRICE_BASED,
@@ -18,30 +16,30 @@ export const calcBulkTotalValue = (
   );
 
   const priceBasedLoansValue =
-    sum(
-      map(
-        priceBasedLoans,
-        (nft) => (nft?.priceBased as any)?.suggestedLoanValue,
-      ),
-    ) || 0;
+    sum(map(priceBasedLoans, (nft) => nft?.priceBasedSuggestion?.loandValue)) ||
+    0;
 
   const timeBasedLoansValue =
-    sum(map(timeBasedLoans, ({ maxLoanValue }) => parseFloat(maxLoanValue))) ||
-    0;
+    sum(
+      map(
+        timeBasedLoans,
+        ({ borrowNft }) => borrowNft?.classicParams?.timeBased?.loanValue,
+      ),
+    ) || 0;
 
   return priceBasedLoansValue + timeBasedLoansValue;
 };
 
 export const calcFeePerDayForTimeBasedLoan = (nft: BorrowNft, ltv: number) => {
-  const { returnPeriodDays, fee, feeDiscountPercents, ltvPercents } =
-    nft.timeBased;
+  const { ltvPercent, fee, feeDiscountPercent, returnPeriodDays } =
+    nft?.classicParams?.timeBased;
 
-  const timeBasedLtvValue = ltvPercents / 100;
+  const timeBasedLtvValue = ltvPercent / 100;
   const suggestedLtvValue = ltv / 100;
 
-  const feeAmount = (Number(fee) / timeBasedLtvValue) * suggestedLtvValue;
+  const feeAmount = (fee / timeBasedLtvValue) * suggestedLtvValue;
 
-  const feeDiscountPercentsValue = Number(feeDiscountPercents) * 0.01;
+  const feeDiscountPercentsValue = feeDiscountPercent * 0.01;
 
   const feePerDay = feeAmount / returnPeriodDays;
   const feePerDayWithDiscount =
@@ -51,35 +49,38 @@ export const calcFeePerDayForTimeBasedLoan = (nft: BorrowNft, ltv: number) => {
 };
 
 export const calcFeesForPriceBasedLoan = (nft: BorrowNft, ltv: number) => {
-  if (!ltv || !nft?.priceBased) return { feePerDay: 0, upfrontFee: 0 };
-  const { valuation, priceBased } = nft;
+  if (!ltv || !nft?.classicParams?.priceBased)
+    return { feePerDay: 0, upfrontFee: 0 };
 
-  const loanValue = parseFloat(valuation) * (ltv / 100);
+  const { valuation, classicParams } = nft;
+  const priceBased = classicParams.priceBased;
 
-  const feePerDay = (loanValue * (priceBased.borrowAPRPercents * 0.01)) / 365;
+  const loanValue = valuation * (ltv / 100);
+
+  const feePerDay = (loanValue * (priceBased.borrowAPRPercent * 0.01)) / 365;
   const upfrontFee = loanValue * 0.01;
 
   return { feePerDay, upfrontFee };
 };
 
-export const calcFeePerDay = (selectedBulk: BorrowNftSelected[]): number => {
+export const calcFeePerDay = (selectedBulk: BorrowNftSuggested[]): number => {
   return sum(
-    selectedBulk.map((nft): number => {
-      const { valuation, timeBased } = nft;
-      const valuationNumber = parseFloat(valuation);
+    selectedBulk.map((suggestion): number => {
+      const { borrowNft, loanType, priceBasedSuggestion } = suggestion;
 
-      const rawLtv = (nft?.solLoanValue / valuationNumber) * 100;
+      if (loanType === LoanType.PRICE_BASED) {
+        const suggestedLtv =
+          (priceBasedSuggestion.loandValue / borrowNft.valuation) * 100;
+        const priceBasedLtv = borrowNft?.classicParams?.priceBased?.ltvPercent;
 
-      const timeBasedLtv = timeBased.ltvPercents;
-      const priceBasedLtv = nft?.priceBased?.ltvPercents;
-
-      const ltv = rawLtv || priceBasedLtv || timeBasedLtv;
-
-      if (nft.loanType === LoanType.PRICE_BASED) {
-        return calcFeesForPriceBasedLoan(nft, ltv).feePerDay;
+        return calcFeesForPriceBasedLoan(
+          borrowNft,
+          suggestedLtv || priceBasedLtv,
+        ).feePerDay;
       }
 
-      return calcFeePerDayForTimeBasedLoan(nft, ltv);
+      const timeBasedLtv = borrowNft?.classicParams?.timeBased?.ltvPercent;
+      return calcFeePerDayForTimeBasedLoan(borrowNft, timeBasedLtv);
     }),
   );
 };
@@ -88,9 +89,10 @@ export const getFeesOnCertainDay = (
   selectedBulk: BorrowNftSelected[],
   day: number,
 ) => {
-  const filteredLoans = selectedBulk.filter(({ loanType, timeBased }) => {
+  const filteredLoans = selectedBulk.filter(({ loanType, borrowNft }) => {
     return (
-      loanType === LoanType.PRICE_BASED || day <= timeBased.returnPeriodDays
+      loanType === LoanType.PRICE_BASED ||
+      day <= borrowNft?.classicParams?.timeBased.returnPeriodDays
     );
   });
 

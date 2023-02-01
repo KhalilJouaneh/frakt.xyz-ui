@@ -33,20 +33,22 @@ export const useSidebar = () => {
   const goToBulkOverviewPage = () => history.push(PATHS.BORROW_BULK_OVERVIEW);
 
   const totalBorrowValue = useMemo(() => {
-    return sum(selection.map(({ solLoanValue }) => solLoanValue));
+    return sum(selection.map(({ loanValue }) => loanValue));
   }, [selection]);
 
   const isBulk = selection.length > 1;
 
   const { market, isLoading: isLoadingMarket } = useMarket({
-    marketPubkey: nft.marketPubkey,
+    marketPubkey: nft?.borrowNft?.bondParams?.marketPubkey,
   });
 
   const { pairs, isLoading: isLoadingMarketPair } = useMarketPairs({
-    marketPubkey: nft.marketPubkey,
+    marketPubkey: nft?.borrowNft?.bondParams?.marketPubkey,
   });
 
-  const loading = nft.marketPubkey && (isLoadingMarket || isLoadingMarketPair);
+  const loading =
+    nft?.borrowNft?.bondParams?.marketPubkey &&
+    (isLoadingMarket || isLoadingMarketPair);
 
   const connection = useConnection();
   const wallet = useWallet();
@@ -59,12 +61,12 @@ export const useSidebar = () => {
 
       if (selection[0] && selection[0].loanType === LoanType.BOND) {
         const nft = selection[0];
-        const { bondParams, solLoanValue } = nft;
+        const { bondAccounts, loanValue } = nft;
         const { transaction, signers } = await makeCreateBondTransactions({
-          nftMint: nft.mint,
-          market: bondParams.market,
-          pair: bondParams.pair,
-          borrowValue: solLoanValue,
+          nftMint: nft.borrowNft.mint,
+          market: bondAccounts.market,
+          pair: bondAccounts.pair,
+          borrowValue: loanValue,
           connection,
           wallet,
         });

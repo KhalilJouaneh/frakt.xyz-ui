@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import { FC } from 'react';
+import classNames from 'classnames';
 import { Slider as SliderAntd } from 'antd';
 
 import styles from './Slider.module.scss';

@@ -42,17 +42,17 @@ export const BorrowForm: FC<BorrowFormProps> = ({
       <div className={styles.borrowFormDetails}>
         <div className={styles.borrowFormLtvSliderWrapper}>
           <p className={styles.borrowFormLtvSliderLabel}>
-            To borrow: {selectedBorrowValue?.toFixed(2)} SOL{' '}
+            To borrow: {(selectedBorrowValue / 1e9)?.toFixed(2)} SOL{' '}
           </p>
           <Slider
             marks={{
-              [borrowRange[0]]: `${borrowRange[0].toFixed(2)} SOL`,
-              [borrowRange[1]]: `${borrowRange[1].toFixed(2)} SOL`,
+              [borrowRange[0]]: `${(borrowRange[0] / 1e9).toFixed(2)} SOL`,
+              [borrowRange[1]]: `${(borrowRange[1] / 1e9).toFixed(2)} SOL`,
             }}
             className={styles.borrowFormLtvSlider}
             value={selectedBorrowValue}
             step={0.1}
-            setValue={onSliderUpdate}
+            setValue={(nextValue) => onSliderUpdate(nextValue)}
             min={borrowRange[0]}
             max={borrowRange[1]}
           />
@@ -80,9 +80,9 @@ export const BorrowForm: FC<BorrowFormProps> = ({
           type="secondary"
           className={styles.borrowFormSubmitBtn}
         >
-          {`${
-            isBulk ? 'View bulk ' : 'Quick borrow '
-          } loan ${totalBorrowValue.toFixed(2)} SOL`}
+          {`${isBulk ? 'View bulk ' : 'Quick borrow '} loan ${(
+            totalBorrowValue / 1e9
+          ).toFixed(2)} SOL`}
         </Button>
       </div>
     </div>
