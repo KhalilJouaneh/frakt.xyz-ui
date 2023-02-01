@@ -44,7 +44,7 @@ export const Sidebar: FC = () => {
         {!loading && (
           <>
             <NftsCarousel
-              nfts={nft}
+              nfts={nft.borrowNft}
               onDeselect={() => removeNftFromSelection(nft.borrowNft.mint)}
               onPrev={() => hightlightNextNftInSelection(true)}
               onNext={() => hightlightNextNftInSelection()}
