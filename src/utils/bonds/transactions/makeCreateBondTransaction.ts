@@ -14,7 +14,7 @@ import {
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
-type MakeCreateBondTransactions = (params: {
+type MakeCreateBondTransaction = (params: {
   market: Market;
   pair: Pair;
   nftMint: string;
@@ -23,7 +23,7 @@ type MakeCreateBondTransactions = (params: {
   wallet: WalletContextState;
 }) => Promise<{ transaction: web3.Transaction; signers: web3.Signer[] }>;
 
-export const makeCreateBondTransactions: MakeCreateBondTransactions = async ({
+export const makeCreateBondTransaction: MakeCreateBondTransaction = async ({
   market,
   pair,
   nftMint,

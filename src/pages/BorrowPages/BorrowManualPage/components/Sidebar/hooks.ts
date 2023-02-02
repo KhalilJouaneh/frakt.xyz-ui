@@ -1,83 +1,71 @@
-import { useMemo, useState } from 'react';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { sum } from 'lodash';
+import { useState } from 'react';
+import { useWallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { useHistory } from 'react-router-dom';
 
 import { PATHS } from '@frakt/constants';
-import { signAndConfirmTransaction } from '@frakt/utils/transactions';
-import {
-  makeCreateBondTransactions,
-  useMarket,
-  useMarketPairs,
-} from '@frakt/utils/bonds';
-import { LoanType } from '@frakt/api/loans';
+import { showSolscanLinkNotification } from '@frakt/utils/transactions';
+import { makeCreateBondTransaction } from '@frakt/utils/bonds';
 import { useConnection } from '@frakt/hooks';
-
-import { useSelectedNfts } from '../../../selectedNftsState';
+import { useCart, Order } from '@frakt/pages/BorrowPages/cartState';
+import { Pair } from '@frakt/api/bonds';
+import { web3 } from 'fbonds-core';
+import { notify } from '@frakt/utils';
+import { NotifyType } from '@frakt/utils/solanaUtils';
+import { captureSentryError } from '@frakt/utils/sentry';
+import { makeProposeTransaction } from '@frakt/utils/loans';
+import { LoanType } from '@frakt/api/loans';
 
 export const useSidebar = () => {
   const {
-    selection,
-    highlightedNftMint,
-    hightlightNextNftInSelection,
-    removeNftFromSelection,
-    findNftInSelection,
-    updateNftInSelection,
-  } = useSelectedNfts();
-
-  const nft = findNftInSelection(highlightedNftMint);
+    orders,
+    onNextOrderSelect: onNextOrder,
+    onRemoveOrder,
+    pairs,
+    isLoading,
+    currentOrder: order,
+    totalBorrowValue,
+  } = useCart();
 
   const [minimizedOnMobile, setMinimizedOnMobile] = useState<boolean>(false);
 
   const history = useHistory();
   const goToBulkOverviewPage = () => history.push(PATHS.BORROW_BULK_OVERVIEW);
 
-  const totalBorrowValue = useMemo(() => {
-    return sum(selection.map(({ loanValue }) => loanValue));
-  }, [selection]);
+  const isBulk = orders.length > 1;
 
-  const isBulk = selection.length > 1;
-
-  const { market, isLoading: isLoadingMarket } = useMarket({
-    marketPubkey: nft?.borrowNft?.bondParams?.marketPubkey,
-  });
-
-  const { pairs, isLoading: isLoadingMarketPair } = useMarketPairs({
-    marketPubkey: nft?.borrowNft?.bondParams?.marketPubkey,
-  });
-
-  const loading =
-    nft?.borrowNft?.bondParams?.marketPubkey &&
-    (isLoadingMarket || isLoadingMarketPair);
+  const loading = order?.borrowNft?.bondParams && isLoading;
 
   const connection = useConnection();
   const wallet = useWallet();
 
   const onSubmit = async () => {
     try {
-      if (isBulk) {
-        return goToBulkOverviewPage();
-      }
+      const result = await borrow({
+        orders,
+        pairs,
+        wallet,
+        connection,
+      });
 
-      if (selection[0] && selection[0].loanType === LoanType.BOND) {
-        const nft = selection[0];
-        const { bondAccounts, loanValue } = nft;
-        const { transaction, signers } = await makeCreateBondTransactions({
-          nftMint: nft.borrowNft.mint,
-          market: bondAccounts.market,
-          pair: bondAccounts.pair,
-          borrowValue: loanValue,
-          connection,
-          wallet,
-        });
-
-        await signAndConfirmTransaction({
-          connection,
-          transaction,
-          signers,
-          wallet,
-        });
+      if (result) {
+        throw new Error('Error');
       }
+      // if (isBulk) {
+      //   return goToBulkOverviewPage();
+      // }
+
+      // if (orders[0] && orders[0].loanType === LoanType.BOND) {
+      //   const result = await borrow({
+      //     orders,
+      //     pairs,
+      //     wallet,
+      //     connection,
+      //   });
+
+      //   if (result) {
+      //     throw new Error('Error');
+      //   }
+      // }
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line no-console
@@ -86,18 +74,118 @@ export const useSidebar = () => {
   };
 
   return {
-    nft,
-    market,
-    pairs,
+    order,
     minimizedOnMobile,
     setMinimizedOnMobile,
-    onSubmit,
-    totalBorrowValue,
     isBulk,
     loading,
-    removeNftFromSelection,
-    hightlightNextNftInSelection,
-    updateNftInSelection,
+    onRemoveOrder,
+    onNextOrder,
     goToBulkOverviewPage,
+    totalBorrowValue,
+    onSubmit,
   };
+};
+
+type Borrow = (props: {
+  orders: Order[];
+  pairs: Pair[];
+  connection: web3.Connection;
+  wallet: WalletContextState;
+}) => Promise<boolean>;
+
+export const borrow: Borrow = async ({
+  orders,
+  pairs,
+  connection,
+  wallet,
+}): Promise<boolean> => {
+  try {
+    const transactionsAndSigners = await Promise.all(
+      orders.map((order) => {
+        if (order.loanType === LoanType.BOND) {
+          return makeCreateBondTransaction({
+            nftMint: order.borrowNft.mint,
+            market: order.bondParams.market,
+            pair: pairs.find(
+              (pair) => pair.publicKey === order.bondParams.pairPubkey,
+            ),
+            borrowValue: order.loanValue,
+            connection,
+            wallet,
+          });
+        }
+
+        return makeProposeTransaction({
+          nftMint: order.borrowNft.mint,
+          valuation: order.borrowNft.valuation,
+          loanValue: order.loanValue,
+          loanType: order.loanType,
+          connection,
+          wallet,
+        });
+      }),
+    );
+
+    const { blockhash, lastValidBlockHeight } =
+      await connection.getLatestBlockhash();
+
+    const transactions = transactionsAndSigners.map(
+      ({ transaction, signers }) => {
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = wallet?.publicKey;
+        if (signers.length) {
+          transaction.sign(...signers);
+        }
+
+        return transaction;
+      },
+    );
+
+    const signedTransactions = await wallet?.signAllTransactions(transactions);
+
+    const txids = await Promise.all(
+      signedTransactions.map((signedTransaction) =>
+        connection.sendRawTransaction(signedTransaction.serialize()),
+      ),
+    );
+
+    notify({
+      message: 'Transactions sent',
+      type: NotifyType.INFO,
+    });
+
+    await Promise.all(
+      txids.map((txid) =>
+        connection.confirmTransaction(
+          { signature: txid, blockhash, lastValidBlockHeight },
+          'confirmed',
+        ),
+      ),
+    );
+
+    notify({
+      message: 'Borrowed successfully!',
+      type: NotifyType.SUCCESS,
+    });
+
+    return true;
+  } catch (error) {
+    const isNotConfirmed = showSolscanLinkNotification(error);
+
+    if (!isNotConfirmed) {
+      notify({
+        message: 'The transaction just failed :( Give it another try',
+        type: NotifyType.ERROR,
+      });
+    }
+
+    captureSentryError({
+      error,
+      wallet,
+      transactionName: 'proposeBulkLoanWithBonds',
+    });
+
+    return false;
+  }
 };

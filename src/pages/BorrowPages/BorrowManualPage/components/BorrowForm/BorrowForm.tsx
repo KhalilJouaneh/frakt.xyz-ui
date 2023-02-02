@@ -1,41 +1,28 @@
 import { FC } from 'react';
+import { debounce } from 'lodash';
 
 import Button from '@frakt/components/Button';
 import { Slider } from '@frakt/components/Slider';
 import { Select } from '@frakt/components/Select';
-import { Market, Pair } from '@frakt/api/bonds';
 
-import { BorrowNftSelected } from '../../../selectedNftsState';
 import styles from './BorrowForm.module.scss';
 import { SelectValue } from './helpers';
 import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
-  nft: BorrowNftSelected;
-  updateNftInSelection: (nft: BorrowNftSelected) => void;
-  totalBorrowValue: number;
-  isBulk?: boolean;
   onSubmit: () => void;
-  market?: Market;
-  pairs?: Pair[];
 }
-export const BorrowForm: FC<BorrowFormProps> = ({
-  nft,
-  totalBorrowValue,
-  isBulk,
-  updateNftInSelection,
-  onSubmit,
-  market,
-  pairs,
-}) => {
+export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
   const {
+    totalBorrowValue,
     selectedBorrowValue,
     onSliderUpdate,
     borrowRange,
     selectOptions,
     selectedOption,
     onOptionChange,
-  } = useBorrowForm({ nft, market, pairs, updateNftInSelection });
+    // isBulk,
+  } = useBorrowForm();
 
   return (
     <div className={styles.borrowForm}>
@@ -50,9 +37,9 @@ export const BorrowForm: FC<BorrowFormProps> = ({
               [borrowRange[1]]: `${(borrowRange[1] / 1e9).toFixed(2)} SOL`,
             }}
             className={styles.borrowFormLtvSlider}
-            value={selectedBorrowValue}
+            defaultValue={selectedBorrowValue}
             step={0.1}
-            setValue={(nextValue) => onSliderUpdate(nextValue)}
+            setValue={debounce((nextValue) => onSliderUpdate(nextValue), 300)}
             min={borrowRange[0]}
             max={borrowRange[1]}
           />
@@ -80,9 +67,10 @@ export const BorrowForm: FC<BorrowFormProps> = ({
           type="secondary"
           className={styles.borrowFormSubmitBtn}
         >
-          {`${isBulk ? 'View bulk ' : 'Quick borrow '} loan ${(
+          {/* {`${isBulk ? 'View bulk ' : 'Quick borrow '} loan ${(
             totalBorrowValue / 1e9
-          ).toFixed(2)} SOL`}
+          ).toFixed(2)} SOL`} */}
+          Quick borrow {(totalBorrowValue / 1e9).toFixed(2)} SOL
         </Button>
       </div>
     </div>

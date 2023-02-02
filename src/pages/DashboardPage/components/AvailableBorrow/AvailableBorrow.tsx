@@ -8,13 +8,14 @@ import { Solana } from '@frakt/icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { fetchWalletBorrowNfts } from '@frakt/api/nft';
+import { BorrowNft, fetchWalletBorrowNfts } from '@frakt/api/nft';
 
 const AvailableBorrow: FC = () => {
   const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
   const { publicKey } = useWallet();
 
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+  const maxLoanValue = ({ classicParams }: BorrowNft) =>
+    classicParams.maxLoanValue;
 
   useEffect(() => {
     (async () => {

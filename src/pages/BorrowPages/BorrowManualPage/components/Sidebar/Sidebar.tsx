@@ -11,19 +11,16 @@ import styles from './Sidebar.module.scss';
 
 export const Sidebar: FC = () => {
   const {
-    nft,
-    market,
-    pairs,
+    order,
     minimizedOnMobile,
     setMinimizedOnMobile,
-    onSubmit,
     totalBorrowValue,
     isBulk,
     loading,
-    removeNftFromSelection,
-    hightlightNextNftInSelection,
-    updateNftInSelection,
+    onRemoveOrder,
+    onNextOrder,
     goToBulkOverviewPage,
+    onSubmit,
   } = useSidebar();
 
   return (
@@ -41,24 +38,16 @@ export const Sidebar: FC = () => {
       />
       <div className={styles.sidebar}>
         {loading && <Loader size="large" />}
-        {!loading && (
+        {!loading && !!order && (
           <>
             <NftsCarousel
-              nfts={nft.borrowNft}
-              onDeselect={() => removeNftFromSelection(nft.borrowNft.mint)}
-              onPrev={() => hightlightNextNftInSelection(true)}
-              onNext={() => hightlightNextNftInSelection()}
+              nfts={order?.borrowNft}
+              onDeselect={() => onRemoveOrder(order)}
+              onPrev={() => onNextOrder(true)}
+              onNext={() => onNextOrder()}
               isBulkLoan={isBulk}
             />
-            <BorrowForm
-              nft={nft}
-              updateNftInSelection={updateNftInSelection}
-              totalBorrowValue={totalBorrowValue}
-              isBulk={isBulk}
-              onSubmit={onSubmit}
-              market={market}
-              pairs={pairs}
-            />
+            <BorrowForm onSubmit={onSubmit} />
           </>
         )}
       </div>

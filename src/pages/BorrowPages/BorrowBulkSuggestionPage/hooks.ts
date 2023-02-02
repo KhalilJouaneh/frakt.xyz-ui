@@ -12,10 +12,7 @@ import {
 } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
-import {
-  convertSuggestedNftToSelected,
-  useSelectedNfts,
-} from '../selectedNftsState';
+import { useCart } from '../cartState';
 
 type UseBulkSuggestion = (props: {
   walletPublicKey?: web3.PublicKey;
@@ -57,7 +54,7 @@ export const useBorrowBulkSuggestionPage = () => {
     return parseFloat(searchParams.get('borrowValue') || '0');
   }, [search]);
 
-  const { setSelection } = useSelectedNfts();
+  const { onSelectNft } = useCart();
 
   useEffect(() => {
     if (borrowValue === 0) {
@@ -76,7 +73,7 @@ export const useBorrowBulkSuggestionPage = () => {
   const onBackBtnClick = () => history.push(PATHS.BORROW_ROOT);
 
   const onBulkSuggestionSelect = (bulk: BorrowNftSuggested[]) => {
-    setSelection(bulk.map((nft) => convertSuggestedNftToSelected(nft)));
+    bulk.forEach((bulkNft) => onSelectNft(bulkNft.borrowNft));
     history.push(PATHS.BORROW_BULK_OVERVIEW);
   };
 

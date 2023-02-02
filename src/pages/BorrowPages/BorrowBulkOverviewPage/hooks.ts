@@ -1,28 +1,27 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useWallet } from '@solana/wallet-adapter-react';
+// import { useWallet } from '@solana/wallet-adapter-react';
 
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
-import { proposeBulkLoan } from '@frakt/utils/loans';
-import { useConnection } from '@frakt/hooks';
+// import { proposeBulkLoan } from '@frakt/utils/loans';
+// import { useConnection } from '@frakt/hooks';
 import { PATHS } from '@frakt/constants';
 
-import { useSelectedNfts } from '../selectedNftsState';
+import { useCart } from '../cartState';
 
 export const useBorrowBulkOverviewPage = () => {
   const history = useHistory();
-  const wallet = useWallet();
-  const connection = useConnection();
-  const { selection, clearSelection, setHighlightedNftMint } =
-    useSelectedNfts();
+  // const wallet = useWallet();
+  // const connection = useConnection();
+  const { orders } = useCart();
 
   //? Go to borrow root page if bulk selection doesn't exist
   useEffect(() => {
-    if (history && !selection.length) {
+    if (history && !orders.length) {
       history.replace(PATHS.BORROW_ROOT);
     }
-  }, [history, selection]);
+  }, [history, orders]);
 
   const {
     visible: loadingModalVisible,
@@ -41,18 +40,20 @@ export const useBorrowBulkOverviewPage = () => {
       closeConfirmModal();
       openLoadingModal();
 
-      const result = await proposeBulkLoan({
-        wallet,
-        connection,
-        selectedBulk: selection,
-      });
+      await new Promise((res) => res);
 
-      if (!result) {
-        throw new Error('Loan proposing failed');
-      }
+      // const result = await proposeBulkLoan({
+      //   wallet,
+      //   connection,
+      //   selectedBulk: selection,
+      // });
 
-      history.push(PATHS.BORROW_SUCCESS);
-      clearSelection();
+      // if (!result) {
+      //   throw new Error('Loan proposing failed');
+      // }
+
+      // history.push(PATHS.BORROW_SUCCESS);
+      // clearSelection();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs);
@@ -65,14 +66,15 @@ export const useBorrowBulkOverviewPage = () => {
   const onBackBtnClick = () => history.goBack();
 
   const onBulkEdit = (mint?: string) => {
-    if (mint) {
-      setHighlightedNftMint(mint);
-    }
+    // if (mint) {
+    //   setHighlightedNftMint(mint);
+    // }
+    mint;
     history.push(PATHS.BORROW_MANUAL);
   };
 
   return {
-    selection,
+    selection: orders,
     onBackBtnClick,
     onBorrow,
     confirmModalVisible,

@@ -1,6 +1,6 @@
 export * from './makeCreatePairTransaction';
 export * from './makeRemoveOrderTransaction';
-export * from './makeCreateBondTransactions';
+export * from './makeCreateBondTransaction';
 export * from './makeRepayBondTransaction';
 export * from './makeRedeemBondTransaction';
 export * from './makeExitBondTransaction';

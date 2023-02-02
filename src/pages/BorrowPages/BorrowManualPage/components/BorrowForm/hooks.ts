@@ -1,47 +1,35 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { Market, Pair } from '@frakt/api/bonds';
 import { LoanType } from '@frakt/api/loans';
 
-import { BorrowNftSelected } from '../../../selectedNftsState';
+import { generateSelectOptions, SelectValue } from './helpers';
 import {
-  generateSelectOptions,
+  useCart,
   getBorrowValueRange,
   getCheapestPairForBorrowValue,
   getPairWithMaxBorrowValue,
-  SelectValue,
-} from './helpers';
+} from '@frakt/pages/BorrowPages/cartState';
 
-type UseBorrowForm = (props: {
-  nft: BorrowNftSelected;
-  market?: Market;
-  pairs?: Pair[];
-  updateNftInSelection: (nft: BorrowNftSelected) => void;
-}) => {
-  selectedBorrowValue: number;
-  onSliderUpdate: (borrowValue: number) => void;
-  borrowRange: [number, number];
-  selectOptions: SelectValue[];
-  selectedOption: SelectValue;
-  onOptionChange: (option: SelectValue) => void;
-};
+export const useBorrowForm = () => {
+  const {
+    currentOrder,
+    onUpdateOrder,
+    totalBorrowValue,
+    orders,
+    market,
+    pairs,
+  } = useCart();
 
-export const useBorrowForm: UseBorrowForm = ({
-  nft,
-  market,
-  pairs,
-  updateNftInSelection,
-}) => {
   const selectOptions = useMemo(
     () =>
       generateSelectOptions({
-        nft,
+        nft: currentOrder,
         bondsParams: {
           market,
           pairs,
         },
       }),
-    [nft, market, pairs],
+    [currentOrder, market, pairs],
   );
 
   const selectedOption = useMemo(
@@ -50,58 +38,67 @@ export const useBorrowForm: UseBorrowForm = ({
         const { type, duration } = option.value;
 
         if (type === LoanType.BOND) {
-          return (
-            nft.bondAccounts?.pair?.validation?.durationFilter /
-              (24 * 60 * 60) ===
-            duration
+          const pair = pairs.find(
+            ({ publicKey }) =>
+              publicKey === currentOrder.bondParams?.pairPubkey,
           );
+          return pair?.validation?.durationFilter / (24 * 60 * 60) === duration;
         }
 
-        return nft.loanType === type;
+        return currentOrder.loanType === type;
       }),
-    [selectOptions, nft],
+    [selectOptions, currentOrder, pairs],
   );
 
   const [minBorrowValue, maxBorrowValue] = useMemo(() => {
     return getBorrowValueRange({
-      nft,
+      order: currentOrder,
       bondsParams: {
         pairs,
         duration: selectedOption.value.duration,
         market,
       },
     });
-  }, [nft, pairs, market, selectedOption]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentOrder.borrowNft.mint, selectedOption.label]);
 
   const onOptionChange = (option: SelectValue) => {
     const { type, duration } = option.value;
 
-    updateNftInSelection({
-      ...nft,
+    const pair = getPairWithMaxBorrowValue({
+      pairs,
+      collectionFloor: market?.oracleFloor?.floor,
+      duration,
+    });
+
+    onUpdateOrder({
       loanType: type,
+      nft: currentOrder.borrowNft,
       loanValue: maxBorrowValue,
-      bondAccounts:
-        type === LoanType.BOND
-          ? {
-              market,
-              pair: getPairWithMaxBorrowValue({
-                pairs,
-                collectionFloor: market?.oracleFloor?.floor,
-                duration,
-              }),
-            }
-          : null,
+      pair,
+      market,
     });
   };
 
-  //? Set maximum BorrowValue as default when change option
-  useEffect(() => {
-    return updateNftInSelection({
-      ...nft,
-      loanValue: maxBorrowValue,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxBorrowValue, updateNftInSelection]);
+  // //? Set maximum BorrowValue as default when change option
+  //TODO:
+  // useEffect(() => {
+  //   console.log(selectedOption.label);
+
+  //   onUpdateOrder({
+  //     loanType: currentOrder.loanType,
+  //     loanValue: maxBorrowValue,
+  //     nft: currentOrder.borrowNft,
+  //     pair:
+  //       currentOrder.loanType === LoanType.BOND
+  //         ? pairs.find(
+  //             ({ publicKey }) =>
+  //               publicKey === currentOrder.bondParams.pairPubkey,
+  //           )
+  //         : null,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedOption.label]);
 
   const onSliderUpdate = (borrowValue: number) => {
     const { type, duration } = selectedOption.value;
@@ -114,28 +111,31 @@ export const useBorrowForm: UseBorrowForm = ({
         duration: duration,
       });
 
-      return updateNftInSelection({
-        ...nft,
+      return onUpdateOrder({
+        loanType: currentOrder.loanType,
+        nft: currentOrder.borrowNft,
         loanValue: borrowValue,
-        bondAccounts: {
-          market,
-          pair: cheapestPair,
-        },
+        pair: cheapestPair,
+        market,
       });
     }
 
-    updateNftInSelection({
-      ...nft,
+    onUpdateOrder({
+      loanType: currentOrder.loanType,
+      nft: currentOrder.borrowNft,
       loanValue: borrowValue,
+      market,
     });
   };
 
   return {
-    selectedBorrowValue: nft.loanValue,
+    selectedBorrowValue: currentOrder.loanValue,
     onSliderUpdate,
     borrowRange: [minBorrowValue, maxBorrowValue],
     selectOptions,
     selectedOption,
     onOptionChange,
+    totalBorrowValue,
+    isBulk: orders.length > 1,
   };
 };

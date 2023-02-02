@@ -3,7 +3,7 @@ import { filter, sum, map } from 'lodash';
 import { BorrowNft, BorrowNftSuggested } from '@frakt/api/nft';
 import { LoanType } from '@frakt/api/loans';
 
-import { BorrowNftSelected } from './selectedNftsState';
+import { Order } from './cartState';
 
 export const calcBulkTotalValue = (bulk: Array<BorrowNftSuggested>) => {
   const priceBasedLoans = filter(
@@ -85,10 +85,7 @@ export const calcFeePerDay = (selectedBulk: BorrowNftSuggested[]): number => {
   );
 };
 
-export const getFeesOnCertainDay = (
-  selectedBulk: BorrowNftSelected[],
-  day: number,
-) => {
+export const getFeesOnCertainDay = (selectedBulk: Order[], day: number) => {
   const filteredLoans = selectedBulk.filter(({ loanType, borrowNft }) => {
     return (
       loanType === LoanType.PRICE_BASED ||

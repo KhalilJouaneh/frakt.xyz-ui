@@ -7,24 +7,22 @@ import InfinityScroll from '@frakt/components/InfinityScroll';
 import { useDebounce } from '@frakt/hooks';
 import { BorrowNft } from '@frakt/api/nft';
 
-import {
-  convertBorrowNftToSelected,
-  useSelectedNfts,
-} from '../selectedNftsState';
 import { BorrowHeader } from '../components/BorrowHeader';
 import { Filters } from './components/Filters';
 import { useWalletNfts } from './hooks';
 import { NftCard } from './components/NftCard/';
 import styles from './BorrowManualPage.module.scss';
 import { Sidebar } from './components/Sidebar';
+import { useCart } from '../cartState';
 
 export const BorrowManualPage: FC = () => {
   const {
-    selection,
-    toggleNftInSelection,
-    findNftInSelection,
+    orders: selection,
+    onSelectNft,
+    onRemoveOrder,
+    findOrder,
     highlightedNftMint,
-  } = useSelectedNfts();
+  } = useCart();
 
   const history = useHistory();
   const onBackBtnClick = () => history.goBack();
@@ -43,7 +41,8 @@ export const BorrowManualPage: FC = () => {
   }, 300);
 
   const onNftClick = (nft: BorrowNft) => {
-    toggleNftInSelection(convertBorrowNftToSelected(nft));
+    const selectedNft = findOrder(nft.mint);
+    selectedNft ? onRemoveOrder(selectedNft) : onSelectNft(nft);
   };
 
   return (
@@ -83,7 +82,7 @@ export const BorrowManualPage: FC = () => {
               key={nft.mint}
               nft={nft}
               onClick={() => onNftClick(nft)}
-              selected={!!findNftInSelection(nft.mint)}
+              selected={!!findOrder(nft.mint)}
               highlighted={nft.mint === highlightedNftMint}
             />
           ))}

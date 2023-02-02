@@ -82,8 +82,12 @@ const BulkSuggestion: FC<BulkSuggestionProps> = ({
               Borrow {borrowValue.toFixed(2)} SOL
             </h4>
             <div className={styles.nfts}>
-              {(bulk || []).map(({ imageUrl }) => (
-                <img key={imageUrl} src={imageUrl} className={styles.icon} />
+              {(bulk || []).map(({ borrowNft }) => (
+                <img
+                  key={borrowNft.imageUrl}
+                  src={borrowNft.imageUrl}
+                  className={styles.icon}
+                />
               ))}
             </div>
           </div>

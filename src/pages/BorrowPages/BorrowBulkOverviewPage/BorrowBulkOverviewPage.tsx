@@ -12,7 +12,7 @@ import styles from './BorrowBulkOverviewPage.module.scss';
 import { getLoanFields } from './helpers';
 import { CARD_VALUES_TYPES } from './types';
 import { useBorrowBulkOverviewPage } from './hooks';
-import { BorrowNftSelected } from '../selectedNftsState';
+import { Order } from '../cartState';
 
 export const BorrowBulkOverviewPage: FC = () => {
   const {
@@ -46,11 +46,11 @@ export const BorrowBulkOverviewPage: FC = () => {
           title="Borrowing"
           subtitle={`${selection?.length} loans in bulk`}
         />
-        {selection.map((nft) => (
+        {selection.map((order) => (
           <LoanCard
-            key={nft.mint}
-            nft={nft}
-            onEditClick={() => onBulkEdit(nft.mint)}
+            key={order.borrowNft.mint}
+            nft={order}
+            onEditClick={() => onBulkEdit(order.borrowNft.mint)}
           />
         ))}
       </div>
@@ -75,16 +75,16 @@ export const BorrowBulkOverviewPage: FC = () => {
 };
 
 interface LoanCardprops {
-  nft: BorrowNftSelected;
+  nft: Order;
   onEditClick: () => void;
 }
 const LoanCard: FC<LoanCardprops> = ({ nft, onEditClick }) => {
-  const { imageUrl, name } = nft;
+  const { imageUrl, name } = nft.borrowNft;
 
   const fields = getLoanFields(nft);
 
   return (
-    <div className={styles.cardWrapper} key={nft.name}>
+    <div className={styles.cardWrapper} key={nft.borrowNft.name}>
       <div className={styles.card}>
         <div className={styles.cardInfo}>
           <img className={styles.image} src={imageUrl} />

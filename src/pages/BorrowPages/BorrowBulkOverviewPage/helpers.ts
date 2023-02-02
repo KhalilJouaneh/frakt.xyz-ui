@@ -1,57 +1,54 @@
 import { LoanType } from '@frakt/api/loans';
 
-import { BorrowNftSelected } from '../selectedNftsState';
+import { Order } from '../cartState';
 import { CARD_VALUES_TYPES } from './types';
 
-const getParsedTimeBasedLoanValues = (nft: BorrowNftSelected) => {
-  const { timeBased, valuation } = nft;
-  const valuationNumber = parseFloat(valuation);
+const getParsedTimeBasedLoanValues = (order: Order) => {
+  const { classicParams, valuation } = order.borrowNft;
 
   const {
     fee,
-    feeDiscountPercents,
-    ltvPercents,
+    feeDiscountPercent,
+    ltvPercent,
     repayValue,
     returnPeriodDays,
-    loanValue: rawLoanValue,
-  } = timeBased;
+    loanValue: timeBasedLoanValue,
+  } = classicParams.timeBased;
 
-  const loanValue = nft?.solLoanValue || parseFloat(rawLoanValue);
+  const loanValue = order?.loanValue || timeBasedLoanValue;
 
-  const feeDiscountValue = parseFloat(feeDiscountPercents) * 0.01;
+  const feeDiscountValue = feeDiscountPercent * 0.01;
 
-  const timeBasedFeeWithDiscount =
-    parseFloat(fee) - parseFloat(fee) * feeDiscountValue;
-  const ltv = nft?.solLoanValue
-    ? (nft.solLoanValue / valuationNumber) * 100
-    : ltvPercents;
+  const timeBasedFeeWithDiscount = fee - fee * feeDiscountValue;
+  const ltv = order?.loanValue
+    ? (order.loanValue / valuation) * 100
+    : ltvPercent;
 
   return {
     timeBasedFee: timeBasedFeeWithDiscount,
     timeBasedLtvPersent: ltv,
-    feeDiscountPercent: parseFloat(feeDiscountPercents),
+    feeDiscountPercent,
     returnPeriodDays,
-    repayValue: parseFloat(repayValue),
+    repayValue,
     loanValue,
   };
 };
 
-const getParsedPriceBasedLoanValues = (nft: BorrowNftSelected) => {
-  const { valuation: valuationString, priceBased, maxLoanValue } = nft;
+const getParsedPriceBasedLoanValues = (order: Order) => {
+  const { valuation, classicParams } = order.borrowNft;
 
-  const valuation = parseFloat(valuationString);
-
-  const currentLtvPercent = (nft?.solLoanValue / valuation) * 100;
+  const currentLtvPercent = (order?.loanValue / valuation) * 100;
 
   const currentLoanValue = (valuation * currentLtvPercent) / 100;
   const loanValue = currentLoanValue;
 
-  const fee = parseFloat(maxLoanValue) * 0.01;
+  const fee = classicParams.maxLoanValue * 0.01;
 
   const ltv = currentLtvPercent;
 
-  const borrowAPY = priceBased?.borrowAPRPercents;
-  const collaterizationRateValue = priceBased?.collaterizationRate / 100;
+  const borrowAPY = classicParams.priceBased?.borrowAPRPercent;
+  const collaterizationRateValue =
+    classicParams.priceBased?.collaterizationRate / 100;
 
   const liquidationPrice = loanValue + loanValue * collaterizationRateValue;
 
@@ -65,13 +62,13 @@ const getParsedPriceBasedLoanValues = (nft: BorrowNftSelected) => {
 };
 
 export const getLoanFields = (
-  nft: BorrowNftSelected,
+  order: Order,
 ): Array<{
   title: string;
   value: string;
   valueType: CARD_VALUES_TYPES;
 }> => {
-  const { loanType } = nft;
+  const { loanType } = order;
 
   const isPriceBased = loanType === LoanType.PRICE_BASED;
 
@@ -82,17 +79,17 @@ export const getLoanFields = (
     timeBasedLtvPersent,
     feeDiscountPercent,
     loanValue,
-  } = getParsedTimeBasedLoanValues(nft);
+  } = getParsedTimeBasedLoanValues(order);
 
   const {
     priceBasedLoanValue,
     priceBasedLtvPersent,
     borrowAPY,
     liquidationPrice,
-  } = getParsedPriceBasedLoanValues(nft);
+  } = getParsedPriceBasedLoanValues(order);
 
   const maxLoanValue = isPriceBased
-    ? nft?.solLoanValue || priceBasedLoanValue
+    ? order?.loanValue || priceBasedLoanValue
     : loanValue;
 
   const fee = isPriceBased ? maxLoanValue * 0.01 : timeBasedFee;
@@ -107,7 +104,7 @@ export const getLoanFields = (
     },
     {
       title: 'Floor price',
-      value: parseFloat(nft.valuation).toFixed(3),
+      value: order.borrowNft.valuation.toFixed(3),
       valueType: CARD_VALUES_TYPES.solPrice,
     },
     {

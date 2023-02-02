@@ -6,3 +6,5 @@ export * from './unstakeLiquidity';
 export * from './harvestLiquidity';
 
 export * from './constants';
+
+export * from './makeProposeTransaction';

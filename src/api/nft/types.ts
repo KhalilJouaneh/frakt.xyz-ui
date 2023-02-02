@@ -1,4 +1,3 @@
-import { Market, Pair } from '../bonds';
 import { LoanType } from '../loans';
 
 export interface BorrowNft {
@@ -48,16 +47,6 @@ export interface BorrowNftSuggested {
   bondSuggestion?: {
     pairPubkey: string;
     loandValue: number; // lamports
-  };
-}
-
-export interface BorrowNftSelected extends BorrowNftSuggested {
-  loanType: LoanType;
-  loandValue: number; // lamports
-
-  bondParams: {
-    market: Market;
-    pair: Pair;
   };
 }
 
