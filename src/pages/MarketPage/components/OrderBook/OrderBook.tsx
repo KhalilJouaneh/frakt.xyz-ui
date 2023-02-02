@@ -110,7 +110,7 @@ const OrderBook: FC<OrderBookProps> = ({
       >
         <h5 className={styles.title}>Offers</h5>
         <Toggle
-          label="My pools only"
+          label="My offers only"
           className={classNames(styles.toggle, {
             [styles.active]: openOffersMobile,
           })}
