@@ -17,12 +17,14 @@ import { Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
 import { Market } from '@frakt/api/bonds';
 import styles from './OrderBook.module.scss';
+import { calcApr, calcSpotPrice } from './helpers';
 
 interface OrderBookProps {
   market: Market;
   maxLTV?: number;
   solFee?: string;
   solDeposit?: string;
+  durationDays?: number;
 }
 
 const OrderBook: FC<OrderBookProps> = ({
@@ -30,6 +32,7 @@ const OrderBook: FC<OrderBookProps> = ({
   maxLTV,
   solFee,
   solDeposit,
+  durationDays,
 }) => {
   const wallet = useWallet();
   const connection = useConnection();
@@ -76,7 +79,13 @@ const OrderBook: FC<OrderBookProps> = ({
     walletOwned: showOwnOrders,
     ltv: maxLTV,
     size: Number(solDeposit),
-    interest: Number(solFee),
+    apr: calcApr({
+      spotPrice: calcSpotPrice({
+        solDepositLamports: Number(solDeposit) * 1e9,
+        solFeeLamports: Number(solFee) * 1e9,
+      }),
+      durationDays,
+    }),
   });
 
   const bestOffer = useMemo(() => {
@@ -131,12 +140,12 @@ const OrderBook: FC<OrderBookProps> = ({
             </div>
             <div
               className={classNames(styles.col, {
-                [styles.sort]: sort === 'asc',
+                [styles.sort]: sort === 'desc',
               })}
               onClick={toggleSort}
             >
-              <span className={styles.colName}>interest</span>
-              <span>(SOL)</span>
+              <span className={styles.colName}>APR</span>
+              <span>(%)</span>
             </div>
           </div>
         )}
@@ -170,7 +179,7 @@ const OrderBook: FC<OrderBookProps> = ({
               <Offer
                 ltv={offer.ltv}
                 size={offer.size}
-                interest={offer.interest}
+                apr={offer.apr}
                 order={offer}
                 bestOffer={bestOffer}
                 removeOrder={removeOrder}

@@ -12,7 +12,7 @@ interface OfferProps {
   removeOrder: (order: MarketOrder) => MouseEventHandler<HTMLDivElement>;
   ltv: number;
   size: number;
-  interest: number;
+  apr: number;
 }
 
 const Offer: FC<OfferProps> = ({
@@ -22,7 +22,7 @@ const Offer: FC<OfferProps> = ({
   removeOrder,
   ltv,
   size,
-  interest,
+  apr,
 }) => {
   const colorLTV = getColorByPercent(ltv, colorByPercentOffers);
 
@@ -30,7 +30,7 @@ const Offer: FC<OfferProps> = ({
     <li
       className={classNames(styles.listItem, {
         [styles.highlightBest]:
-          interest === bestOffer?.interest && size === bestOffer?.size,
+          apr === bestOffer?.apr && size === bestOffer?.size,
         [styles.highlightYourOffer]: order.synthetic,
       })}
     >
@@ -55,7 +55,7 @@ const Offer: FC<OfferProps> = ({
           {size?.toFixed(3)}
           {/* <div className={styles.loans}>3.5 loans</div> */}
         </div>
-        <div className={styles.value}>{interest?.toFixed(3)}</div>
+        <div className={styles.value}>{(apr * 100)?.toFixed(2)}%</div>
       </div>
       {isOwnOrder(order) && (
         <div

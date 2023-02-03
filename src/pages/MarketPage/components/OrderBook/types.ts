@@ -1,7 +1,7 @@
 export interface MarketOrder {
   ltv: number;
   size: number;
-  interest: number;
+  apr: number;
   synthetic?: boolean;
   rawData: {
     publicKey: string;

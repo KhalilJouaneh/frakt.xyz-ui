@@ -193,6 +193,7 @@ const PoolsCreationPage: FC = () => {
           maxLTV={maxLTV}
           solFee={solFee}
           solDeposit={solDeposit}
+          durationDays={duration}
         />
       )}
       <LoadingModal

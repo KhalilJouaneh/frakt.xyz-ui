@@ -11,7 +11,7 @@ type UseMarketOrders = (props: {
   walletOwned?: boolean;
   ltv: number;
   size: number;
-  interest: number;
+  apr: number;
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
@@ -24,7 +24,7 @@ export const useMarketOrders: UseMarketOrders = ({
   walletOwned = false,
   ltv,
   size,
-  interest,
+  apr,
 }) => {
   const { publicKey } = useWallet();
 
@@ -37,7 +37,7 @@ export const useMarketOrders: UseMarketOrders = ({
     const myOffer: MarketOrder = {
       ltv,
       size,
-      interest,
+      apr,
       synthetic: true,
       rawData: {
         publicKey: '',
@@ -55,14 +55,12 @@ export const useMarketOrders: UseMarketOrders = ({
 
     if (ltv) parsedOffers.push(myOffer);
 
-    const sortOffersByInterest = parsedOffers.sort(
-      (a, b) => b.interest - a.interest,
-    );
+    const sortOffersByApr = parsedOffers.sort((a, b) => b.apr - a.apr);
 
     return sortDirection === 'asc'
-      ? sortOffersByInterest
-      : sortOffersByInterest.reverse();
-  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
+      ? sortOffersByApr
+      : sortOffersByApr.reverse();
+  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, apr]);
 
   const offersExist = Boolean(offers.length);
 
