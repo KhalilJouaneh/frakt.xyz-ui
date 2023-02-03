@@ -49,7 +49,7 @@ export const fetchMarketPairs: FetchMarketPairs = async ({ marketPubkey }) => {
     `https://${BACKEND_DOMAIN}/pairs/${marketPubkey.toBase58()}`,
   );
 
-  return data;
+  return data?.filter(({ currentSpotPrice }) => currentSpotPrice <= 1e3);
 };
 
 type FetchWalletBonds = (props: {
