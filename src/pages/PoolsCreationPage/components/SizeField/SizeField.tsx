@@ -125,7 +125,7 @@ const SizeField: FC<SizeFieldProps> = ({
           </button>
         </div>
       </div>
-      <span className={styles.fndSMB}>297.01 fndSMB</span>
+      {/* <span className={styles.fndSMB}>297.01 fndSMB</span> */}
     </div>
   );
 };

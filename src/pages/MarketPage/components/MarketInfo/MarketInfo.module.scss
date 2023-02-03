@@ -134,6 +134,9 @@
   font: var(--font-text-8);
   font-size: 14px;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
 }
 
 .btn {

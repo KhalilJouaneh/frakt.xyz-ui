@@ -7,6 +7,7 @@ import {
   calcBondRedeemLamports,
   isBondAvailableToRedeem,
 } from '@frakt/utils/bonds';
+import { Solana } from '@frakt/icons';
 
 import styles from './MarketInfo.module.scss';
 
@@ -50,7 +51,7 @@ export const MarketInfo: FC<MarketInfo> = ({ market, bonds, onClaimAll }) => {
           <div>
             <div className={styles.infoName}>rewards</div>
             <div className={styles.infoValue}>
-              {(rewardLamports / 1e9).toFixed(2)} sol
+              {(rewardLamports / 1e9).toFixed(2)} <Solana />
             </div>
           </div>
           <Button

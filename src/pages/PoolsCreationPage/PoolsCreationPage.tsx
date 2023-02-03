@@ -19,7 +19,7 @@ import { SOL_TOKEN } from '../../utils';
 import { formatNumber } from '@frakt/utils/solanaUtils';
 import { useNativeAccount } from '@frakt/utils/accounts';
 import { useMarket } from '@frakt/utils/bonds';
-import { Solana } from '@frakt/icons';
+// import { Solana } from '@frakt/icons';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './PoolsCreationPage.module.scss';
 
@@ -88,7 +88,9 @@ const PoolsCreationPage: FC = () => {
               <span
                 className={classNames(styles.floorCardValue, styles.florPrice)}
               >
-                {!isLoading ? 235 + ' sol' : '--'}
+                {!isLoading
+                  ? (market?.oracleFloor.floor / 1e9).toFixed(2) + ' sol'
+                  : '--'}
               </span>
             </div>
           </div>
@@ -140,7 +142,7 @@ const PoolsCreationPage: FC = () => {
             </Tooltip>
           </div>
 
-          <div className={styles.total}>
+          {/* <div className={styles.total}>
             <h5 className={styles.blockTitle}>Your total is 232.5 SOL</h5>
             <div className={styles.totalItem}>
               <div className={styles.totalTitle}>
@@ -174,7 +176,7 @@ const PoolsCreationPage: FC = () => {
                 58.4 <Solana />
               </div>
             </div>
-          </div>
+          </div> */}
           <Button
             disabled={!isValid && !isChecked}
             onClick={onSubmit}
