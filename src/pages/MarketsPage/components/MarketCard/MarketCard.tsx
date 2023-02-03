@@ -51,7 +51,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              <span>{Number(offerTVL).toFixed(3)}</span> <Solana />
+              <span>{(12.34).toFixed(3)}</span> <Solana />
             </div>
           </div>
           <div className={styles.info}>
@@ -65,16 +65,16 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
                 [styles.negative]: false,
               })}
             >
-              up to 180 %
+              up to 123 %
             </div>
           </div>
         </div>
       </div>
-
+      {/* 
       <div className={styles.toRedeem}>
         <div className={styles.infoTitle}>To Redeem</div>
         <div className={styles.infoValue}>12 bonds</div>
-      </div>
+      </div> */}
     </NavLink>
   );
 };
