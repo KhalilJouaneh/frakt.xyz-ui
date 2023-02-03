@@ -6,8 +6,16 @@ import { Slider } from '@frakt/components/Slider';
 import { Select } from '@frakt/components/Select';
 
 import styles from './BorrowForm.module.scss';
-import { SelectValue } from './helpers';
+import {
+  calcBondFee,
+  calcLtv,
+  calcPriceBasedUpfrontFee,
+  calcTimeBasedRepayValue,
+  SelectValue,
+} from './helpers';
 import { useBorrowForm } from './hooks';
+import { useCart } from '@frakt/pages/BorrowPages/cartState';
+import { LoanType } from '@frakt/api/loans';
 
 interface BorrowFormProps {
   onSubmit: () => void;
@@ -53,13 +61,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
             onOptionChange(value);
           }}
         />
-        {/* <LoansFields
-          risk={risk}
-          ltv={ltv}
-          nft={selectedNft}
-          loanTypeValue={selectValue}
-          solLoanValue={solLoanValue}
-        /> */}
+        <LoanDetails />
       </div>
       <div className={styles.borrowFormSubmitBtnWrapper}>
         <Button
@@ -73,6 +75,71 @@ export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
           Quick borrow {(totalBorrowValue / 1e9).toFixed(2)} SOL
         </Button>
       </div>
+    </div>
+  );
+};
+
+const LoanDetails = () => {
+  const { currentOrder, pairs } = useCart();
+
+  if (!currentOrder) return null;
+
+  const fields: Array<[string, string]> = [];
+
+  const { loanType, borrowNft } = currentOrder;
+
+  const { valuation } = borrowNft;
+  fields.push(['Floor price', (valuation / 1e9).toFixed(2)]);
+
+  const ltv = calcLtv(currentOrder);
+
+  fields.push(['LTV', `${ltv.toFixed(0)}%`]);
+
+  if (loanType === LoanType.TIME_BASED) {
+    const { fee } = borrowNft.classicParams.timeBased;
+
+    fields.push(['Fee', `${(fee / 1e9).toFixed(2)}`]);
+  }
+
+  if (loanType === LoanType.BOND) {
+    const fee = calcBondFee({
+      order: currentOrder,
+      pair: pairs.find(
+        ({ publicKey }) => publicKey === currentOrder.bondParams.pairPubkey,
+      ),
+    });
+
+    fields.push(['Fee', `${(fee / 1e9).toFixed(2)}`]);
+
+    const repayValue = currentOrder.loanValue + fee;
+    fields.push(['Repay value', `${(repayValue / 1e9).toFixed(2)}`]);
+  }
+
+  if (loanType === LoanType.TIME_BASED) {
+    const feeDiscountPercent =
+      borrowNft.classicParams.timeBased.feeDiscountPercent;
+    feeDiscountPercent &&
+      fields.push(['Holder discount', `${feeDiscountPercent.toFixed(2)}%`]);
+  }
+
+  if (loanType === LoanType.TIME_BASED) {
+    const repayValue = calcTimeBasedRepayValue(currentOrder);
+    fields.push(['Repay value', `${(repayValue / 1e9).toFixed(2)}`]);
+  }
+
+  if (loanType === LoanType.PRICE_BASED) {
+    const upfrontFee = calcPriceBasedUpfrontFee(currentOrder);
+    fields.push(['Upfront fee', `${(upfrontFee / 1e9).toFixed(2)}`]);
+  }
+
+  return (
+    <div className={styles.loanDetails}>
+      {fields.map(([label, value], idx) => (
+        <div className={styles.loanDetailsValue} key={idx}>
+          <span>{label}</span>
+          <span>{value}</span>
+        </div>
+      ))}
     </div>
   );
 };
