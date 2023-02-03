@@ -53,7 +53,7 @@ const Offer: FC<OfferProps> = ({
       <div className={styles.valueWrapper}>
         <div className={styles.value}>
           {size?.toFixed(3)}
-          <div className={styles.loans}>3.5 loans</div>
+          {/* <div className={styles.loans}>3.5 loans</div> */}
         </div>
         <div className={styles.value}>{interest?.toFixed(3)}</div>
       </div>
