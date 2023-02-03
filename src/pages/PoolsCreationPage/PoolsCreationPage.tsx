@@ -41,11 +41,11 @@ const PoolsCreationPage: FC = () => {
     maxLTV,
     duration,
     solDeposit,
-    solFee,
+    apr,
+    onAprChange,
     handleMaxLTV,
     handleDuration,
     handleSolDeposit,
-    handleSolFee,
     onSubmit,
     isValid,
   } = usePoolCreation();
@@ -107,11 +107,18 @@ const PoolsCreationPage: FC = () => {
           </div>
 
           <TokenField
-            value={solFee}
-            onValueChange={handleSolFee}
-            label="INTEREST"
-            currentToken={SOL_TOKEN}
-            tokensList={[SOL_TOKEN]}
+            value={apr}
+            onValueChange={onAprChange}
+            label="APR"
+            currentToken={{
+              ...SOL_TOKEN,
+              symbol: '%',
+              logoURI: null,
+              name: null,
+            }}
+            tokensList={[
+              { ...SOL_TOKEN, symbol: '%', logoURI: null, name: null },
+            ]}
             toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
           />
           <SizeField
@@ -191,7 +198,7 @@ const PoolsCreationPage: FC = () => {
         <OrderBook
           market={market}
           maxLTV={maxLTV}
-          solFee={solFee}
+          apr={apr}
           solDeposit={solDeposit}
           durationDays={duration}
         />

@@ -17,23 +17,16 @@ import { Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
 import { Market } from '@frakt/api/bonds';
 import styles from './OrderBook.module.scss';
-import { calcApr, calcSpotPrice } from './helpers';
 
 interface OrderBookProps {
   market: Market;
   maxLTV?: number;
-  solFee?: string;
+  apr?: string;
   solDeposit?: string;
   durationDays?: number;
 }
 
-const OrderBook: FC<OrderBookProps> = ({
-  market,
-  maxLTV,
-  solFee,
-  solDeposit,
-  durationDays,
-}) => {
+const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
   const wallet = useWallet();
   const connection = useConnection();
 
@@ -79,13 +72,7 @@ const OrderBook: FC<OrderBookProps> = ({
     walletOwned: showOwnOrders,
     ltv: maxLTV,
     size: Number(solDeposit),
-    apr: calcApr({
-      spotPrice: calcSpotPrice({
-        solDepositLamports: Number(solDeposit) * 1e9,
-        solFeeLamports: Number(solFee) * 1e9,
-      }),
-      durationDays,
-    }),
+    apr: Number(apr) / 100,
   });
 
   const bestOffer = useMemo(() => {

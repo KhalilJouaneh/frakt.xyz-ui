@@ -23,11 +23,11 @@ type UsePoolCreation = () => {
   maxLTV: number;
   duration: number;
   solDeposit: string;
-  solFee: string;
+  apr: string;
+  onAprChange: (value: string) => void;
   handleMaxLTV: (value: number) => void;
-  handleDuration: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSolDeposit: (value: string) => void;
-  handleSolFee: (value: string) => void;
+  handleDuration: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => Promise<void>;
   isValid: boolean;
 };
@@ -39,7 +39,7 @@ export const usePoolCreation: UsePoolCreation = () => {
 
   const [maxLTV, setMaxLTV] = useState<number>(10);
   const [duration, setDuration] = useState<number>(7);
-  const [solFee, setSolFee] = useState<string>('0');
+  const [apr, setApr] = useState<string>('0');
   const [solDeposit, setSolDeposit] = useState<string>('0');
 
   const handleMaxLTV = useCallback((value: number) => setMaxLTV(value), []);
@@ -47,7 +47,7 @@ export const usePoolCreation: UsePoolCreation = () => {
     setDuration(+e.target.value);
   };
 
-  const handleSolFee = (value: string) => setSolFee(value);
+  const onAprChange = (value: string) => setApr(value);
   const handleSolDeposit = (value: string) => {
     setSolDeposit(value);
   };
@@ -58,7 +58,7 @@ export const usePoolCreation: UsePoolCreation = () => {
     open: openLoadingModal,
   } = useLoadingModal();
 
-  const isValid = Number(solDeposit) && Number(solFee) !== 0;
+  const isValid = Number(solDeposit) && Number(apr) !== 0;
 
   const onSubmit = async (): Promise<void> => {
     if (marketPubkey && wallet.publicKey) {
@@ -70,7 +70,7 @@ export const usePoolCreation: UsePoolCreation = () => {
           maxDuration: duration,
           maxLTV: maxLTV,
           solDeposit: parseFloat(solDeposit),
-          solFee: parseFloat(solFee),
+          apr: parseFloat(apr),
           connection,
           wallet,
         });
@@ -105,11 +105,11 @@ export const usePoolCreation: UsePoolCreation = () => {
     maxLTV,
     duration,
     solDeposit,
-    solFee,
+    apr,
     handleMaxLTV,
     handleDuration,
     handleSolDeposit,
-    handleSolFee,
+    onAprChange,
     onSubmit,
     isValid,
   };

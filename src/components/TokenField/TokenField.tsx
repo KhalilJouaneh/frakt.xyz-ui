@@ -118,11 +118,7 @@ const TokenField: FC<TokenFieldProps> = ({
               [styles.disabledTokens]: !tokensList || !onTokenChange,
             })}
           >
-            {currentToken ? (
-              <Solana width={16} />
-            ) : (
-              <div className={styles.noTokenImg} />
-            )}
+            {currentToken.name === 'SOL' ? <Solana width={16} /> : null}
             <span
               className={classNames(styles.tokenName, {
                 [styles.tokenName_empty]: !currentToken,
