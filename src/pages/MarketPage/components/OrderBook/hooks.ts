@@ -54,12 +54,13 @@ export const useMarketOrders: UseMarketOrders = ({
       .map(parseMarketOrder);
 
     if (ltv) parsedOffers.push(myOffer);
-
     const sortOffersByApr = parsedOffers.sort((a, b) => b.apr - a.apr);
 
-    return sortDirection === 'asc'
-      ? sortOffersByApr
-      : sortOffersByApr.reverse();
+    const sortedByLtv = (
+      sortDirection === 'asc' ? sortOffersByApr : sortOffersByApr.reverse()
+    ).sort((a, b) => b.ltv - a.ltv);
+
+    return sortedByLtv;
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, apr]);
 
   const offersExist = Boolean(offers.length);

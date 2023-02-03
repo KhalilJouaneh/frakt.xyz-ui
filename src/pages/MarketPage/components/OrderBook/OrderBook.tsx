@@ -76,11 +76,8 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
   });
 
   const bestOffer = useMemo(() => {
-    if (sort === 'desc') {
-      return offers.at(0)?.synthetic ? offers.at(1) : offers.at(0);
-    }
-    return offers.at(-1)?.synthetic ? offers.at(-2) : offers.at(-1);
-  }, [offers, sort]);
+    return offers.at(0)?.synthetic ? offers.at(1) : offers.at(0);
+  }, [offers]);
 
   return (
     <div
