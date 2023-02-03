@@ -136,7 +136,7 @@ const OrderBook: FC<OrderBookProps> = ({
           >
             <div className={styles.col}>
               <span className={styles.colName}>size</span>
-              <span>({market.fbondTokenName})</span>
+              <span>(SOL)</span>
             </div>
             <div
               className={classNames(styles.col, {

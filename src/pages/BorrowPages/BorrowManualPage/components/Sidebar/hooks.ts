@@ -14,22 +14,25 @@ import { NotifyType } from '@frakt/utils/solanaUtils';
 import { captureSentryError } from '@frakt/utils/sentry';
 import { makeProposeTransaction } from '@frakt/utils/loans';
 import { LoanType } from '@frakt/api/loans';
+import { useCartState } from '@frakt/pages/BorrowPages/cartState/cartState';
 
 export const useSidebar = () => {
   const {
     orders,
     onNextOrderSelect: onNextOrder,
     onRemoveOrder,
-    pairs,
     isLoading,
     currentOrder: order,
     totalBorrowValue,
   } = useCart();
 
+  const { pairs: cartPairs } = useCartState();
+
   const [minimizedOnMobile, setMinimizedOnMobile] = useState<boolean>(false);
 
   const history = useHistory();
   const goToBulkOverviewPage = () => history.push(PATHS.BORROW_BULK_OVERVIEW);
+  const goToToBorrowSuccessPage = () => history.push(PATHS.BORROW_SUCCESS);
 
   const isBulk = orders.length > 1;
 
@@ -42,30 +45,16 @@ export const useSidebar = () => {
     try {
       const result = await borrow({
         orders,
-        pairs,
+        pairs: cartPairs,
         wallet,
         connection,
       });
 
-      if (result) {
+      if (!result) {
         throw new Error('Error');
       }
-      // if (isBulk) {
-      //   return goToBulkOverviewPage();
-      // }
 
-      // if (orders[0] && orders[0].loanType === LoanType.BOND) {
-      //   const result = await borrow({
-      //     orders,
-      //     pairs,
-      //     wallet,
-      //     connection,
-      //   });
-
-      //   if (result) {
-      //     throw new Error('Error');
-      //   }
-      // }
+      goToToBorrowSuccessPage();
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line no-console
