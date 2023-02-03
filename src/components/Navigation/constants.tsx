@@ -108,7 +108,7 @@ export const NAVIGATION_LINKS = [
   {
     pathname: PATHS.BONDS,
     to: PATHS.BONDS,
-    label: 'My bonds',
+    label: 'Bonds',
     event: 'navigation-bonds',
     icon: Bonds,
     iconDark: BondsDark,
