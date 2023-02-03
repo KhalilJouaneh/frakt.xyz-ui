@@ -147,5 +147,9 @@ type CalcBondsAmount = (props: {
   loanValue: number;
   spotPrice: number;
 }) => number;
-const calcBondsAmount: CalcBondsAmount = ({ loanValue, spotPrice }) =>
-  Math.trunc(loanValue / spotPrice);
+const calcBondsAmount: CalcBondsAmount = ({ loanValue, spotPrice }) => {
+  loanValue;
+  spotPrice;
+  return 0;
+  // return Math.trunc(loanValue / spotPrice);
+};
