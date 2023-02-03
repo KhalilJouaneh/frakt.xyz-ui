@@ -1,13 +1,15 @@
 import { web3, loans as loansService, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { chunk } from 'lodash';
 
-import { mergeIxsIntoTxn } from '../../pages/BorrowPage/helpers';
-import { showSolscanLinkNotification } from '../transactions';
-import { captureSentryError } from '../sentry';
 import { Loan } from '@frakt/state/loans/types';
+
+import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '../';
+import {
+  showSolscanLinkNotification,
+  createAndSendAllTxns,
+} from '../transactions';
 
 type PaybackLoans = (props: {
   connection: web3.Connection;
@@ -15,8 +17,6 @@ type PaybackLoans = (props: {
   loans: Loan[];
   paybackAmount?: BN;
 }) => Promise<boolean>;
-
-const IX_PER_TXN = 3;
 
 export const paybackLoans: PaybackLoans = async ({
   connection,
@@ -71,48 +71,17 @@ export const paybackLoans: PaybackLoans = async ({
       }
     }
 
-    const ixsDataChunks = chunk(transactions, IX_PER_TXN);
-
-    const txnData = ixsDataChunks.map((ixsAndSigners) =>
-      mergeIxsIntoTxn(ixsAndSigners),
-    );
-
-    const { blockhash, lastValidBlockHeight } =
-      await connection.getLatestBlockhash();
-
-    txnData.forEach(({ transaction }) => {
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = wallet?.publicKey;
+    await createAndSendAllTxns({
+      commitment: 'confirmed',
+      transactions,
+      connection,
+      wallet,
     });
-
-    const txn = await txnData.map(({ transaction, signers }) => {
-      if (signers[0]) {
-        transaction.sign(...signers);
-      }
-      return transaction;
-    });
-
-    const signedTransactions = await wallet?.signAllTransactions(txn);
-
-    const txids = await Promise.all(
-      signedTransactions.map((signedTransaction) =>
-        connection.sendRawTransaction(signedTransaction.serialize()),
-      ),
-    );
 
     notify({
       message: 'Transactions sent',
       type: NotifyType.INFO,
     });
-
-    await Promise.all(
-      txids.map((txid) =>
-        connection.confirmTransaction(
-          { signature: txid, blockhash, lastValidBlockHeight },
-          'confirmed',
-        ),
-      ),
-    );
 
     notify({
       message: 'Paid back successfully!',
