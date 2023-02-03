@@ -4,6 +4,7 @@ import { sum, map, filter } from 'lodash';
 import Button from '@frakt/components/Button';
 import { Bond, Market } from '@frakt/api/bonds';
 import {
+  BOND_SOL_DECIMAIL_DELTA,
   calcBondRedeemLamports,
   isBondAvailableToRedeem,
 } from '@frakt/utils/bonds';
@@ -39,7 +40,8 @@ export const MarketInfo: FC<MarketInfo> = ({ market, bonds, onClaimAll }) => {
           <div className={styles.balance}>
             <div className={styles.infoName}>balance</div>
             <div className={styles.infoValue}>
-              {(balance / 1e6).toFixed(2)} {market?.fbondTokenName}
+              {(balance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)}{' '}
+              {market?.fbondTokenName}
             </div>
           </div>
           <div className={styles.funded}>

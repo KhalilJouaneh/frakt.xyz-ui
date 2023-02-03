@@ -7,8 +7,10 @@ import {
   BondingCurveType,
   PairType,
 } from 'fbonds-core/lib/cross-mint-amm/types';
+
 import {
   BONDS_VALIDATION_PROGRAM_PUBKEY,
+  BOND_DECIMAL_DELTA,
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
@@ -39,7 +41,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
 
   const interestPerBond = (apr / 100 / 365) * maxDuration;
 
-  const spotPrice = Math.ceil((1 - interestPerBond) * 1e3);
+  const spotPrice = Math.ceil((1 - interestPerBond) * BOND_DECIMAL_DELTA);
   const bidCap = Math.floor(solDepositLamports / spotPrice);
 
   const {
@@ -57,7 +59,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       delta: 0, //? Doesn't affect anything
       fee: 0, //? Doesn't affect anything
       pairType: PairType.TokenForNFT, //? Buy orders
-      spotPrice: spotPrice, //? Price for decimal of fBond price (fBond --> Token that has 1e6 decimals)
+      spotPrice: spotPrice, //? Price for decimal of fBond price (fBond --> Token that has BOND_SOL_DECIMAIL_DELTA decimals)
     },
     programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
     connection,
@@ -102,7 +104,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
         userPubkey: wallet.publicKey,
       },
       args: {
-        amountOfTokensToBuy: bidCap, //? Amount of 1e6 parts of fBond token
+        amountOfTokensToBuy: bidCap, //? Amount of BOND_SOL_DECIMAIL_DELTA parts of fBond token
       },
       programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
       connection,

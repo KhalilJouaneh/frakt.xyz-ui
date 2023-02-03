@@ -1,4 +1,5 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
+import { BOND_DECIMAL_DELTA } from '@frakt/utils/bonds';
 import axios from 'axios';
 
 import { MarketPreview, Market, Pair, Bond } from './types';
@@ -49,7 +50,9 @@ export const fetchMarketPairs: FetchMarketPairs = async ({ marketPubkey }) => {
     `https://${BACKEND_DOMAIN}/pairs/${marketPubkey.toBase58()}`,
   );
 
-  return data?.filter(({ currentSpotPrice }) => currentSpotPrice <= 1e3);
+  return data?.filter(
+    ({ currentSpotPrice }) => currentSpotPrice <= BOND_DECIMAL_DELTA,
+  );
 };
 
 type FetchWalletBonds = (props: {

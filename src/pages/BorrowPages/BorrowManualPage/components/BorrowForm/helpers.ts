@@ -2,6 +2,7 @@ import { uniq } from 'lodash';
 
 import { Market, Pair } from '@frakt/api/bonds';
 import { LoanType } from '@frakt/api/loans';
+import { BOND_DECIMAL_DELTA } from '@frakt/utils/bonds';
 
 import { Order } from '../../../cartState';
 
@@ -96,7 +97,8 @@ export const calcBondFee: CalcBondFee = ({ order, pair }) => {
   const { loanValue } = order;
   const { currentSpotPrice } = pair;
 
-  const feeLamports = (loanValue * 1e3) / currentSpotPrice - loanValue;
+  const feeLamports =
+    (loanValue * BOND_DECIMAL_DELTA) / currentSpotPrice - loanValue;
 
   return feeLamports;
 };

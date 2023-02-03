@@ -1,7 +1,7 @@
 import { maxBy } from 'lodash';
 
 import { Market, Pair } from '@frakt/api/bonds';
-import { pairLoanDurationFilter } from '@frakt/utils/bonds';
+import { BOND_DECIMAL_DELTA, pairLoanDurationFilter } from '@frakt/utils/bonds';
 import { LoanType } from '@frakt/api/loans';
 
 import { Order } from './types';
@@ -18,7 +18,7 @@ export const getPairMaxBorrowValue: GetPairMaxBorrowValue = ({
     collectionFloor * (pair.validation.loanToValueFilter / 1e4);
   const maxValueBonds = Math.min(
     pair.edgeSettlement,
-    loanToValueLamports / 1e3,
+    loanToValueLamports / BOND_DECIMAL_DELTA,
   );
   return maxValueBonds * pair.currentSpotPrice;
 };
@@ -68,7 +68,7 @@ export const getCheapestPairForBorrowValue: GetCheapestPairForBorrowValue = ({
 
       return (
         borrowValueBonds <= pair.edgeSettlement &&
-        loanToValueLamports >= borrowValueBonds * 1e3
+        loanToValueLamports >= borrowValueBonds * BOND_DECIMAL_DELTA
       );
     },
   );

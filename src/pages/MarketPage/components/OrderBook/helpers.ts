@@ -1,13 +1,15 @@
 import { Pair } from '@frakt/api/bonds';
+import { BOND_DECIMAL_DELTA } from '@frakt/utils/bonds';
+
 import { MarketOrder } from './types';
 
 //? edgeSettlement -- amount of tokens in last order (raw value)
-//? currentSpotPrice -- price for smallest part of token (1e6)
+//? currentSpotPrice -- price for smallest part of token (BOND_SOL_DECIMAIL_DELTA)
 //? validation.loanToValueFilter -- LTV
 export const parseMarketOrder = (pair: Pair): MarketOrder => {
   return {
     ltv: (pair?.validation?.loanToValueFilter || 0) / 100,
-    size: pair?.edgeSettlement / 1e6 || 0,
+    size: (pair?.edgeSettlement * pair?.currentSpotPrice) / 1e9 || 0,
     apr: calcApr({
       spotPrice: pair?.currentSpotPrice,
       durationDays: pair.validation.durationFilter / 86400,
@@ -23,7 +25,7 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
 
 type CalcApr = (props: { spotPrice: number; durationDays: number }) => number;
 export const calcApr: CalcApr = ({ spotPrice, durationDays }) => {
-  const interest = 1 - spotPrice / 1e3;
+  const interest = 1 - spotPrice / BOND_DECIMAL_DELTA;
 
   const apr = (interest / durationDays) * 365;
 
@@ -38,5 +40,5 @@ export const calcSpotPrice: CalcSpotPrice = ({
   solFeeLamports,
   solDepositLamports,
 }) => {
-  return (1 - solFeeLamports / solDepositLamports) * 1e3;
+  return (1 - solFeeLamports / solDepositLamports) * BOND_DECIMAL_DELTA;
 };

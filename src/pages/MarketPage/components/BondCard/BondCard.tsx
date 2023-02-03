@@ -9,6 +9,7 @@ import { Solana, Timer } from '@frakt/icons';
 import { Bond, Pair } from '@frakt/api/bonds';
 import { useCountdown } from '@frakt/hooks';
 import {
+  BOND_SOL_DECIMAIL_DELTA,
   getBestPairForExit,
   isBondAvailableToRedeem,
 } from '@frakt/utils/bonds';
@@ -70,7 +71,8 @@ export const BondCard: FC<BondCardProps> = ({
             </Tooltip>
           </div>
           <div className={styles.infoValue}>
-            {(walletBalance / 1e6).toFixed(2)} {bond?.fbond?.fbondTokenName}
+            {(walletBalance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)}{' '}
+            {bond?.fbond?.fbondTokenName}
           </div>
         </div>
 

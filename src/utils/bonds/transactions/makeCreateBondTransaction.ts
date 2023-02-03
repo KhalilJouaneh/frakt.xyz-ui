@@ -11,6 +11,7 @@ import {
   BONDS_ADMIN_PUBKEY,
   BONDS_PROGRAM_PUBKEY,
   BONDS_VALIDATION_PROGRAM_PUBKEY,
+  BOND_DECIMAL_DELTA,
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
@@ -31,7 +32,8 @@ export const makeCreateBondTransaction: MakeCreateBondTransaction = async ({
   connection,
   wallet,
 }) => {
-  const amountToReturn = Math.trunc(borrowValue / pair.currentSpotPrice) * 1e3;
+  const amountToReturn =
+    Math.trunc(borrowValue / pair.currentSpotPrice) * BOND_DECIMAL_DELTA;
 
   const proof = await (async () => {
     if (market.whitelistEntry?.whitelistType !== WhitelistType.MERKLE_TREE) {
@@ -86,8 +88,9 @@ export const makeCreateBondTransaction: MakeCreateBondTransaction = async ({
       },
       args: {
         proof: proof,
-        amountToSell: amountToReturn / 1e3, //? amount of fbond tokens decimals
-        minAmountToGet: (amountToReturn / 1e3) * pair.currentSpotPrice, //? SOL lamports
+        amountToSell: amountToReturn / BOND_DECIMAL_DELTA, //? amount of fbond tokens decimals
+        minAmountToGet:
+          (amountToReturn / BOND_DECIMAL_DELTA) * pair.currentSpotPrice, //? SOL lamports
         skipFailed: false,
       },
       connection,
@@ -103,10 +106,3 @@ export const makeCreateBondTransaction: MakeCreateBondTransaction = async ({
     signers: [createBondSigners, validateAndsellSigners].flat(),
   };
 };
-
-//? Min value -- any number less than max
-//? Max value -- loop every pair and:
-//? loanToValueSOL = collectionFloorPrice(lamports) * (validation.loanToValueFilter * 0.01 * 0.01)
-//? maxValueBonds = Math.min(edgeSettlement, loanToValueSOL / 1e3)
-//? maxValueSOLWithFee = maxValueBonds * currenSpotPrice
-//? Get biggest across all maxValueSOLWithFee
