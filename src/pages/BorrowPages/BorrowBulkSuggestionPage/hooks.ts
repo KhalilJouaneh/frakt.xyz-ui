@@ -12,7 +12,7 @@ import {
 } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
-import { useCart } from '../cartState';
+import { useBorrow } from '../cartState';
 
 type UseBulkSuggestion = (props: {
   walletPublicKey?: web3.PublicKey;
@@ -54,7 +54,7 @@ export const useBorrowBulkSuggestionPage = () => {
     return parseFloat(searchParams.get('borrowValue') || '0');
   }, [search]);
 
-  const { onSelectNft } = useCart();
+  const { onSelectNft } = useBorrow();
 
   useEffect(() => {
     if (borrowValue === 0) {

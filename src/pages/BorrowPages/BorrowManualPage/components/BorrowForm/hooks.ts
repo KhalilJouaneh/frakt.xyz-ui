@@ -1,141 +1,123 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { LoanType } from '@frakt/api/loans';
+import { useBorrow } from '@frakt/pages/BorrowPages/cartState';
 
-import { generateSelectOptions, SelectValue } from './helpers';
 import {
-  useCart,
+  generateSelectOptions,
   getBorrowValueRange,
   getCheapestPairForBorrowValue,
-  getPairWithMaxBorrowValue,
-} from '@frakt/pages/BorrowPages/cartState';
+  SelectValue,
+} from './helpers';
 
 export const useBorrowForm = () => {
   const {
-    currentOrder,
-    onUpdateOrder,
-    totalBorrowValue,
-    orders,
+    currentNft,
+    currentLoanValue,
+    setCurrentLoanValue,
     market,
     pairs,
-  } = useCart();
+    isBulk,
+    totalBorrowValue,
+    setCurrentLoanType,
+    setCurrentPair,
+    currentLoanType,
+    currentPair,
+  } = useBorrow();
 
-  const selectOptions = useMemo(
-    () =>
-      generateSelectOptions({
-        nft: currentOrder,
-        bondsParams: {
-          market,
-          pairs,
-        },
-      }),
-    [currentOrder, market, pairs],
+  const [selectedOption, setSelectedOption] = useState<SelectValue | null>(
+    null,
   );
 
-  const selectedOption = useMemo(
-    () =>
-      selectOptions.find((option) => {
-        const { type, duration } = option.value;
-
-        if (type === LoanType.BOND) {
-          const pair = pairs.find(
-            ({ publicKey }) =>
-              publicKey === currentOrder.bondParams?.pairPubkey,
-          );
-          return pair?.validation?.durationFilter / (24 * 60 * 60) === duration;
-        }
-
-        return currentOrder.loanType === type;
-      }),
-    [selectOptions, currentOrder, pairs],
+  const onSelectOption = useCallback(
+    (value: SelectValue) => {
+      setSelectedOption(value);
+      setCurrentLoanType(value.value.type);
+    },
+    [setCurrentLoanType],
   );
 
-  const [minBorrowValue, maxBorrowValue] = useMemo(() => {
-    return getBorrowValueRange({
-      order: currentOrder,
+  const selectOptions = useMemo(() => {
+    if (!currentNft) return [];
+    return generateSelectOptions({
+      nft: currentNft,
       bondsParams: {
         pairs,
+      },
+    });
+  }, [currentNft, pairs]);
+
+  useEffect(() => {
+    if (selectOptions.length) {
+      if (currentNft && currentLoanType) {
+        const selectOption = selectOptions.find(({ value }) => {
+          const sameLoanType = value?.type === currentLoanType;
+          const isBond = currentLoanType === LoanType.BOND;
+
+          if (!isBond) {
+            return sameLoanType;
+          }
+          const sameBondDuration =
+            value?.type === LoanType.BOND &&
+            currentPair?.validation?.durationFilter / 86400 === value?.duration;
+
+          return sameLoanType && sameBondDuration;
+        });
+
+        return onSelectOption(selectOption || selectOptions[0]);
+      }
+
+      onSelectOption(selectOptions[0]); //TODO: change to available. F.e. If classic loans not available
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectOptions, onSelectOption]);
+
+  useEffect(() => {
+    if (selectedOption?.value?.type === LoanType.BOND && market) {
+      const pair = getCheapestPairForBorrowValue({
+        borrowValue: currentLoanValue,
+        valuation: market?.oracleFloor?.floor,
+        pairs,
         duration: selectedOption.value.duration,
+      });
+
+      setCurrentPair(pair);
+    } else {
+      setCurrentPair(null);
+    }
+  }, [market, currentLoanValue, pairs, selectedOption, setCurrentPair]);
+
+  const [minBorrowValue, maxBorrowValue] = useMemo(() => {
+    if (!currentNft || !selectedOption) return [0, 0];
+    return getBorrowValueRange({
+      nft: currentNft,
+      loanType: selectedOption?.value?.type,
+      bondsParams: {
+        pairs,
+        duration: selectedOption?.value?.duration,
         market,
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentOrder.borrowNft.mint, selectedOption.label]);
+  }, [currentNft, selectedOption, market, pairs]);
 
-  const onOptionChange = (option: SelectValue) => {
-    const { type, duration } = option.value;
-
-    const pair = getPairWithMaxBorrowValue({
-      pairs,
-      collectionFloor: market?.oracleFloor?.floor,
-      duration,
-    });
-
-    onUpdateOrder({
-      loanType: type,
-      nft: currentOrder.borrowNft,
-      loanValue: maxBorrowValue,
-      pair,
-      market,
-    });
-  };
-
-  // //? Set maximum BorrowValue as default when change option
-  //TODO:
-  // useEffect(() => {
-  //   console.log(selectedOption.label);
-
-  //   onUpdateOrder({
-  //     loanType: currentOrder.loanType,
-  //     loanValue: maxBorrowValue,
-  //     nft: currentOrder.borrowNft,
-  //     pair:
-  //       currentOrder.loanType === LoanType.BOND
-  //         ? pairs.find(
-  //             ({ publicKey }) =>
-  //               publicKey === currentOrder.bondParams.pairPubkey,
-  //           )
-  //         : null,
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [selectedOption.label]);
-
-  const onSliderUpdate = (borrowValue: number) => {
-    const { type, duration } = selectedOption.value;
-
-    if (type === LoanType.BOND) {
-      const cheapestPair = getCheapestPairForBorrowValue({
-        borrowValue,
-        valuation: market?.oracleFloor?.floor,
-        pairs,
-        duration: duration,
-      });
-
-      return onUpdateOrder({
-        loanType: currentOrder.loanType,
-        nft: currentOrder.borrowNft,
-        loanValue: borrowValue,
-        pair: cheapestPair,
-        market,
-      });
+  useEffect(() => {
+    if (selectedOption && maxBorrowValue && currentLoanType) {
+      if (maxBorrowValue < currentLoanValue || currentLoanValue === 0) {
+        setCurrentLoanValue(maxBorrowValue);
+      }
     }
-
-    onUpdateOrder({
-      loanType: currentOrder.loanType,
-      nft: currentOrder.borrowNft,
-      loanValue: borrowValue,
-      market,
-    });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption, maxBorrowValue]);
 
   return {
-    selectedBorrowValue: currentOrder.loanValue,
-    onSliderUpdate,
-    borrowRange: [minBorrowValue, maxBorrowValue],
+    currentLoanValue,
+    minBorrowValue,
+    maxBorrowValue,
+    setCurrentLoanValue,
     selectOptions,
     selectedOption,
-    onOptionChange,
+    onSelectOption,
+    isBulk,
     totalBorrowValue,
-    isBulk: orders.length > 1,
   };
 };

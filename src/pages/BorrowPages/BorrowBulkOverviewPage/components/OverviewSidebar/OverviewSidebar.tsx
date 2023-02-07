@@ -3,15 +3,15 @@ import { FC, useMemo } from 'react';
 import { Solana } from '@frakt/icons';
 import Button from '@frakt/components/Button';
 import { MAX_TIME_BASED_LOAN_DURATION } from '@frakt/utils/loans';
-import { Order } from '@frakt/pages/BorrowPages/cartState';
+import { Order, useBorrow } from '@frakt/pages/BorrowPages/cartState';
 import { LoanType } from '@frakt/api/loans';
 
 import styles from './OverviewSidebar.module.scss';
-import {
-  calcBulkTotalValue,
-  calcFeePerDay,
-  getFeesOnCertainDay,
-} from '../../../helpers';
+// import {
+//   calcBulkTotalValue,
+//   calcFeePerDay,
+//   getFeesOnCertainDay,
+// } from '../../../helpers';
 
 interface OverviewSidebarProps {
   bulkSelection: Order[];
@@ -24,12 +24,13 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
   onChangeAssets,
   onBorrow,
 }) => {
-  const borrowValue = calcBulkTotalValue(bulkSelection);
-  const feePerDay = calcFeePerDay(bulkSelection);
-  const feeOnMaxTimeBasedDay = getFeesOnCertainDay(
-    bulkSelection,
-    MAX_TIME_BASED_LOAN_DURATION,
-  );
+  const { totalBorrowValue } = useBorrow();
+
+  // const feePerDay = calcFeePerDay(bulkSelection);
+  // const feeOnMaxTimeBasedDay = getFeesOnCertainDay(
+  //   bulkSelection,
+  //   MAX_TIME_BASED_LOAN_DURATION,
+  // );
 
   const hideFeeOnMaxTimeBasedDay = useMemo(() => {
     return !!bulkSelection.find(
@@ -46,21 +47,25 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
         <div className={styles.feesRow}>
           <p className={styles.subtitle}>Fee on day 1</p>
           <p className={styles.value}>
-            {feePerDay.toFixed(3)}
+            {/* {feePerDay.toFixed(3)} */}
+            XXX
             <Solana />
           </p>
         </div>
         <div className={styles.feesRow}>
           <p className={styles.subtitle}>Fee on day 7</p>
           <p className={styles.value}>
-            {(feePerDay * 7).toFixed(3)} <Solana />
+            {/* {(feePerDay * 7).toFixed(3)} <Solana /> */}
+            XXX
+            <Solana />
           </p>
         </div>
         {hideFeeOnMaxTimeBasedDay && (
           <div className={styles.feesRow}>
             <p className={styles.subtitle}>Fee on day 14</p>
             <p className={styles.value}>
-              {feeOnMaxTimeBasedDay.toFixed(3)}
+              {/* {feeOnMaxTimeBasedDay.toFixed(3)} */}
+              XXX
               <Solana />
             </p>
           </div>
@@ -68,7 +73,7 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
       </div>
       <div className={styles.sidebarBtnWrapper}>
         <Button type="secondary" onClick={onBorrow} className={styles.btn}>
-          Borrow {borrowValue?.toFixed(2)} SOL
+          Borrow {(totalBorrowValue / 1e9)?.toFixed(2)} SOL
         </Button>
         <Button onClick={onChangeAssets} className={styles.btn}>
           Change assets

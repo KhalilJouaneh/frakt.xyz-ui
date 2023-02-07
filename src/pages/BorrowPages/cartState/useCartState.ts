@@ -16,6 +16,7 @@ interface CartState {
     nft: BorrowNft;
     pair?: Pair;
     market?: Market;
+    unshift?: boolean;
   }) => void;
   updateOrder: (props: {
     loanType: LoanType;
@@ -25,22 +26,25 @@ interface CartState {
     market?: Market;
   }) => void;
   removeOrder: (props: { nftMint: string }) => void;
+  findPair: (props: { pairPubkey: string }) => Pair | null;
+  findOrder: (props: { nftMint: string }) => Order | null;
+  clearCart: () => void;
 }
 
 export const useCartState = create<CartState>((set, get) => ({
   pairs: [],
   orders: [],
-  addOrder: ({ loanType, nft, loanValue, pair, market }) => {
+  addOrder: ({ loanType, nft, loanValue, pair, market, unshift = false }) => {
     if (loanType !== LoanType.BOND) {
       return set(
         produce((state: CartState) => {
-          state.orders.push(
-            convertBorrowNftToOrder({
-              nft,
-              loanType,
-              loanValue,
-            }),
-          );
+          const order = convertBorrowNftToOrder({
+            nft,
+            loanType,
+            loanValue,
+          });
+
+          unshift ? state.orders.unshift(order) : state.orders.push(order);
         }),
       );
     }
@@ -121,6 +125,21 @@ export const useCartState = create<CartState>((set, get) => ({
       market,
     });
   },
+  findPair: ({ pairPubkey }) => {
+    const { pairs } = get();
+    return pairs.find(({ publicKey }) => publicKey === pairPubkey) ?? null;
+  },
+  findOrder: ({ nftMint }) => {
+    const { orders } = get();
+    return orders.find(({ borrowNft }) => borrowNft.mint === nftMint) ?? null;
+  },
+  clearCart: () =>
+    set(
+      produce((state: CartState) => {
+        state.orders = [];
+        state.pairs = [];
+      }),
+    ),
 }));
 
 type ConvertBorrowNftToOrder = (props: {
@@ -147,7 +166,7 @@ type CalcBondsAmount = (props: {
   loanValue: number;
   spotPrice: number;
 }) => number;
-const calcBondsAmount: CalcBondsAmount = ({ loanValue, spotPrice }) => {
+export const calcBondsAmount: CalcBondsAmount = ({ loanValue, spotPrice }) => {
   loanValue;
   spotPrice;
   // return 0;

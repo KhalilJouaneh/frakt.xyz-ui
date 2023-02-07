@@ -16,8 +16,8 @@ import { Order } from '../cartState';
 
 export const BorrowBulkOverviewPage: FC = () => {
   const {
-    selection,
-    onBackBtnClick,
+    cartOrders,
+    // onBackBtnClick,
     onBorrow,
     confirmModalVisible,
     openConfirmModal,
@@ -30,7 +30,7 @@ export const BorrowBulkOverviewPage: FC = () => {
   return (
     <AppLayout>
       <OverviewSidebar
-        bulkSelection={selection}
+        bulkSelection={cartOrders}
         onChangeAssets={() => onBulkEdit()}
         onBorrow={openConfirmModal}
       />
@@ -38,15 +38,15 @@ export const BorrowBulkOverviewPage: FC = () => {
       <div
         className={classNames(
           styles.container,
-          !selection.length && styles.closeContainer,
+          !cartOrders.length && styles.closeContainer,
         )}
       >
         <BorrowHeader
-          onBackBtnClick={onBackBtnClick}
+          // onBackBtnClick={onBackBtnClick}
           title="Borrowing"
-          subtitle={`${selection?.length} loans in bulk`}
+          subtitle={`${cartOrders?.length} loans in bulk`}
         />
-        {selection.map((order) => (
+        {cartOrders.map((order) => (
           <LoanCard
             key={order.borrowNft.mint}
             nft={order}

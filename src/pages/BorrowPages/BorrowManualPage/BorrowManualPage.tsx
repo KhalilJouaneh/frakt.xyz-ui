@@ -13,16 +13,17 @@ import { useWalletNfts } from './hooks';
 import { NftCard } from './components/NftCard/';
 import styles from './BorrowManualPage.module.scss';
 import { Sidebar } from './components/Sidebar';
-import { useCart } from '../cartState';
+import { useBorrow } from '../cartState';
 
 export const BorrowManualPage: FC = () => {
   const {
-    orders: selection,
+    cartOrders,
     onSelectNft,
-    onRemoveOrder,
-    findOrder,
-    highlightedNftMint,
-  } = useCart();
+    isBulk,
+    currentNft,
+    findOrderInCart,
+    onRemoveNft,
+  } = useBorrow();
 
   const history = useHistory();
   const onBackBtnClick = () => history.goBack();
@@ -41,25 +42,31 @@ export const BorrowManualPage: FC = () => {
   }, 300);
 
   const onNftClick = (nft: BorrowNft) => {
-    const selectedNft = findOrder(nft.mint);
-    selectedNft ? onRemoveOrder(selectedNft) : onSelectNft(nft);
+    const isNftSelected =
+      !!findOrderInCart({ nftMint: nft.mint }) || currentNft?.mint === nft.mint;
+
+    if (isNftSelected) {
+      return onRemoveNft(nft);
+    }
+
+    onSelectNft(nft);
   };
 
   return (
     <AppLayout>
-      {!!highlightedNftMint && <Sidebar />}
+      {!!currentNft && <Sidebar />}
       <div
         className={classNames([
           styles.content,
-          { [styles.contentSidebarVisible]: highlightedNftMint },
+          { [styles.contentSidebarVisible]: !!currentNft },
         ])}
       >
         <BorrowHeader
           onBackBtnClick={onBackBtnClick}
           title="Borrow SOL"
           subtitle={
-            selection.length > 1
-              ? `${selection.length} loans in bulk`
+            isBulk
+              ? `${cartOrders.length + Number(!!currentNft)} loans in bulk`
               : 'I just want to make a loan'
           }
         />
@@ -82,8 +89,11 @@ export const BorrowManualPage: FC = () => {
               key={nft.mint}
               nft={nft}
               onClick={() => onNftClick(nft)}
-              selected={!!findOrder(nft.mint)}
-              highlighted={nft.mint === highlightedNftMint}
+              selected={
+                !!findOrderInCart({ nftMint: nft.mint }) ||
+                currentNft?.mint === nft.mint
+              }
+              highlighted={currentNft?.mint === nft.mint}
             />
           ))}
         </InfinityScroll>

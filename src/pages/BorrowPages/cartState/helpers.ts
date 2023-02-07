@@ -1,6 +1,6 @@
 import { maxBy } from 'lodash';
 
-import { Market, Pair } from '@frakt/api/bonds';
+import { Pair } from '@frakt/api/bonds';
 import { BOND_DECIMAL_DELTA, pairLoanDurationFilter } from '@frakt/utils/bonds';
 import { LoanType } from '@frakt/api/loans';
 
@@ -44,77 +44,47 @@ export const getPairWithMaxBorrowValue: GetPairWithMaxBorrowValue = ({
   return pairWithMaxBorrowValue;
 };
 
-type GetCheapestPairForBorrowValue = (params: {
-  borrowValue: number;
-  valuation: number;
-  pairs: Pair[];
-  duration: number;
-}) => Pair;
-export const getCheapestPairForBorrowValue: GetCheapestPairForBorrowValue = ({
-  borrowValue,
-  valuation,
-  pairs,
-  duration,
-}) => {
-  const suitablePairsByDuration = pairs.filter((p) =>
-    pairLoanDurationFilter({ pair: p, duration }),
-  );
+export interface SelectValue {
+  label: string;
+  value: {
+    type: LoanType;
+    duration?: number | null; //? Doesn't Exist for LoanType.PRICE_BASED
+  };
+}
 
-  const suitableBySettlementAndValidation = suitablePairsByDuration.filter(
-    (pair) => {
-      const borrowValueBonds = borrowValue / pair.currentSpotPrice;
-      const loanToValueLamports =
-        valuation * (pair.validation.loanToValueFilter * 0.01 * 0.01);
+export const calcLtv = (order: Order) => {
+  const { borrowNft, loanValue } = order;
+  const ltv = (loanValue / borrowNft.valuation) * 100;
 
-      return (
-        borrowValueBonds <= pair.edgeSettlement &&
-        loanToValueLamports >= borrowValueBonds * BOND_DECIMAL_DELTA
-      );
-    },
-  );
-
-  return maxBy(
-    suitableBySettlementAndValidation,
-    (pair) => pair.currentSpotPrice,
-  );
+  return ltv;
 };
 
-type GetBorrowValueRange = (props: {
-  order: Order;
-  bondsParams?: {
-    pairs: Pair[];
-    market: Market;
-    duration: number; //? Days
-  };
-}) => [number, number];
-export const getBorrowValueRange: GetBorrowValueRange = ({
-  order,
-  bondsParams,
-}) => {
-  const { loanType, borrowNft } = order;
+export const calcTimeBasedRepayValue = (order: Order) => {
+  const { loanValue } = order;
 
-  const { valuation, classicParams } = borrowNft;
+  const { fee, feeDiscountPercent } = order.borrowNft.classicParams.timeBased;
 
-  const maxBorrowValueTimeBased =
-    valuation * (classicParams?.timeBased?.ltvPercent / 100);
-  const maxBorrowValuePriceBased =
-    valuation * (classicParams?.priceBased?.ltvPercent / 100);
-  const minBorrowValue = valuation / 10;
+  const feeAmount = loanValue * (fee / loanValue);
 
-  const maxBorrowValue = (() => {
-    if (loanType === LoanType.PRICE_BASED) return maxBorrowValuePriceBased;
-    if (loanType === LoanType.TIME_BASED) return maxBorrowValueTimeBased;
+  const feeAmountWithDiscount =
+    feeAmount - feeAmount * (feeDiscountPercent / 100);
 
-    //? LoanType.BONDS
-    return getPairMaxBorrowValue({
-      pair: getPairWithMaxBorrowValue({
-        pairs: bondsParams.pairs,
-        collectionFloor: bondsParams.market.oracleFloor.floor,
-        duration: bondsParams?.duration,
-      }),
-      collectionFloor: bondsParams.market.oracleFloor.floor,
-    });
-  })();
+  return loanValue + feeAmountWithDiscount;
+};
 
-  return [Math.min(minBorrowValue, maxBorrowValue), maxBorrowValue];
+export const calcPriceBasedUpfrontFee = (order: Order) => {
+  const { loanValue } = order;
+
+  return loanValue * 0.01;
+};
+
+type CalcBondFee = (props: { order: Order; pair: Pair }) => number;
+export const calcBondFee: CalcBondFee = ({ order, pair }) => {
+  const { loanValue } = order;
+  const { currentSpotPrice } = pair;
+
+  const feeLamports =
+    (loanValue * BOND_DECIMAL_DELTA) / currentSpotPrice - loanValue;
+
+  return feeLamports;
 };

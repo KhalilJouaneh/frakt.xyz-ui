@@ -5,21 +5,20 @@ import CollapsedContent from '@frakt/components/Sidebar/components/CollapsedCont
 import NftsCarousel from '@frakt/components/Sidebar/components/Slider';
 import { Loader } from '@frakt/components/Loader';
 
+import styles from './Sidebar.module.scss';
 import { BorrowForm } from '../BorrowForm';
 import { useSidebar } from './hooks';
-import styles from './Sidebar.module.scss';
 
 export const Sidebar: FC = () => {
   const {
-    order,
+    isLoading,
+    isBulk,
+    totalBorrowValue,
+    currentNft,
+    onRemoveNft,
+    onNextNftSelect,
     minimizedOnMobile,
     setMinimizedOnMobile,
-    totalBorrowValue,
-    isBulk,
-    loading,
-    onRemoveOrder,
-    onNextOrder,
-    goToBulkOverviewPage,
     onSubmit,
   } = useSidebar();
 
@@ -31,20 +30,20 @@ export const Sidebar: FC = () => {
     >
       <CollapsedContent
         isVisible={!minimizedOnMobile}
-        onClick={goToBulkOverviewPage}
-        title={`View ${isBulk ? 'bulk ' : ''} loan ${totalBorrowValue.toFixed(
-          2,
-        )} SOL`}
+        onClick={onSubmit}
+        title={`${isBulk ? 'View bulk ' : 'Quick borrow '} loan ${(
+          totalBorrowValue / 1e9
+        ).toFixed(2)} SOL`}
       />
       <div className={styles.sidebar}>
-        {loading && <Loader size="large" />}
-        {!loading && !!order && (
+        {isLoading && <Loader size="large" />}
+        {!isLoading && !!currentNft && (
           <>
             <NftsCarousel
-              nfts={order?.borrowNft}
-              onDeselect={() => onRemoveOrder(order)}
-              onPrev={() => onNextOrder(true)}
-              onNext={() => onNextOrder()}
+              nfts={currentNft}
+              onDeselect={() => onRemoveNft(currentNft)}
+              onPrev={() => onNextNftSelect(true)}
+              onNext={() => onNextNftSelect()}
               isBulkLoan={isBulk}
             />
             <BorrowForm onSubmit={onSubmit} />
