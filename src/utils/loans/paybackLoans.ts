@@ -50,6 +50,8 @@ export const paybackLoans: PaybackLoans = async ({
           liquidityPool: new web3.PublicKey(liquidityPool),
           collectionInfo: new web3.PublicKey(collectionInfo),
           royaltyAddress: new web3.PublicKey(royaltyAddress),
+          nameForRuleSet: process.env.NAME_FOR_RULE_SET,
+          payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
         });
 
         transactions.push({ instructions: ixs });
@@ -64,6 +66,8 @@ export const paybackLoans: PaybackLoans = async ({
           liquidityPool: new web3.PublicKey(liquidityPool),
           collectionInfo: new web3.PublicKey(collectionInfo),
           royaltyAddress: new web3.PublicKey(royaltyAddress),
+          nameForRuleSet: process.env.NAME_FOR_RULE_SET,
+          payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
           paybackAmount,
         });
 

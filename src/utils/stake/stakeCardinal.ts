@@ -39,6 +39,8 @@ export const stakeCardinal: StakeCardinal = async ({
         rewardMint: new web3.PublicKey(process.env.STAKE_REWARD_MINT),
         paymentPubkey1: new web3.PublicKey(process.env.STAKE_PAYMENT_1_PUBKEY),
         paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
+        nameForRuleSet: process.env.NAME_FOR_RULE_SET,
+        payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
       });
 
     await createAndSendTxn({

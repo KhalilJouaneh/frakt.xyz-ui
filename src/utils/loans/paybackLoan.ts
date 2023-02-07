@@ -33,6 +33,8 @@ export const paybackLoan: PaybackLoan = async ({
         liquidityPool: new web3.PublicKey(loan.liquidityPool),
         collectionInfo: new web3.PublicKey(loan.collectionInfo),
         royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
+        nameForRuleSet: process.env.NAME_FOR_RULE_SET,
+        payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
       });
 
       await createAndSendTxn({
@@ -41,19 +43,6 @@ export const paybackLoan: PaybackLoan = async ({
         wallet,
       });
     } else {
-      console.log({
-        programId: process.env.LOANS_PROGRAM_PUBKEY,
-        connection,
-        user: wallet.publicKey,
-        admin: process.env.LOANS_FEE_ADMIN_PUBKEY,
-        loan: loan.pubkey,
-        nftMint: loan.mint,
-        liquidityPool: loan.liquidityPool,
-        collectionInfo: loan.collectionInfo,
-        royaltyAddress: loan.royaltyAddress,
-        paybackAmount,
-      });
-
       const { paybackLoanIx } = await loans.paybackLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
@@ -64,6 +53,8 @@ export const paybackLoan: PaybackLoan = async ({
         liquidityPool: new web3.PublicKey(loan.liquidityPool),
         collectionInfo: new web3.PublicKey(loan.collectionInfo),
         royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
+        nameForRuleSet: process.env.NAME_FOR_RULE_SET,
+        payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
         paybackAmount,
       });
 
