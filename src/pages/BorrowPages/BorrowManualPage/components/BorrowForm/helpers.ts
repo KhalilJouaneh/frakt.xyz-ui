@@ -87,8 +87,8 @@ export const getBorrowValueRange: GetBorrowValueRange = ({
     if (loanType === LoanType.TIME_BASED) return maxBorrowValueTimeBased;
 
     const maxBorrowValuePair = getPairWithMaxBorrowValue({
-      pairs: bondsParams.pairs,
-      collectionFloor: bondsParams.market.oracleFloor.floor,
+      pairs: bondsParams?.pairs,
+      collectionFloor: bondsParams?.market?.oracleFloor?.floor,
       duration: bondsParams?.duration,
     });
 

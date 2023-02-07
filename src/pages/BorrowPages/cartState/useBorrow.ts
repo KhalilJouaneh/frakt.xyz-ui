@@ -207,7 +207,8 @@ const useMarketAndPairs = (marketPubkey: string | null) => {
             );
             return samePairSelected ?? rawPair;
           }),
-    [cartPairs, rawPairs, isLoadingPairs],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cartPairs, isLoadingPairs],
   );
 
   return {
