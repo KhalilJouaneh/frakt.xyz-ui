@@ -115,9 +115,11 @@ const borrowBulk: BorrowBulk = async ({
         if (order.loanType === LoanType.BOND) {
           return makeCreateBondTransaction({
             nftMint: order.borrowNft.mint,
-            market: order.bondParams.market,
+            market: order.bondOrderParams?.market,
             pair: pairs.find(
-              (pair) => pair.publicKey === order.bondParams.pairPubkey,
+              (pair) =>
+                pair.publicKey ===
+                order?.bondOrderParams?.orderParams?.[0]?.pairPubkey,
             ),
             borrowValue: order.loanValue,
             connection,

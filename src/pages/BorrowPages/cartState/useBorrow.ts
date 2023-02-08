@@ -71,7 +71,7 @@ export const useBorrow = () => {
         const cartOrder = cartOrders.at(0);
 
         const cartPair = findPairInCart({
-          pairPubkey: cartOrder?.bondParams?.pairPubkey,
+          pairPubkey: cartOrder?.bondOrderParams?.orderParams?.[0]?.pairPubkey,
         });
 
         removeOrder({ nftMint: cartOrder?.borrowNft?.mint });
@@ -87,7 +87,8 @@ export const useBorrow = () => {
                   cartPair.edgeSettlement +
                   calcBondsAmount({
                     loanValue: cartOrder.loanValue,
-                    spotPrice: cartOrder?.bondParams?.spotPrice,
+                    spotPrice:
+                      cartOrder?.bondOrderParams?.orderParams?.[0]?.spotPrice,
                   }),
               }
             : null,
@@ -102,7 +103,7 @@ export const useBorrow = () => {
     const cartOrder = reverse ? cartOrders.at(-1) : cartOrders.at(0);
 
     const cartPair = findPairInCart({
-      pairPubkey: cartOrder?.bondParams?.pairPubkey,
+      pairPubkey: cartOrder?.bondOrderParams?.orderParams?.[0]?.pairPubkey,
     });
 
     removeOrder({ nftMint: cartOrder?.borrowNft?.mint });
@@ -118,7 +119,8 @@ export const useBorrow = () => {
               cartPair.edgeSettlement +
               calcBondsAmount({
                 loanValue: cartOrder.loanValue,
-                spotPrice: cartOrder?.bondParams?.spotPrice,
+                spotPrice:
+                  cartOrder?.bondOrderParams?.orderParams?.[0]?.spotPrice,
               }),
           }
         : null,
@@ -130,7 +132,7 @@ export const useBorrow = () => {
       ({ borrowNft }) => borrowNft.mint === mint,
     );
     const cartPair = findPairInCart({
-      pairPubkey: cartOrder?.bondParams?.pairPubkey,
+      pairPubkey: cartOrder?.bondOrderParams?.orderParams?.[0]?.pairPubkey,
     });
 
     removeOrder({ nftMint: cartOrder?.borrowNft?.mint });
@@ -146,7 +148,8 @@ export const useBorrow = () => {
               cartPair.edgeSettlement +
               calcBondsAmount({
                 loanValue: cartOrder.loanValue,
-                spotPrice: cartOrder?.bondParams?.spotPrice,
+                spotPrice:
+                  cartOrder?.bondOrderParams?.orderParams?.[0]?.spotPrice,
               }),
           }
         : null,

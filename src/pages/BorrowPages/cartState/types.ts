@@ -1,14 +1,21 @@
 import { Market } from '@frakt/api/bonds';
-import { BorrowNftSuggested } from '@frakt/api/nft';
+import { LoanType } from '@frakt/api/loans';
+import {
+  BondOrderParams as SuggestedBondOrderParams,
+  BorrowNft,
+} from '@frakt/api/nft';
 
-export interface BondParams {
-  spotPrice: number;
-  pairPubkey: string;
+export interface BondOrderParams {
   market: Market;
+  orderParams: SuggestedBondOrderParams[];
 }
 
-export interface Order extends BorrowNftSuggested {
-  loanValue: number; //? lamports
+//? Almost same as BorrowNftSuggested
+export interface Order {
+  loanType: LoanType;
+  loanValue: number; //? lamports. Max for timeBased, selected for priceBased and Bonds
 
-  bondParams?: BondParams;
+  borrowNft: BorrowNft;
+
+  bondOrderParams?: BondOrderParams;
 }

@@ -5,7 +5,7 @@ import { Market, Pair } from '@frakt/api/bonds';
 import { BorrowNft } from '@frakt/api/nft';
 import { LoanType } from '@frakt/api/loans';
 
-import { BondParams, Order } from './types';
+import { BondOrderParams, Order } from './types';
 
 interface CartState {
   pairs: Pair[];
@@ -61,10 +61,15 @@ export const useCartState = create<CartState>((set, get) => ({
             nft,
             loanType,
             loanValue,
-            bondParams: {
-              spotPrice: pair.currentSpotPrice,
-              pairPubkey: pair.publicKey,
+            bondOrderParams: {
               market,
+              orderParams: [
+                {
+                  orderSize: 0, //TODO;
+                  spotPrice: pair.currentSpotPrice,
+                  pairPubkey: pair.publicKey,
+                },
+              ],
             },
           }),
         );
@@ -94,11 +99,12 @@ export const useCartState = create<CartState>((set, get) => ({
         if (order.loanType === LoanType.BOND) {
           const bondsAmount = calcBondsAmount({
             loanValue: order.loanValue,
-            spotPrice: order.bondParams.spotPrice,
+            spotPrice: order.bondOrderParams[0]?.spotPrice,
           });
 
           const pairInState = state.pairs.find(
-            ({ publicKey }) => publicKey === order.bondParams.pairPubkey,
+            ({ publicKey }) =>
+              publicKey === order.bondOrderParams[0]?.pairPubkey,
           );
 
           pairInState.edgeSettlement += bondsAmount;
@@ -146,19 +152,19 @@ type ConvertBorrowNftToOrder = (props: {
   nft: BorrowNft;
   loanType: LoanType;
   loanValue: number;
-  bondParams?: BondParams;
+  bondOrderParams?: BondOrderParams;
 }) => Order;
 const convertBorrowNftToOrder: ConvertBorrowNftToOrder = ({
   nft,
   loanType,
   loanValue,
-  bondParams,
+  bondOrderParams,
 }) => {
   return {
     loanType,
     borrowNft: nft,
     loanValue,
-    bondParams,
+    bondOrderParams,
   };
 };
 

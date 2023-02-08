@@ -1,3 +1,4 @@
+import { Market, Pair } from '../bonds';
 import { LoanType } from '../loans';
 
 export interface BorrowNft {
@@ -50,6 +51,21 @@ export interface BorrowNftSuggested {
   };
 }
 
+export interface BondOrderParams {
+  orderSize: number; //? lamports
+  spotPrice: number; //? lamports
+  pairPubkey: string;
+}
+
+export interface BorrowNftSuggested {
+  loanType: LoanType;
+  loanValue: number; //? lamports. Max for timeBased, selected for priceBased and Bonds
+
+  borrowNft: BorrowNft;
+
+  bondOrderParams?: BondOrderParams[];
+}
+
 export enum BulkTypes {
   best = 'best',
   cheapest = 'cheapest',
@@ -57,6 +73,12 @@ export enum BulkTypes {
   max = 'max', //? Exists when the user wants to borrow more than he has
 }
 
+interface Suggestion {
+  orders: BorrowNftSuggested[];
+  markets: Market[];
+  modifiedPairs: Pair[];
+}
+
 export type BulkSuggestion = {
-  [key in BulkTypes]?: BorrowNftSuggested[];
+  [key in BulkTypes]?: Suggestion;
 };
