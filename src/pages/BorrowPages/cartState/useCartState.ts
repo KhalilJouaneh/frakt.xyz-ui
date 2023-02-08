@@ -99,12 +99,12 @@ export const useCartState = create<CartState>((set, get) => ({
         if (order.loanType === LoanType.BOND) {
           const bondsAmount = calcBondsAmount({
             loanValue: order.loanValue,
-            spotPrice: order.bondOrderParams[0]?.spotPrice,
+            spotPrice: order.bondOrderParams?.orderParams?.[0]?.spotPrice,
           });
 
           const pairInState = state.pairs.find(
             ({ publicKey }) =>
-              publicKey === order.bondOrderParams[0]?.pairPubkey,
+              publicKey === order.bondOrderParams?.orderParams?.[0]?.pairPubkey,
           );
 
           pairInState.edgeSettlement += bondsAmount;
