@@ -1,18 +1,14 @@
 import { FC } from 'react';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import Button from '@frakt/components/Button';
 import { Slider } from '@frakt/components/Slider';
 import { Select } from '@frakt/components/Select';
-import { LoanType } from '@frakt/api/loans';
 import { useBorrow } from '@frakt/pages/BorrowPages/cartState';
+import Tooltip from '@frakt/components/Tooltip';
 
 import styles from './BorrowForm.module.scss';
-import {
-  calcBondFee,
-  calcLtv,
-  calcPriceBasedUpfrontFee,
-  calcTimeBasedRepayValue,
-} from './helpers';
+import { generateLoanDetails } from './helpers';
 import { useBorrowForm } from './hooks';
 
 interface BorrowFormProps {
@@ -85,63 +81,25 @@ const LoanDetails: FC = () => {
 
   if (!currentNft || !currentLoanType) return null;
 
-  const fields: Array<[string, string]> = [];
-
-  const { valuation } = currentNft;
-  fields.push(['Floor price', (valuation / 1e9).toFixed(2)]);
-
-  const ltv = calcLtv({
-    loanValue: currentLoanValue,
+  const fields = generateLoanDetails({
     nft: currentNft,
+    loanType: currentLoanType,
+    loanValue: currentLoanValue,
+    pair: currentPair,
   });
-
-  fields.push(['LTV', `${ltv.toFixed(0)}%`]);
-
-  if (currentLoanType === LoanType.TIME_BASED) {
-    const { fee } = currentNft.classicParams.timeBased;
-
-    fields.push(['Fee', `${(fee / 1e9).toFixed(2)}`]);
-  }
-
-  if (currentLoanType === LoanType.BOND && currentPair) {
-    const fee = calcBondFee({
-      loanValue: currentLoanValue,
-      pair: currentPair,
-    });
-
-    fields.push(['Fee', `${(fee / 1e9).toFixed(2)}`]);
-
-    const repayValue = currentLoanValue + fee;
-    fields.push(['Repay value', `${(repayValue / 1e9).toFixed(2)}`]);
-  }
-
-  if (currentLoanType === LoanType.TIME_BASED) {
-    const feeDiscountPercent =
-      currentNft.classicParams.timeBased.feeDiscountPercent;
-    feeDiscountPercent &&
-      fields.push(['Holder discount', `${feeDiscountPercent.toFixed(2)}%`]);
-  }
-
-  if (currentLoanType === LoanType.TIME_BASED) {
-    const repayValue = calcTimeBasedRepayValue({
-      nft: currentNft,
-      loanValue: currentLoanValue,
-    });
-    fields.push(['Repay value', `${(repayValue / 1e9).toFixed(2)}`]);
-  }
-
-  if (currentLoanType === LoanType.PRICE_BASED) {
-    const upfrontFee = calcPriceBasedUpfrontFee({
-      loanValue: currentLoanValue,
-    });
-    fields.push(['Upfront fee', `${(upfrontFee / 1e9).toFixed(2)}`]);
-  }
 
   return (
     <div className={styles.loanDetails}>
-      {fields.map(([label, value], idx) => (
+      {fields.map(({ label, value, tooltipText }, idx) => (
         <div className={styles.loanDetailsValue} key={idx}>
-          <span>{label}</span>
+          <span>
+            {label}
+            {tooltipText && (
+              <Tooltip placement="bottom" trigger="hover" overlay={tooltipText}>
+                <QuestionCircleOutlined className={styles.tooltipIcon} />
+              </Tooltip>
+            )}
+          </span>
           <span>{value}</span>
         </div>
       ))}

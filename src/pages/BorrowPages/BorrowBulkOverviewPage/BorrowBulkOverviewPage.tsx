@@ -10,14 +10,15 @@ import { BorrowHeader } from '../components/BorrowHeader';
 import { OverviewSidebar } from './components/OverviewSidebar';
 import styles from './BorrowBulkOverviewPage.module.scss';
 import { getLoanFields } from './helpers';
-import { CARD_VALUES_TYPES } from './types';
+import { CARD_VALUES_TYPES, LoanCardValue } from './types';
 import { useBorrowBulkOverviewPage } from './hooks';
 import { Order } from '../cartState';
+import { Pair } from '@frakt/api/bonds';
 
 export const BorrowBulkOverviewPage: FC = () => {
   const {
     cartOrders,
-    // onBackBtnClick,
+    cartPairs,
     onBorrow,
     confirmModalVisible,
     openConfirmModal,
@@ -30,7 +31,8 @@ export const BorrowBulkOverviewPage: FC = () => {
   return (
     <AppLayout>
       <OverviewSidebar
-        bulkSelection={cartOrders}
+        orders={cartOrders}
+        pairs={cartPairs}
         onChangeAssets={() => onBulkEdit()}
         onBorrow={openConfirmModal}
       />
@@ -42,14 +44,18 @@ export const BorrowBulkOverviewPage: FC = () => {
         )}
       >
         <BorrowHeader
-          // onBackBtnClick={onBackBtnClick}
           title="Borrowing"
           subtitle={`${cartOrders?.length} loans in bulk`}
         />
         {cartOrders.map((order) => (
           <LoanCard
             key={order.borrowNft.mint}
-            nft={order}
+            order={order}
+            pair={cartPairs?.find(
+              ({ publicKey }) =>
+                publicKey ===
+                order?.bondOrderParams?.orderParams?.[0]?.pairPubkey,
+            )}
             onEditClick={() => onBulkEdit(order.borrowNft.mint)}
           />
         ))}
@@ -75,16 +81,20 @@ export const BorrowBulkOverviewPage: FC = () => {
 };
 
 interface LoanCardprops {
-  nft: Order;
+  order: Order;
+  pair?: Pair;
   onEditClick: () => void;
 }
-const LoanCard: FC<LoanCardprops> = ({ nft, onEditClick }) => {
-  const { imageUrl, name } = nft.borrowNft;
+const LoanCard: FC<LoanCardprops> = ({ order, pair, onEditClick }) => {
+  const { imageUrl, name } = order.borrowNft;
 
-  const fields = getLoanFields(nft);
+  const fields = getLoanFields({
+    order,
+    pair,
+  });
 
   return (
-    <div className={styles.cardWrapper} key={nft.borrowNft.name}>
+    <div className={styles.cardWrapper} key={order.borrowNft.name}>
       <div className={styles.card}>
         <div className={styles.cardInfo}>
           <img className={styles.image} src={imageUrl} />
@@ -108,11 +118,6 @@ const LoanCard: FC<LoanCardprops> = ({ nft, onEditClick }) => {
   );
 };
 
-interface LoanCardValue {
-  title: string;
-  value: number | string;
-  valueType?: CARD_VALUES_TYPES;
-}
 const LoanCardValue: FC<LoanCardValue> = ({
   title,
   value,

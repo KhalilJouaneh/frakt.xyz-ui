@@ -131,5 +131,28 @@
   span:last-child {
     color: var(--secondary-border);
     font: var(--font-text-8);
+    text-align: end;
+
+    &.redText {
+      color: #ff6666;
+    }
+
+    &.yellowText {
+      color: #ddb834;
+    }
+
+    &.greenText {
+      color: #83d6a4;
+    }
+  }
+}
+
+.tooltipIcon {
+  margin-left: 5px;
+
+  svg {
+    fill: var(--blue-color);
+    width: 14px;
+    height: 14px;
   }
 }

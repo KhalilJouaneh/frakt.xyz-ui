@@ -1,140 +1,185 @@
-import { capitalize } from 'lodash';
-
-// import { LoanType } from '@frakt/api/loans';
+import { Pair } from '@frakt/api/bonds';
+import { LoanType } from '@frakt/api/loans';
+import {
+  calcBondFee,
+  calcLtv,
+  calcPriceBasedUpfrontFee,
+  calcTimeBasedRepayValue,
+} from '@frakt/pages/BorrowPages/helpers';
 
 import { Order } from '../cartState';
-import { CARD_VALUES_TYPES } from './types';
+import { CARD_VALUES_TYPES, LoanCardValue, LOAN_TYPE_NAME } from './types';
 
-// const getParsedTimeBasedLoanValues = (order: Order) => {
-//   const { classicParams, valuation } = order.borrowNft;
+type GetLoanFields = (props: {
+  order: Order;
+  pair?: Pair;
+}) => Array<LoanCardValue>;
+export const getLoanFields: GetLoanFields = ({ order, pair }) => {
+  const { loanType, loanValue, borrowNft } = order;
 
-//   const {
-//     fee,
-//     feeDiscountPercent,
-//     ltvPercent,
-//     repayValue,
-//     returnPeriodDays,
-//     loanValue: timeBasedLoanValue,
-//   } = classicParams.timeBased;
+  const fields: Array<LoanCardValue> = [];
 
-//   const loanValue = order?.loanValue || timeBasedLoanValue;
+  fields.push({
+    title: 'Loan type',
+    value: LOAN_TYPE_NAME[loanType],
+    valueType: CARD_VALUES_TYPES.string,
+  });
 
-//   const feeDiscountValue = feeDiscountPercent * 0.01;
+  const ltv = calcLtv({
+    loanValue,
+    nft: borrowNft,
+  });
 
-//   const timeBasedFeeWithDiscount = fee - fee * feeDiscountValue;
-//   const ltv = order?.loanValue
-//     ? (order.loanValue / valuation) * 100
-//     : ltvPercent;
+  fields.push({
+    title: 'Loan to value',
+    value: ltv.toFixed(0),
+    valueType: CARD_VALUES_TYPES.percent,
+  });
 
-//   return {
-//     timeBasedFee: timeBasedFeeWithDiscount,
-//     timeBasedLtvPersent: ltv,
-//     feeDiscountPercent,
-//     returnPeriodDays,
-//     repayValue,
-//     loanValue,
-//   };
-// };
+  fields.push({
+    title: 'Floor price',
+    value: (borrowNft?.valuation / 1e9).toFixed(3),
+    valueType: CARD_VALUES_TYPES.solPrice,
+  });
 
-// const getParsedPriceBasedLoanValues = (order: Order) => {
-//   const { valuation, classicParams } = order.borrowNft;
+  //? TimeBased Fees
+  if (loanType === LoanType.TIME_BASED) {
+    const { fee } = order.borrowNft.classicParams.timeBased;
 
-//   const currentLtvPercent = (order?.loanValue / valuation) * 100;
+    fields.push({
+      title: 'Fee',
+      value: (fee / 1e9).toFixed(3),
+      valueType: CARD_VALUES_TYPES.solPrice,
+    });
+  }
+  //? Bond Fees here
+  if (loanType === LoanType.BOND) {
+    const fee = calcBondFee({
+      loanValue,
+      pair,
+    });
 
-//   const currentLoanValue = (valuation * currentLtvPercent) / 100;
-//   const loanValue = currentLoanValue;
+    fields.push({
+      title: 'Fee',
+      value: (fee / 1e9).toFixed(3),
+      valueType: CARD_VALUES_TYPES.solPrice,
+    });
+  }
 
-//   const fee = classicParams.maxLoanValue * 0.01;
+  //? PriceBased upfront fee
+  if (loanType === LoanType.PRICE_BASED) {
+    const upfrontFee = calcPriceBasedUpfrontFee({
+      loanValue,
+    });
 
-//   const ltv = currentLtvPercent;
+    fields.push({
+      title: 'Upfront fee',
+      value: (upfrontFee / 1e9).toFixed(3),
+      valueType: CARD_VALUES_TYPES.solPrice,
+    });
+  }
 
-//   const borrowAPY = classicParams.priceBased?.borrowAPRPercent;
-//   const collaterizationRateValue =
-//     classicParams.priceBased?.collaterizationRate / 100;
+  fields.push({
+    title: 'To borrow',
+    value: (loanValue / 1e9).toFixed(3),
+    valueType: CARD_VALUES_TYPES.solPrice,
+  });
 
-//   const liquidationPrice = loanValue + loanValue * collaterizationRateValue;
+  //? TimeBased duration
+  if (loanType === LoanType.TIME_BASED) {
+    const { returnPeriodDays } = order.borrowNft.classicParams.timeBased;
 
-//   return {
-//     priceBasedLoanValue: loanValue,
-//     priceBasedFee: fee,
-//     priceBasedLtvPersent: ltv,
-//     borrowAPY: borrowAPY,
-//     liquidationPrice,
-//   };
-// };
-
-export const getLoanFields = (
-  order: Order,
-): Array<{
-  title: string;
-  value: string;
-  valueType: CARD_VALUES_TYPES;
-}> => {
-  const { loanType, loanValue } = order;
-
-  return [
-    {
-      title: 'Loan type',
-      value: capitalize(loanType),
+    fields.push({
+      title: 'Duration',
+      value: `${returnPeriodDays} days`,
       valueType: CARD_VALUES_TYPES.string,
-    },
-    {
-      title: 'Floor price',
-      value: (order?.borrowNft?.valuation / 1e9).toFixed(3),
+    });
+  }
+
+  //? PriceBased duration
+  if (loanType === LoanType.PRICE_BASED) {
+    fields.push({
+      title: 'Duration',
+      value: 'Perpetual',
+      valueType: CARD_VALUES_TYPES.string,
+    });
+  }
+
+  //TODO Bond duration here
+  if (loanType === LoanType.BOND) {
+    const { validation } = pair;
+
+    fields.push({
+      title: 'Duration',
+      value: `${validation?.durationFilter / 86400} days`,
+      valueType: CARD_VALUES_TYPES.string,
+    });
+  }
+
+  //? PriceBased liquidation price
+  if (loanType === LoanType.PRICE_BASED) {
+    const { collaterizationRate } = order.borrowNft.classicParams.priceBased;
+
+    const liquidationPrice =
+      loanValue + loanValue * (collaterizationRate / 100);
+
+    fields.push({
+      title: 'Liquidation price',
+      value: (liquidationPrice / 1e9)?.toFixed(3),
       valueType: CARD_VALUES_TYPES.solPrice,
-    },
-    {
-      title: 'To borrow',
-      value: (loanValue / 1e9).toFixed(3),
+    });
+  }
+
+  //? PriceBased borrow apy
+  if (loanType === LoanType.PRICE_BASED) {
+    const { borrowAPRPercent } = order.borrowNft.classicParams.priceBased;
+
+    fields.push({
+      title: 'Borrow APY',
+      value: borrowAPRPercent.toFixed(0),
+      valueType: CARD_VALUES_TYPES.percent,
+    });
+  }
+
+  //? TimeBased holder discount
+  if (loanType === LoanType.TIME_BASED) {
+    const feeDiscountPercent =
+      order.borrowNft.classicParams.timeBased.feeDiscountPercent;
+    feeDiscountPercent &&
+      fields.push({
+        title: 'Holder discount',
+        value: feeDiscountPercent.toFixed(0),
+        valueType: CARD_VALUES_TYPES.percent,
+      });
+  }
+
+  //? TimeBased repay value
+  if (loanType === LoanType.TIME_BASED) {
+    const repayValue = calcTimeBasedRepayValue({
+      nft: order.borrowNft,
+      loanValue,
+    });
+
+    fields.push({
+      title: 'Repay value',
+      value: (repayValue / 1e9).toFixed(3),
       valueType: CARD_VALUES_TYPES.solPrice,
-    },
-    // {
-    //   title: 'Floor price',
-    //   value: order.borrowNft.valuation.toFixed(3),
-    //   valueType: CARD_VALUES_TYPES.solPrice,
-    // },
-    // {
-    //   title: isPriceBased ? 'Upfront fee' : 'fee',
-    //   value: fee.toFixed(3),
-    //   valueType: CARD_VALUES_TYPES.solPrice,
-    // },
-    // {
-    //   title: 'To borrow',
-    //   value: maxLoanValue.toFixed(3),
-    //   valueType: CARD_VALUES_TYPES.solPrice,
-    // },
-    // {
-    //   title: 'Duration',
-    //   value: `${isPriceBased ? `Perpetual` : `${returnPeriodDays} days`}`,
-    //   valueType: CARD_VALUES_TYPES.string,
-    // },
-    // isPriceBased
-    //   ? {
-    //       title: 'Liquidations price',
-    //       value: liquidationPrice.toFixed(3),
-    //       valueType: CARD_VALUES_TYPES.solPrice,
-    //     }
-    //   : null,
-    // isPriceBased
-    //   ? {
-    //       title: 'Borrow APY',
-    //       value: borrowAPY.toFixed(1),
-    //       valueType: CARD_VALUES_TYPES.percent,
-    //     }
-    //   : null,
-    // !isPriceBased
-    //   ? {
-    //       title: 'Holder discount',
-    //       value: feeDiscountPercent.toFixed(3),
-    //       valueType: CARD_VALUES_TYPES.percent,
-    //     }
-    //   : null,
-    // !isPriceBased
-    //   ? {
-    //       title: 'To repay',
-    //       value: repayValue.toFixed(3),
-    //       valueType: CARD_VALUES_TYPES.string,
-    //     }
-    //   : null,
-  ].filter(Boolean);
+    });
+  }
+
+  //? Bond repay value
+  if (loanType === LoanType.BOND) {
+    const fee = calcBondFee({
+      loanValue,
+      pair,
+    });
+
+    fields.push({
+      title: 'Repay value',
+      value: ((loanValue + fee) / 1e9).toFixed(3),
+      valueType: CARD_VALUES_TYPES.solPrice,
+    });
+  }
+
+  return fields;
 };

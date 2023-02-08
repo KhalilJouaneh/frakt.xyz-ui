@@ -85,6 +85,7 @@ export const useBorrowBulkOverviewPage = () => {
 
   return {
     cartOrders,
+    cartPairs,
     onBackBtnClick,
     onBorrow,
     confirmModalVisible,

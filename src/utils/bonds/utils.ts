@@ -74,7 +74,8 @@ type PairLoanDurationFilter = (props: {
 export const pairLoanDurationFilter: PairLoanDurationFilter = ({
   pair,
   duration = 7, //? Days
-}) => duration * (24 * 60 * 60) <= pair?.validation?.durationFilter;
+  // }) => duration * (24 * 60 * 60) <= pair?.validation?.durationFilter; //TODO: Allow to take loans with shorter duration
+}) => duration * (24 * 60 * 60) === pair?.validation?.durationFilter;
 
 type GetBestPairForExit = (params: {
   fbondTokenAmount: number;

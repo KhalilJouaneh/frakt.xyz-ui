@@ -10,7 +10,6 @@ import Tooltip from '@frakt/components/Tooltip';
 
 import { BorrowHeader } from '../components/BorrowHeader';
 import { NoSuitableNft } from '../components/NoSuitableNft';
-import { calcBulkTotalValue } from '../helpers';
 import { useBorrowBulkSuggestionPage } from './hooks';
 import styles from './BorrowBulkSuggestionPage.module.scss';
 
@@ -70,7 +69,7 @@ const BulkSuggestion: FC<BulkSuggestionProps> = ({
   onSelectClick,
 }) => {
   const { className, title, text } = BADGES_INFO?.[type] || BADGES_INFO.DEFAULT;
-  const borrowValue = calcBulkTotalValue(bulk);
+  const borrowValue = 0; //TODO: Calc
 
   return (
     <Tooltip placement="top" trigger="hover" overlay={text}>
