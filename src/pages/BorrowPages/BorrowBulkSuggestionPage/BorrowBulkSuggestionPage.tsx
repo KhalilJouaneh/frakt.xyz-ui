@@ -21,7 +21,7 @@ export const BorrowBulkSuggestionPage: FC = () => {
     loading,
     isBulkExist,
     isWalletConnected,
-    onBackBtnClick,
+    // onBackBtnClick,
     onBulkSuggestionSelect,
   } = useBorrowBulkSuggestionPage();
 
@@ -29,7 +29,7 @@ export const BorrowBulkSuggestionPage: FC = () => {
     <AppLayout>
       <>
         <BorrowHeader
-          onBackBtnClick={onBackBtnClick}
+          // onBackBtnClick={onBackBtnClick}
           title="Borrowing"
           subtitle={`I need ${borrowValue.toFixed(2)} SOL`}
         />
