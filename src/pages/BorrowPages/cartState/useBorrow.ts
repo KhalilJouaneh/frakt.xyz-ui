@@ -16,6 +16,7 @@ export const useBorrow = () => {
     findOrder: findOrderInCart,
     findPair: findPairInCart,
     clearCart,
+    setCartState,
   } = useCartState();
 
   const {
@@ -186,6 +187,7 @@ export const useBorrow = () => {
     saveUpcomingOrderToCart,
     setCurrentNftFromOrder,
     clearCart,
+    setCartState,
   };
 };
 

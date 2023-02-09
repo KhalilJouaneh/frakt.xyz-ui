@@ -10,6 +10,7 @@ import { BondOrderParams, Order } from './types';
 interface CartState {
   pairs: Pair[];
   orders: Order[];
+  setCartState: (props: { orders: Order[]; pairs: Pair[] }) => void;
   addOrder: (props: {
     loanType: LoanType;
     loanValue: number;
@@ -34,6 +35,14 @@ interface CartState {
 export const useCartState = create<CartState>((set, get) => ({
   pairs: [],
   orders: [],
+  setCartState: ({ orders = [], pairs = [] }) => {
+    return set(
+      produce((state: CartState) => {
+        state.orders = orders;
+        state.pairs = pairs;
+      }),
+    );
+  },
   addOrder: ({ loanType, nft, loanValue, pair, market, unshift = false }) => {
     if (loanType !== LoanType.BOND) {
       return set(

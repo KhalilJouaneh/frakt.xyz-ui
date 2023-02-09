@@ -36,17 +36,17 @@ export const fetchWalletBorrowNfts: FetchWalletBorrowNfts = async ({
 type FetchBulkSuggestion = (props: {
   publicKey: web3.PublicKey;
   totalValue: string | number;
-}) => Promise<BulkSuggestion>;
+}) => Promise<BulkSuggestion | null>;
 
 export const fetchBulkSuggestion: FetchBulkSuggestion = async ({
   publicKey,
   totalValue,
 }) => {
   const { data } = await axios.get<BulkSuggestion>(
-    `https://${BACKEND_DOMAIN}/nft/suggest/${publicKey?.toBase58()}?solAmount=${totalValue}`,
+    `https://${BACKEND_DOMAIN}/nft/suggest2/${publicKey?.toBase58()}?solAmount=${totalValue}`,
   );
 
-  return data;
+  return data ?? null;
 };
 
 type FetchMaxBorrowValue = (props: {

@@ -73,7 +73,7 @@ export enum BulkTypes {
   max = 'max', //? Exists when the user wants to borrow more than he has
 }
 
-interface Suggestion {
+export interface Suggestion {
   orders: BorrowNftSuggested[];
   markets: Market[];
   modifiedPairs: Pair[];

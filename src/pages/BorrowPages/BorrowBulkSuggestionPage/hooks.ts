@@ -6,13 +6,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 
 import {
-  BorrowNftSuggested,
   BulkSuggestion,
   fetchBulkSuggestion,
+  Suggestion,
 } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
-import { useBorrow } from '../cartState';
+import { Order, useBorrow } from '../cartState';
+import { LoanType } from '@frakt/api/loans';
 
 type UseBulkSuggestion = (props: {
   walletPublicKey?: web3.PublicKey;
@@ -54,7 +55,7 @@ export const useBorrowBulkSuggestionPage = () => {
     return parseFloat(searchParams.get('borrowValue') || '0');
   }, [search]);
 
-  const { onSelectNft } = useBorrow();
+  const { setCartState } = useBorrow();
 
   useEffect(() => {
     if (borrowValue === 0) {
@@ -72,14 +73,34 @@ export const useBorrowBulkSuggestionPage = () => {
 
   const onBackBtnClick = () => history.push(PATHS.BORROW_ROOT);
 
-  const onBulkSuggestionSelect = (bulk: BorrowNftSuggested[]) => {
-    bulk.forEach((bulkNft) => onSelectNft(bulkNft.borrowNft));
+  const onBulkSuggestionSelect = (suggestion: Suggestion) => {
+    const cartOrders: Order[] = suggestion?.orders.map((order) => ({
+      borrowNft: order.borrowNft,
+      loanType: order.loanType,
+      loanValue: order.loanValue,
+      bondOrderParams:
+        order.loanType === LoanType.BOND
+          ? {
+              market: suggestion.markets.find(
+                ({ marketPubkey }) =>
+                  marketPubkey === order?.borrowNft?.bondParams?.marketPubkey,
+              ),
+              orderParams: order.bondOrderParams,
+            }
+          : null,
+    }));
+
+    setCartState({
+      orders: cartOrders,
+      pairs: suggestion?.modifiedPairs,
+    });
+
     history.push(PATHS.BORROW_BULK_OVERVIEW);
   };
 
   return {
     borrowValue,
-    bulkSuggestion,
+    suggestions: bulkSuggestion,
     loading: bulkSuggestionLoading,
     isBulkExist,
     isWalletConnected: wallet.connected,
