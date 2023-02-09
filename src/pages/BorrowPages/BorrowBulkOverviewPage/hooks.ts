@@ -23,8 +23,13 @@ export const useBorrowBulkOverviewPage = () => {
   const history = useHistory();
   const wallet = useWallet();
   const connection = useConnection();
-  const { cartOrders, cartPairs, setCurrentNftFromOrder, clearCart } =
-    useBorrow();
+  const {
+    cartOrders,
+    cartPairs,
+    setCurrentNftFromOrder,
+    clearCart,
+    clearCurrentNftState,
+  } = useBorrow();
 
   //? Go to borrow root page if bulk selection doesn't exist
   useEffect(() => {
@@ -62,6 +67,7 @@ export const useBorrowBulkOverviewPage = () => {
       }
 
       history.push(PATHS.BORROW_SUCCESS);
+      clearCurrentNftState();
       clearCart();
     } catch (error) {
       // eslint-disable-next-line no-console

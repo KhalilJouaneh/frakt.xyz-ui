@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { useHistory } from 'react-router-dom';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import InfinityScroll from '@frakt/components/InfinityScroll';
@@ -24,9 +23,6 @@ export const BorrowManualPage: FC = () => {
     findOrderInCart,
     onRemoveNft,
   } = useBorrow();
-
-  const history = useHistory();
-  const onBackBtnClick = () => history.goBack();
 
   const {
     nfts,
@@ -62,7 +58,7 @@ export const BorrowManualPage: FC = () => {
         ])}
       >
         <BorrowHeader
-          onBackBtnClick={onBackBtnClick}
+          // onBackBtnClick={onBackBtnClick}
           title="Borrow SOL"
           subtitle={
             isBulk

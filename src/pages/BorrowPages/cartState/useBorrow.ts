@@ -188,6 +188,7 @@ export const useBorrow = () => {
     setCurrentNftFromOrder,
     clearCart,
     setCartState,
+    clearCurrentNftState,
   };
 };
 

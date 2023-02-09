@@ -7,11 +7,14 @@ import { web3 } from 'fbonds-core';
 import { fetchMaxBorrowValue } from '@frakt/api/nft';
 import { PATHS } from '@frakt/constants';
 
+import { useBorrow } from '../cartState';
+
 export const useBorrowRootPage = () => {
   const history = useHistory();
   const wallet = useWallet();
   const { maxBorrowValue, isLoading: maxBorrowValueLoading } =
     useMaxBorrowValue({ walletPublicKey: wallet?.publicKey });
+  const { clearCart, clearCurrentNftState } = useBorrow();
 
   const [borrowValue, setBorrowValue] = useState<string>('');
   const [borrowPercentValue, setBorrowPercentValue] = useState<number>(0);
@@ -50,7 +53,11 @@ export const useBorrowRootPage = () => {
   const goToBulkSuggestionPage = () =>
     history.push(`${PATHS.BORROW_BULK_SUGGESTION}?borrowValue=${borrowValue}`);
 
-  const goToBorrowManualPage = () => history.push(PATHS.BORROW_MANUAL);
+  const goToBorrowManualPage = () => {
+    clearCart();
+    clearCurrentNftState();
+    history.push(PATHS.BORROW_MANUAL);
+  };
 
   return {
     borrowValue,

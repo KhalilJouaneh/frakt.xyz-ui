@@ -29,13 +29,19 @@ export const useSidebar = () => {
     currentLoanType,
     currentLoanValue,
     saveUpcomingOrderToCart,
+    clearCart,
+    clearCurrentNftState,
   } = useBorrow();
 
   const [minimizedOnMobile, setMinimizedOnMobile] = useState<boolean>(false);
 
   const history = useHistory();
   const goToBulkOverviewPage = () => history.push(PATHS.BORROW_BULK_OVERVIEW);
-  const goToToBorrowSuccessPage = () => history.push(PATHS.BORROW_SUCCESS);
+  const goToToBorrowSuccessPage = () => {
+    clearCart();
+    clearCurrentNftState();
+    history.push(PATHS.BORROW_SUCCESS);
+  };
 
   const connection = useConnection();
   const wallet = useWallet();
