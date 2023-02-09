@@ -48,8 +48,6 @@ export const proposeBulkLoan: ProposeLoan = async ({
         isPriceBased,
         loanToValue: new BN(loanToValue * 100),
         admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
-        nameForRuleSet: process.env.NAME_FOR_RULE_SET,
-        payerRuleSet: new web3.PublicKey(process.env.PAYER_RULE_SET),
       });
 
       transactions.push({ instructions: ix, signers: [loan] });
