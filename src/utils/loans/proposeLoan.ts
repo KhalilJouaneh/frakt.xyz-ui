@@ -1,3 +1,4 @@
+import { createAndSendTxn } from '@frakt/utils/transactions';
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
@@ -48,6 +49,7 @@ export const proposeLoan: ProposeLoan = async ({
     await signAndConfirmTransaction({
       transaction,
       connection,
+      signers: [loan],
       wallet,
       commitment: 'confirmed',
     });
