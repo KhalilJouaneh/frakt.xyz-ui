@@ -1,24 +1,22 @@
-import { FC, useRef, useState } from 'react';
-import { Controller } from 'react-hook-form';
+import { FC } from 'react';
+// import { Controller } from 'react-hook-form';
 
 import { AppLayout } from '../../components/Layout/AppLayout';
-import { SearchInput } from '../../components/SearchInput';
-import Button from '../../components/Button';
+// import { SearchInput } from '../../components/SearchInput';
+// import Button from '../../components/Button';
 import { Header } from './components/Header';
-import FiltersDropdown, {
-  useFiltersModal,
-} from '../../components/FiltersDropdown';
+// import { useFiltersModal } from '../../components/FiltersDropdown';
 import MarketPreviewCard from './components/MarketCard';
-import SortControl from '@frakt/components/SortControl';
-import {
-  SORT_VALUES,
-  useLendingPoolsFiltering,
-} from '../LendPage/hooks/useLendingPoolsFiltering';
-import { useOnClickOutside } from '@frakt/hooks';
+// import SortControl from '@frakt/components/SortControl';
+// import {
+//   SORT_VALUES,
+//   useLendingPoolsFiltering,
+// } from '../LendPage/hooks/useLendingPoolsFiltering';
+// import { useOnClickOutside } from '@frakt/hooks';
 import { useMarketsPreview } from './hooks';
 import { Loader } from '@frakt/components/Loader';
-import Toggle from '@frakt/components/Toggle';
-import FilterCollections from '@frakt/components/FilterCollections';
+// import Toggle from '@frakt/components/Toggle';
+// import FilterCollections from '@frakt/components/FilterCollections';
 import styles from './MarketsPage.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
 
@@ -27,44 +25,45 @@ export enum InputControlsNames {
   SORT = 'sort',
 }
 
-const collectionsMock = [
-  { value: 'Frakt' },
-  { value: 'Pawnshop gnomies' },
-  { value: 'Solpunks' },
-];
+// const collectionsMock = [
+//   { value: 'Frakt' },
+//   { value: 'Pawnshop gnomies' },
+//   { value: 'Solpunks' },
+// ];
 
+//TODO: Implemet normal filters
 const MarketsPreviewPage: FC = () => {
   const wallet = useWallet();
-  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  const {
-    control,
-    sort,
-    /* setSearch, pools, */ setValue,
-    showStakedOnlyToggle,
-  } = useLendingPoolsFiltering();
-  const {
-    visible: filtersModalVisible,
-    close: closeFiltersModal,
-    toggle: toggleFiltersModal,
-  } = useFiltersModal();
+  // const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  // const {
+  // control,
+  // sort,
+  // /* setSearch, pools, */ setValue,
+  // showStakedOnlyToggle,
+  // } = useLendingPoolsFiltering();
+  // const {
+  //   // visible: filtersModalVisible,
+  //   close: closeFiltersModal,
+  //   // toggle: toggleFiltersModal,
+  // } = useFiltersModal();
 
   const { marketsPreview, isLoading } = useMarketsPreview({
     walletPublicKey: wallet?.publicKey,
   });
 
-  const ref = useRef();
-  useOnClickOutside(ref, closeFiltersModal);
+  // const ref = useRef();
+  // useOnClickOutside(ref, closeFiltersModal);
 
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="description" />
-      <div className={styles.sortWrapper}>
+      {/* <div className={styles.sortWrapper}>
         <SearchInput
           className={styles.searchInput}
           placeholder="Search by name"
-        />
-        <div ref={ref}>
-          <div className={styles.filtersWrapper}>
+        /> */}
+      {/* <div ref={ref}> */}
+      {/* <div className={styles.filtersWrapper}>
             <Button type="tertiary" onClick={toggleFiltersModal}>
               Filters
             </Button>
@@ -104,9 +103,9 @@ const MarketsPreviewPage: FC = () => {
                 </div>
               </FiltersDropdown>
             )}
-          </div>
-        </div>
-      </div>
+          </div> */}
+      {/* </div> */}
+      {/* </div> */}
       <div className={styles.markets}>
         {isLoading && <Loader size="large" />}
         {!isLoading &&
