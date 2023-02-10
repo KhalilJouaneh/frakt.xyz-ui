@@ -1,4 +1,4 @@
-import { signAndConfirmTransaction } from '@frakt/utils/transactions';
+import { createAndSendTxn } from '@frakt/utils/transactions';
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
@@ -43,12 +43,10 @@ export const claimCardinal: ClaimCardinal = async ({
       paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
     });
 
-    const transaction = new web3.Transaction().add(claimIx);
-
-    await signAndConfirmTransaction({
+    await createAndSendTxn({
       connection,
       wallet,
-      transaction,
+      txInstructions: [claimIx],
     });
 
     notify({

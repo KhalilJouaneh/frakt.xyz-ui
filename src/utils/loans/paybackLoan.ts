@@ -1,14 +1,11 @@
-import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
+import { web3, BN, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
+import { createAndSendTxn, showSolscanLinkNotification } from '../transactions';
 import { captureSentryError } from '../sentry';
 import { Loan } from '../../state/loans/types';
-import { notify } from '../';
 import { NotifyType } from '../solanaUtils';
-import {
-  showSolscanLinkNotification,
-  signAndConfirmTransaction,
-} from '../transactions';
+import { notify } from '../';
 
 type PaybackLoan = (props: {
   connection: web3.Connection;
@@ -25,7 +22,7 @@ export const paybackLoan: PaybackLoan = async ({
 }): Promise<boolean> => {
   try {
     if (loan.isGracePeriod) {
-      await loans.paybackLoanWithGrace({
+      const { ixs } = await loans.paybackLoanWithGraceIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet.publicKey,
@@ -36,17 +33,15 @@ export const paybackLoan: PaybackLoan = async ({
         liquidityPool: new web3.PublicKey(loan.liquidityPool),
         collectionInfo: new web3.PublicKey(loan.collectionInfo),
         royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
-        sendTxn: async (transaction) => {
-          await signAndConfirmTransaction({
-            transaction,
-            connection,
-            wallet,
-            commitment: 'confirmed',
-          });
-        },
+      });
+
+      await createAndSendTxn({
+        txInstructions: ixs,
+        connection,
+        wallet,
       });
     } else {
-      await loans.paybackLoan({
+      const { ixs } = await loans.paybackLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet.publicKey,
@@ -57,14 +52,12 @@ export const paybackLoan: PaybackLoan = async ({
         collectionInfo: new web3.PublicKey(loan.collectionInfo),
         royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
         paybackAmount,
-        sendTxn: async (transaction) => {
-          await signAndConfirmTransaction({
-            transaction,
-            connection,
-            wallet,
-            commitment: 'confirmed',
-          });
-        },
+      });
+
+      await createAndSendTxn({
+        txInstructions: ixs,
+        connection,
+        wallet,
       });
     }
 

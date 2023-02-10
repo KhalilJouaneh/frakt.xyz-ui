@@ -1,13 +1,10 @@
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
+import { showSolscanLinkNotification, createAndSendTxn } from '../transactions';
+import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
-import { captureSentryError } from '../sentry';
-import {
-  signAndConfirmTransaction,
-  showSolscanLinkNotification,
-} from '../transactions';
 
 type ProposeLoan = (props: {
   connection: web3.Connection;
@@ -32,7 +29,7 @@ export const proposeLoan: ProposeLoan = async ({
   const loanToValue = rawloanToValue * 100; //? Percent 20% ==> 2000
 
   try {
-    const { loanPubkey } = await loans.proposeLoan({
+    const { loan, ixs } = await loans.proposeLoanIx({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
       user: wallet.publicKey,
@@ -41,19 +38,17 @@ export const proposeLoan: ProposeLoan = async ({
       isPriceBased,
       loanToValue: new BN(loanToValue),
       admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
-      sendTxn: async (transaction, signers) => {
-        await signAndConfirmTransaction({
-          transaction,
-          signers,
-          connection,
-          wallet,
-          commitment: 'confirmed',
-        });
-      },
+    });
+
+    await createAndSendTxn({
+      additionalSigners: [loan],
+      txInstructions: ixs,
+      connection,
+      wallet,
     });
 
     const subscriptionId = connection.onAccountChange(
-      loanPubkey,
+      loan?.publicKey,
       (accountInfo) => {
         const loanAccountData = loans.decodeLoan(
           accountInfo.data,

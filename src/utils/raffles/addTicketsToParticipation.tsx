@@ -2,13 +2,10 @@ import { addTicketsToParticipation as txn } from '@frakters/raffle-sdk/lib/raffl
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { BN, web3 } from '@frakt-protocol/frakt-sdk';
 
+import { showSolscanLinkNotification, createAndSendTxn } from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from './../index';
-import {
-  signAndConfirmTransaction,
-  showSolscanLinkNotification,
-} from '../transactions';
 
 type AddTicketsToParticipation = (props: {
   connection: web3.Connection;
@@ -24,7 +21,7 @@ export const addTicketsToParticipation: AddTicketsToParticipation = async ({
   raffleAddress,
 }): Promise<boolean> => {
   try {
-    await txn({
+    const { ix } = await txn({
       programId: new web3.PublicKey(process.env.RAFFLE_PROGRAM_PUBKEY),
       connection,
       args: { tickets: new BN(tickets) },
@@ -32,14 +29,12 @@ export const addTicketsToParticipation: AddTicketsToParticipation = async ({
         raffle: new web3.PublicKey(raffleAddress),
         user: wallet.publicKey,
       },
-      sendTxn: async (transaction) => {
-        await signAndConfirmTransaction({
-          transaction,
-          connection,
-          wallet,
-          commitment: 'finalized',
-        });
-      },
+    });
+
+    await createAndSendTxn({
+      txInstructions: [ix],
+      connection,
+      wallet,
     });
 
     notify({
