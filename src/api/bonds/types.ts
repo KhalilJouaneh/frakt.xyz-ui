@@ -81,6 +81,9 @@ export interface MarketPreview {
   collectionImage: string;
   offerTVL: string;
   walletRedeemAmount?: number;
+  apy: number; //? %
+  duration: Array<number>; //? [7], [7, 14], [14]
+  bestOffer: number; //? lamports
 }
 
 export interface Pair {

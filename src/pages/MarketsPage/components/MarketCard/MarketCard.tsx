@@ -20,6 +20,9 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
     collectionName,
     offerTVL,
     walletRedeemAmount,
+    apy,
+    bestOffer,
+    duration,
   } = bondPreview;
 
   return (
@@ -56,12 +59,12 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              <span>{(12.34).toFixed(3)}</span> <Solana />
+              <span>{(bestOffer / 1e9).toFixed(3)}</span> <Solana />
             </div>
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>duration</div>
-            <div className={styles.infoValue}>7 / 14 days</div>
+            <div className={styles.infoValue}>{duration?.join(' / ')} days</div>
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>apy</div>
@@ -70,17 +73,19 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
                 [styles.negative]: false,
               })}
             >
-              up to 123 %
+              up to {apy.toFixed(2)} %
             </div>
           </div>
         </div>
       </div>
-      {!!walletRedeemAmount && (
-        <div className={styles.toRedeem}>
-          <div className={styles.infoTitle}>To Redeem</div>
-          <div className={styles.infoValue}>{walletRedeemAmount} bonds</div>
+
+      <div className={styles.toRedeem}>
+        <div className={styles.infoTitle}>To Redeem</div>
+        <div className={classNames(styles.infoValue, styles.infoValueRedeem)}>
+          {(walletRedeemAmount / 1e9 || 0).toFixed(2)}
+          <Solana />
         </div>
-      )}
+      </div>
     </NavLink>
   );
 };

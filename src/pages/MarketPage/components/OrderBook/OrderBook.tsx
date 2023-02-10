@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
@@ -11,6 +11,9 @@ import { PATHS } from '@frakt/constants';
 import { Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
 import { Market } from '@frakt/api/bonds';
+import { signAndConfirmTransaction } from '@frakt/utils/transactions';
+import { makeRemoveOrderTransaction } from '@frakt/utils/bonds';
+import { useConnection } from '@frakt/hooks';
 
 import Offer from '../Offer/Offer';
 import { useMarketOrders } from './hooks';
@@ -31,18 +34,41 @@ interface OrderBookProps {
 const OrderBook: FC<OrderBookProps> = ({
   market,
   syntheticParams,
-  hideEditButtons,
+  // hideEditButtons,
 }) => {
   const wallet = useWallet();
-  const history = useHistory();
+  const connection = useConnection();
 
   const [openOffersMobile, setOpenOffersMobile] = useState<boolean>(false);
   const toggleOffers = () => setOpenOffersMobile((prev) => !prev);
 
-  const editOrder = (order: MarketOrder) => {
-    history.push(
-      `${PATHS.OFFER}/${market?.marketPubkey}/${order?.rawData?.publicKey}`,
-    );
+  // const editOrder = (order: MarketOrder) => {
+  //   history.push(
+  //     `${PATHS.OFFER}/${market?.marketPubkey}/${order?.rawData?.publicKey}`,
+  //   );
+  // };
+
+  const removeOrder = async (order: MarketOrder) => {
+    try {
+      const { transaction, signers } = await makeRemoveOrderTransaction({
+        pairPubkey: new web3.PublicKey(order.rawData.publicKey),
+        authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),
+        edgeSettlement: order.rawData.edgeSettlement,
+        wallet,
+        connection,
+      });
+
+      await signAndConfirmTransaction({
+        connection,
+        transaction,
+        signers,
+        wallet,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn(error?.logs?.join('\n'));
+      console.error(error);
+    }
   };
 
   const isOwnOrder = (order: MarketOrder) =>
@@ -155,7 +181,8 @@ const OrderBook: FC<OrderBookProps> = ({
                 interest={offer.interest}
                 order={offer}
                 bestOffer={bestOffer}
-                editOrder={!hideEditButtons && (() => editOrder(offer))}
+                // editOrder={!hideEditButtons && (() => editOrder(offer))}
+                removeOrder={() => removeOrder(offer)}
                 isOwnOrder={isOwnOrder(offer)}
                 key={idx}
               />

@@ -113,7 +113,11 @@ export const OfferPage = () => {
             toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
           />
 
-          <TotalOverview size={offerSize} interest={interest} />
+          <TotalOverview
+            size={parseFloat(offerSize)}
+            interest={parseFloat(interest)}
+            duration={duration}
+          />
           <div className={styles.btnsWrapper}>
             {isEdit && (
               <>
@@ -152,8 +156,8 @@ export const OfferPage = () => {
           hideEditButtons
           syntheticParams={{
             ltv,
+            offerSize: parseFloat(offerSize) * 1e9 || 0,
             interest: parseFloat(interest) || 0,
-            offerSize: parseFloat(interest) * 1e9 || 0,
             durationDays: duration,
           }}
         />
@@ -169,16 +173,19 @@ export const OfferPage = () => {
 };
 
 interface TotalOverviewProps {
-  size?: string;
-  interest?: string;
+  size?: number;
+  interest?: number;
+  duration?: number;
 }
 
 const TotalOverview: FC<TotalOverviewProps> = ({
-  size = '',
-  interest = '',
+  size = 0,
+  interest = 0,
+  duration = 7,
 }) => {
-  const apr = interest + size; //TODO calc
-  const estProfit = parseFloat(interest + size); //TODO calc
+  const apr = (interest / duration) * 365;
+
+  const estProfit = size * (interest / 1e2);
 
   return (
     <div className={styles.total}>
@@ -193,7 +200,7 @@ const TotalOverview: FC<TotalOverviewProps> = ({
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
         </div>
-        <div className={styles.totalValue}>{apr} %</div>
+        <div className={styles.totalValue}>{(apr || 0).toFixed(2)} %</div>
       </div>
       <div className={styles.totalItem}>
         <div className={styles.totalTitle}>
@@ -206,7 +213,7 @@ const TotalOverview: FC<TotalOverviewProps> = ({
           </Tooltip>
         </div>
         <div className={styles.totalValue}>
-          {(estProfit / 1e9).toFixed(3)} <Solana />
+          {(estProfit || 0).toFixed(3)} <Solana />
         </div>
       </div>
     </div>

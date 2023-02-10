@@ -54,6 +54,15 @@ export const fetchMarketPairs: FetchMarketPairs = async ({ marketPubkey }) => {
   );
 };
 
+type FetchMarketPair = (props: { pairPubkey: web3.PublicKey }) => Promise<Pair>;
+export const fetchMarketPair: FetchMarketPair = async ({ pairPubkey }) => {
+  const { data } = await axios.get<Pair>(
+    `https://${BACKEND_DOMAIN}/pair/${pairPubkey.toBase58()}`,
+  );
+
+  return data;
+};
+
 type FetchWalletBonds = (props: {
   walletPubkey: web3.PublicKey;
   marketPubkey: web3.PublicKey;

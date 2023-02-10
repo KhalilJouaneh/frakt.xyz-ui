@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { Pencil } from '@frakt/icons';
+import { Pencil, Trash } from '@frakt/icons';
 import { colorByPercentOffers, getColorByPercent } from '@frakt/utils/bonds';
 
 import { MarketOrder } from '../OrderBook/types';
@@ -12,6 +12,7 @@ interface OfferProps {
   bestOffer: MarketOrder;
   isOwnOrder: boolean;
   editOrder?: () => void;
+  removeOrder?: () => void;
   ltv: number;
   size: number;
   interest: number;
@@ -22,6 +23,7 @@ const Offer: FC<OfferProps> = ({
   bestOffer,
   isOwnOrder,
   editOrder,
+  removeOrder,
   ltv,
   size,
   interest,
@@ -62,6 +64,14 @@ const Offer: FC<OfferProps> = ({
           onClick={editOrder}
         >
           <Pencil />
+        </div>
+      )}
+      {isOwnOrder && removeOrder && (
+        <div
+          className={classNames(styles.roundBtn, styles.btnTrash)}
+          onClick={removeOrder}
+        >
+          <Trash />
         </div>
       )}
     </li>

@@ -10,7 +10,7 @@ type UseMarketOrders = (props: {
   sortDirection?: 'desc' | 'asc'; //? Sort by interest only
   walletOwned?: boolean;
   ltv: number;
-  size: number;
+  size: number; //? lamports
   interest: number;
 }) => {
   offers: MarketOrder[];
@@ -36,8 +36,8 @@ export const useMarketOrders: UseMarketOrders = ({
     if (!pairs) return [];
     const myOffer: MarketOrder = {
       ltv,
-      size,
-      interest,
+      size: size / 1e9,
+      interest: interest / 1e2,
       synthetic: true,
       rawData: {
         publicKey: '',

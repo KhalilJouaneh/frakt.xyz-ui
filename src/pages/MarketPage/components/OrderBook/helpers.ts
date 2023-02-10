@@ -10,9 +10,8 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
   return {
     ltv: (pair?.validation?.loanToValueFilter || 0) / 100,
     size: (pair?.edgeSettlement * pair?.currentSpotPrice) / 1e9 || 0,
-    interest: calcApr({
+    interest: calcInterest({
       spotPrice: pair?.currentSpotPrice,
-      durationDays: pair.validation.durationFilter / 86400,
     }),
     rawData: {
       publicKey: pair?.publicKey || '',
@@ -21,6 +20,11 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
       authorityAdapter: pair?.authorityAdapterPublicKey || '',
     },
   };
+};
+
+type CalcInterest = (props: { spotPrice: number }) => number;
+const calcInterest: CalcInterest = ({ spotPrice }) => {
+  return 1 - spotPrice / BOND_DECIMAL_DELTA;
 };
 
 type CalcApr = (props: { spotPrice: number; durationDays: number }) => number;

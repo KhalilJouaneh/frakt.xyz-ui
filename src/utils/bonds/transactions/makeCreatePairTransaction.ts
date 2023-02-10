@@ -18,7 +18,7 @@ type MakeCreatePairTransaction = (params: {
   maxLTV: number; //? % 0-100
   maxDuration: number; //? days 7or14
   solDeposit: number; //? Amount of deposit in SOL. Normal values (F.e. 1, 20, 100)
-  apr: number; //? % 0-Infinity
+  interest: number; //? % 0-Infinity
   marketPubkey: web3.PublicKey;
   connection: web3.Connection;
   wallet: WalletContextState;
@@ -30,7 +30,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
   maxLTV,
   maxDuration,
   solDeposit,
-  apr,
+  interest,
   marketPubkey,
   connection,
   wallet,
@@ -39,9 +39,8 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
   const maxDurationSec = maxDuration * 24 * 60 * 60; //? Max duration (seconds)
   const solDepositLamports = solDeposit * 1e9;
 
-  const interestPerBond = (apr / 100 / 365) * maxDuration;
+  const spotPrice = BOND_DECIMAL_DELTA - interest * 100;
 
-  const spotPrice = Math.ceil((1 - interestPerBond) * BOND_DECIMAL_DELTA);
   const bidCap = Math.floor(solDepositLamports / spotPrice);
 
   const {

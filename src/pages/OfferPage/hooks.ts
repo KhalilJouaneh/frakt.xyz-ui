@@ -6,14 +6,16 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
 import {
   makeCreatePairTransaction,
-  // makeRemoveOrderTransaction,
+  makeRemoveOrderTransaction,
   useMarket,
+  useMarketPair,
 } from '@frakt/utils/bonds';
 import { signAndConfirmTransaction } from '@frakt/utils/transactions';
 import { notify } from '@frakt/utils';
 import { NotifyType } from '@frakt/utils/solanaUtils';
 import { useConnection } from '@frakt/hooks';
 import { useNativeAccount } from '@frakt/utils/accounts';
+import { PATHS } from '@frakt/constants';
 
 export const useOfferPage = () => {
   const history = useHistory();
@@ -23,8 +25,12 @@ export const useOfferPage = () => {
   }>();
 
   const { account } = useNativeAccount();
-  const { market, isLoading } = useMarket({
+  const { market, isLoading: marketLoading } = useMarket({
     marketPubkey,
+  });
+
+  const { pair, isLoading: pairLoading } = useMarketPair({
+    pairPubkey,
   });
 
   const wallet = useWallet();
@@ -67,7 +73,7 @@ export const useOfferPage = () => {
           maxDuration: duration,
           maxLTV: ltv,
           solDeposit: parseFloat(offerSize),
-          apr: parseFloat(interest),
+          interest: parseFloat(interest),
           connection,
           wallet,
         });
@@ -83,6 +89,8 @@ export const useOfferPage = () => {
           message: 'Transaction successful!',
           type: NotifyType.SUCCESS,
         });
+
+        history.push(`${PATHS.BOND}/${marketPubkey}`);
       } catch (error) {
         console.error(error);
 
@@ -138,31 +146,31 @@ export const useOfferPage = () => {
   };
 
   const onRemoveOffer = async () => {
-    if (marketPubkey && pairPubkey && wallet.publicKey) {
+    if (marketPubkey && pair && wallet.publicKey) {
       try {
         openLoadingModal();
 
-        await new Promise((res) => res);
+        const { transaction, signers } = await makeRemoveOrderTransaction({
+          pairPubkey: new web3.PublicKey(pair.publicKey),
+          authorityAdapter: new web3.PublicKey(pair.authorityAdapterPublicKey),
+          edgeSettlement: pair.edgeSettlement,
+          wallet,
+          connection,
+        });
 
-        // const { transaction, signers } = await makeRemoveOrderTransaction({
-        //   pairPubkey: new web3.PublicKey(order.rawData.publicKey),
-        //   authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),
-        //   edgeSettlement: order.rawData.edgeSettlement,
-        //   wallet,
-        //   connection,
-        // });
-
-        // await signAndConfirmTransaction({
-        //   connection,
-        //   transaction,
-        //   signers,
-        //   wallet,
-        // });
+        await signAndConfirmTransaction({
+          connection,
+          transaction,
+          signers,
+          wallet,
+        });
 
         notify({
           message: 'Transaction successful!',
           type: NotifyType.SUCCESS,
         });
+
+        history.push(`${PATHS.BOND}/${marketPubkey}`);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn(error?.logs?.join('\n'));
@@ -177,6 +185,8 @@ export const useOfferPage = () => {
       }
     }
   };
+
+  const isLoading = pairPubkey ? pairLoading || marketLoading : marketLoading;
 
   return {
     loadingModalVisible,

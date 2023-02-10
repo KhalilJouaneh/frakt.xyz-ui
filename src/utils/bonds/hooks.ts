@@ -2,6 +2,7 @@ import {
   Bond,
   fetchAllMarkets,
   fetchCertainMarket,
+  fetchMarketPair,
   fetchMarketPairs,
   fetchWalletBonds,
   Market,
@@ -63,6 +64,27 @@ export const useMarketPairs: UseMarketPairs = ({ marketPubkey }) => {
 
   return {
     pairs: data || [],
+    isLoading,
+  };
+};
+
+type UseMarketPair = (props: { pairPubkey: string }) => {
+  pair: Pair | null;
+  isLoading: boolean;
+};
+export const useMarketPair: UseMarketPair = ({ pairPubkey }) => {
+  const { data, isLoading } = useQuery(
+    ['pair', pairPubkey],
+    () => fetchMarketPair({ pairPubkey: new web3.PublicKey(pairPubkey) }),
+    {
+      enabled: !!pairPubkey,
+      staleTime: 5 * 1000, //? 30sec
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  return {
+    pair: data || null,
     isLoading,
   };
 };
