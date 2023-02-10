@@ -9,12 +9,13 @@ import { FC } from 'react';
 // import { SearchInput } from '@frakt/components/SearchInput';
 // import Toggle from '@frakt/components/Toggle';
 // import { useLendingPoolsFiltering } from '@frakt/pages/LendPage/hooks/useLendingPoolsFiltering';
-import { Bond, Pair } from '@frakt/api/bonds';
+import { Bond, Market, Pair } from '@frakt/api/bonds';
 
 import styles from './BondsList.module.scss';
 import { BondCard } from '../BondCard';
 
 interface BondsListProps {
+  market: Market;
   bonds: Bond[];
   pairs: Pair[];
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
@@ -23,6 +24,7 @@ interface BondsListProps {
 
 //TODO: Implemet normal filters
 export const BondsList: FC<BondsListProps> = ({
+  market,
   bonds,
   pairs,
   onRedeem,
@@ -106,6 +108,7 @@ export const BondsList: FC<BondsListProps> = ({
             key={idx}
             bond={bond}
             pairs={pairs}
+            market={market}
             onRedeem={onRedeem}
             onExit={onExit}
           />

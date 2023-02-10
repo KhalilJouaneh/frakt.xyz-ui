@@ -40,8 +40,7 @@ export const MarketInfo: FC<MarketInfo> = ({ market, bonds, onClaimAll }) => {
           <div className={styles.balance}>
             <div className={styles.infoName}>balance</div>
             <div className={styles.infoValue}>
-              {(balance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)}{' '}
-              {market?.fbondTokenName}
+              {(balance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)} bSOL
             </div>
           </div>
           <div className={styles.funded}>

@@ -4,8 +4,7 @@ import axios from 'axios';
 
 import { MarketPreview, Market, Pair, Bond } from './types';
 
-//TODO: Change to main backend on release
-const BACKEND_DOMAIN = process.env.BACKEND_TEST_DOMAIN;
+const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
 
 type FetchAllMarkets = () => Promise<Market[]>;
 export const fetchAllMarkets: FetchAllMarkets = async () => {
@@ -36,8 +35,7 @@ export const fetchMarketsPreview: FetchMarketsPreview = async ({
   walletPubkey,
 }) => {
   const { data } = await axios.get<MarketPreview[]>(
-    // `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
-    `https://${BACKEND_DOMAIN}/bonds/preview/`,
+    `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
   );
 
   return data;

@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import classNames from 'classnames';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
@@ -6,7 +6,7 @@ import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
 import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
 import { Solana, Timer } from '@frakt/icons';
-import { Bond, Pair } from '@frakt/api/bonds';
+import { Bond, Market, Pair } from '@frakt/api/bonds';
 import { useCountdown } from '@frakt/hooks';
 import {
   BOND_SOL_DECIMAIL_DELTA,
@@ -15,11 +15,12 @@ import {
 } from '@frakt/utils/bonds';
 
 import styles from './BondCard.module.scss';
-import { ExitModal } from './components/ExitModal';
+// import { ExitModal } from './components/ExitModal';
 
 interface BondCardProps {
   bond: Bond;
   pairs: Pair[];
+  market: Market;
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
   onRedeem: (bond: Bond) => void;
 }
@@ -27,35 +28,50 @@ interface BondCardProps {
 export const BondCard: FC<BondCardProps> = ({
   bond,
   pairs,
+  market,
   onExit,
   onRedeem,
 }) => {
-  const { walletBalance, collateralBox, fbond } = bond;
+  const {
+    walletBalance,
+    collateralBox,
+    fbond,
+    apy,
+    interest: basePointInterest,
+    averageBondPrice,
+  } = bond;
+
+  const bSolLamports = walletBalance;
+
+  const lamportsInterest = walletBalance * basePointInterest;
 
   const { timeLeft } = useCountdown(fbond.liquidatingAt);
-
-  const interest = 1; //TODO
-  const apy = 2; //TODO
-  const pnl = 3; //TODO: get info from bestPair
-  const pnlProfit = -12.34; //TODO: get info from bestPair
 
   const redeemAvailable = isBondAvailableToRedeem(bond);
 
   const bestPair = useMemo(() => {
     const { fbond, walletBalance } = bond;
+
+    const ltvBasePoints =
+      (fbond.amountToReturn / market?.oracleFloor?.floor) * 1e4;
+
     return getBestPairForExit({
       pairs,
+      ltvBasePoints,
       fbondTokenAmount: walletBalance,
       duration: (fbond.liquidatingAt - fbond.activatedAt) / (24 * 60 * 60),
     });
-  }, [pairs, bond]);
+  }, [pairs, bond, market]);
+
+  const pnlLamports =
+    (bestPair?.currentSpotPrice - averageBondPrice) * walletBalance;
+
+  const pnlProfit = pnlLamports / (averageBondPrice * BOND_SOL_DECIMAIL_DELTA);
 
   const exitAvailable =
     bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
 
-  const [exitModalVisible, setExitModalVisible] = useState(false);
-
-  // {(walletBalance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)}{' '}
+  // const [exitModalVisible, setExitModalVisible] = useState(false);
 
   return (
     <>
@@ -77,15 +93,14 @@ export const BondCard: FC<BondCardProps> = ({
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              {(walletBalance / BOND_SOL_DECIMAIL_DELTA).toFixed(2)}{' '}
-              {bond?.fbond?.fbondTokenName}
+              {(bSolLamports / BOND_SOL_DECIMAIL_DELTA).toFixed(2)} bSOL
             </div>
           </div>
 
           <div className={styles.info}>
             <div className={styles.infoName}>interest</div>
             <div className={styles.infoValue}>
-              <div>{interest.toFixed()} </div>
+              <div>{(lamportsInterest / 1e9).toFixed(2)} </div>
               <Solana />
             </div>
           </div>
@@ -113,18 +128,22 @@ export const BondCard: FC<BondCardProps> = ({
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
             </div>
-            <div className={styles.infoValue}>
-              {pnl.toFixed(2)} <Solana />
-              {!!pnlProfit && (
-                <span
-                  className={classNames(styles.infoValueSpan, {
-                    [styles.negative]: pnlProfit < 0,
-                  })}
-                >
-                  {pnlProfit.toFixed(2)} %
-                </span>
-              )}
-            </div>
+            {exitAvailable ? (
+              <div className={styles.infoValue}>
+                {(pnlLamports / 1e9).toFixed(3)} <Solana />
+                {!!pnlProfit && (
+                  <span
+                    className={classNames(styles.infoValueSpan, {
+                      [styles.negative]: pnlProfit < 0,
+                    })}
+                  >
+                    {pnlProfit.toFixed(3)} %
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className={styles.infoValue}>--</div>
+            )}
           </div>
 
           <div className={styles.info}>
@@ -164,18 +183,20 @@ export const BondCard: FC<BondCardProps> = ({
             className={classNames(styles.btn, styles.btnExit)}
             disabled={!exitAvailable}
             type="primary"
-            onClick={() => setExitModalVisible(true)}
+            // onClick={() => setExitModalVisible(true)}
+            onClick={() => onExit({ bond, pair: bestPair })}
           >
             Exit
           </Button>
         </div>
       </div>
-      <ExitModal
+      {/* <ExitModal
         visible={exitModalVisible}
-        availableToExit={bestPair.edgeSettlement / 1e6} //TODO: SOL
-        onExit={() => onExit({ bond, pair: bestPair })}
+        availableToExit={bestPair?.edgeSettlement / 1e6} //TODO: SOL
+        // onExit={() => onExit({ bond, pair: bestPair })}
+        onExit={() => {}}
         onCancel={() => setExitModalVisible(false)}
-      />
+      /> */}
     </>
   );
 };

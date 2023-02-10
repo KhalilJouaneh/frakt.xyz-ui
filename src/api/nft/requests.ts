@@ -3,9 +3,7 @@ import axios from 'axios';
 
 import { BorrowNft, BulkSuggestion } from './types';
 
-//TODO: Change to main backend on release
-const BACKEND_DOMAIN = process.env.BACKEND_TEST_DOMAIN;
-// const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
 
 type FetchWalletBorrowNfts = (props: {
   publicKey: web3.PublicKey;

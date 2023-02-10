@@ -112,6 +112,7 @@ export const MarketPage: FC = () => {
             <MarketInfo market={market} bonds={bonds} onClaimAll={onClaimAll} />
           </div>
           <BondsList
+            market={market}
             bonds={bonds}
             pairs={pairs}
             onExit={onExit}

@@ -77,13 +77,21 @@ export const pairLoanDurationFilter: PairLoanDurationFilter = ({
   // }) => duration * (24 * 60 * 60) <= pair?.validation?.durationFilter; //TODO: Allow to take loans with shorter duration
 }) => duration * (24 * 60 * 60) === pair?.validation?.durationFilter;
 
+type PairLtvFilter = (props: { pair: Pair; ltvBasePoints: number }) => boolean;
+export const pairLtvFilter: PairLtvFilter = ({
+  pair,
+  ltvBasePoints = 1000, //? 1000 === 10%
+}) => ltvBasePoints <= pair?.validation?.loanToValueFilter;
+
 type GetBestPairForExit = (params: {
   fbondTokenAmount: number;
+  ltvBasePoints: number;
   duration: number;
   pairs: Pair[];
 }) => Pair | null;
 export const getBestPairForExit: GetBestPairForExit = ({
   fbondTokenAmount,
+  ltvBasePoints,
   duration,
   pairs,
 }) => {
@@ -91,7 +99,11 @@ export const getBestPairForExit: GetBestPairForExit = ({
     pairLoanDurationFilter({ pair: p, duration }),
   );
 
-  const suitablePairsBySettlement = suitablePairsByDuration.filter((pair) => {
+  const suitablePairsByLtv = suitablePairsByDuration.filter((p) =>
+    pairLtvFilter({ pair: p, ltvBasePoints }),
+  );
+
+  const suitablePairsBySettlement = suitablePairsByLtv.filter((pair) => {
     return fbondTokenAmount <= pair.edgeSettlement;
   });
 
