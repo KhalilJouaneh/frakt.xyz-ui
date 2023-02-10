@@ -1,20 +1,20 @@
+import { chunk } from 'lodash';
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
+import { IxnsData, showSolscanLinkNotification } from '../transactions/helpers';
+import { mergeIxsIntoTxn } from '../transactions/helpers/createTransactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
-import {
-  IxnsData,
-  showSolscanLinkNotification,
-  createAndSendAllTxns,
-} from '../transactions/helpers';
 
 type ProposeLoan = (props: {
   connection: web3.Connection;
   wallet: WalletContextState;
   selectedBulk: any[];
 }) => Promise<boolean>;
+
+const IX_PER_TXN = 3;
 
 export const proposeBulkLoan: ProposeLoan = async ({
   connection,
@@ -52,12 +52,49 @@ export const proposeBulkLoan: ProposeLoan = async ({
 
       transactions.push({ instructions: ixs, signers: [loan] });
     }
-    await createAndSendAllTxns({
-      commitment: 'confirmed',
-      transactions,
-      connection,
-      wallet,
+
+    const ixsDataChunks = chunk(transactions, IX_PER_TXN);
+
+    const txnData = ixsDataChunks.map((ixsAndSigners) =>
+      mergeIxsIntoTxn(ixsAndSigners),
+    );
+
+    const { blockhash, lastValidBlockHeight } =
+      await connection.getLatestBlockhash();
+
+    txnData.forEach(({ transaction }) => {
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = wallet.publicKey;
     });
+
+    const txn = await txnData.map(({ transaction, signers }) => {
+      if (signers) {
+        transaction.sign(...signers);
+      }
+      return transaction;
+    });
+
+    const signedTransactions = await wallet.signAllTransactions(txn);
+
+    const txids = await Promise.all(
+      signedTransactions.map((signedTransaction) =>
+        connection.sendRawTransaction(signedTransaction.serialize()),
+      ),
+    );
+
+    notify({
+      message: 'Transactions sent',
+      type: NotifyType.INFO,
+    });
+
+    await Promise.all(
+      txids.map((txid) =>
+        connection.confirmTransaction(
+          { signature: txid, blockhash, lastValidBlockHeight },
+          'confirmed',
+        ),
+      ),
+    );
 
     notify({
       message:

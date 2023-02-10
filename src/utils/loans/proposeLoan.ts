@@ -1,7 +1,10 @@
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { showSolscanLinkNotification, createAndSendTxn } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
@@ -40,11 +43,13 @@ export const proposeLoan: ProposeLoan = async ({
       admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
     });
 
-    await createAndSendTxn({
-      additionalSigners: [loan],
-      txInstructions: ixs,
+    const transaction = new web3.Transaction().add(...ixs);
+
+    await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
+      commitment: 'confirmed',
     });
 
     const subscriptionId = connection.onAccountChange(
