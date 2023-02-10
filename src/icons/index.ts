@@ -32,6 +32,7 @@ export { Medium, MediumDark } from './Medium';
 export { Minus } from './Minus';
 export { Moon } from './Moon';
 export { MyLoans, MyLoansDark } from './MyLoans';
+export { Pencil } from './Pencil';
 export { Person } from './Person';
 export { Plus } from './Plus';
 export { Raffles, RafflesDark } from './Raffles';
