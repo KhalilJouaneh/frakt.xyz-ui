@@ -131,7 +131,7 @@ export const BondCard: FC<BondCardProps> = ({
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
           </div>
-          <div className={styles.infoValue}>
+          <div className={classNames(styles.infoValue, styles.infoValueTimer)}>
             <Timer className={styles.timer} />{' '}
             <div className={styles.countdown}>
               <span>{timeLeft.days}d </span>
