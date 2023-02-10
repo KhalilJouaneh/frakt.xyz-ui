@@ -80,6 +80,7 @@ export interface MarketPreview {
   collectionName: string;
   collectionImage: string;
   offerTVL: string;
+  walletRedeemAmount?: number;
 }
 
 export interface Pair {

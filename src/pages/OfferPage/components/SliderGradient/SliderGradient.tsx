@@ -1,14 +1,15 @@
 import { FC } from 'react';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+
+import Tooltip from '@frakt/components/Tooltip';
 import {
   colorByPercentSlider,
   getColorByPercent,
   calcRisk,
 } from '@frakt/utils/bonds';
 
-import { riskMarks } from '../../hooks/usePoolCreation';
+import { riskMarks } from '../../constants';
 import { Slider } from '@frakt/components/Slider';
-import Tooltip from '@frakt/components/Tooltip';
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './SliderGradient.module.scss';
 
 interface SliderGradientProps {

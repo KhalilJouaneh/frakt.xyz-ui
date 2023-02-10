@@ -36,7 +36,8 @@ export const fetchMarketsPreview: FetchMarketsPreview = async ({
   walletPubkey,
 }) => {
   const { data } = await axios.get<MarketPreview[]>(
-    `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
+    // `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
+    `https://${BACKEND_DOMAIN}/bonds/preview/`,
   );
 
   return data;

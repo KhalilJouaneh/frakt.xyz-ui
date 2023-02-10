@@ -10,7 +10,7 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
   return {
     ltv: (pair?.validation?.loanToValueFilter || 0) / 100,
     size: (pair?.edgeSettlement * pair?.currentSpotPrice) / 1e9 || 0,
-    apr: calcApr({
+    interest: calcApr({
       spotPrice: pair?.currentSpotPrice,
       durationDays: pair.validation.durationFilter / 86400,
     }),

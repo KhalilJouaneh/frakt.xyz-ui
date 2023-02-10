@@ -1,28 +1,30 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC } from 'react';
 import classNames from 'classnames';
-import { colorByPercentOffers, getColorByPercent } from '@frakt/utils/bonds';
-import { MarketOrder } from '../OrderBook/types';
+
 import { Trash } from '@frakt/icons';
+import { colorByPercentOffers, getColorByPercent } from '@frakt/utils/bonds';
+
+import { MarketOrder } from '../OrderBook/types';
 import styles from './Offer.module.scss';
 
 interface OfferProps {
   order: MarketOrder;
   bestOffer: MarketOrder;
-  isOwnOrder: (order: MarketOrder) => boolean;
-  removeOrder: (order: MarketOrder) => MouseEventHandler<HTMLDivElement>;
+  isOwnOrder: boolean;
+  editOrder?: () => void;
   ltv: number;
   size: number;
-  apr: number;
+  interest: number;
 }
 
 const Offer: FC<OfferProps> = ({
   order,
   bestOffer,
   isOwnOrder,
-  removeOrder,
+  editOrder,
   ltv,
   size,
-  apr,
+  interest,
 }) => {
   const colorLTV = getColorByPercent(ltv, colorByPercentOffers);
 
@@ -30,7 +32,7 @@ const Offer: FC<OfferProps> = ({
     <li
       className={classNames(styles.listItem, {
         [styles.highlightBest]:
-          apr === bestOffer?.apr && size === bestOffer?.size,
+          interest === bestOffer?.interest && size === bestOffer?.size,
         [styles.highlightYourOffer]: order.synthetic,
       })}
     >
@@ -51,16 +53,13 @@ const Offer: FC<OfferProps> = ({
         }}
       ></div>
       <div className={styles.valueWrapper}>
-        <div className={styles.value}>
-          {size?.toFixed(3)}
-          {/* <div className={styles.loans}>3.5 loans</div> */}
-        </div>
-        <div className={styles.value}>{(apr * 100)?.toFixed(2)}%</div>
+        <div className={styles.value}>{size?.toFixed(3)}</div>
+        <div className={styles.value}>{(interest * 100)?.toFixed(2)}%</div>
       </div>
-      {isOwnOrder(order) && (
+      {isOwnOrder && editOrder && (
         <div
           className={classNames(styles.roundBtn, styles.btnTrash)}
-          onClick={removeOrder(order)}
+          onClick={editOrder}
         >
           <Trash />
         </div>

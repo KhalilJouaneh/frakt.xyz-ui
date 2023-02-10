@@ -14,8 +14,13 @@ interface MarketCardProps {
 }
 
 const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
-  const { marketPubkey, collectionImage, collectionName, offerTVL } =
-    bondPreview;
+  const {
+    marketPubkey,
+    collectionImage,
+    collectionName,
+    offerTVL,
+    walletRedeemAmount,
+  } = bondPreview;
 
   return (
     <NavLink to={`${PATHS.BOND}/${marketPubkey}`} className={styles.market}>
@@ -70,11 +75,12 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
           </div>
         </div>
       </div>
-      {/* 
-      <div className={styles.toRedeem}>
-        <div className={styles.infoTitle}>To Redeem</div>
-        <div className={styles.infoValue}>12 bonds</div>
-      </div> */}
+      {!!walletRedeemAmount && (
+        <div className={styles.toRedeem}>
+          <div className={styles.infoTitle}>To Redeem</div>
+          <div className={styles.infoValue}>{walletRedeemAmount} bonds</div>
+        </div>
+      )}
     </NavLink>
   );
 };

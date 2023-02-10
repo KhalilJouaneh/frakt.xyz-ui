@@ -9,7 +9,7 @@ import {
   LoansPage,
   MarketsPage,
   MarketPage,
-  PoolsCreationPage,
+  OfferPage,
   BorrowRootPage,
   BorrowManualPage,
   BorrowBulkSuggestionPage,
@@ -51,8 +51,13 @@ export const routes: Route[] = [
   },
   {
     exact: true,
-    path: PATHS.POOLS_CREATION,
-    component: PoolsCreationPage,
+    path: `${PATHS.OFFER}/:marketPubkey`,
+    component: OfferPage,
+  },
+  {
+    exact: true,
+    path: `${PATHS.OFFER}/:marketPubkey/:pairPubkey`,
+    component: OfferPage,
   },
   {
     exact: true,

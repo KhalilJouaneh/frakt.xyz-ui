@@ -1,4 +1,4 @@
-@import '../../scss/abstracts/mixins';
+@import '@frakt/scss/abstracts/mixins';
 
 .poolsCreation {
   width: calc(100% - 344px);
@@ -82,9 +82,24 @@
   }
 }
 
+.btnsWrapper {
+  display: flex;
+  column-gap: 24px;
+}
+
 .btn {
   width: 100%;
   height: 48px;
+}
+
+.btnDelete {
+  color: var(--red-color);
+  border-color: var(--red-color);
+  background-color: var(--light-red-color);
+
+  &:hover {
+    background-color: var(--light-red-color-hover);
+  }
 }
 
 .sorting {
@@ -117,59 +132,6 @@
   font: var(--font-text-6);
   color: var(--gray-color-2);
   text-transform: uppercase;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font: var(--font-text-8);
-  color: var(--black-color);
-
-  cursor: pointer;
-}
-
-.checkboxInput {
-  position: relative;
-  appearance: none;
-  background: transparent;
-  margin: 0;
-
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--primary-border);
-  outline: 0;
-
-  &:hover {
-    border-color: var(--secondary-border);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    opacity: 0;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid #000;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  &:checked {
-    background-color: var(--light-green-color);
-    border-color: #000;
-
-    &::after {
-      opacity: 1;
-    }
-  }
 }
 
 .total {

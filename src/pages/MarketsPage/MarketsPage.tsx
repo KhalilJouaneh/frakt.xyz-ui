@@ -20,6 +20,7 @@ import { Loader } from '@frakt/components/Loader';
 import Toggle from '@frakt/components/Toggle';
 import FilterCollections from '@frakt/components/FilterCollections';
 import styles from './MarketsPage.module.scss';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -33,6 +34,7 @@ const collectionsMock = [
 ];
 
 const MarketsPreviewPage: FC = () => {
+  const wallet = useWallet();
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const {
     control,
@@ -47,7 +49,7 @@ const MarketsPreviewPage: FC = () => {
   } = useFiltersModal();
 
   const { marketsPreview, isLoading } = useMarketsPreview({
-    /* //? Pass wallet pubkey to get user's bonds */
+    walletPublicKey: wallet?.publicKey,
   });
 
   const ref = useRef();

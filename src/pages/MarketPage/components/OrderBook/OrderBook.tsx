@@ -1,59 +1,48 @@
 import { FC, useMemo, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { useConnection } from '@frakt/hooks';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
+
 import Button from '@frakt/components/Button';
-import Offer from '../Offer/Offer';
 import Toggle from '@frakt/components/Toggle';
 import { Loader } from '@frakt/components/Loader';
-import { makeRemoveOrderTransaction } from '@frakt/utils/bonds';
-import { signAndConfirmTransaction } from '@frakt/utils/transactions';
-import { useMarketOrders } from './hooks';
 import { PATHS } from '@frakt/constants';
-import { MarketOrder } from './types';
 import { Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
 import { Market } from '@frakt/api/bonds';
+
+import Offer from '../Offer/Offer';
+import { useMarketOrders } from './hooks';
+import { MarketOrder } from './types';
 import styles from './OrderBook.module.scss';
 
 interface OrderBookProps {
   market: Market;
-  maxLTV?: number;
-  apr?: string;
-  solDeposit?: string;
-  durationDays?: number;
+  hideEditButtons?: boolean;
+  syntheticParams?: {
+    ltv: number;
+    interest: number;
+    offerSize: number;
+    durationDays: number;
+  };
 }
 
-const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
+const OrderBook: FC<OrderBookProps> = ({
+  market,
+  syntheticParams,
+  hideEditButtons,
+}) => {
   const wallet = useWallet();
-  const connection = useConnection();
+  const history = useHistory();
 
   const [openOffersMobile, setOpenOffersMobile] = useState<boolean>(false);
   const toggleOffers = () => setOpenOffersMobile((prev) => !prev);
 
-  const removeOrder = (order: MarketOrder) => async () => {
-    try {
-      const { transaction, signers } = await makeRemoveOrderTransaction({
-        pairPubkey: new web3.PublicKey(order.rawData.publicKey),
-        authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),
-        edgeSettlement: order.rawData.edgeSettlement,
-        wallet,
-        connection,
-      });
-
-      await signAndConfirmTransaction({
-        connection,
-        transaction,
-        signers,
-        wallet,
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn(error?.logs?.join('\n'));
-      console.error(error);
-    }
+  const editOrder = (order: MarketOrder) => {
+    history.push(
+      `${PATHS.OFFER}/${market?.marketPubkey}/${order?.rawData?.publicKey}`,
+    );
   };
 
   const isOwnOrder = (order: MarketOrder) =>
@@ -70,9 +59,9 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
     marketPubkey: new web3.PublicKey(market?.marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
-    ltv: maxLTV,
-    size: Number(solDeposit),
-    apr: Number(apr) / 100,
+    ltv: syntheticParams?.ltv,
+    size: syntheticParams?.offerSize,
+    interest: syntheticParams?.interest,
   });
 
   const bestOffer = useMemo(() => {
@@ -83,7 +72,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
     <div
       className={classNames(styles.orderBook, {
         [styles.active]: openOffersMobile,
-        [styles.create]: maxLTV,
+        [styles.create]: syntheticParams?.ltv,
       })}
     >
       <div
@@ -98,7 +87,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
       <div
         className={classNames(styles.header, {
           [styles.active]: openOffersMobile,
-          [styles.create]: maxLTV,
+          [styles.create]: syntheticParams?.ltv,
         })}
       >
         <h5 className={styles.title}>Offers</h5>
@@ -115,7 +104,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
           <div
             className={classNames(styles.columnWrapper, {
               [styles.active]: openOffersMobile,
-              [styles.create]: maxLTV,
+              [styles.create]: syntheticParams?.ltv,
             })}
           >
             <div className={styles.col}>
@@ -128,7 +117,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
               })}
               onClick={toggleSort}
             >
-              <span className={styles.colName}>APR</span>
+              <span className={styles.colName}>Interest</span>
               <span>(%)</span>
             </div>
           </div>
@@ -138,7 +127,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
       <div
         className={classNames(styles.content, {
           [styles.active]: openOffersMobile,
-          [styles.create]: maxLTV,
+          [styles.create]: syntheticParams?.ltv,
           [styles.visible]: !offersExist,
         })}
       >
@@ -147,7 +136,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
             size="default"
             className={classNames(styles.loader, {
               [styles.active]: openOffersMobile,
-              [styles.create]: maxLTV,
+              [styles.create]: syntheticParams?.ltv,
             })}
           />
         )}
@@ -155,7 +144,7 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
         {!isLoading && offersExist && (
           <ul
             className={classNames(styles.list, {
-              [styles.create]: maxLTV,
+              [styles.create]: syntheticParams?.ltv,
               [styles.active]: openOffersMobile,
             })}
           >
@@ -163,21 +152,21 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
               <Offer
                 ltv={offer.ltv}
                 size={offer.size}
-                apr={offer.apr}
+                interest={offer.interest}
                 order={offer}
                 bestOffer={bestOffer}
-                removeOrder={removeOrder}
-                isOwnOrder={isOwnOrder}
+                editOrder={!hideEditButtons && (() => editOrder(offer))}
+                isOwnOrder={isOwnOrder(offer)}
                 key={idx}
               />
             ))}
           </ul>
         )}
-        {!isLoading && !offersExist && !maxLTV && (
+        {!isLoading && !offersExist && !syntheticParams?.ltv && (
           <div
             className={classNames(styles.noData, {
               [styles.active]: openOffersMobile,
-              [styles.create]: maxLTV,
+              [styles.create]: syntheticParams?.ltv,
             })}
           >
             <PartyHorn />
@@ -190,10 +179,10 @@ const OrderBook: FC<OrderBookProps> = ({ market, maxLTV, apr, solDeposit }) => {
           </div>
         )}
 
-        {!maxLTV && (
-          <NavLink to={`${PATHS.BOND}/${market?.marketPubkey}/create`}>
+        {!syntheticParams?.ltv && (
+          <NavLink to={`${PATHS.OFFER}/${market?.marketPubkey}`}>
             <Button className={styles.btn} type="secondary">
-              Place offers
+              Place offer
             </Button>
           </NavLink>
         )}
