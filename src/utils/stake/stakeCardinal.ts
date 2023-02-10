@@ -1,10 +1,8 @@
+import { createAndSendTxn } from './../transactions/helpers/createAndSendTxn';
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import {
-  showSolscanLinkNotification,
-  signAndConfirmTransaction,
-} from '../transactions';
+import { showSolscanLinkNotification } from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '..';
@@ -43,14 +41,10 @@ export const stakeCardinal: StakeCardinal = async ({
         paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
       });
 
-    const transaction = new web3.Transaction()
-      .add(stakeIx)
-      .add(additionalComputeBudgetInstructionIx);
-
-    await signAndConfirmTransaction({
+    await createAndSendTxn({
       connection,
       wallet,
-      transaction,
+      txInstructions: [stakeIx, additionalComputeBudgetInstructionIx],
     });
 
     notify({
