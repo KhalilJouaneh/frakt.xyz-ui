@@ -41,7 +41,7 @@ export const paybackLoan: PaybackLoan = async ({
         wallet,
       });
     } else {
-      const { paybackLoanIx } = await loans.paybackLoanIx({
+      const { ixs } = await loans.paybackLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet.publicKey,
@@ -55,7 +55,7 @@ export const paybackLoan: PaybackLoan = async ({
       });
 
       await createAndSendTxn({
-        txInstructions: [paybackLoanIx],
+        txInstructions: ixs,
         connection,
         wallet,
       });

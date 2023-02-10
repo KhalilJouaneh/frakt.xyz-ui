@@ -29,7 +29,7 @@ export const proposeLoan: ProposeLoan = async ({
   const loanToValue = rawloanToValue * 100; //? Percent 20% ==> 2000
 
   try {
-    const { loan, ix } = await loans.proposeLoanIx({
+    const { loan, ixs } = await loans.proposeLoanIx({
       programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
       connection,
       user: wallet.publicKey,
@@ -42,7 +42,7 @@ export const proposeLoan: ProposeLoan = async ({
 
     await createAndSendTxn({
       additionalSigners: [loan],
-      txInstructions: [ix],
+      txInstructions: ixs,
       connection,
       wallet,
     });
