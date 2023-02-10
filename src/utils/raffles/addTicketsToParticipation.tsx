@@ -2,7 +2,10 @@ import { addTicketsToParticipation as txn } from '@frakters/raffle-sdk/lib/raffl
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { BN, web3 } from '@frakt-protocol/frakt-sdk';
 
-import { showSolscanLinkNotification, createAndSendTxn } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from './../index';
@@ -31,8 +34,10 @@ export const addTicketsToParticipation: AddTicketsToParticipation = async ({
       },
     });
 
-    await createAndSendTxn({
-      txInstructions: [ix],
+    const transaction = new web3.Transaction().add(ix);
+
+    await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
     });
