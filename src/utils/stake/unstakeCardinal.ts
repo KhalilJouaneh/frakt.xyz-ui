@@ -1,7 +1,10 @@
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { createAndSendTxn, showSolscanLinkNotification } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '..';
@@ -40,10 +43,14 @@ export const unstakeCardinal: UnstakeCardinal = async ({
         paymentPubkey2: new web3.PublicKey(process.env.STAKE_PAYMENT_2_PUBKEY),
       });
 
-    await createAndSendTxn({
+    const transaction = new web3.Transaction()
+      .add(unstakeIx)
+      .add(additionalComputeBudgetInstructionIx);
+
+    await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
-      txInstructions: [unstakeIx, additionalComputeBudgetInstructionIx],
     });
 
     notify({

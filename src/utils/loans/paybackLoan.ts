@@ -1,7 +1,10 @@
 import { web3, BN, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { createAndSendTxn, showSolscanLinkNotification } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { Loan } from '../../state/loans/types';
 import { NotifyType } from '../solanaUtils';
@@ -35,10 +38,13 @@ export const paybackLoan: PaybackLoan = async ({
         royaltyAddress: new web3.PublicKey(loan.royaltyAddress),
       });
 
-      await createAndSendTxn({
-        txInstructions: ixs,
+      const transaction = new web3.Transaction().add(...ixs);
+
+      await signAndConfirmTransaction({
+        transaction,
         connection,
         wallet,
+        commitment: 'confirmed',
       });
     } else {
       const { ixs } = await loans.paybackLoanIx({
@@ -54,10 +60,13 @@ export const paybackLoan: PaybackLoan = async ({
         paybackAmount,
       });
 
-      await createAndSendTxn({
-        txInstructions: ixs,
+      const transaction = new web3.Transaction().add(...ixs);
+
+      await signAndConfirmTransaction({
+        transaction,
         connection,
         wallet,
+        commitment: 'confirmed',
       });
     }
 

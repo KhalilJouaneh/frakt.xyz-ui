@@ -1,7 +1,10 @@
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { showSolscanLinkNotification, createAndSendTxn } from '../transactions';
+import {
+  showSolscanLinkNotification,
+  signAndConfirmTransaction,
+} from '../transactions';
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify } from '../';
@@ -30,9 +33,11 @@ export const depositLiquidity: DepositLiquidity = async ({
       amount,
     });
 
-    await createAndSendTxn({
+    const transaction = new web3.Transaction().add(ix);
+
+    await signAndConfirmTransaction({
+      transaction,
       onAfterSend,
-      txInstructions: [ix],
       connection,
       wallet,
     });
