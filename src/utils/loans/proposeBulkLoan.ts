@@ -14,7 +14,7 @@ type ProposeLoan = (props: {
   selectedBulk: any[];
 }) => Promise<boolean>;
 
-const IX_PER_TXN = 3;
+const IX_PER_TXN = 1;
 
 export const proposeBulkLoan: ProposeLoan = async ({
   connection,
