@@ -162,7 +162,7 @@ export const OfferPage = () => {
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
-        subtitle="In order to create Bond"
+        // subtitle="In order to create Bond"
       />
     </AppLayout>
   );

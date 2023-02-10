@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { Trash } from '@frakt/icons';
+import { Pencil } from '@frakt/icons';
 import { colorByPercentOffers, getColorByPercent } from '@frakt/utils/bonds';
 
 import { MarketOrder } from '../OrderBook/types';
@@ -61,7 +61,7 @@ const Offer: FC<OfferProps> = ({
           className={classNames(styles.roundBtn, styles.btnTrash)}
           onClick={editOrder}
         >
-          <Trash />
+          <Pencil />
         </div>
       )}
     </li>
