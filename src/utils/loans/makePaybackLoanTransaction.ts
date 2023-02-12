@@ -20,7 +20,7 @@ export const makePaybackLoanTransaction: MakePaybackLoanTransaction = async ({
 }) => {
   const instructions = await (async () => {
     if (!loan.gracePeriod) {
-      const { paybackLoanIx: instruction } = await paybackLoanIx({
+      const { ixs: instructions } = await paybackLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet?.publicKey,
@@ -32,7 +32,7 @@ export const makePaybackLoanTransaction: MakePaybackLoanTransaction = async ({
         royaltyAddress: new web3.PublicKey(loan.classicParams.royaltyAddress),
         paybackAmount,
       });
-      return [instruction];
+      return instructions;
     } else {
       const { ixs: instructions } = await paybackLoanWithGraceIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),

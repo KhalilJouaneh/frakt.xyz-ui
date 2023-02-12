@@ -22,7 +22,7 @@ export const makeProposeTransaction: MakeProposeTransaction = async ({
 }) => {
   const loanToValue = (loanValue / valuation) * 1e4;
 
-  const { ix: instruction } = await loans.proposeLoanIx({
+  const { ixs: instructions } = await loans.proposeLoanIx({
     programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
     connection,
     user: wallet.publicKey,
@@ -33,7 +33,7 @@ export const makeProposeTransaction: MakeProposeTransaction = async ({
     admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
   });
   return {
-    transaction: new web3.Transaction().add(instruction),
+    transaction: new web3.Transaction().add(...instructions),
     signers: [],
   };
 };
