@@ -1,11 +1,11 @@
-import { createAndSendTxn } from '@frakt/utils/transactions';
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
 import {
-  showSolscanLinkNotification,
   signAndConfirmTransaction,
-} from '../transactions';
+  showSolscanLinkNotification,
+} from '@frakt/utils/transactions';
+
 import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';

@@ -1,8 +1,8 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { notify } from '../..';
-import { NotifyType } from '../../solanaUtils';
+import { notify } from '@frakt/utils';
+import { NotifyType } from '@frakt/utils/solanaUtils';
 
 interface CreateAndSendTransactionProps {
   txInstructions: web3.TransactionInstruction[];

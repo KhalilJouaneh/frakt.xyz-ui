@@ -42,7 +42,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
 
       const loanToValue = rawLoanToValue || suggestedLtvPersent;
 
-      const { ix, loan } = await loans.proposeLoanIx({
+      const { ixs, loan } = await loans.proposeLoanIx({
         programId: new web3.PublicKey(process.env.LOANS_PROGRAM_PUBKEY),
         connection,
         user: wallet.publicKey,
@@ -53,7 +53,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
         admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
       });
 
-      transactions.push({ instructions: [ix], signers: [loan] });
+      transactions.push({ instructions: ixs, signers: [loan] });
     }
 
     const ixsDataChunks = chunk(transactions, IX_PER_TXN);

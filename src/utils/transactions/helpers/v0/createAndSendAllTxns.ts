@@ -2,11 +2,11 @@ import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from '@frakt-protocol/frakt-sdk';
 import { chunk } from 'lodash';
 
-import { mergeIxsIntoTxn } from './createTransactions';
-import { NotifyType } from '../../solanaUtils';
-import { notify } from '../..';
+import { mergeIxsIntoTxn } from '../createTransactions';
+import { NotifyType } from '../../../solanaUtils';
+import { notify } from '../../..';
 
-export interface IxnsData {
+interface IxnsData {
   instructions: web3.TransactionInstruction[];
   signers: web3.Signer[];
 }
