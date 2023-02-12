@@ -1,16 +1,20 @@
 import { sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
-import { virtual as pairs } from 'fbonds-core/lib/cross-mint-amm/functions/market-factory/pair';
-import * as fBondsValidation from 'fbonds-core/lib/fbonds_validation_adapter/functions/validation';
+
+import { virtual as pairs } from 'fbonds-core/lib/fbond-protocol/functions/market-factory/pair';
+import * as fBondsValidation from 'fbonds-core/lib/fbond-protocol/functions/validation';
+
 import {
+  BondFeatures,
   BondingCurveType,
   PairType,
-} from 'fbonds-core/lib/cross-mint-amm/types';
+} from 'fbonds-core/lib/fbond-protocol/types';
 
 import {
   BONDS_VALIDATION_PROGRAM_PUBKEY,
   BOND_DECIMAL_DELTA,
+  BOND_MAX_RETURN_AMOUNT_FILTER,
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
@@ -20,6 +24,7 @@ type MakeCreatePairTransaction = (params: {
   solDeposit: number; //? Amount of deposit in SOL. Normal values (F.e. 1, 20, 100)
   interest: number; //? % 0-Infinity
   marketPubkey: web3.PublicKey;
+  bondFeature?: BondFeatures;
   connection: web3.Connection;
   wallet: WalletContextState;
 }) => Promise<{
@@ -32,6 +37,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
   solDeposit,
   interest,
   marketPubkey,
+  bondFeature = BondFeatures.None,
   connection,
   wallet,
 }) => {
@@ -89,6 +95,8 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       args: {
         loanToValueFilter: maxLTVRaw,
         maxDurationFilter: maxDurationSec,
+        maxReturnAmountFilter: BOND_MAX_RETURN_AMOUNT_FILTER,
+        bondFeatures: bondFeature,
       },
       connection,
       programId: BONDS_VALIDATION_PROGRAM_PUBKEY,

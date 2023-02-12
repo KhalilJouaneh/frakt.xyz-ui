@@ -122,10 +122,20 @@
   }
 }
 
-.duration {
+.radio {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.bondFeaturesRadio {
+  flex-wrap: wrap;
+
+  & > * {
+    width: unset;
+    flex-grow: 1;
+    min-width: 184px;
+  }
 }
 
 .subtitle {

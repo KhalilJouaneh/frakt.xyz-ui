@@ -1,6 +1,6 @@
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
-import { validateAndSellNftToTokenToNftPair } from 'fbonds-core/lib/cross-mint-amm/functions/router';
+import { validateAndSellNftToTokenToNftPair } from 'fbonds-core/lib/fbond-protocol/functions/router';
 
 import { Bond, Market, Pair, WhitelistType } from '@frakt/api/bonds';
 import { getNftMerkleTreeProof } from '@frakt/api/nft';
@@ -8,7 +8,6 @@ import { PUBKEY_PLACEHOLDER, sendTxnPlaceHolder } from '@frakt/utils';
 
 import {
   BONDS_ADMIN_PUBKEY,
-  BONDS_VALIDATION_PROGRAM_PUBKEY,
   CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
@@ -58,7 +57,6 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
         BONDS_ADMIN_PUBKEY || PUBKEY_PLACEHOLDER,
       ),
       assetReceiver: new web3.PublicKey(pair.assetReceiver),
-      bondsValidationAdapterProgram: BONDS_VALIDATION_PROGRAM_PUBKEY,
     },
     args: {
       proof: proof,

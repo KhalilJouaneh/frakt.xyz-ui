@@ -7,8 +7,6 @@ import {
   PairValidationType,
   PairState,
   PairType,
-} from 'fbonds-core/lib/cross-mint-amm/types';
-import {
   CollateralBoxType,
   FraktBondState,
 } from 'fbonds-core/lib/fbond-protocol/types';

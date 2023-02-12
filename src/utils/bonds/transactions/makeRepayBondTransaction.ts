@@ -2,7 +2,7 @@ import { Loan } from '@frakt/api/loans';
 import { sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
-import { management } from 'fbonds-core/lib/fbond-protocol/functions/';
+import { management } from 'fbonds-core/lib/fbond-protocol/functions';
 import { BONDS_ADMIN_PUBKEY, BONDS_PROGRAM_PUBKEY } from '../constants';
 
 type MakeRepayBondTransaction = (params: {

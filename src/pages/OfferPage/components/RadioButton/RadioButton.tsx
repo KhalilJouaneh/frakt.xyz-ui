@@ -1,35 +1,39 @@
-import { ChangeEvent, FC } from 'react';
-
+import classNames from 'classnames';
 import styles from './RadioButton.module.scss';
 
-interface RadioButtonProps {
-  duration: number;
-  handleDuration: (e: ChangeEvent<HTMLInputElement>) => void;
-  buttons: { value: string }[];
+export interface RBOption<T> {
+  label: string;
+  value: T;
 }
 
-const RadioButton: FC<RadioButtonProps> = ({
-  duration,
-  handleDuration,
-  buttons,
-}) => {
+interface RadioButtonProps<T> {
+  currentOption: RBOption<T>;
+  onOptionChange: (nextOption: RBOption<T>) => void;
+  options: RBOption<T>[];
+  className?: string;
+}
+
+export const RadioButton = <T extends unknown>({
+  currentOption,
+  options,
+  onOptionChange,
+  className,
+}: RadioButtonProps<T>) => {
   return (
-    <div className={styles.radioButton}>
-      {buttons.map(({ value }) => (
-        <div className={styles.btn} key={value}>
+    <div className={classNames(styles.radioButton, className)}>
+      {options.map((option) => (
+        <div className={styles.btn} key={option.label}>
           <input
             type="radio"
-            id={value}
-            name="maxDuration"
-            value={value}
-            checked={duration === +value}
-            onChange={handleDuration}
+            id={option.label}
+            name={option.label}
+            value={option.label}
+            checked={option.label === currentOption.label}
+            onChange={() => onOptionChange(option)}
           />
-          <label htmlFor={value}>{value} days</label>
+          <label htmlFor={option.label}>{option.label}</label>
         </div>
       ))}
     </div>
   );
 };
-
-export default RadioButton;

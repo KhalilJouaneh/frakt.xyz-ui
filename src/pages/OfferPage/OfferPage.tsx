@@ -11,12 +11,13 @@ import { AppLayout } from '../../components/Layout/AppLayout';
 import OrderBook from '../MarketPage/components/OrderBook/OrderBook';
 import Button from '../../components/Button';
 import SizeField from './components/SizeField/SizeField';
-import RadioButton from './components/RadioButton/RadioButton';
+import { RadioButton } from './components/RadioButton';
 import { SliderGradient } from './components/SliderGradient/SliderGradient';
 import { Header } from './components/Header';
 import { useOfferPage } from './hooks';
 import { SOL_TOKEN } from '../../utils';
 import styles from './OfferPage.module.scss';
+import { BOND_FEATURE_OPTIONS, DURATION_OPTIONS } from './constants';
 
 export const OfferPage = () => {
   const {
@@ -39,6 +40,8 @@ export const OfferPage = () => {
     isLoading,
     onEditOffer,
     onRemoveOffer,
+    bondFeature,
+    onBondFeatureChange,
   } = useOfferPage();
 
   return (
@@ -80,12 +83,15 @@ export const OfferPage = () => {
           <h5 className={styles.blockTitle}>Loan parameters</h5>
           <SliderGradient value={ltv} setValue={onLtvChange} />
 
-          <div className={styles.duration}>
+          <div className={styles.radio}>
             <h6 className={styles.subtitle}>duration</h6>
             <RadioButton
-              duration={duration}
-              handleDuration={onDurationChange}
-              buttons={[{ value: '7' }, { value: '14' }]}
+              currentOption={{
+                label: `${duration} days`,
+                value: duration,
+              }}
+              onOptionChange={onDurationChange}
+              options={DURATION_OPTIONS}
             />
           </div>
 
@@ -112,6 +118,18 @@ export const OfferPage = () => {
             ]}
             toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
           />
+
+          <div className={styles.radio}>
+            <h6 className={styles.subtitle}>Bond features</h6>
+            <RadioButton
+              className={styles.bondFeaturesRadio}
+              currentOption={BOND_FEATURE_OPTIONS.find(
+                ({ value }) => bondFeature === value,
+              )}
+              onOptionChange={onBondFeatureChange}
+              options={BOND_FEATURE_OPTIONS}
+            />
+          </div>
 
           <TotalOverview
             size={parseFloat(offerSize)}

@@ -19,3 +19,5 @@ export const BONDS_VALIDATION_PROGRAM_PUBKEY = new web3.PublicKey(
 
 export const BOND_DECIMAL_DELTA = 1e4;
 export const BOND_SOL_DECIMAIL_DELTA = 1e5;
+
+export const BOND_MAX_RETURN_AMOUNT_FILTER = 1000 * 1e9; //? 1000 SOL
