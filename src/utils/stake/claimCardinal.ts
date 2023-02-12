@@ -46,9 +46,9 @@ export const claimCardinal: ClaimCardinal = async ({
     const transaction = new web3.Transaction().add(claimIx);
 
     await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
-      transaction,
     });
 
     notify({

@@ -1,7 +1,7 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
 
-interface IxnsData {
-  instructions: web3.TransactionInstruction[];
+export interface IxnsData {
+  instructions: web3.TransactionInstruction[] | web3.TransactionInstruction;
   signers: web3.Signer[];
 }
 

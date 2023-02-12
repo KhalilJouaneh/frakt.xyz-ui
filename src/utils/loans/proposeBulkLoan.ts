@@ -5,7 +5,11 @@ import { WalletContextState } from '@solana/wallet-adapter-react';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
 import { captureSentryError } from '../sentry';
-import { mergeIxsIntoTxn, showSolscanLinkNotification } from '../transactions';
+import {
+  mergeIxsIntoTxn,
+  showSolscanLinkNotification,
+  IxnsData,
+} from '../transactions';
 
 type ProposeLoan = (props: {
   connection: web3.Connection;
@@ -13,14 +17,14 @@ type ProposeLoan = (props: {
   selectedBulk: any[];
 }) => Promise<boolean>;
 
-const IX_PER_TXN = 3;
+const IX_PER_TXN = 1;
 
 export const proposeBulkLoan: ProposeLoan = async ({
   connection,
   wallet,
   selectedBulk,
 }): Promise<boolean> => {
-  const transactions = [];
+  const transactions = [] as IxnsData[];
 
   try {
     for (let index = 0; index < selectedBulk.length; index++) {
@@ -49,7 +53,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
         admin: new web3.PublicKey(process.env.LOANS_FEE_ADMIN_PUBKEY),
       });
 
-      transactions.push({ instructions: ix, signers: [loan] });
+      transactions.push({ instructions: [ix], signers: [loan] });
     }
 
     const ixsDataChunks = chunk(transactions, IX_PER_TXN);
@@ -66,7 +70,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
       transaction.feePayer = wallet.publicKey;
     });
 
-    const txn = await txnData.map(({ transaction, signers }) => {
+    const txn = txnData.map(({ transaction, signers }) => {
       if (signers) {
         transaction.sign(...signers);
       }

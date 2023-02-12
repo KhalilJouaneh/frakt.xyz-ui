@@ -48,9 +48,9 @@ export const stakeCardinal: StakeCardinal = async ({
       .add(additionalComputeBudgetInstructionIx);
 
     await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
-      transaction,
     });
 
     notify({

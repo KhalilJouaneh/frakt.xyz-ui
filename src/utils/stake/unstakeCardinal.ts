@@ -1,13 +1,13 @@
 import { web3, loans } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { NotifyType } from '../solanaUtils';
-import { notify } from '..';
-import { captureSentryError } from '../sentry';
 import {
   showSolscanLinkNotification,
   signAndConfirmTransaction,
 } from '../transactions';
+import { captureSentryError } from '../sentry';
+import { NotifyType } from '../solanaUtils';
+import { notify } from '..';
 
 type UnstakeCardinal = (props: {
   connection: web3.Connection;
@@ -48,9 +48,9 @@ export const unstakeCardinal: UnstakeCardinal = async ({
       .add(additionalComputeBudgetInstructionIx);
 
     await signAndConfirmTransaction({
+      transaction,
       connection,
       wallet,
-      transaction,
     });
 
     notify({

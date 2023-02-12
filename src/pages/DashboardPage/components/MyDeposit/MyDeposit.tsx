@@ -23,8 +23,6 @@ const MyDeposit: FC = () => {
 
   const depositedPools = filter(depositAmount, liquidityPools);
   const totalLiquidity = sum(map(depositAmount, depositedPools)) || 0;
-  const totalApy =
-    sum(map(depositApr, depositedPools)) / depositedPools.length || 0;
 
   const isDeposited = depositedPools.length;
 
@@ -54,12 +52,8 @@ const MyDeposit: FC = () => {
               <p className={styles.subtitle}>Weighted APY</p>
             </div>
             <div className={styles.loansInfo}>
-              <div className={styles.loansValue}>{totalApy.toFixed(0)} %</div>
-              <p className={styles.subtitle}>Average APY</p>
-            </div>
-            <div className={styles.loansInfo}>
               <div className={styles.loansValue}>
-                {totalLiquidity.toFixed(3)} <Solana className={styles.icon} />
+                {totalLiquidity.toFixed(2)} <Solana className={styles.icon} />
               </div>
               <p className={styles.subtitle}>Total liquidity</p>
             </div>
