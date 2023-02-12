@@ -189,6 +189,10 @@ const borrowBulk: BorrowBulk = async ({
 
     return true;
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn(error?.logs);
+    console.error(error);
+
     const isNotConfirmed = showSolscanLinkNotification(error);
 
     if (!isNotConfirmed) {

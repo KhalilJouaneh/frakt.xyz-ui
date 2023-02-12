@@ -101,6 +101,8 @@ export const useOfferPage = () => {
 
         history.push(`${PATHS.BOND}/${marketPubkey}`);
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn(error?.logs);
         console.error(error);
 
         notify({

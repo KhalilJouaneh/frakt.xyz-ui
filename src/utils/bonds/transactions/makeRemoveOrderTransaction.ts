@@ -2,7 +2,7 @@ import { sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import { virtual as pairs } from 'fbonds-core/lib/fbond-protocol/functions/market-factory/pair';
-import { CROSS_MINT_AMM_PROGRAM_PUBKEY } from '../constants';
+import { BONDS_PROGRAM_PUBKEY } from '../constants';
 
 type MakeRemoveOrderTransaction = (params: {
   pairPubkey: web3.PublicKey;
@@ -32,7 +32,7 @@ export const makeRemoveOrderTransaction: MakeRemoveOrderTransaction = async ({
       args: {
         amountOfTokensToWithdraw: edgeSettlement,
       },
-      programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       connection,
       sendTxn: sendTxnPlaceHolder,
     });
@@ -44,7 +44,7 @@ export const makeRemoveOrderTransaction: MakeRemoveOrderTransaction = async ({
         pair: pairPubkey,
         userPubkey: wallet.publicKey,
       },
-      programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       connection,
       sendTxn: sendTxnPlaceHolder,
     });

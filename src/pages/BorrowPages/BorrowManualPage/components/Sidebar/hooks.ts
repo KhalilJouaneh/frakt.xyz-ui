@@ -159,6 +159,8 @@ const borrowSingle: BorrowSingle = async ({
 
     return true;
   } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn(error.logs?.join('\n'));
     const isNotConfirmed = showSolscanLinkNotification(error);
 
     if (!isNotConfirmed) {

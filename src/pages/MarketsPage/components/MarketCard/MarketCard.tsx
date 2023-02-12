@@ -44,7 +44,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              <span>{Number(offerTVL).toFixed(3)}</span> <Solana />
+              <span>{Number(offerTVL)?.toFixed(3)}</span> <Solana />
             </div>
           </div>
           <div className={styles.info}>
@@ -59,12 +59,14 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              <span>{(bestOffer / 1e9).toFixed(3)}</span> <Solana />
+              <span>{(bestOffer / 1e9)?.toFixed(3)}</span> <Solana />
             </div>
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>duration</div>
-            <div className={styles.infoValue}>{duration?.join(' / ')} days</div>
+            <div className={styles.infoValue}>
+              {duration?.length ? `${duration?.join(' / ')} days` : '--'}
+            </div>
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>apy</div>
@@ -73,7 +75,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
                 [styles.negative]: false,
               })}
             >
-              up to {apy.toFixed(2)} %
+              up to {apy?.toFixed(2)} %
             </div>
           </div>
         </div>
@@ -82,7 +84,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
       <div className={styles.toRedeem}>
         <div className={styles.infoTitle}>To Redeem</div>
         <div className={classNames(styles.infoValue, styles.infoValueRedeem)}>
-          {(walletRedeemAmount / 1e9 || 0).toFixed(2)}
+          {(walletRedeemAmount / 1e9 || 0)?.toFixed(2)}
           <Solana />
         </div>
       </div>

@@ -12,10 +12,9 @@ import {
 } from 'fbonds-core/lib/fbond-protocol/types';
 
 import {
-  BONDS_VALIDATION_PROGRAM_PUBKEY,
+  BONDS_PROGRAM_PUBKEY,
   BOND_DECIMAL_DELTA,
   BOND_MAX_RETURN_AMOUNT_FILTER,
-  CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
 type MakeCreatePairTransaction = (params: {
@@ -66,7 +65,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       pairType: PairType.TokenForNFT, //? Buy orders
       spotPrice: spotPrice, //? Price for decimal of fBond price (fBond --> Token that has BOND_SOL_DECIMAIL_DELTA decimals)
     },
-    programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+    programId: BONDS_PROGRAM_PUBKEY,
     connection,
     sendTxn: sendTxnPlaceHolder,
   });
@@ -80,7 +79,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       pair: pairPubkey,
       userPubkey: wallet.publicKey,
     },
-    programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+    programId: BONDS_PROGRAM_PUBKEY,
     connection,
     sendTxn: sendTxnPlaceHolder,
   });
@@ -99,7 +98,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
         bondFeatures: bondFeature,
       },
       connection,
-      programId: BONDS_VALIDATION_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       sendTxn: sendTxnPlaceHolder,
     });
 
@@ -113,7 +112,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       args: {
         amountOfTokensToBuy: bidCap, //? Amount of BOND_SOL_DECIMAIL_DELTA parts of fBond token
       },
-      programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       connection,
       sendTxn: sendTxnPlaceHolder,
     });
@@ -125,7 +124,7 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
         pair: pairPubkey,
         userPubkey: wallet.publicKey,
       },
-      programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       connection,
       sendTxn: sendTxnPlaceHolder,
     });

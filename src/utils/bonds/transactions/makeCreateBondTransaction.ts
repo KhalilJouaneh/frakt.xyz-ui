@@ -11,7 +11,6 @@ import {
   BONDS_ADMIN_PUBKEY,
   BONDS_PROGRAM_PUBKEY,
   BOND_DECIMAL_DELTA,
-  CROSS_MINT_AMM_PROGRAM_PUBKEY,
 } from '../constants';
 
 type MakeCreateBondTransaction = (params: {
@@ -92,7 +91,7 @@ export const makeCreateBondTransaction: MakeCreateBondTransaction = async ({
         skipFailed: false,
       },
       connection,
-      programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+      programId: BONDS_PROGRAM_PUBKEY,
       sendTxn: sendTxnPlaceHolder,
     });
 

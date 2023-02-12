@@ -6,10 +6,7 @@ import { Bond, Market, Pair, WhitelistType } from '@frakt/api/bonds';
 import { getNftMerkleTreeProof } from '@frakt/api/nft';
 import { PUBKEY_PLACEHOLDER, sendTxnPlaceHolder } from '@frakt/utils';
 
-import {
-  BONDS_ADMIN_PUBKEY,
-  CROSS_MINT_AMM_PROGRAM_PUBKEY,
-} from '../constants';
+import { BONDS_ADMIN_PUBKEY, BONDS_PROGRAM_PUBKEY } from '../constants';
 
 type MakeExitBondTransaction = (params: {
   bond: Bond;
@@ -65,7 +62,7 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
       skipFailed: false,
     },
     connection,
-    programId: CROSS_MINT_AMM_PROGRAM_PUBKEY,
+    programId: BONDS_PROGRAM_PUBKEY,
     sendTxn: sendTxnPlaceHolder,
   });
 
