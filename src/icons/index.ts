@@ -15,6 +15,7 @@ export { ChangeWallet } from './ChangeWallet';
 export { Chevron } from './Chevron';
 export { ChevronDown } from './ChevronDown';
 export { Close } from './Close';
+export { CloseConfirmModal } from './CloseConfirmModal';
 export { CloseModal } from './CloseModal';
 export { Copy } from './Copy';
 export { Dashboard, DashboardDark } from './Dashboard';
@@ -31,6 +32,7 @@ export { Medium, MediumDark } from './Medium';
 export { Minus } from './Minus';
 export { Moon } from './Moon';
 export { MyLoans, MyLoansDark } from './MyLoans';
+export { Pencil } from './Pencil';
 export { Person } from './Person';
 export { Plus } from './Plus';
 export { Raffles, RafflesDark } from './Raffles';
@@ -44,7 +46,6 @@ export { Ticket } from './Ticket';
 export { Timer } from './Timer';
 export { Trash } from './Trash';
 export { Twitter, TwitterDark } from './Twitter';
-export { CloseConfirmModal } from './CloseConfirmModal';
 
 //? Raster icons
 export { default as LightBg } from './lightBg.png';

@@ -7,8 +7,9 @@ import {
   PairValidationType,
   PairState,
   PairType,
-  WhitelistType,
-} from 'fbonds-core/lib/cross-mint-amm/types';
+  CollateralBoxType,
+  FraktBondState,
+} from 'fbonds-core/lib/fbond-protocol/types';
 
 interface FMarket {
   publicKey: string;
@@ -19,6 +20,12 @@ interface FMarket {
   updatedAt: string;
   whitelistQuantity: number;
   hadoMarket: string;
+}
+
+export enum WhitelistType {
+  NFT = 'nft',
+  CREATOR = 'creator',
+  MERKLE_TREE = 'merkleTree',
 }
 
 interface MarketWhitelistEntry {
@@ -43,7 +50,9 @@ interface MarketOracle {
 }
 
 export interface Market {
-  publicKey: string;
+  marketPubkey: string;
+  collectionImage: string;
+  collectionName: string;
   createdAt: string;
   isRemoved: boolean;
   marketAuthority: string;
@@ -59,8 +68,9 @@ export interface Market {
   image: string;
   name: string;
   fraktMarket: FMarket;
-  whitelistEntries: Array<MarketWhitelistEntry>;
-  oracleFloor: Array<MarketOracle>;
+  whitelistEntry: MarketWhitelistEntry;
+  oracleFloor: MarketOracle;
+  fbondTokenName: string;
 }
 
 export interface MarketPreview {
@@ -68,6 +78,10 @@ export interface MarketPreview {
   collectionName: string;
   collectionImage: string;
   offerTVL: string;
+  walletRedeemAmount?: number;
+  apy: number; //? %
+  duration: Array<number>; //? [7], [7, 14], [14]
+  bestOffer: number; //? lamports
 }
 
 export interface Pair {
@@ -117,4 +131,49 @@ export interface Pair {
     updatedAt: string;
     user: string;
   };
+}
+
+interface FBond {
+  publicKey: string;
+  activatedAt: number;
+  liquidatingAt: number;
+  actualReturnedAmount: number; //? in lamports
+  amountToReturn: number;
+  bondProgramAuthoritySeed: number;
+  collateralBoxesQuantity: number;
+  fbondIssuer: string;
+  fbondTokenMint: string;
+  fbondTokenSupply: number;
+  fraktBondState: FraktBondState;
+  isRemoved: boolean;
+  redeemedAt: number;
+  returnFundsOwnerSeed: number;
+  returnTokenAccount: string;
+  returnTokenMint: string;
+  bondCollateralOrSolReceiver: string;
+  fbondTokenName: string;
+}
+
+interface CollateralBox {
+  publicKey: string;
+  collateralAmount: number;
+  collateralBoxType: CollateralBoxType;
+  collateralTokenAccount: string;
+  collateralTokenMint: string;
+  fbond: string;
+  isRemoved: boolean;
+  nft: {
+    mint: string;
+    name: string;
+    imageUrl: string;
+  };
+}
+
+export interface Bond {
+  fbond: FBond;
+  collateralBox: CollateralBox;
+  apy: number; //? Percent (50%)
+  averageBondPrice: number; //? price in lamports for minimal part of bond
+  interest: number; //? BasePoint percent (50% === 5000)
+  walletBalance: number;
 }

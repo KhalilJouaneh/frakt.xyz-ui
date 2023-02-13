@@ -47,9 +47,9 @@ const MyLoans: FC = () => {
   const otherPoolsCount = flipPool[0]?.collectionsAmount - 7;
 
   const loansInfo = [
-    { name: 'Flip', value: flipRepayValue?.toFixed(3) },
-    { name: 'Perpetual', value: perpetuaRepayValue?.toFixed(3) },
-    { name: 'On grace', value: graceRepayValue?.toFixed(3) },
+    { name: 'Flip', value: (flipRepayValue / 1e9)?.toFixed(3) },
+    { name: 'Perpetual', value: (perpetuaRepayValue / 1e9)?.toFixed(3) },
+    { name: 'On grace', value: (graceRepayValue / 1e9)?.toFixed(3) },
     { name: 'Bond', value: 0 },
   ];
 
@@ -67,13 +67,15 @@ const MyLoans: FC = () => {
             <div className={styles.loansInfoWrapper}>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalBorrowed.toFixed(3)} <Solana className={styles.icon} />
+                  {(totalBorrowed / 1e9).toFixed(3)}{' '}
+                  <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total borrowed</p>
               </div>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalDebt.toFixed(3)} <Solana className={styles.icon} />
+                  {(totalDebt / 1e9).toFixed(3)}{' '}
+                  <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total debt</p>
               </div>
@@ -134,7 +136,7 @@ const MyLoans: FC = () => {
 
       <NavLink
         style={{ width: '100%' }}
-        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW}
+        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW_ROOT}
       >
         <Button className={styles.btn} type="secondary">
           {userLoans.length ? 'Repay' : 'Borrow SOL'}

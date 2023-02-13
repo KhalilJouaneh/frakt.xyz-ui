@@ -1,35 +1,36 @@
 import { FC } from 'react';
 
 import { StatsValues } from '@frakt/components/StatsValues';
-import { Loan } from '@frakt/state/loans/types';
 import Button from '@frakt/components/Button';
+import { Loan } from '@frakt/api/loans';
+
 import styles from './RepayForm.module.scss';
 
 interface RepayFormProps {
-  nft: Loan;
+  loan: Loan;
   totalPayback: number;
   onSubmit: () => Promise<void>;
   isBulkRepay: boolean;
 }
 
 const RepayForm: FC<RepayFormProps> = ({
-  nft,
+  loan,
   totalPayback,
   onSubmit,
   isBulkRepay,
 }) => {
-  const isGracePeriod = nft?.isGracePeriod;
+  const onGracePeriod = !!loan.gracePeriod;
 
   return (
     <>
       <div className={styles.content}>
-        {isGracePeriod ? (
+        {onGracePeriod ? (
           <>
-            <StatsValues label="borrowed" value={nft?.loanValue} />
-            <StatsValues label="remaining debt" value={nft?.liquidationPrice} />
+            <StatsValues label="borrowed" value={loan?.loanValue / 1e9} />
+            <StatsValues label="remaining debt" value={loan.repayValue / 1e9} />
           </>
         ) : (
-          <StatsValues label="repay value" value={nft?.repayValue} />
+          <StatsValues label="repay value" value={loan?.repayValue / 1e9} />
         )}
       </div>
       <div className={styles.continueBtnContainer}>

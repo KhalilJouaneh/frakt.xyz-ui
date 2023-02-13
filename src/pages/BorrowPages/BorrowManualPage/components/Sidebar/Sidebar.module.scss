@@ -1,0 +1,11 @@
+.sidebar {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+
+  @media screen and (max-width: 767px) {
+    overflow: unset;
+  }
+}

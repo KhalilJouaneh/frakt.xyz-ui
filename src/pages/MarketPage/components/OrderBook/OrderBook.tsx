@@ -1,48 +1,55 @@
+import { FC, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FC, useEffect, useState } from 'react';
-import Button from '@frakt/components/Button';
-import RoundButton from '@frakt/components/RoundButton/RoundButton';
-import Toggle from '@frakt/components/Toggle';
-import { useWindowSize } from '@frakt/hooks';
 import classNames from 'classnames/bind';
-import { Trash, Chevron } from '@frakt/icons';
-import styles from './OrderBook.module.scss';
-import { PATHS } from '@frakt/constants';
-import { useMarketOrders } from './hooks';
-import { web3 } from 'fbonds-core';
-import { MarketOrder } from './types';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { web3 } from 'fbonds-core';
+
+import Button from '@frakt/components/Button';
+import Toggle from '@frakt/components/Toggle';
 import { Loader } from '@frakt/components/Loader';
-import { makeRemoveOrderTransaction } from '@frakt/utils/bonds';
+import { PATHS } from '@frakt/constants';
+import { Chevron } from '@frakt/icons';
+import PartyHorn from '@frakt/icons/PartyHorn';
+import { Market } from '@frakt/api/bonds';
 import { signAndConfirmTransaction } from '@frakt/utils/transactions';
+import { makeRemoveOrderTransaction } from '@frakt/utils/bonds';
+import { useConnection } from '@frakt/hooks';
+
+import Offer from '../Offer/Offer';
+import { useMarketOrders } from './hooks';
+import { MarketOrder } from './types';
+import styles from './OrderBook.module.scss';
 
 interface OrderBookProps {
-  marketPubkey: string;
-  hideCreateBtn?: boolean;
+  market: Market;
+  hideEditButtons?: boolean;
+  syntheticParams?: {
+    ltv: number;
+    interest: number;
+    offerSize: number;
+    durationDays: number;
+  };
 }
 
 const OrderBook: FC<OrderBookProps> = ({
-  marketPubkey,
-  hideCreateBtn = false,
+  market,
+  syntheticParams,
+  // hideEditButtons,
 }) => {
   const wallet = useWallet();
-  const [showOrderBook, setShowOrderBook] = useState<boolean>(false);
+  const connection = useConnection();
 
-  const size = useWindowSize();
+  const [openOffersMobile, setOpenOffersMobile] = useState<boolean>(false);
+  const toggleOffers = () => setOpenOffersMobile((prev) => !prev);
 
-  useEffect(() => {
-    if (size.width > 768) {
-      setShowOrderBook(true);
-    } else {
-      setShowOrderBook(false);
-    }
-  }, [size.width]);
+  // const editOrder = (order: MarketOrder) => {
+  //   history.push(
+  //     `${PATHS.OFFER}/${market?.marketPubkey}/${order?.rawData?.publicKey}`,
+  //   );
+  // };
 
-  const removeOrder = (order: MarketOrder) => async () => {
+  const removeOrder = async (order: MarketOrder) => {
     try {
-      //TODO: Replace to mainnet(hook) when contract appears on mainnet
-      const connection = new web3.Connection('https://api.devnet.solana.com');
-
       const { transaction, signers } = await makeRemoveOrderTransaction({
         pairPubkey: new web3.PublicKey(order.rawData.publicKey),
         authorityAdapter: new web3.PublicKey(order.rawData.authorityAdapter),
@@ -56,6 +63,8 @@ const OrderBook: FC<OrderBookProps> = ({
         transaction,
         signers,
         wallet,
+
+        onAfterSend: () => hidePair?.(order.rawData.publicKey),
       });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -65,93 +74,148 @@ const OrderBook: FC<OrderBookProps> = ({
   };
 
   const isOwnOrder = (order: MarketOrder) =>
-    order.rawData.assetReceiver === wallet?.publicKey?.toBase58();
+    order?.rawData?.assetReceiver === wallet?.publicKey?.toBase58();
 
   const [showOwnOrders, setShowOwnOrders] = useState(false);
-  //TODO: Implement sorting
-  const [sort /* setSort */] = useState<'asc' | 'desc'>('desc');
+  const [sort, setSort] = useState<'asc' | 'desc'>('desc');
 
-  const { orders, isLoading } = useMarketOrders({
-    marketPubkey: new web3.PublicKey(marketPubkey),
+  const toggleSort = () => {
+    sort === 'desc' ? setSort('asc') : setSort('desc');
+  };
+
+  const { offers, isLoading, offersExist, hidePair } = useMarketOrders({
+    marketPubkey: new web3.PublicKey(market?.marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,
+    ltv: syntheticParams?.ltv,
+    size: syntheticParams?.offerSize,
+    interest: syntheticParams?.interest,
   });
 
-  if (isLoading) return <Loader size="large" />;
+  const bestOffer = useMemo(() => {
+    return offers.at(0)?.synthetic ? offers.at(1) : offers.at(0);
+  }, [offers]);
 
   return (
     <div
       className={classNames(styles.orderBook, {
-        [styles.active]: showOrderBook,
+        [styles.active]: openOffersMobile,
+        [styles.create]: syntheticParams?.ltv,
       })}
     >
       <div
-        className={classNames(styles.btnChevronWrapper, {
-          [styles.active]: showOrderBook,
+        className={classNames(styles.roundBtn, styles.btnChevron, {
+          [styles.active]: openOffersMobile,
         })}
-        onClick={() => setShowOrderBook(!showOrderBook)}
+        onClick={toggleOffers}
       >
-        <RoundButton icon={<Chevron />} size={32} />
+        <Chevron />
       </div>
-      <div className={styles.wrapper}>
-        <div className={styles.header}>
-          <div className={styles.title}>Order Book</div>
-          {showOrderBook && (
-            <Toggle
-              label="My pools only"
-              className={styles.toggle}
-              defaultChecked={showOwnOrders}
-              onChange={(nextValue) => setShowOwnOrders(nextValue)}
-            />
-          )}
-        </div>
-        {showOrderBook && (
-          <>
+
+      <div
+        className={classNames(styles.header, {
+          [styles.active]: openOffersMobile,
+          [styles.create]: syntheticParams?.ltv,
+        })}
+      >
+        <h5 className={styles.title}>Offers</h5>
+        <Toggle
+          label="My offers only"
+          className={classNames(styles.toggle, {
+            [styles.active]: openOffersMobile,
+          })}
+          defaultChecked={showOwnOrders}
+          onChange={(nextValue) => setShowOwnOrders(nextValue)}
+        />
+
+        {offersExist && (
+          <div
+            className={classNames(styles.columnWrapper, {
+              [styles.active]: openOffersMobile,
+              [styles.create]: syntheticParams?.ltv,
+            })}
+          >
             <div className={styles.col}>
-              <div className={styles.colName}>
-                <div>SIZE (fndSMB)</div>
-                <div className={styles.arrowTriangle} />
-              </div>
-              <div className={styles.colName}>
-                <div>PRICE (SOL)</div>
-                <div className={styles.arrowTriangle} />
-              </div>
+              <span className={styles.colName}>size</span>
+              <span>(SOL)</span>
             </div>
-            <ul className={styles.list}>
-              {orders.map((order) => (
-                <li className={styles.listItem} key={order.rawData.publicKey}>
-                  <div className={styles.value}>{order.size.toFixed(3)}</div>
-                  <div className={styles.btnTrashWrapper}>
-                    <div className={styles.value}>
-                      {order.interest.toFixed(3)}
-                    </div>
-                    {isOwnOrder(order) && (
-                      <RoundButton
-                        icon={<Trash />}
-                        size={32}
-                        onClick={removeOrder(order)}
-                        className={styles.roundBtn}
-                      />
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
+            <div
+              className={classNames(styles.col, {
+                [styles.sort]: sort === 'desc',
+              })}
+              onClick={toggleSort}
+            >
+              <span className={styles.colName}>Interest</span>
+              <span>(%)</span>
+            </div>
+          </div>
         )}
       </div>
-      {!hideCreateBtn && (
-        <NavLink
-          to={`${PATHS.BOND}/${marketPubkey}/create`}
-          className={classNames(styles.btnWrapper, {
-            [styles.active]: !showOrderBook,
-          })}
-        >
-          <Button className={styles.btn} type="secondary">
-            Place orders
-          </Button>
-        </NavLink>
-      )}
+
+      <div
+        className={classNames(styles.content, {
+          [styles.active]: openOffersMobile,
+          [styles.create]: syntheticParams?.ltv,
+          [styles.visible]: !offersExist,
+        })}
+      >
+        {isLoading && (
+          <Loader
+            size="default"
+            className={classNames(styles.loader, {
+              [styles.active]: openOffersMobile,
+              [styles.create]: syntheticParams?.ltv,
+            })}
+          />
+        )}
+
+        {!isLoading && offersExist && (
+          <ul
+            className={classNames(styles.list, {
+              [styles.create]: syntheticParams?.ltv,
+              [styles.active]: openOffersMobile,
+            })}
+          >
+            {offers.map((offer, idx) => (
+              <Offer
+                ltv={offer.ltv}
+                size={offer.size}
+                interest={offer.interest}
+                order={offer}
+                bestOffer={bestOffer}
+                // editOrder={!hideEditButtons && (() => editOrder(offer))}
+                removeOrder={() => removeOrder(offer)}
+                isOwnOrder={isOwnOrder(offer)}
+                key={idx}
+              />
+            ))}
+          </ul>
+        )}
+        {!isLoading && !offersExist && !syntheticParams?.ltv && (
+          <div
+            className={classNames(styles.noData, {
+              [styles.active]: openOffersMobile,
+              [styles.create]: syntheticParams?.ltv,
+            })}
+          >
+            <PartyHorn />
+            <div className={styles.noDataTitle}>
+              No active offers at the moment
+            </div>
+            <div className={styles.noDataSubTitle}>
+              Good chance to be first!
+            </div>
+          </div>
+        )}
+
+        {!syntheticParams?.ltv && (
+          <NavLink to={`${PATHS.OFFER}/${market?.marketPubkey}`}>
+            <Button className={styles.btn} type="secondary">
+              Place offer
+            </Button>
+          </NavLink>
+        )}
+      </div>
     </div>
   );
 };

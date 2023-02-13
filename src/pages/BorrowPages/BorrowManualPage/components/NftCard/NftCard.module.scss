@@ -1,0 +1,145 @@
+.root {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  background: var(--primary-background);
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid var(--secondary-text);
+
+  &:hover {
+    border: 1px solid var(--secondary-border);
+  }
+}
+.rootSelected {
+  border: 1px solid var(--black-color);
+}
+.rootHighlighted {
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 0;
+    outline: 3px solid var(--light-green-color);
+    outline-offset: -3px;
+    z-index: 1;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--secondary-background);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid var(--gray-color-6);
+  display: flex;
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+}
+
+.imageSelectedOverlay {
+  background: rgba(0, 0, 0, 0.64);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    height: 5px;
+    width: 34px;
+    border-radius: 5px;
+  }
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.badgesContainer {
+  display: flex;
+  align-items: flex-end;
+  position: absolute;
+  inset: 0 0 0 0;
+  padding: 16px;
+  gap: 10px;
+  z-index: 1;
+}
+
+.badge {
+  background-color: var(--light-green-color);
+  color: var(--button-text);
+  font: var(--font-text-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 148px;
+  font: var(--font-text-5);
+  font-family: var(--font-family-inter);
+  text-transform: uppercase;
+
+  @media (max-width: 768px) {
+    width: 125px;
+    font-size: 12px;
+  }
+}
+
+.rootContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  @media screen and (max-width: 550px) {
+    padding: 16px;
+  }
+}
+
+.title {
+  font: var(--font-subtitle-2);
+  font-size: 18px;
+  flex-grow: 1;
+
+  @media screen and (max-width: 550px) {
+    font-size: 16px;
+  }
+}
+
+.ltvContent {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.ltvTitle {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  margin-top: 8px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+
+  @media screen and (max-width: 550px) {
+    margin-bottom: 4px;
+  }
+}
+
+.ltvText {
+  font: var(--font-text-8);
+}

@@ -1,69 +1,79 @@
-import { useWallet } from '@solana/wallet-adapter-react';
-import { fetchMarketPairs, Pair } from '@frakt/api/bonds';
-import { useQuery } from '@tanstack/react-query';
-import { web3 } from 'fbonds-core';
 import { useMemo } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { web3 } from 'fbonds-core';
 import { parseMarketOrder } from './helpers';
 import { MarketOrder } from './types';
-
-type UseMarketPairs = (props: { marketPubkey: web3.PublicKey }) => {
-  pairs: Pair[];
-  isLoading: boolean;
-};
-export const useMarketPairs: UseMarketPairs = ({ marketPubkey }) => {
-  const { data, isLoading } = useQuery(
-    ['marketPairs', marketPubkey.toBase58()],
-    () =>
-      fetchMarketPairs({
-        marketPubkey,
-      }),
-    {
-      enabled: !!marketPubkey,
-      staleTime: 5000,
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  return {
-    pairs: data || [],
-    isLoading,
-  };
-};
+import { useMarketPairs } from '@frakt/utils/bonds';
 
 type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
   sortDirection?: 'desc' | 'asc'; //? Sort by interest only
   walletOwned?: boolean;
+  ltv: number;
+  size: number; //? lamports
+  interest: number;
 }) => {
-  orders: MarketOrder[];
+  offers: MarketOrder[];
   isLoading: boolean;
+  offersExist: boolean;
+  hidePair: (pairPubkey: string) => void;
 };
+
 export const useMarketOrders: UseMarketOrders = ({
   marketPubkey,
   sortDirection = 'desc',
   walletOwned = false,
+  ltv,
+  size,
+  interest,
 }) => {
   const { publicKey } = useWallet();
 
-  const { pairs, isLoading } = useMarketPairs({
-    marketPubkey: new web3.PublicKey(marketPubkey),
+  const { pairs, isLoading, hidePair } = useMarketPairs({
+    marketPubkey: marketPubkey?.toBase58(),
   });
 
-  const orders = useMemo(() => {
+  const offers = useMemo(() => {
     if (!pairs) return [];
-    const sortedOrdersByInterest = pairs
+    const myOffer: MarketOrder = {
+      ltv,
+      size: size / 1e9,
+      interest: interest / 1e2,
+      synthetic: true,
+      rawData: {
+        publicKey: '',
+        assetReceiver: '',
+        edgeSettlement: 0,
+        authorityAdapter: '',
+      },
+    };
+
+    const parsedOffers = pairs
       .filter((pair) => {
-        return !walletOwned || pair.assetReceiver === publicKey?.toBase58();
+        return !walletOwned || pair?.assetReceiver === publicKey?.toBase58();
       })
-      .map(parseMarketOrder)
-      .sort((a, b) => b.interest - a.interest);
-    return sortDirection === 'desc'
-      ? sortedOrdersByInterest
-      : sortedOrdersByInterest.reverse();
-  }, [pairs, sortDirection, walletOwned, publicKey]);
+      .map(parseMarketOrder);
+
+    if (ltv) parsedOffers.push(myOffer);
+    const sortOffersByInterest = parsedOffers.sort(
+      (a, b) => b.interest - a.interest,
+    );
+
+    const sortedByLtv = (
+      sortDirection === 'asc'
+        ? sortOffersByInterest
+        : sortOffersByInterest.reverse()
+    ).sort((a, b) => b.ltv - a.ltv);
+
+    return sortedByLtv;
+  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
+
+  const offersExist = Boolean(offers.length);
 
   return {
-    orders,
+    offersExist,
+    offers,
     isLoading,
+    hidePair,
   };
 };

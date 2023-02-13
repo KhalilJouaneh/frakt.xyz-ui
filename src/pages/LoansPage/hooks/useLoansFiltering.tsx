@@ -1,13 +1,11 @@
 import { useMemo } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Control, useForm } from 'react-hook-form';
-import { uniqBy, prop } from 'ramda';
-import { useSelector } from 'react-redux';
+import { uniqBy } from 'lodash';
 import moment from 'moment';
 
-import { selectLoanNfts } from '../../../state/loans/selectors';
-import { caclTimeToRepay } from '../../../utils/loans';
-import { Loan } from '../../../state/loans/types';
+import { Loan, LoanType } from '@frakt/api/loans';
+
 import { compareNumbers } from '../../../utils';
 
 type FilterFormFieldsValues = {
@@ -32,8 +30,10 @@ enum SortField {
 
 type UseLoansFiltering = ({
   selectedCollections,
+  loans,
 }: {
   selectedCollections: string[];
+  loans: Loan[];
 }) => {
   control: Control<FilterFormFieldsValues>;
   loans: Loan[];
@@ -44,9 +44,9 @@ type UseLoansFiltering = ({
 
 export const useLoansFiltering: UseLoansFiltering = ({
   selectedCollections,
+  loans,
 }) => {
   const { connected } = useWallet();
-  const userLoans: Loan[] = useSelector(selectLoanNfts);
 
   const { control, watch, setValue } = useForm({
     defaultValues: {
@@ -61,25 +61,25 @@ export const useLoansFiltering: UseLoansFiltering = ({
 
   const selectedCollectionsName = selectedCollections.map((value) => value);
 
-  const uniqCollections = uniqBy(prop('collectionName'), userLoans);
+  const uniqCollections = uniqBy(loans, ({ nft }) => nft.collectionName);
 
-  const sortValueOption = uniqCollections.map(({ collectionName }) => {
+  const sortValueOption = uniqCollections.map(({ nft }) => {
     return [
       {
-        label: <span>{collectionName}</span>,
-        value: collectionName,
+        label: <span>{nft.collectionName}</span>,
+        value: nft.collectionName,
       },
     ][0];
   });
 
   const filteredLoans = useMemo(() => {
-    if (userLoans?.length) {
+    if (loans?.length) {
       const [sortField, sortOrder] = sort.value.split('_');
 
-      return userLoans
-        .filter((loan) => {
-          const nftName = loan.name;
-          const collectionName = loan.collectionName;
+      return loans
+        .filter(({ nft }) => {
+          const nftName = nft.name;
+          const collectionName = nft.collectionName;
 
           const selectedCollections =
             selectedCollectionsName.includes(collectionName);
@@ -102,12 +102,16 @@ export const useLoansFiltering: UseLoansFiltering = ({
           }
 
           if (sortField === SortField.TIME_TO_REPAY) {
-            if (loanA.isPriceBased) return 1;
-            if (loanB.isPriceBased) return -1;
+            if (loanA.loanType === LoanType.PRICE_BASED) return 1;
+            if (loanB.loanType === LoanType.PRICE_BASED) return -1;
 
-            const { expiredAtUnix: timeToRepayA } = caclTimeToRepay(loanA);
+            const timeToRepayA =
+              loanA?.classicParams?.timeBased?.expiredAt ||
+              loanA?.bondParams?.expiredAt;
 
-            const { expiredAtUnix: timeToRepayB } = caclTimeToRepay(loanB);
+            const timeToRepayB =
+              loanB?.classicParams?.timeBased?.expiredAt ||
+              loanB?.bondParams?.expiredAt;
 
             return compareNumbers(
               timeToRepayA,
@@ -117,12 +121,12 @@ export const useLoansFiltering: UseLoansFiltering = ({
           }
 
           if (sortField === SortField.HEALTH) {
-            if (!loanA.health) return 1;
-            if (!loanB.health) return -1;
+            if (loanA.loanType !== LoanType.PRICE_BASED) return 1;
+            if (loanA.loanType !== LoanType.PRICE_BASED) return -1;
 
             return compareNumbers(
-              loanA.health,
-              loanB.health,
+              loanA.classicParams.priceBased.health,
+              loanB.classicParams.priceBased.health,
               sortOrder === 'desc',
             );
           }
@@ -141,7 +145,7 @@ export const useLoansFiltering: UseLoansFiltering = ({
         });
     }
     return [];
-  }, [userLoans, sort, selectedCollectionsName]);
+  }, [loans, sort, selectedCollectionsName]);
 
   return {
     control,
