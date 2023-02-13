@@ -68,6 +68,10 @@ export const MarketPage: FC = () => {
         wallet,
         connection,
       });
+
+      bondsAvailableToRedeem.forEach(({ fbond }) => {
+        hideBond?.(fbond?.publicKey);
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
@@ -82,6 +86,8 @@ export const MarketPage: FC = () => {
         wallet,
         connection,
       });
+
+      hideBond(bond?.fbond?.publicKey);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
