@@ -36,7 +36,9 @@ const AvailableBorrow: FC = () => {
     <Block className={styles.block}>
       <h3 className={styles.title}>Available to borrow</h3>
       <div className={styles.valueWrapper}>
-        <p className={styles.value}>{availableBorrowValue}</p>
+        <p className={styles.value}>
+          {(Number(availableBorrowValue) / 1e9)?.toFixed(2)}
+        </p>
         <Solana className={styles.icon} />
       </div>
       <NavLink style={{ width: '100%' }} to={PATHS.BORROW_ROOT}>
