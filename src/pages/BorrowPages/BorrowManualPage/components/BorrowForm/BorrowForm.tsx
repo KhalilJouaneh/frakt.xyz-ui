@@ -32,7 +32,10 @@ export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
       <div className={styles.borrowFormDetails}>
         <div className={styles.borrowFormLtvSliderWrapper}>
           <p className={styles.borrowFormLtvSliderLabel}>
-            To borrow: {(currentLoanValue / 1e9)?.toFixed(2)} SOL{' '}
+            To borrow:{' '}
+            <span className={styles.borrowValue}>
+              {(currentLoanValue / 1e9)?.toFixed(2)} SOL
+            </span>
           </p>
           <Slider
             marks={{
@@ -45,6 +48,7 @@ export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
             setValue={(nextValue) => setCurrentLoanValue(nextValue)}
             min={minBorrowValue}
             max={maxBorrowValue}
+            noMarksHighlight
           />
         </div>
         <p className={styles.borrowFormDetailsTitle}>Duration</p>

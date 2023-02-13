@@ -71,6 +71,10 @@
   text-transform: uppercase;
 }
 
+.borrowValue {
+  color: var(--secondary-border);
+}
+
 .borrowFormLtvSlider {
   padding: 0 5px;
   :global {
@@ -80,6 +84,9 @@
     .ant-slider-mark-text:last-child {
       left: 90.5% !important;
       width: 100px;
+    }
+    .ant-slider-mark-text-active {
+      color: var(--secondary-text) !important;
     }
   }
 }
