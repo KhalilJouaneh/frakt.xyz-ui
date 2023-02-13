@@ -8,15 +8,15 @@ import {
 import { useConnection } from '../../../../hooks';
 import { useLoadingModal } from '../../../../components/LoadingModal';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
-import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 import { RaffleListItem } from '@frakt/api/raffle';
+import { useFetchUserTickets } from '../../hooks';
 
 export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
   const wallet = useWallet();
   const connection = useConnection();
 
+  const { lotteryTickets } = useFetchUserTickets();
   const [ticketCount, setTicketCount] = useState<number>(0);
-  const lotteryTickets = useSelector(selectLotteryTickets);
   const currentTickets = lotteryTickets?.currentTickets || 0;
 
   const incrementCounter = (): void => {
