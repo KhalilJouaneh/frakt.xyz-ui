@@ -17,7 +17,7 @@ import { Header } from './components/Header';
 import { useOfferPage } from './hooks';
 import { SOL_TOKEN } from '../../utils';
 import styles from './OfferPage.module.scss';
-import { BOND_FEATURE_OPTIONS, DURATION_OPTIONS } from './constants';
+import { DURATION_OPTIONS } from './constants';
 
 export const OfferPage = () => {
   const {
@@ -40,8 +40,10 @@ export const OfferPage = () => {
     isLoading,
     onEditOffer,
     onRemoveOffer,
-    bondFeature,
-    onBondFeatureChange,
+    autocompound,
+    toggleAutocompound,
+    receiveLiquidatedNfts,
+    toggleReceiveLiquidatedNfts,
   } = useOfferPage();
 
   return (
@@ -119,16 +121,42 @@ export const OfferPage = () => {
             toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
           />
 
-          <div className={styles.radio}>
-            <h6 className={styles.subtitle}>Bond features</h6>
-            <RadioButton
-              className={styles.bondFeaturesRadio}
-              currentOption={BOND_FEATURE_OPTIONS.find(
-                ({ value }) => bondFeature === value,
-              )}
-              onOptionChange={onBondFeatureChange}
-              options={BOND_FEATURE_OPTIONS}
-            />
+          <div className={styles.checkbox}>
+            <label className={styles.checkboxLabel}>
+              <input
+                className={styles.checkboxInput}
+                type="checkbox"
+                name="checkbox"
+                checked={autocompound}
+                onChange={toggleAutocompound}
+              />
+              Autocompound
+            </label>
+            <Tooltip
+              placement="bottom"
+              overlay="Deposit rewards back into offer"
+            >
+              <QuestionCircleOutlined className={styles.questionIcon} />
+            </Tooltip>
+          </div>
+
+          <div className={styles.checkbox}>
+            <label className={styles.checkboxLabel}>
+              <input
+                className={styles.checkboxInput}
+                type="checkbox"
+                name="checkbox"
+                checked={receiveLiquidatedNfts}
+                onChange={toggleReceiveLiquidatedNfts}
+              />
+              Receive liquidated NFTs
+            </label>
+            <Tooltip
+              placement="bottom"
+              overlay="Receive collaterized NFT instead of SOL in case of liquidation and funding a whole loan "
+            >
+              <QuestionCircleOutlined className={styles.questionIcon} />
+            </Tooltip>
           </div>
 
           <TotalOverview
@@ -184,7 +212,7 @@ export const OfferPage = () => {
         title="Please approve transaction"
         visible={loadingModalVisible}
         onCancel={closeLoadingModal}
-        // subtitle="In order to create Bond"
+        subtitle="In order to create Bond"
       />
     </AppLayout>
   );
