@@ -1,4 +1,4 @@
-import { CollectionsListItem } from './types';
+import { CollectionsListItem, LotteryTickets } from './types';
 
 export const fetchRaffleCollections = async (): Promise<
   CollectionsListItem[]
@@ -45,4 +45,16 @@ export const fetchAllRaffleCollections = async (): Promise<any> => {
     ]);
 
   return { raffleCollections, graceCollections, historyCollections };
+};
+
+export const fetchUserTickets = async (
+  publicKey: string,
+): Promise<LotteryTickets> => {
+  const response = await fetch(
+    `https://${process.env.BACKEND_DOMAIN}/liquidation/tickets/${publicKey}`,
+  );
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return await response.json();
 };

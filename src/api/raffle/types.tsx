@@ -55,3 +55,8 @@ export interface WonRaffleListItem {
 export interface CollectionsListItem {
   name: string;
 }
+
+export interface LotteryTickets {
+  currentTickets: number;
+  totalTickets: number;
+}
