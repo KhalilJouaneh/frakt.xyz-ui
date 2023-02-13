@@ -207,7 +207,7 @@ const TotalOverview: FC<TotalOverviewProps> = ({
 
   return (
     <div className={styles.total}>
-      <h5 className={styles.blockTitle}>Your total is {size} SOL</h5>
+      <h5 className={styles.blockTitle}>Your total is {size || 0} SOL</h5>
       <div className={styles.totalItem}>
         <div className={styles.totalTitle}>
           <span>apr</span>
