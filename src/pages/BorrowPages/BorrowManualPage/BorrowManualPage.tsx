@@ -63,7 +63,7 @@ export const BorrowManualPage: FC = () => {
           subtitle={
             isBulk
               ? `${cartOrders.length + Number(!!currentNft)} loans in bulk`
-              : 'I just want to make a loan'
+              : 'Select NFTs to borrow against'
           }
         />
         <Filters
