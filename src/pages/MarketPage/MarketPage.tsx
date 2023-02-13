@@ -26,6 +26,7 @@ import styles from './MarketPage.module.scss';
 import OrderBook from './components/OrderBook/OrderBook';
 import { BondsList } from './components/BondsList';
 import { MarketInfo } from './components/MarketInfo';
+import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 
 export const MarketPage: FC = () => {
   const wallet = useWallet();
@@ -51,7 +52,8 @@ export const MarketPage: FC = () => {
     ({ assetReceiver }) => assetReceiver !== wallet?.publicKey?.toBase58(),
   );
 
-  const loading = marketLoading || bondsLoanding || pairsLoading;
+  const loading =
+    marketLoading || pairsLoading || (wallet.connected && bondsLoanding);
 
   const onClaimAll = async () => {
     try {
@@ -111,6 +113,9 @@ export const MarketPage: FC = () => {
 
             <MarketInfo market={market} bonds={bonds} onClaimAll={onClaimAll} />
           </div>
+          {!wallet.connected && (
+            <ConnectWalletSection text="Connect your wallet to see your bonds" />
+          )}
           <BondsList
             market={market}
             bonds={bonds}
