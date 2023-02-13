@@ -14,8 +14,7 @@ import FiltersDropdown, {
 } from '@frakt/components/FiltersDropdown';
 import { useLiquidationsPage } from '../Liquidations';
 import { useRaffleList } from './useRaffleList';
-import { useSelector } from 'react-redux';
-import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
+import { useFetchUserTickets } from '../../hooks';
 
 interface RafflesListProps {
   children: ReactNode;
@@ -30,7 +29,7 @@ const RafflesList: FC<RafflesListProps> = ({
   isGraceList,
   isWonList,
 }) => {
-  const lotteryTickets = useSelector(selectLotteryTickets);
+  const { lotteryTickets } = useFetchUserTickets();
 
   const { control, setValue, collections, sort, setCollections } =
     useLiquidationsPage(isGraceList, isWonList);

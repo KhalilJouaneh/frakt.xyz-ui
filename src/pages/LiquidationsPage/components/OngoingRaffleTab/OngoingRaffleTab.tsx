@@ -1,9 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useSelector } from 'react-redux';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
-import { selectLotteryTickets } from '@frakt/state/liquidations/selectors';
 import { useIntersection } from '@frakt/hooks/useIntersection';
 import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
@@ -12,10 +10,12 @@ import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
 import { RaffleListItem } from '@frakt/api/raffle';
 import { useLiquidationRaffles } from './hooks';
+import { useFetchUserTickets } from '../../hooks';
 import RafflesList from '../RafflesList';
 
 const OngoingRaffleTab: FC = () => {
-  const lotteryTickets = useSelector(selectLotteryTickets);
+  const { lotteryTickets } = useFetchUserTickets();
+
   const { publicKey } = useWallet();
 
   const { ref, inView } = useIntersection();
