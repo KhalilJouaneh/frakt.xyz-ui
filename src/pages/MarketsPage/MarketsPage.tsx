@@ -56,7 +56,7 @@ const MarketsPreviewPage: FC = () => {
 
   return (
     <AppLayout>
-      <Header title="Bonds" subtitle="description" />
+      <Header title="Bonds" subtitle="Lend on your own terms" />
       {/* <div className={styles.sortWrapper}>
         <SearchInput
           className={styles.searchInput}
