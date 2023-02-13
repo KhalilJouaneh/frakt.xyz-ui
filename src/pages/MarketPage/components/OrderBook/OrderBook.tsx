@@ -63,6 +63,8 @@ const OrderBook: FC<OrderBookProps> = ({
         transaction,
         signers,
         wallet,
+
+        onAfterSend: () => hidePair?.(order.rawData.publicKey),
       });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -81,7 +83,7 @@ const OrderBook: FC<OrderBookProps> = ({
     sort === 'desc' ? setSort('asc') : setSort('desc');
   };
 
-  const { offers, isLoading, offersExist } = useMarketOrders({
+  const { offers, isLoading, offersExist, hidePair } = useMarketOrders({
     marketPubkey: new web3.PublicKey(market?.marketPubkey),
     sortDirection: sort,
     walletOwned: showOwnOrders,

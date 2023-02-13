@@ -16,6 +16,7 @@ type UseMarketOrders = (props: {
   offers: MarketOrder[];
   isLoading: boolean;
   offersExist: boolean;
+  hidePair: (pairPubkey: string) => void;
 };
 
 export const useMarketOrders: UseMarketOrders = ({
@@ -28,7 +29,7 @@ export const useMarketOrders: UseMarketOrders = ({
 }) => {
   const { publicKey } = useWallet();
 
-  const { pairs, isLoading } = useMarketPairs({
+  const { pairs, isLoading, hidePair } = useMarketPairs({
     marketPubkey: marketPubkey?.toBase58(),
   });
 
@@ -73,5 +74,6 @@ export const useMarketOrders: UseMarketOrders = ({
     offersExist,
     offers,
     isLoading,
+    hidePair,
   };
 };
