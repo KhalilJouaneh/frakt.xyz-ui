@@ -10,6 +10,7 @@ import {
   calcBondFee,
   calcLtv,
   calcPriceBasedUpfrontFee,
+  calcTimeBasedFee,
   calcTimeBasedRepayValue,
 } from '@frakt/pages/BorrowPages/helpers';
 
@@ -227,15 +228,19 @@ export const generateLoanDetails: GenerateLoanDetails = ({
 
   //? TimeBased fees (1d, 7d, 14d)
   if (loanType === LoanType.TIME_BASED) {
-    const { fee: feeAllTIme, returnPeriodDays } = nft.classicParams.timeBased;
+    const { returnPeriodDays } = nft.classicParams.timeBased;
 
-    const feePerDay = feeAllTIme / returnPeriodDays;
+    const feeOn1d = calcTimeBasedFee({
+      nft,
+      loanValue,
+      duration: 1,
+    });
 
     fields.push({
       label: 'Fee on 1d',
       value: (
         <>
-          {(feePerDay / 1e9).toFixed(3)} <Solana />
+          {(feeOn1d / 1e9).toFixed(3)} <Solana />
         </>
       ),
     });
@@ -244,7 +249,7 @@ export const generateLoanDetails: GenerateLoanDetails = ({
       label: 'Fee on 7d',
       value: (
         <>
-          {((feePerDay * 7) / 1e9).toFixed(3)} <Solana />
+          {((feeOn1d * 7) / 1e9).toFixed(3)} <Solana />
         </>
       ),
     });
@@ -254,7 +259,7 @@ export const generateLoanDetails: GenerateLoanDetails = ({
         label: 'Fee on 14d',
         value: (
           <>
-            {((feePerDay * 14) / 1e9).toFixed(3)} <Solana />
+            {((feeOn1d * 14) / 1e9).toFixed(3)} <Solana />
           </>
         ),
       });

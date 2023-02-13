@@ -4,6 +4,7 @@ import {
   calcBondFee,
   calcLtv,
   calcPriceBasedUpfrontFee,
+  calcTimeBasedFee,
   calcTimeBasedRepayValue,
 } from '@frakt/pages/BorrowPages/helpers';
 
@@ -44,7 +45,10 @@ export const getLoanFields: GetLoanFields = ({ order, pair }) => {
 
   //? TimeBased Fees
   if (loanType === LoanType.TIME_BASED) {
-    const { fee } = order.borrowNft.classicParams.timeBased;
+    const fee = calcTimeBasedFee({
+      nft: order?.borrowNft,
+      loanValue,
+    });
 
     fields.push({
       title: 'Fee',

@@ -3,7 +3,10 @@ import { sumBy, uniq } from 'lodash';
 import { Pair } from '@frakt/api/bonds';
 import { LoanType } from '@frakt/api/loans';
 import { Order } from '@frakt/pages/BorrowPages/cartState';
-import { calcBondFee } from '@frakt/pages/BorrowPages/helpers';
+import {
+  calcBondFee,
+  calcTimeBasedFee,
+} from '@frakt/pages/BorrowPages/helpers';
 
 type CalcCartFees = (props: {
   orders: Order[];
@@ -42,9 +45,13 @@ const calcOrderFees: CalcOrderFees = ({ order, pair }) => {
   const { loanType, loanValue } = order;
 
   if (loanType === LoanType.TIME_BASED) {
-    const { fee: totalFee, returnPeriodDays } =
-      order.borrowNft.classicParams.timeBased;
-    const feePerDay = totalFee / returnPeriodDays;
+    const { returnPeriodDays } = order.borrowNft.classicParams.timeBased;
+
+    const feePerDay = calcTimeBasedFee({
+      nft: order?.borrowNft,
+      loanValue: order?.loanValue,
+      duration: 1,
+    });
 
     return {
       '1d': feePerDay,
