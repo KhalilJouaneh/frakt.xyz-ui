@@ -48,7 +48,6 @@ export const BorrowForm: FC<BorrowFormProps> = ({ onSubmit }) => {
             setValue={(nextValue) => setCurrentLoanValue(nextValue)}
             min={minBorrowValue}
             max={maxBorrowValue}
-            noMarksHighlight
           />
         </div>
         <p className={styles.borrowFormDetailsTitle}>Duration</p>
