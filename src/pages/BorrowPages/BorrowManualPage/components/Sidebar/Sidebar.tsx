@@ -31,7 +31,7 @@ export const Sidebar: FC = () => {
       <CollapsedContent
         isVisible={!minimizedOnMobile}
         onClick={onSubmit}
-        title={`${isBulk ? 'View bulk ' : 'Quick borrow '} loan ${(
+        title={`${isBulk ? 'View bulk loan' : 'Borrow'} ${(
           totalBorrowValue / 1e9
         ).toFixed(2)} SOL`}
       />
