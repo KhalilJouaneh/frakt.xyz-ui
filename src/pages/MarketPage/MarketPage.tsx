@@ -38,7 +38,11 @@ export const MarketPage: FC = () => {
     marketPubkey,
   });
 
-  const { bonds, isLoading: bondsLoanding } = useWalletBonds({
+  const {
+    bonds,
+    isLoading: bondsLoanding,
+    hideBond,
+  } = useWalletBonds({
     walletPubkey: wallet.publicKey,
     marketPubkey: new web3.PublicKey(marketPubkey),
   });
@@ -94,6 +98,8 @@ export const MarketPage: FC = () => {
         wallet,
         connection,
       });
+
+      hideBond(bond?.fbond?.publicKey);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
