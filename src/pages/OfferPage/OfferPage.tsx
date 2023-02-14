@@ -42,8 +42,8 @@ export const OfferPage = () => {
     onRemoveOffer,
     // autocompound,
     // toggleAutocompound,
-    receiveLiquidatedNfts,
-    toggleReceiveLiquidatedNfts,
+    // receiveLiquidatedNfts,
+    // toggleReceiveLiquidatedNfts,
   } = useOfferPage();
 
   return (
@@ -140,7 +140,7 @@ export const OfferPage = () => {
             </Tooltip>
           </div> */}
 
-          <div className={styles.checkbox}>
+          {/* <div className={styles.checkbox}>
             <label className={styles.checkboxLabel}>
               <input
                 className={styles.checkboxInput}
@@ -157,7 +157,7 @@ export const OfferPage = () => {
             >
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
-          </div>
+          </div> */}
 
           <TotalOverview
             size={parseFloat(offerSize)}
