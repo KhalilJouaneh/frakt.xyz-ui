@@ -1,7 +1,6 @@
 import { sendTxnPlaceHolder } from '@frakt/utils';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
-
 import { virtual as pairs } from 'fbonds-core/lib/fbond-protocol/functions/market-factory/pair';
 import * as fBondsValidation from 'fbonds-core/lib/fbond-protocol/functions/validation';
 
@@ -29,6 +28,11 @@ type MakeCreatePairTransaction = (params: {
 }) => Promise<{
   transaction: web3.Transaction;
   signers: web3.Signer[];
+  accountsPublicKeys: {
+    pairPubkey: web3.PublicKey;
+    validationPubkey: web3.PublicKey;
+    authorityAdapterPubkey: web3.PublicKey;
+  };
 }>;
 export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
   maxLTV,
@@ -84,23 +88,26 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
     sendTxn: sendTxnPlaceHolder,
   });
 
-  const { instructions: instructions3, signers: signers3 } =
-    await fBondsValidation.createValidationFilter({
-      accounts: {
-        authorityAdapter: adapterPubkey,
-        pair: pairPubkey,
-        userPubkey: wallet.publicKey,
-      },
-      args: {
-        loanToValueFilter: maxLTVRaw,
-        maxDurationFilter: maxDurationSec,
-        maxReturnAmountFilter: BOND_MAX_RETURN_AMOUNT_FILTER,
-        bondFeatures: bondFeature,
-      },
-      connection,
-      programId: BONDS_PROGRAM_PUBKEY,
-      sendTxn: sendTxnPlaceHolder,
-    });
+  const {
+    instructions: instructions3,
+    signers: signers3,
+    account: validationPubkey,
+  } = await fBondsValidation.createValidationFilter({
+    accounts: {
+      authorityAdapter: adapterPubkey,
+      pair: pairPubkey,
+      userPubkey: wallet.publicKey,
+    },
+    args: {
+      loanToValueFilter: maxLTVRaw,
+      maxDurationFilter: maxDurationSec,
+      maxReturnAmountFilter: BOND_MAX_RETURN_AMOUNT_FILTER,
+      bondFeatures: bondFeature,
+    },
+    connection,
+    programId: BONDS_PROGRAM_PUBKEY,
+    sendTxn: sendTxnPlaceHolder,
+  });
 
   const { instructions: instructions4, signers: signers4 } =
     await pairs.deposits.depositSolToPair({
@@ -140,5 +147,10 @@ export const makeCreatePairTransaction: MakeCreatePairTransaction = async ({
       ].flat(),
     ),
     signers: [signers1, signers2, signers3, signers4, signers5].flat(),
+    accountsPublicKeys: {
+      pairPubkey,
+      validationPubkey,
+      authorityAdapterPubkey: adapterPubkey,
+    },
   };
 };
