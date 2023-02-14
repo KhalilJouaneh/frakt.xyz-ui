@@ -2,6 +2,7 @@
 export { Alert } from './Alert';
 export { Arrow } from './Arrow';
 export { ArrowDownBtn } from './ArrowDownBtn';
+export { ArrowDownLeft } from './ArrowDownLeft';
 export { ArrowDownSmall } from './ArrowDownSmall';
 export { ArrowRight } from './ArrowRight';
 export { ArrowRightTop } from './ArrowRightTop';
