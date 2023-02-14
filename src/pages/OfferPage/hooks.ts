@@ -3,9 +3,11 @@ import { web3 } from 'fbonds-core';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useHistory, useParams } from 'react-router-dom';
 import { BondFeatures } from 'fbonds-core/lib/fbond-protocol/types';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useLoadingModal } from '@frakt/components/LoadingModal';
 import {
+  getPairAccount,
   makeCreatePairTransaction,
   makeRemoveOrderTransaction,
   useMarket,
@@ -17,6 +19,7 @@ import { NotifyType } from '@frakt/utils/solanaUtils';
 import { useConnection } from '@frakt/hooks';
 import { useNativeAccount } from '@frakt/utils/accounts';
 import { PATHS } from '@frakt/constants';
+import { Pair } from '@frakt/api/bonds';
 
 import { RBOption } from './components/RadioButton';
 
@@ -35,6 +38,8 @@ export const useOfferPage = () => {
   const { pair, isLoading: pairLoading } = useMarketPair({
     pairPubkey,
   });
+
+  const queryClient = useQueryClient();
 
   const wallet = useWallet();
   const connection = useConnection();
@@ -79,18 +84,19 @@ export const useOfferPage = () => {
       try {
         openLoadingModal();
 
-        const { transaction, signers } = await makeCreatePairTransaction({
-          marketPubkey: new web3.PublicKey(marketPubkey),
-          maxDuration: duration,
-          maxLTV: ltv,
-          solDeposit: parseFloat(offerSize),
-          interest: parseFloat(interest),
-          bondFeature: receiveLiquidatedNfts
-            ? BondFeatures.ReceiveNftOnLiquidation
-            : BondFeatures.None,
-          connection,
-          wallet,
-        });
+        const { transaction, signers, accountsPublicKeys } =
+          await makeCreatePairTransaction({
+            marketPubkey: new web3.PublicKey(marketPubkey),
+            maxDuration: duration,
+            maxLTV: ltv,
+            solDeposit: parseFloat(offerSize),
+            interest: parseFloat(interest),
+            bondFeature: receiveLiquidatedNfts
+              ? BondFeatures.ReceiveNftOnLiquidation
+              : BondFeatures.None,
+            connection,
+            wallet,
+          });
 
         await signAndConfirmTransaction({
           transaction,
@@ -98,6 +104,19 @@ export const useOfferPage = () => {
           wallet,
           connection,
         });
+
+        const newPair = await getPairAccount({
+          accountsPublicKeys,
+          connection,
+        });
+
+        newPair &&
+          queryClient.setQueryData(
+            ['marketPairs', marketPubkey],
+            (pairs: Pair[]) => {
+              return [...pairs, newPair];
+            },
+          );
 
         notify({
           message: 'Transaction successful!',
