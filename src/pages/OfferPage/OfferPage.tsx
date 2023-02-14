@@ -40,8 +40,8 @@ export const OfferPage = () => {
     isLoading,
     onEditOffer,
     onRemoveOffer,
-    autocompound,
-    toggleAutocompound,
+    // autocompound,
+    // toggleAutocompound,
     receiveLiquidatedNfts,
     toggleReceiveLiquidatedNfts,
   } = useOfferPage();
@@ -121,7 +121,7 @@ export const OfferPage = () => {
             toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
           />
 
-          <div className={styles.checkbox}>
+          {/* <div className={styles.checkbox}>
             <label className={styles.checkboxLabel}>
               <input
                 className={styles.checkboxInput}
@@ -138,7 +138,7 @@ export const OfferPage = () => {
             >
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
-          </div>
+          </div> */}
 
           <div className={styles.checkbox}>
             <label className={styles.checkboxLabel}>
