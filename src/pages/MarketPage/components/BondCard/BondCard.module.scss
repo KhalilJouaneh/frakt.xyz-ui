@@ -18,6 +18,29 @@
   gap: 8px;
 }
 
+.imageWrapper {
+  position: relative;
+}
+
+.receiveIcon {
+  background: var(--primary-background);
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  inset: -10px 0 0 -10px;
+
+  border: 7px solid var(--primary-background);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    fill: var(--black-color);
+    width: 10px;
+    height: 10px;
+  }
+}
+
 .image {
   width: 26px;
   height: 26px;

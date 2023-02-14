@@ -5,7 +5,7 @@ import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
 
 import Button from '@frakt/components/Button';
 import Tooltip from '@frakt/components/Tooltip';
-import { Solana, Timer } from '@frakt/icons';
+import { ArrowDownLeft, Solana, Timer } from '@frakt/icons';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 import { useCountdown } from '@frakt/hooks';
 import {
@@ -15,7 +15,7 @@ import {
 } from '@frakt/utils/bonds';
 
 import styles from './BondCard.module.scss';
-// import { ExitModal } from './components/ExitModal';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 interface BondCardProps {
   bond: Bond;
@@ -40,6 +40,8 @@ export const BondCard: FC<BondCardProps> = ({
     interest: basePointInterest,
     averageBondPrice,
   } = bond;
+
+  const wallet = useWallet();
 
   const bSolLamports = walletBalance;
 
@@ -71,13 +73,21 @@ export const BondCard: FC<BondCardProps> = ({
   const exitAvailable =
     bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
 
-  // const [exitModalVisible, setExitModalVisible] = useState(false);
+  const isReceiveLiquidatedNfts =
+    wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
 
   return (
     <>
       <div className={styles.bond}>
         <div className={styles.bondName}>
-          <img src={collateralBox?.nft?.imageUrl} className={styles.image} />
+          <div className={styles.imageWrapper}>
+            <img src={collateralBox?.nft?.imageUrl} className={styles.image} />
+            {isReceiveLiquidatedNfts && (
+              <div className={styles.receiveIcon}>
+                <ArrowDownLeft />
+              </div>
+            )}
+          </div>
           <div className={styles.title}>{collateralBox?.nft?.name}</div>
         </div>
 
