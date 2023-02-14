@@ -63,15 +63,17 @@ export const MarketPage: FC = () => {
     try {
       const bondsAvailableToRedeem = filter(bonds, isBondAvailableToRedeem);
 
-      await redeemAllBonds({
+      const result = await redeemAllBonds({
         bonds: bondsAvailableToRedeem,
         wallet,
         connection,
       });
 
-      bondsAvailableToRedeem.forEach(({ fbond }) => {
-        hideBond?.(fbond?.publicKey);
-      });
+      if (result) {
+        bondsAvailableToRedeem.forEach(({ fbond }) => {
+          hideBond?.(fbond?.publicKey);
+        });
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
@@ -81,13 +83,15 @@ export const MarketPage: FC = () => {
 
   const onRedeem = async (bond: Bond) => {
     try {
-      await redeemBond({
+      const result = await redeemBond({
         bond,
         wallet,
         connection,
       });
 
-      hideBond(bond?.fbond?.publicKey);
+      if (result) {
+        hideBond(bond?.fbond?.publicKey);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
