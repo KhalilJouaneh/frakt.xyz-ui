@@ -70,11 +70,13 @@ export const BondCard: FC<BondCardProps> = ({
 
   const pnlProfit = pnlLamports / (averageBondPrice * BOND_SOL_DECIMAIL_DELTA);
 
-  const exitAvailable =
-    bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
-
   const isReceiveLiquidatedNfts =
     wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
+
+  const exitAvailable =
+    bestPair &&
+    bond.fbond.fraktBondState === FraktBondState.Active &&
+    !isReceiveLiquidatedNfts;
 
   return (
     <>
@@ -103,14 +105,14 @@ export const BondCard: FC<BondCardProps> = ({
               </Tooltip>
             </div>
             <div className={styles.infoValue}>
-              {(bSolLamports / BOND_SOL_DECIMAIL_DELTA).toFixed(2)} bSOL
+              {(bSolLamports / BOND_SOL_DECIMAIL_DELTA || 0).toFixed(2)} bSOL
             </div>
           </div>
 
           <div className={styles.info}>
             <div className={styles.infoName}>interest</div>
             <div className={styles.infoValue}>
-              <div>{(lamportsInterest / 1e9).toFixed(2)} </div>
+              <div>{(lamportsInterest / 1e9 || 0).toFixed(2)} </div>
               <Solana />
             </div>
           </div>
@@ -125,7 +127,7 @@ export const BondCard: FC<BondCardProps> = ({
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
             </div>
-            <div className={styles.infoValue}>{apy.toFixed(2)} %</div>
+            <div className={styles.infoValue}>{(apy || 0)?.toFixed(2)} %</div>
           </div>
 
           <div className={styles.info}>
@@ -147,7 +149,7 @@ export const BondCard: FC<BondCardProps> = ({
                       [styles.negative]: pnlProfit < 0,
                     })}
                   >
-                    {pnlProfit.toFixed(3)} %
+                    {pnlProfit?.toFixed(3)} %
                   </span>
                 )}
               </div>
