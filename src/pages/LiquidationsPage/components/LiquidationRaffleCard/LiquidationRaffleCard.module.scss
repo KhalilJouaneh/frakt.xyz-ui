@@ -41,6 +41,7 @@
   color: var(--secondary-text);
   font: var(--font-text-6);
   text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 .value {
@@ -152,6 +153,7 @@
   outline: 0;
   text-align: center;
   width: 40px;
+  margin: 0 8px;
 
   &:focus,
   &:focus-visible {
@@ -163,4 +165,9 @@
 .activeInput {
   color: var(--secondary-border);
   border-bottom: 1px solid var(--secondary-border);
+}
+
+.useMaxButton {
+  height: 40px;
+  width: 83px;
 }

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   participateInRaffle as participateInRaffleTxn,
@@ -27,6 +26,14 @@ export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
     if (ticketCount > 0) {
       setTicketCount(ticketCount - 1);
     }
+  };
+
+  const onMaxTickets = () => {
+    setTicketCount(lotteryTickets.currentTickets);
+  };
+
+  const onResetTickets = () => {
+    setTicketCount(0);
   };
 
   const handleChange = (event): void => {
@@ -93,5 +100,7 @@ export const useLiquidationsRaffle = (raffle: RaffleListItem) => {
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
+    onMaxTickets,
+    onResetTickets,
   };
 };
