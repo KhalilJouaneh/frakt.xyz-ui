@@ -33,7 +33,7 @@ export const BondCard: FC<BondCardProps> = ({
   onRedeem,
 }) => {
   const {
-    walletBalance,
+    amountOfUserBonds,
     collateralBox,
     fbond,
     apy,
@@ -43,16 +43,16 @@ export const BondCard: FC<BondCardProps> = ({
 
   const wallet = useWallet();
 
-  const bSolLamports = walletBalance;
+  const bSolLamports = amountOfUserBonds;
 
-  const lamportsInterest = walletBalance * basePointInterest;
+  const lamportsInterest = amountOfUserBonds * basePointInterest;
 
   const { timeLeft } = useCountdown(fbond.liquidatingAt);
 
   const redeemAvailable = isBondAvailableToRedeem(bond);
 
   const bestPair = useMemo(() => {
-    const { fbond, walletBalance } = bond;
+    const { fbond, amountOfUserBonds } = bond;
 
     const ltvBasePoints =
       (fbond.amountToReturn / market?.oracleFloor?.floor) * 1e4;
@@ -60,23 +60,23 @@ export const BondCard: FC<BondCardProps> = ({
     return getBestPairForExit({
       pairs,
       ltvBasePoints,
-      fbondTokenAmount: walletBalance,
+      fbondTokenAmount: amountOfUserBonds,
       duration: (fbond.liquidatingAt - fbond.activatedAt) / (24 * 60 * 60),
     });
   }, [pairs, bond, market]);
 
   const pnlLamports =
-    (bestPair?.currentSpotPrice - averageBondPrice) * walletBalance;
+    (bestPair?.currentSpotPrice - averageBondPrice) * amountOfUserBonds;
 
-  const pnlProfit = pnlLamports / (averageBondPrice * BOND_SOL_DECIMAIL_DELTA);
+  const pnlProfit = averageBondPrice
+    ? pnlLamports / (averageBondPrice * BOND_SOL_DECIMAIL_DELTA)
+    : 0;
+
+  const exitAvailable =
+    bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
 
   const isReceiveLiquidatedNfts =
     wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
-
-  const exitAvailable =
-    bestPair &&
-    bond.fbond.fraktBondState === FraktBondState.Active &&
-    !isReceiveLiquidatedNfts;
 
   return (
     <>

@@ -175,5 +175,5 @@ export interface Bond {
   apy: number; //? Percent (50%)
   averageBondPrice: number; //? price in lamports for minimal part of bond
   interest: number; //? BasePoint percent (50% === 5000)
-  walletBalance: number;
+  amountOfUserBonds: number;
 }

@@ -75,7 +75,7 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
                 [styles.negative]: false,
               })}
             >
-              up to {apy?.toFixed(2)} %
+              up to {(apy || 0).toFixed(2)} %
             </div>
           </div>
         </div>

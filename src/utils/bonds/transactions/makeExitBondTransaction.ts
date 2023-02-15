@@ -1,6 +1,7 @@
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { web3 } from 'fbonds-core';
 import { validateAndSellNftToTokenToNftPair } from 'fbonds-core/lib/fbond-protocol/functions/router';
+import { unsetBondCollateralOrSolReceiver } from 'fbonds-core/lib/fbond-protocol/functions/management';
 
 import { Bond, Market, Pair, WhitelistType } from '@frakt/api/bonds';
 import { getNftMerkleTreeProof } from '@frakt/api/nft';
@@ -23,6 +24,9 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
   connection,
   wallet,
 }) => {
+  const transaction = new web3.Transaction();
+  const signers: web3.Signer[] = [];
+
   const proof = await (async () => {
     if (market.whitelistEntry?.whitelistType !== WhitelistType.MERKLE_TREE) {
       return [];
@@ -32,7 +36,33 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
     });
   })();
 
-  const { instructions, signers } = await validateAndSellNftToTokenToNftPair({
+  const isReceiveLiquidatedNfts =
+    wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
+
+  if (isReceiveLiquidatedNfts) {
+    const {
+      instructions: unsetBondCollateralInstructions,
+      signers: unsetBondCollateralSigners,
+    } = await unsetBondCollateralOrSolReceiver({
+      accounts: {
+        fbond: new web3.PublicKey(bond.fbond.publicKey),
+        fbondsTokenMint: new web3.PublicKey(bond.fbond.fbondTokenMint),
+        userPubkey: wallet.publicKey,
+      },
+      args: {},
+      connection,
+      programId: BONDS_PROGRAM_PUBKEY,
+      sendTxn: sendTxnPlaceHolder,
+    });
+
+    transaction.add(...unsetBondCollateralInstructions);
+    signers.push(...unsetBondCollateralSigners);
+  }
+
+  const {
+    instructions: validateAndSellInstructions,
+    signers: validateAndSellSigners,
+  } = await validateAndSellNftToTokenToNftPair({
     accounts: {
       collateralBox: new web3.PublicKey(bond.collateralBox.publicKey),
       fbond: new web3.PublicKey(bond.fbond.publicKey),
@@ -57,8 +87,8 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
     },
     args: {
       proof: proof,
-      amountToSell: bond.walletBalance, //? amount of fbond tokens decimals
-      minAmountToGet: bond.walletBalance * pair.currentSpotPrice, //? SOL lamports
+      amountToSell: bond.amountOfUserBonds, //? amount of fbond tokens decimals
+      minAmountToGet: bond.amountOfUserBonds * pair.currentSpotPrice, //? SOL lamports
       skipFailed: false,
     },
     connection,
@@ -66,8 +96,11 @@ export const makeExitBondTransaction: MakeExitBondTransaction = async ({
     sendTxn: sendTxnPlaceHolder,
   });
 
+  transaction.add(...validateAndSellInstructions);
+  signers.push(...validateAndSellSigners);
+
   return {
-    transaction: new web3.Transaction().add(...instructions),
+    transaction,
     signers,
   };
 };

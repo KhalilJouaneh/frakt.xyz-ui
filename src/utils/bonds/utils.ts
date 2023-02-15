@@ -54,8 +54,10 @@ export const getColorByPercent = (
 };
 
 export const calcBondRedeemLamports = (bond: Bond) => {
-  const { fbond, walletBalance } = bond;
-  return walletBalance * (fbond.actualReturnedAmount / fbond.fbondTokenSupply);
+  const { fbond, amountOfUserBonds } = bond;
+  return (
+    amountOfUserBonds * (fbond.actualReturnedAmount / fbond.fbondTokenSupply)
+  );
 };
 
 export const isBondAvailableToRedeem = (bond: Bond) => {

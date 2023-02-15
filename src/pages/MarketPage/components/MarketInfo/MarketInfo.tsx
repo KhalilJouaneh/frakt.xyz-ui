@@ -19,7 +19,7 @@ interface MarketInfo {
 }
 
 export const MarketInfo: FC<MarketInfo> = ({ market, bonds, onClaimAll }) => {
-  const balance = sum(map(bonds, (bond) => bond.walletBalance));
+  const balance = sum(map(bonds, (bond) => bond.amountOfUserBonds));
 
   const bondsAvailableToRedeem = useMemo(() => {
     return filter(bonds, isBondAvailableToRedeem);
