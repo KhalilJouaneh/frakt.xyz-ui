@@ -85,9 +85,15 @@ export const BondCard: FC<BondCardProps> = ({
           <div className={styles.imageWrapper}>
             <img src={collateralBox?.nft?.imageUrl} className={styles.image} />
             {isReceiveLiquidatedNfts && (
-              <div className={styles.receiveIcon}>
-                <ArrowDownLeft />
-              </div>
+              <Tooltip
+                overlayClassName={styles.receiveIconTooltip}
+                placement="right"
+                overlay="Receive collaterized NFT instead of SOL in case of liquidation and funding a whole loan"
+              >
+                <div className={styles.receiveIcon}>
+                  <ArrowDownLeft />
+                </div>
+              </Tooltip>
             )}
           </div>
           <div className={styles.title}>{collateralBox?.nft?.name}</div>
