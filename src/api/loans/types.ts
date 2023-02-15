@@ -57,6 +57,7 @@ export interface Loan {
   bondParams?: {
     bondTokenMint: string;
     collateralOrSolReceiver: string;
+    collateralTokenAccount: string;
     expiredAt: number; //? unix timestamp
   };
 }

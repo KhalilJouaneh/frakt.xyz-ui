@@ -40,6 +40,9 @@ export const makeRepayBondTransaction: MakeRepayBondTransaction = async ({
       accounts: {
         collateralTokenMint: new web3.PublicKey(loan.nft.mint),
         fbond: new web3.PublicKey(loan.pubkey),
+        collateralTokenAccount: new web3.PublicKey(
+          loan.bondParams.collateralTokenAccount,
+        ),
         userPubkey: wallet.publicKey,
       },
       args: {
