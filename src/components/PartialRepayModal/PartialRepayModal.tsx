@@ -1,11 +1,12 @@
 import { BN } from '@frakt-protocol/frakt-sdk';
 import { FC, useState } from 'react';
 
+import { Loan } from '@frakt/api/loans';
+
 import Button from '../Button';
 import { Modal } from '../Modal';
 import { Slider } from '../Slider';
 import { CloseModal, Solana } from '../../icons';
-import { Loan } from '../../state/loans/types';
 import { SOL_TOKEN } from '../../utils';
 import { useNativeAccount } from '../../utils/accounts';
 import styles from './PartialRepayModal.module.scss';
@@ -39,15 +40,17 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
 }) => {
   const { account } = useNativeAccount();
 
+  const repayValueConverted = loan?.repayValue / 1e9;
+
   const [partialPercent, setPartialPercent] = useState(100);
   const [paybackAmount, setPaybackAmount] = useState<string>(
-    loan?.repayValue?.toFixed(3) || '0',
+    repayValueConverted.toFixed(3) || '0',
   );
 
   const onPartialPercentChange = (nextValue: number) => {
     setPartialPercent(nextValue);
 
-    setPaybackAmount(((loan?.repayValue * nextValue) / 100)?.toFixed(3));
+    setPaybackAmount(((repayValueConverted * nextValue) / 100)?.toFixed(3));
   };
 
   // const onPaybackAmountChange = (nextValue: string) => {
@@ -69,11 +72,12 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
   const notEnoughBalanceError =
     account?.lamports < parseFloat(paybackAmount) * 10 ** SOL_TOKEN.decimals;
 
-  const invalidValueError = parseFloat(paybackAmount) > loan?.repayValue;
+  const invalidValueError =
+    parseFloat(paybackAmount) > parseFloat(repayValueConverted.toFixed(3));
 
-  const remainingDebt = getRemainingDebt(paybackAmount, loan?.repayValue);
+  const remainingDebt = getRemainingDebt(paybackAmount, repayValueConverted);
 
-  const repayValue = Math.abs(loan?.repayValue - Number(remainingDebt) || 0);
+  const repayValue = Math.abs(repayValueConverted - Number(remainingDebt) || 0);
 
   const submitDisabled =
     parseFloat(paybackAmount) <= 0 ||
@@ -95,7 +99,7 @@ export const PartialRepayModal: FC<PartialRepayModalProps> = ({
       </div>
 
       <div className={styles.lable}>
-        <p>Debt:</p> <span>{loan?.repayValue?.toFixed(2)} SOL</span>
+        <p>Debt:</p> <span>{repayValueConverted?.toFixed(2)} SOL</span>
       </div>
 
       <Slider

@@ -1,10 +1,10 @@
 import { web3 } from '@frakt-protocol/frakt-sdk';
+import { BOND_DECIMAL_DELTA } from '@frakt/utils/bonds';
 import axios from 'axios';
-import { BorrowNft } from '../nft';
 
-import { MarketPreview, Market, Pair } from './types';
+import { MarketPreview, Market, Pair, Bond } from './types';
 
-const BACKEND_DOMAIN = process.env.BACKEND_DEVNET_DOMAIN; //TODO: replace to MAINNET
+const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
 
 type FetchAllMarkets = () => Promise<Market[]>;
 export const fetchAllMarkets: FetchAllMarkets = async () => {
@@ -41,25 +41,6 @@ export const fetchMarketsPreview: FetchMarketsPreview = async ({
   return data;
 };
 
-type FetchWalletBorrowNfts = (props: {
-  walletPubkey: web3.PublicKey;
-  limit?: number;
-  offset?: number;
-}) => Promise<BorrowNft[]>;
-export const fetchWalletBorrowNfts: FetchWalletBorrowNfts = async ({
-  walletPubkey,
-  limit = 1000,
-  offset = 0,
-}) => {
-  const { data } = await axios.get<BorrowNft[]>(
-    `https://${
-      process.env.BACKEND_DOMAIN
-    }/bonds/nft/meta/${walletPubkey?.toBase58()}?limit=${limit}&offset=${offset}`,
-  );
-
-  return data;
-};
-
 type FetchMarketPairs = (props: {
   marketPubkey: web3.PublicKey;
 }) => Promise<Pair[]>;
@@ -68,5 +49,32 @@ export const fetchMarketPairs: FetchMarketPairs = async ({ marketPubkey }) => {
     `https://${BACKEND_DOMAIN}/pairs/${marketPubkey.toBase58()}`,
   );
 
+  return data?.filter(
+    ({ currentSpotPrice }) => currentSpotPrice <= BOND_DECIMAL_DELTA,
+  );
+};
+
+type FetchMarketPair = (props: { pairPubkey: web3.PublicKey }) => Promise<Pair>;
+export const fetchMarketPair: FetchMarketPair = async ({ pairPubkey }) => {
+  const { data } = await axios.get<Pair>(
+    `https://${BACKEND_DOMAIN}/pair/${pairPubkey.toBase58()}`,
+  );
+
   return data;
+};
+
+type FetchWalletBonds = (props: {
+  walletPubkey: web3.PublicKey;
+  marketPubkey: web3.PublicKey;
+}) => Promise<Bond[]>;
+
+export const fetchWalletBonds: FetchWalletBonds = async ({
+  walletPubkey,
+  marketPubkey,
+}) => {
+  const { data } = await axios.get<Bond[]>(
+    `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}/${marketPubkey.toBase58()}`,
+  );
+
+  return data ?? [];
 };

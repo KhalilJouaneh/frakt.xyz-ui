@@ -1,11 +1,12 @@
-import classNames from 'classnames';
 import { FC } from 'react';
+import classNames from 'classnames';
 import { Slider as SliderAntd } from 'antd';
 
 import styles from './Slider.module.scss';
 
 interface SliderProps {
-  value: number;
+  value?: number;
+  defaultValue?: number;
   setValue?: (nextValue: number) => void;
   className?: string;
   marks?: { [key: number]: string | JSX.Element };
@@ -19,6 +20,7 @@ interface SliderProps {
 export const Slider: FC<SliderProps> = ({
   className,
   marks,
+  defaultValue,
   value,
   setValue,
   step,
@@ -37,6 +39,7 @@ export const Slider: FC<SliderProps> = ({
     >
       <SliderAntd
         marks={marks}
+        defaultValue={defaultValue}
         value={value}
         onChange={setValue}
         tooltipVisible={false}

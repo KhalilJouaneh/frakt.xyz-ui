@@ -1,0 +1,39 @@
+@import '@frakt/scss/abstracts/mixins';
+
+.content {
+  display: block;
+}
+.contentSidebarVisible {
+  padding-right: 343px;
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+}
+
+.nftsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+
+  @media (max-width: 767px) {
+    gap: 16px;
+    padding-right: 0;
+    grid-template-columns: repeat(auto-fill, minmax(163px, 2fr));
+    padding-bottom: 100px;
+  }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 32px;
+  font: var(--font-text-2);
+
+  &::after {
+    width: 16px;
+    content: '...';
+  }
+}

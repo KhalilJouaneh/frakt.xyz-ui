@@ -1,0 +1,165 @@
+.borrowForm {
+  display: block;
+}
+
+.borrowFormDetails {
+  padding: 0 32px;
+  flex-grow: 1;
+
+  @media screen and (max-width: 767px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.borrowFormDetailsTitle {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  margin: 45px 0 8px;
+  text-align: center;
+  text-transform: uppercase;
+
+  @media screen and (max-width: 767px) {
+    margin: 28px 0 0;
+  }
+}
+
+.borrowFormSubmitBtnWrapper {
+  width: 100%;
+  padding: 32px;
+
+  @media screen and (max-width: 767px) {
+    padding: 16px;
+    padding-top: 0;
+  }
+}
+
+.borrowFormSubmitBtn {
+  padding: 14px 21px;
+  width: 100%;
+  justify-content: center;
+  font: var(--font-btn-small);
+  max-height: 60px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 14px;
+    height: 40px;
+  }
+}
+
+.borrowFormLtvSliderWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 16px 0;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+}
+
+.borrowFormLtvSliderLabel {
+  color: var(--secondary-text);
+  font: var(--font-text-6);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.borrowValue {
+  color: var(--secondary-border);
+}
+
+.borrowFormLtvSlider {
+  padding: 0 5px;
+  :global {
+    .ant-slider-mark-text:first-child {
+      left: 25px !important;
+    }
+    .ant-slider-mark-text:last-child {
+      left: 90.5% !important;
+      width: 100px;
+    }
+    .ant-slider-mark-text-active {
+      color: var(--secondary-text) !important;
+    }
+  }
+}
+
+.borrowFormSelect {
+  :global {
+    .custom-select__control {
+      background-color: transparent;
+    }
+  }
+}
+
+.loanDetails {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (max-width: 767px) {
+    gap: 7px;
+    height: 150px;
+    overflow: auto;
+  }
+}
+
+.loanDetailsValue {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0 10px;
+
+  color: var(--secondary-border);
+  font: var(--font-text-5);
+  text-transform: uppercase;
+
+  span:first-child {
+    display: flex;
+    color: var(--secondary-text);
+    font: var(--font-text-6);
+    font-size: 12px;
+    max-width: 100px;
+
+    @media (max-width: 767px) {
+      font-size: 10px;
+      max-width: unset;
+    }
+  }
+
+  span:last-child {
+    color: var(--secondary-border);
+    font: var(--font-text-8);
+    text-align: end;
+
+    &.redText {
+      color: #ff6666;
+    }
+
+    &.yellowText {
+      color: #ddb834;
+    }
+
+    &.greenText {
+      color: #83d6a4;
+    }
+  }
+}
+
+.tooltipIcon {
+  margin-left: 5px;
+
+  svg {
+    fill: var(--blue-color);
+    width: 14px;
+    height: 14px;
+  }
+}

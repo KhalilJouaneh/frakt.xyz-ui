@@ -20,10 +20,10 @@ import {
   RafflesDark,
   MyLoans,
   MyLoansDark,
+  Bonds,
+  BondsDark,
   Staking,
   StakingDark,
-  // Bonds,
-  // BondsDark,
 } from '@frakt/icons';
 
 export const community = [
@@ -72,8 +72,8 @@ export const NAVIGATION_LINKS = [
     fillIcon: true,
   },
   {
-    pathname: PATHS.BORROW,
-    to: PATHS.BORROW,
+    pathname: PATHS.BORROW_ROOT,
+    to: PATHS.BORROW_ROOT,
     label: 'Borrow',
     event: 'navigation-borrow',
     icon: Borrow,
@@ -105,14 +105,14 @@ export const NAVIGATION_LINKS = [
     icon: MyLoans,
     iconDark: MyLoansDark,
   },
-  // {
-  //   pathname: PATHS.BONDS,
-  //   to: PATHS.BONDS,
-  //   label: 'My bonds',
-  //   event: 'navigation-bonds',
-  //   icon: Bonds,
-  //   iconDark: BondsDark,
-  // },
+  {
+    pathname: PATHS.BONDS,
+    to: PATHS.BONDS,
+    label: 'Bonds',
+    event: 'navigation-bonds',
+    icon: Bonds,
+    iconDark: BondsDark,
+  },
   {
     href: PATHS.STAKING,
     label: 'Staking',
