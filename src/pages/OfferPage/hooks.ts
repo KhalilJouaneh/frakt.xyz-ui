@@ -77,7 +77,8 @@ export const useOfferPage = () => {
     history.goBack();
   };
 
-  const isValid = Number(offerSize) && Number(interest) !== 0;
+  const isValid =
+    Number(offerSize) && Number(interest) !== 0 && wallet.connected;
 
   const onCreateOffer = async () => {
     if (marketPubkey && wallet.publicKey) {
