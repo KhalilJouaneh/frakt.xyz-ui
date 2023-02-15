@@ -101,7 +101,7 @@ export const MarketPage: FC = () => {
 
   const onExit = async ({ bond, pair }: { bond: Bond; pair: Pair }) => {
     try {
-      await exitBond({
+      const result = await exitBond({
         bond,
         pair,
         market,
@@ -109,7 +109,9 @@ export const MarketPage: FC = () => {
         connection,
       });
 
-      hideBond(bond?.fbond?.publicKey);
+      if (result) {
+        hideBond(bond?.fbond?.publicKey);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error?.logs?.join('\n'));
