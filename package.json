@@ -20,7 +20,7 @@
     "chart.js": "^3.8.0",
     "classnames": "^2.3.1",
     "crypto-browserify": "^3.12.0",
-    "fbonds-core": "^0.4.7",
+    "fbonds-core": "^0.4.8",
     "firebase": "^9.8.3",
     "immer": "^9.0.18",
     "moment": "^2.29.1",
