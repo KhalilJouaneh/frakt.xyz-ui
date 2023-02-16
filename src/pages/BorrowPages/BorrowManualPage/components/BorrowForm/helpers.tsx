@@ -90,7 +90,9 @@ export const generateSelectOptions: GenerateSelectOptions = ({
   const timeBasedDiscountAvailable =
     !!nft?.classicParams?.timeBased?.feeDiscountPercent;
 
-  if (timeBasedDiscountAvailable) {
+  const bondsAvailable = !!nft?.bondParams?.marketPubkey;
+
+  if (!bondsAvailable || timeBasedDiscountAvailable) {
     options.push({
       label: `${nft?.classicParams?.timeBased.returnPeriodDays} days (flip)`,
       value: {
