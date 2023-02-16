@@ -103,7 +103,7 @@ export const OfferPage = () => {
             label="SIZE"
             currentToken={SOL_TOKEN}
             lpBalance={parseFloat((walletSolBalance / 1e9).toFixed(3))}
-            toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
+            toolTipText="Amount of SOL you want to lend for a specific collection at the chosen LTV & APY"
           />
           <TokenField
             value={interest}
@@ -118,7 +118,7 @@ export const OfferPage = () => {
             tokensList={[
               { ...SOL_TOKEN, symbol: '%', logoURI: null, name: null },
             ]}
-            toolTipText="Yearly rewards based on the current utilization rate and borrow interest"
+            toolTipText="Interest (in %) for the duration of this loan"
           />
 
           {/* <div className={styles.checkbox}>
@@ -153,7 +153,7 @@ export const OfferPage = () => {
             </label>
             <Tooltip
               placement="bottom"
-              overlay="Receive collaterized NFT instead of SOL in case of liquidation and funding a whole loan "
+              overlay="When funding full loans, lenders have the option to get defaulted NFTs instead of the SOL recovered from the liquidation"
             >
               <QuestionCircleOutlined className={styles.questionIcon} />
             </Tooltip>
@@ -253,7 +253,7 @@ const TotalOverview: FC<TotalOverviewProps> = ({
           <span>estimated profit</span>
           <Tooltip
             placement="bottom"
-            overlay="Analyzed profit from repaying the loan"
+            overlay="Proportional to the Size and % Interest"
           >
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>
