@@ -92,7 +92,7 @@ export const generateSelectOptions: GenerateSelectOptions = ({
 
   if (timeBasedDiscountAvailable) {
     options.push({
-      label: `${nft?.classicParams?.timeBased.returnPeriodDays} days`,
+      label: `${nft?.classicParams?.timeBased.returnPeriodDays} days (flip)`,
       value: {
         type: LoanType.TIME_BASED,
         duration: nft?.classicParams?.timeBased.returnPeriodDays,
@@ -119,7 +119,7 @@ export const generateSelectOptions: GenerateSelectOptions = ({
 
     availablePeriods.forEach((period) => {
       options.push({
-        label: `${period} days${timeBasedDiscountAvailable ? ' (bond)' : ''}`,
+        label: `${period} days`,
         value: {
           type: LoanType.BOND,
           duration: period,
