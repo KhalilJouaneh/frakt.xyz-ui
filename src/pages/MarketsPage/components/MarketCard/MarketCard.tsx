@@ -1,13 +1,12 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
-// import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { PATHS } from '@frakt/constants';
 import { MarketPreview } from '@frakt/api/bonds';
-// import Tooltip from '@frakt/components/Tooltip';
+import Tooltip from '@frakt/components/Tooltip';
 import { Solana } from '@frakt/icons';
-
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import styles from './MarketCard.module.scss';
 
 interface MarketCardProps {
@@ -36,14 +35,13 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
         <div className={styles.infoWrapper}>
           <div className={styles.info}>
             <div className={styles.infoTitle}>
-              offer tvl
-              {/* <span>offer tvl </span>{' '}
+              <span>offer tvl </span>
               <Tooltip
                 placement="bottom"
-                overlay="Analyzed profit from repaying the loan"
+                overlay="Total liquidity currently available in active offers"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip> */}
+              </Tooltip>
             </div>
             <div className={styles.infoValue}>
               <span>{Number(offerTVL)?.toFixed(3)}</span> <Solana />
@@ -51,14 +49,13 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>
-              best offer
-              {/* <span>best offer</span>
+              <span>best offer</span>
               <Tooltip
                 placement="bottom"
-                overlay="Analyzed profit from repaying the loan"
+                overlay="Highest loan amount offered for that collection"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip> */}
+              </Tooltip>
             </div>
             <div className={styles.infoValue}>
               <span>{(bestOffer / 1e9)?.toFixed(3)}</span> <Solana />
