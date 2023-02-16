@@ -102,16 +102,6 @@ export const generateSelectOptions: GenerateSelectOptions = ({
     });
   }
 
-  if (nft?.classicParams?.priceBased) {
-    options.push({
-      label: 'Perpetual',
-      value: {
-        type: LoanType.PRICE_BASED,
-        duration: null,
-      },
-    });
-  }
-
   if (bondsParams?.pairs) {
     const availablePeriods = uniq(
       bondsParams?.pairs.map(
@@ -127,6 +117,16 @@ export const generateSelectOptions: GenerateSelectOptions = ({
           duration: period,
         },
       });
+    });
+  }
+
+  if (nft?.classicParams?.priceBased) {
+    options.push({
+      label: 'Perpetual',
+      value: {
+        type: LoanType.PRICE_BASED,
+        duration: null,
+      },
     });
   }
 
