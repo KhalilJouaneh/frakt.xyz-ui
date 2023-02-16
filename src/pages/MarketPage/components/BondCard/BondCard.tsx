@@ -105,7 +105,7 @@ export const BondCard: FC<BondCardProps> = ({
               size
               <Tooltip
                 placement="bottom"
-                overlay="Analyzed profit from repaying the loan"
+                overlay="Amount of SOL you want to lend for a specific collection at the chosen LTV & APY"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
@@ -116,7 +116,15 @@ export const BondCard: FC<BondCardProps> = ({
           </div>
 
           <div className={styles.info}>
-            <div className={styles.infoName}>interest</div>
+            <div className={styles.infoName}>
+              interest
+              <Tooltip
+                placement="bottom"
+                overlay="Interest (in %) for the duration of this loan"
+              >
+                <QuestionCircleOutlined className={styles.questionIcon} />
+              </Tooltip>
+            </div>
             <div className={styles.infoValue}>
               <div>{(lamportsInterest / 1e9 || 0).toFixed(2)} </div>
               <Solana />
@@ -141,7 +149,7 @@ export const BondCard: FC<BondCardProps> = ({
               pnl{' '}
               <Tooltip
                 placement="bottom"
-                overlay="Profit and loss from exiting position instantly"
+                overlay="Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”) "
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
@@ -169,7 +177,7 @@ export const BondCard: FC<BondCardProps> = ({
               expiration{' '}
               <Tooltip
                 placement="bottom"
-                overlay="Time left until bond will get liquidated."
+                overlay="When the loan is paid back or liquidated"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>

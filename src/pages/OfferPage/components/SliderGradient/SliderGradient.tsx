@@ -31,7 +31,7 @@ export const SliderGradient: FC<SliderGradientProps> = ({
           ltv{' '}
           <Tooltip
             placement="bottom"
-            overlay="Analyzed profit from repaying the loan"
+            overlay="Loan collateralization rate (or risk level) is a fixed % of the floor price, following the market until funding a loan"
           >
             <QuestionCircleOutlined className={styles.questionIcon} />
           </Tooltip>

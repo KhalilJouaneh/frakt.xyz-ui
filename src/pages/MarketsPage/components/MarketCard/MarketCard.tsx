@@ -35,10 +35,10 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
         <div className={styles.infoWrapper}>
           <div className={styles.info}>
             <div className={styles.infoTitle}>
-              <span>offer tvl </span>{' '}
+              <span>offer tvl </span>
               <Tooltip
                 placement="bottom"
-                overlay="Analyzed profit from repaying the loan"
+                overlay="Total liquidity currently available in active offers"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
@@ -49,11 +49,10 @@ const MarketCard: FC<MarketCardProps> = ({ marketPreview: bondPreview }) => {
           </div>
           <div className={styles.info}>
             <div className={styles.infoTitle}>
-              {' '}
               <span>best offer</span>
               <Tooltip
                 placement="bottom"
-                overlay="Analyzed profit from repaying the loan"
+                overlay="Highest loan amount offered for that collection"
               >
                 <QuestionCircleOutlined className={styles.questionIcon} />
               </Tooltip>
