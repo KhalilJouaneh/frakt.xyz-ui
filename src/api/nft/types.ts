@@ -36,21 +36,6 @@ export interface BorrowNft {
   };
 }
 
-export interface BorrowNftSuggested {
-  loanType: LoanType;
-
-  borrowNft: BorrowNft;
-
-  priceBasedSuggestion?: {
-    loandValue: number; // lamports
-  };
-
-  bondSuggestion?: {
-    pairPubkey: string;
-    loandValue: number; // lamports
-  };
-}
-
 export interface BondOrderParams {
   orderSize: number; //? lamports
   spotPrice: number; //? lamports
