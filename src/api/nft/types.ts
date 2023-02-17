@@ -60,8 +60,8 @@ export enum BulkTypes {
 
 export interface Suggestion {
   orders: BorrowNftSuggested[];
-  markets: Market[];
-  modifiedPairs: Pair[];
+  markets?: Market[];
+  modifiedPairs?: Pair[];
 }
 
 export type BulkSuggestion = {
