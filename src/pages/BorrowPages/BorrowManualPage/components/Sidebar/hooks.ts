@@ -74,7 +74,7 @@ export const useSidebar = () => {
   };
 
   return {
-    isLoading: currentNft?.bondParams && isLoading,
+    isLoading: currentNft?.bondParams?.marketPubkey && isLoading,
     isBulk,
     totalBorrowValue,
     currentNft,

@@ -85,22 +85,19 @@ export const generateSelectOptions: GenerateSelectOptions = ({
   nft,
   bondsParams,
 }) => {
-  const options: SelectValue[] = [
-    {
-      label: `${nft?.classicParams?.timeBased.returnPeriodDays} days`,
+  const options: SelectValue[] = [];
+
+  const timeBasedDiscountAvailable =
+    !!nft?.classicParams?.timeBased?.feeDiscountPercent;
+
+  const bondsAvailable = !!nft?.bondParams?.marketPubkey;
+
+  if (!bondsAvailable || timeBasedDiscountAvailable) {
+    options.push({
+      label: `${nft?.classicParams?.timeBased.returnPeriodDays} days (flip)`,
       value: {
         type: LoanType.TIME_BASED,
         duration: nft?.classicParams?.timeBased.returnPeriodDays,
-      },
-    },
-  ];
-
-  if (nft?.classicParams?.priceBased) {
-    options.push({
-      label: 'Perpetual',
-      value: {
-        type: LoanType.PRICE_BASED,
-        duration: null,
       },
     });
   }
@@ -114,12 +111,22 @@ export const generateSelectOptions: GenerateSelectOptions = ({
 
     availablePeriods.forEach((period) => {
       options.push({
-        label: `${period} days (bond)`,
+        label: `${period} days`,
         value: {
           type: LoanType.BOND,
           duration: period,
         },
       });
+    });
+  }
+
+  if (nft?.classicParams?.priceBased) {
+    options.push({
+      label: 'Perpetual',
+      value: {
+        type: LoanType.PRICE_BASED,
+        duration: null,
+      },
     });
   }
 
