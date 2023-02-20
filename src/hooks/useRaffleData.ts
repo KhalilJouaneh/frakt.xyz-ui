@@ -5,8 +5,13 @@ import {
   FetchNextPageOptions,
   InfiniteQueryObserverResult,
   useInfiniteQuery,
+  useQuery,
 } from '@tanstack/react-query';
-import { FetchItemsParams } from '@frakt/api/raffle';
+import {
+  fetchAllRaffleList,
+  FetchItemsParams,
+  GraceListItem,
+} from '@frakt/api/raffle';
 
 const LIMIT = 20;
 
@@ -82,4 +87,21 @@ export const useRaffleInfo = (params: {
     isFetchingNextPage,
     isListEnded,
   };
+};
+
+export const useFetchAllRaffleList = () => {
+  const {
+    data,
+    isLoading,
+    isFetching,
+  }: {
+    data: GraceListItem[];
+    isLoading: boolean;
+    isFetching: boolean;
+  } = useQuery(['fetchAllRaffleList'], () => fetchAllRaffleList(), {
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+  });
+
+  return { data, loading: isLoading || isFetching };
 };
