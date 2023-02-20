@@ -9,8 +9,15 @@ export const calcLoansAmounts = (userLoans: Loan[]) => {
   const bondLoans = filter(userLoans, { loanType: 'bond' });
   const graceLoans = filter(userLoans, 'gracePeriod');
 
-  const flipRepayValue = sum(map(flipLoans, 'repayValue'));
-  const perpetualRepayValue = sum(map(perpetualLoans, 'repayValue'));
+  const removeGraceLoans = (loan: Loan) => !loan?.gracePeriod;
+
+  const flipLoansWithoutGrace = filter(flipLoans, removeGraceLoans);
+  const perpetualLoansWithoutGrace = filter(perpetualLoans, removeGraceLoans);
+
+  const perpetualRepayValue = sum(
+    map(perpetualLoansWithoutGrace, 'repayValue'),
+  );
+  const flipRepayValue = sum(map(flipLoansWithoutGrace, 'repayValue'));
   const bondRepayValue = sum(map(bondLoans, 'repayValue'));
   const graceLoansValue = sum(map(graceLoans, 'repayValue'));
 
