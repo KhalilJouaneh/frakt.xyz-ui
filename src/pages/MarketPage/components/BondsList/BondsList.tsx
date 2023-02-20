@@ -2,9 +2,13 @@ import { FC } from 'react';
 
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 
+import {
+  SORT_OPTIONS,
+  useSortableBondList,
+} from './components/SortableList/hooks';
+import SortableList from './components/SortableList';
 import styles from './BondsList.module.scss';
 import { BondCard } from '../BondCard';
-import SortableList from './components/SortableList';
 
 interface BondsListProps {
   market: Market;
@@ -22,11 +26,20 @@ export const BondsList: FC<BondsListProps> = ({
   onRedeem,
   onExit,
 }) => {
+  const { filteredBonds, setValue, orderState, onChangeSortOrder, fieldValue } =
+    useSortableBondList({ bonds });
+
   return (
     <div>
-      <SortableList options={SORT_VALUES} />
+      <SortableList
+        orderState={orderState}
+        onChangeSortOrder={onChangeSortOrder}
+        setValue={setValue}
+        options={SORT_OPTIONS}
+        fieldValue={fieldValue}
+      />
       <div className={styles.bondList}>
-        {bonds.map((bond, idx) => (
+        {filteredBonds.map((bond: Bond, idx: number) => (
           <BondCard
             key={idx}
             bond={bond}
@@ -40,32 +53,3 @@ export const BondsList: FC<BondsListProps> = ({
     </div>
   );
 };
-
-const SORT_VALUES = [
-  {
-    key: 'name',
-    title: 'Collateral name',
-  },
-  {
-    key: 'size',
-    title: 'Size',
-    tooltip:
-      'Amount of SOL you want to lend for a specific collection at the chosen LTV & APY',
-  },
-  {
-    key: 'interest',
-    title: 'Interest',
-    tooltip: 'Interest (in %) for the duration of this loan',
-  },
-  {
-    key: 'expiration',
-    title: 'Expiration',
-    tooltip: 'When the loan is paid back or liquidated',
-  },
-  {
-    key: 'pnl',
-    title: 'PNL',
-    tooltip:
-      'Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”)',
-  },
-];
