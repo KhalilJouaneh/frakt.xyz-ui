@@ -1,0 +1,61 @@
+@import './abstracts/_variables.scss';
+
+@primary-background: var(--primary-background);
+@primary-border: var(--primary-border);
+
+// TABLE
+
+.ant-table {
+  overflow: auto;
+  background: @primary-background;
+  border: 1px solid @primary-border;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid @primary-border;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.ant-table-tbody > tr > td:first-child {
+  border-bottom: 1px solid @primary-border;
+  vertical-align: middle;
+  padding: 0;
+  padding-left: 16px;
+}
+
+.ant-table-tbody > tr > td:last-child {
+  padding: 16px;
+  padding-left: 0;
+}
+
+.ant-table-thead > tr > th {
+  padding: 16px 0;
+  padding-right: 16px;
+
+  background: @primary-background;
+  &:before {
+    display: none;
+  }
+}
+
+.rowClassName {
+  background: @primary-background;
+  border: 1px solid #3e4854;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background: @primary-background !important;
+}
+
+.ant-table-thead th.ant-table-column-sort {
+  padding: 0;
+  background: @primary-background;
+}
+
+td.ant-table-column-sort {
+  background: @primary-background;
+}
+.ant-table-thead th.ant-table-column-has-sorters:hover {
+  background: @primary-background;
+}

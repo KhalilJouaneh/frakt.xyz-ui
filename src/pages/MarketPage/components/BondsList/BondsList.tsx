@@ -9,6 +9,7 @@ import {
 import SortableList from './components/SortableList';
 import styles from './BondsList.module.scss';
 import { BondCard } from '../BondCard';
+import { CollectionsTable } from './components/CollectionsTable';
 
 interface BondsListProps {
   market: Market;
@@ -26,20 +27,25 @@ export const BondsList: FC<BondsListProps> = ({
   onRedeem,
   onExit,
 }) => {
-  const { filteredBonds, setValue, orderState, onChangeSortOrder, fieldValue } =
-    useSortableBondList({ bonds });
-
   return (
     <div>
-      <SortableList
+      <CollectionsTable
+        data={bonds}
+        loading={false}
+        market={market}
+        pairs={pairs}
+        onRedeem={onRedeem}
+        onExit={onExit}
+      />
+      {/* <SortableList
         orderState={orderState}
         onChangeSortOrder={onChangeSortOrder}
         setValue={setValue}
         options={SORT_OPTIONS}
         fieldValue={fieldValue}
-      />
+      /> */}
       <div className={styles.bondList}>
-        {filteredBonds.map((bond: Bond, idx: number) => (
+        {bonds.map((bond: Bond, idx: number) => (
           <BondCard
             key={idx}
             bond={bond}

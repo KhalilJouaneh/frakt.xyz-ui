@@ -8,6 +8,7 @@ import 'swiper/css/lazy';
 
 import App from './App';
 import './scss/styles.scss';
+import './scss/theme.less';
 
 import * as serviceWorker from './serviceWorker';
 
