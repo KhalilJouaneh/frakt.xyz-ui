@@ -36,21 +36,6 @@ export interface BorrowNft {
   };
 }
 
-export interface BorrowNftSuggested {
-  loanType: LoanType;
-
-  borrowNft: BorrowNft;
-
-  priceBasedSuggestion?: {
-    loandValue: number; // lamports
-  };
-
-  bondSuggestion?: {
-    pairPubkey: string;
-    loandValue: number; // lamports
-  };
-}
-
 export interface BondOrderParams {
   orderSize: number; //? lamports
   spotPrice: number; //? lamports
@@ -75,8 +60,8 @@ export enum BulkTypes {
 
 export interface Suggestion {
   orders: BorrowNftSuggested[];
-  markets: Market[];
-  modifiedPairs: Pair[];
+  markets?: Market[];
+  modifiedPairs?: Pair[];
 }
 
 export type BulkSuggestion = {

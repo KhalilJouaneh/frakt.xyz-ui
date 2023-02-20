@@ -37,6 +37,7 @@ export const useBorrowForm = () => {
     [setCurrentLoanType],
   );
 
+  //? Genereate select options
   const selectOptions = useMemo(() => {
     if (!currentNft) return [];
     return generateSelectOptions({
@@ -47,6 +48,7 @@ export const useBorrowForm = () => {
     });
   }, [currentNft, pairs]);
 
+  //? Select default select option (when user selects nft)
   useEffect(() => {
     if (selectOptions.length) {
       if (currentNft && currentLoanType) {
@@ -72,6 +74,7 @@ export const useBorrowForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectOptions, onSelectOption]);
 
+  //? Recalc cheapest pair on currentLoanValue change
   useEffect(() => {
     if (selectedOption?.value?.type === LoanType.BOND && market) {
       const pair = getCheapestPairForBorrowValue({
@@ -87,6 +90,7 @@ export const useBorrowForm = () => {
     }
   }, [market, currentLoanValue, pairs, selectedOption, setCurrentPair]);
 
+  //? Calc loanValue range
   const [minBorrowValue, maxBorrowValue] = useMemo(() => {
     if (!currentNft || !selectedOption) return [0, 0];
     return getBorrowValueRange({
@@ -100,6 +104,9 @@ export const useBorrowForm = () => {
     });
   }, [currentNft, selectedOption, market, pairs]);
 
+  //? Set loanValue to max available when prev selected value vas higher
+  //? F.e. Was selected loanValue: 10 SOL for bonds, but then you change option to perp,
+  //? and maxLoanValue there is 8 SOL -- you need to change currentLoanValue to 8 insted of 10
   useEffect(() => {
     if (selectedOption && maxBorrowValue && currentLoanType) {
       if (maxBorrowValue < currentLoanValue || currentLoanValue === 0) {
