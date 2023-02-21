@@ -34,7 +34,7 @@ const Table = <T extends unknown>({
   noDataMessage,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
-  const isMobile = width <= 768;
+  const isMobile = width <= 1380;
 
   if (loading) return <Loader />;
 
@@ -43,28 +43,18 @@ const Table = <T extends unknown>({
 
   if (isMobile) {
     return (
-      <>
-        <MobileTable
-          data={data}
-          columns={columns}
-          onRowClick={onRowClick}
-          rowKeyField={rowKeyField}
-        />
-        <SortModalMobile
-          sortModalMobileVisible={sortModalMobileVisible}
-          setSortModalMobileVisible={setModalMobileVisible}
-          columns={columns}
-          sort={sort}
-          setSort={setSort}
-        />
-      </>
+      <MobileTable
+        data={data}
+        columns={columns}
+        onRowClick={onRowClick}
+        rowKeyField={rowKeyField}
+      />
     );
   }
 
   return (
     <AntdTable
       rowClassName={() => 'rowClassName'}
-      className={styles.desktopTableView}
       columns={columns as ColumnsType}
       dataSource={data as any}
       pagination={false}

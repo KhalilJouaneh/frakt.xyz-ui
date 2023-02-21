@@ -9,9 +9,10 @@ import {
 } from '@frakt/icons';
 
 import styles from './TableCells.module.scss';
+import { SortColumns } from '../columns';
 
 interface HeaderTitleCellProps {
-  sortColumns: any;
+  sortColumns?: SortColumns;
   label: string;
   value: string;
   tooltipText?: string;
@@ -35,7 +36,7 @@ export const HeaderTitleCell: FC<HeaderTitleCellProps> = ({
       )}
       {sortedColumn?.order === 'ascend' && <ArrowUpTableSort />}
       {sortedColumn?.order === 'descend' && <ArrowDownTableSort />}
-      {!sortedColumn?.order && <ArrowTableSort />}
+      {!sortedColumn?.order && sortedColumn && <ArrowTableSort />}
     </div>
   );
 };

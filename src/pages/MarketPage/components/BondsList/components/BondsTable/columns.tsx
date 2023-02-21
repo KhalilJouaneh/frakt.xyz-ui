@@ -1,4 +1,5 @@
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType, ColumnType } from 'antd/es/table';
+import { SortOrder } from 'antd/lib/table/interface';
 
 import { Bond } from '@frakt/api/bonds';
 
@@ -13,13 +14,18 @@ import {
   ButtontsCell,
 } from './TableCells';
 
+export type SortColumns = {
+  column: ColumnType<Bond>;
+  order: SortOrder;
+}[];
+
 export const TableList = ({ market, pairs, onExit, onRedeem }) => {
   const COLUMNS: ColumnsType<Bond> = [
     {
       key: 'nftName',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           label="Collateral"
           value="nftName"
         />
@@ -34,9 +40,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
     {
       key: 'size',
       dataIndex: 'size',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           label="Size"
           value="size"
           tooltipText="Amount of SOL you want to lend for a specific collection at the chosen LTV & APY"
@@ -52,9 +58,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
     {
       key: 'interest',
       dataIndex: 'interest',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           label="Interest"
           value="interest"
           tooltipText="Interest (in %) for the duration of this loan"
@@ -68,9 +74,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
     {
       key: 'expiration',
       dataIndex: 'expiration',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           label="Expiration"
           value="expiration"
           tooltipText="When the loan is paid back® or liquidated"
@@ -84,9 +90,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
     {
       key: 'profit',
       dataIndex: 'profit',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           value="Profit"
           label="Est. Profit"
           tooltipText="Analyzed profit from repaying the loan"
@@ -97,9 +103,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
     {
       key: 'pnl',
       dataIndex: 'pnl',
-      title: ({ sortColumns }) => (
+      title: (column) => (
         <HeaderTitleCell
-          sortColumns={sortColumns}
+          sortColumns={column?.sortColumns}
           value="pnl"
           label="PNL"
           tooltipText="Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”)"
