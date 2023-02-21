@@ -50,7 +50,6 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  height: 38px;
 }
 
 .btnWrapper {
@@ -110,4 +109,30 @@
     font-size: 10px;
     line-height: 16px;
   }
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.receiveIcon {
+  background: var(--primary-background);
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  inset: -10px 0 0 -10px;
+
+  border: 7px solid var(--primary-background);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    fill: var(--black-color);
+    width: 10px;
+    height: 10px;
+  }
+}
+.receiveIconTooltip {
+  min-width: 200px;
 }

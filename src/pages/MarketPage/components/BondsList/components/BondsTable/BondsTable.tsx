@@ -7,7 +7,6 @@ import { TableList } from './columns';
 
 export interface CollectionsTableProps {
   data: ReadonlyArray<any>;
-  loading: boolean;
   market: Market;
   pairs: Pair[];
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;

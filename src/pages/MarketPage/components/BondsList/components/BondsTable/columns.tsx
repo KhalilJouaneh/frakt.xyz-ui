@@ -27,12 +27,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
       dataIndex: 'nftName',
       sorter: (a, b) =>
         b?.collateralBox.nft.name?.localeCompare(a?.collateralBox.nft.name),
-      render: (_, record: Bond): JSX.Element => (
-        <TitleCell
-          imgSrc={record?.collateralBox.nft.imageUrl}
-          title={record?.collateralBox.nft.name}
-        />
-      ),
+      render: (_, bond: Bond) => <TitleCell bond={bond} />,
       defaultSortOrder: 'descend',
       showSorterTooltip: false,
     },

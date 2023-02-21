@@ -1,12 +1,12 @@
 import { Table as AntdTable } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+
+import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
+import { useWindowSize } from '../../hooks';
+import { MobileTable } from './MobileTable';
 import styles from './Table.module.scss';
 import { Search } from './Search';
-import { MobileTable } from './MobileTable';
-import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
-import { ColumnsType } from 'antd/es/table';
-import { useWindowSize } from '../../hooks';
 import { Loader } from '../Loader';
-import { ArrowDownOutlined } from '@ant-design/icons';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -31,7 +31,7 @@ const Table = <T extends unknown>({
   sort,
   setSort,
   loading = false,
-  noDataMessage = 'no data found',
+  noDataMessage,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
   const isMobile = width <= 768;
