@@ -1,1 +1,1 @@
-export { CollectionsTable } from './BondsTable';
+export { BondsTable } from './BondsTable';

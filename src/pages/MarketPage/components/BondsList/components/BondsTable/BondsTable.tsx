@@ -5,7 +5,7 @@ import { Bond, Market, Pair } from '@frakt/api/bonds';
 
 import { TableList } from './columns';
 
-export interface CollectionsTableProps {
+export interface BondsTableProps {
   data: ReadonlyArray<any>;
   market: Market;
   pairs: Pair[];
@@ -13,7 +13,7 @@ export interface CollectionsTableProps {
   onRedeem: (bond: Bond) => void;
 }
 
-export const CollectionsTable: FC<CollectionsTableProps> = ({
+export const BondsTable: FC<BondsTableProps> = ({
   data,
   market,
   pairs,

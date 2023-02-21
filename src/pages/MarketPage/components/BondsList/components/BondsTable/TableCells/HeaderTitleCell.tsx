@@ -36,7 +36,8 @@ export const HeaderTitleCell: FC<HeaderTitleCellProps> = ({
       )}
       {sortedColumn?.order === 'ascend' && <ArrowUpTableSort />}
       {sortedColumn?.order === 'descend' && <ArrowDownTableSort />}
-      {!sortedColumn?.order && sortedColumn && <ArrowTableSort />}
+      {sortedColumn?.order !== 'descend' &&
+        sortedColumn?.order !== 'ascend' && <ArrowTableSort />}
     </div>
   );
 };

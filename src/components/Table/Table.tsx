@@ -1,12 +1,15 @@
+import { useRef } from 'react';
 import { Table as AntdTable } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
-import { useWindowSize } from '../../hooks';
+import { useOnClickOutside, useWindowSize } from '../../hooks';
+import { useFiltersModal } from '../FiltersDropdown';
 import { MobileTable } from './MobileTable';
 import styles from './Table.module.scss';
 import { Search } from './Search';
 import { Loader } from '../Loader';
+import { Button } from '../Button';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -26,8 +29,6 @@ const Table = <T extends unknown>({
   columns,
   onRowClick,
   rowKeyField = 'id',
-  sortModalMobileVisible,
-  setSortModalMobileVisible: setModalMobileVisible,
   sort,
   setSort,
   loading = false,
@@ -36,6 +37,15 @@ const Table = <T extends unknown>({
   const { width } = useWindowSize();
   const isMobile = width <= 1380;
 
+  const {
+    visible: sortModalMobileVisible,
+    close: closeModalMobile,
+    toggle: toggleModalMobile,
+  } = useFiltersModal();
+
+  const ref = useRef();
+  useOnClickOutside(ref, closeModalMobile);
+
   if (loading) return <Loader />;
 
   if (!loading && !data.length)
@@ -43,12 +53,25 @@ const Table = <T extends unknown>({
 
   if (isMobile) {
     return (
-      <MobileTable
-        data={data}
-        columns={columns}
-        onRowClick={onRowClick}
-        rowKeyField={rowKeyField}
-      />
+      <>
+        <div ref={ref}>
+          <Button type="tertiary" onClick={toggleModalMobile}>
+            Sorting
+          </Button>
+          <SortModalMobile
+            columns={columns}
+            setSort={setSort}
+            sort={sort}
+            sortModalMobileVisible={sortModalMobileVisible}
+          />
+        </div>
+        <MobileTable
+          data={data}
+          columns={columns}
+          onRowClick={onRowClick}
+          rowKeyField={rowKeyField}
+        />
+      </>
     );
   }
 

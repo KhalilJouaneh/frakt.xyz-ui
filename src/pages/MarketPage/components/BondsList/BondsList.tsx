@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 
-import { CollectionsTable } from './components/BondsTable';
+import { BondsTable } from './components/BondsTable';
 import styles from './BondsList.module.scss';
 
 interface BondsListProps {
@@ -22,7 +22,7 @@ export const BondsList: FC<BondsListProps> = ({
 }) => {
   return (
     <div className={styles.bondList}>
-      <CollectionsTable
+      <BondsTable
         data={bonds}
         market={market}
         pairs={pairs}
