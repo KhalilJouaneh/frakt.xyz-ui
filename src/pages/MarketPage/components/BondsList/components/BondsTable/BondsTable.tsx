@@ -1,8 +1,9 @@
 import { FC } from 'react';
 
 import Table, { useTable } from '@frakt/components/Table';
-import { TableList } from './constants';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
+
+import { TableList } from './columns';
 
 export interface CollectionsTableProps {
   data: ReadonlyArray<any>;
@@ -15,7 +16,6 @@ export interface CollectionsTableProps {
 
 export const CollectionsTable: FC<CollectionsTableProps> = ({
   data,
-  loading,
   market,
   pairs,
   onExit,
@@ -23,18 +23,7 @@ export const CollectionsTable: FC<CollectionsTableProps> = ({
 }) => {
   const COLUMNS = TableList({ market, pairs, onExit, onRedeem });
 
-  const { table } = useTable({
-    data,
-    columns: COLUMNS,
-    rowKeyField: 'collectionId',
-    noDataMessage: "You don't have suitable collections :(",
-    loading,
-    searchParams: {
-      searchField: 'collectionName',
-      debounceWait: 300,
-      placeHolderText: 'search by token name',
-    },
-  });
+  const { table } = useTable({ data, columns: COLUMNS });
 
   return <Table {...table} />;
 };

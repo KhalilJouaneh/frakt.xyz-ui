@@ -9,7 +9,7 @@ import {
 import SortableList from './components/SortableList';
 import styles from './BondsList.module.scss';
 import { BondCard } from '../BondCard';
-import { CollectionsTable } from './components/CollectionsTable';
+import { CollectionsTable } from './components/BondsTable';
 
 interface BondsListProps {
   market: Market;
@@ -28,7 +28,7 @@ export const BondsList: FC<BondsListProps> = ({
   onExit,
 }) => {
   return (
-    <div>
+    <div className={styles.bondList}>
       <CollectionsTable
         data={bonds}
         loading={false}
@@ -44,7 +44,7 @@ export const BondsList: FC<BondsListProps> = ({
         options={SORT_OPTIONS}
         fieldValue={fieldValue}
       /> */}
-      <div className={styles.bondList}>
+      {/* <div className={styles.bondList}>
         {bonds.map((bond: Bond, idx: number) => (
           <BondCard
             key={idx}
@@ -55,7 +55,7 @@ export const BondsList: FC<BondsListProps> = ({
             onExit={onExit}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

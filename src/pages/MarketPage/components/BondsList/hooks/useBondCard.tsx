@@ -1,12 +1,12 @@
+import { useMemo } from 'react';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 import {
   getBestPairForExit,
   isBondAvailableToRedeem,
 } from '@frakt/utils/bonds';
 import { FraktBondState } from 'fbonds-core/lib/fbond-protocol/types';
-import { useMemo } from 'react';
 
-export const useBondActions = ({
+export const useBondCardActions = ({
   bond,
   market,
   pairs,

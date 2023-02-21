@@ -3,12 +3,12 @@
 @primary-background: var(--primary-background);
 @primary-border: var(--primary-border);
 
-// TABLE
-
+// Table styles
 .ant-table {
-  overflow: auto;
+  overflow: hidden;
   background: @primary-background;
   border: 1px solid @primary-border;
+  border-bottom: 0;
 }
 
 .ant-table-tbody > tr > td {
@@ -20,8 +20,7 @@
 .ant-table-tbody > tr > td:first-child {
   border-bottom: 1px solid @primary-border;
   vertical-align: middle;
-  padding: 0;
-  padding-left: 16px;
+  padding: 0 16px;
 }
 
 .ant-table-tbody > tr > td:last-child {
@@ -32,16 +31,18 @@
 .ant-table-thead > tr > th {
   padding: 16px 0;
   padding-right: 16px;
-
   background: @primary-background;
-  &:before {
-    display: none;
-  }
+  border-bottom: 1px solid @primary-border;
+  white-space: nowrap;
 }
 
-.rowClassName {
-  background: @primary-background;
-  border: 1px solid #3e4854;
+.ant-table-thead > tr > th:first-child {
+  padding-left: 16px;
+}
+
+// sort icon
+.ant-table-column-sorter {
+  display: none;
 }
 
 .ant-table-tbody > tr.ant-table-row:hover > td {
@@ -56,6 +57,12 @@
 td.ant-table-column-sort {
   background: @primary-background;
 }
+
 .ant-table-thead th.ant-table-column-has-sorters:hover {
   background: @primary-background;
+}
+
+.ant-table-thead th.ant-table-column-has-sorters {
+  padding: 16px 0;
+  padding-right: 16px;
 }

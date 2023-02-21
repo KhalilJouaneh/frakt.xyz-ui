@@ -6,6 +6,7 @@ import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
 import { ColumnsType } from 'antd/es/table';
 import { useWindowSize } from '../../hooks';
 import { Loader } from '../Loader';
+import { ArrowDownOutlined } from '@ant-design/icons';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;

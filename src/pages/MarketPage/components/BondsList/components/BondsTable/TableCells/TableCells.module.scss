@@ -1,7 +1,7 @@
 .row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .title {
@@ -12,11 +12,10 @@
 
 .nftName {
   color: var(--primary-text);
-  min-width: 140px;
   font-family: var(--font-family-syne);
   font-weight: 700;
-  font-size: 18px;
-  white-space: nowrap;
+  font-size: 14px;
+  max-width: 128px;
 }
 
 .nftImage {
@@ -95,4 +94,20 @@
 
 .countdown {
   display: block;
+}
+
+.infoValueSpan {
+  color: var(--light-green-hover);
+  font: var(--font-text-9);
+  line-height: 16px;
+  vertical-align: sub;
+
+  &.negative {
+    color: var(--red-error-color);
+  }
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+    line-height: 16px;
+  }
 }

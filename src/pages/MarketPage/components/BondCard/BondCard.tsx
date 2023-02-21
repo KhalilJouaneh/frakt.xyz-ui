@@ -16,6 +16,7 @@ import {
 
 import styles from './BondCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useBondCardActions } from '../BondsList/hooks/useBondCard';
 
 interface BondCardProps {
   bond: Bond;
@@ -41,6 +42,12 @@ export const BondCard: FC<BondCardProps> = ({
     averageBondPrice,
   } = bond;
 
+  const { exitAvailable, bestPair, redeemAvailable } = useBondCardActions({
+    bond,
+    market,
+    pairs,
+  });
+
   const wallet = useWallet();
 
   const bSolLamports = amountOfUserBonds;
@@ -49,31 +56,12 @@ export const BondCard: FC<BondCardProps> = ({
 
   const { timeLeft } = useCountdown(fbond.liquidatingAt);
 
-  const redeemAvailable = isBondAvailableToRedeem(bond);
-
-  const bestPair = useMemo(() => {
-    const { fbond, amountOfUserBonds } = bond;
-
-    const ltvBasePoints =
-      (fbond.amountToReturn / market?.oracleFloor?.floor) * 1e4;
-
-    return getBestPairForExit({
-      pairs,
-      ltvBasePoints,
-      fbondTokenAmount: amountOfUserBonds,
-      duration: (fbond.liquidatingAt - fbond.activatedAt) / (24 * 60 * 60),
-    });
-  }, [pairs, bond, market]);
-
   const pnlLamports =
     (bestPair?.currentSpotPrice - averageBondPrice) * amountOfUserBonds;
 
   const pnlProfit = averageBondPrice
     ? pnlLamports / (averageBondPrice * BOND_SOL_DECIMAIL_DELTA)
     : 0;
-
-  const exitAvailable =
-    bestPair && bond.fbond.fraktBondState === FraktBondState.Active;
 
   const isReceiveLiquidatedNfts =
     wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
