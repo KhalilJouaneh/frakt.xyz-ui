@@ -2,3 +2,24 @@
   padding-top: 24px;
   position: relative;
 }
+
+.searchInput {
+  max-width: 173px;
+  margin-right: 20px;
+  width: unset;
+
+  @media screen and (max-width: 468px) {
+    margin-bottom: 20px;
+  }
+}
+
+.sortWrapper {
+  display: none;
+
+  @media screen and (max-width: 1380px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 32px;
+  }
+}

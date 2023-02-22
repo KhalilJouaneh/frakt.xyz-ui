@@ -155,3 +155,11 @@
 .receiveIconTooltip {
   min-width: 200px;
 }
+
+.sortIcon {
+  display: flex;
+
+  @media (max-width: 1380px) {
+    display: none;
+  }
+}

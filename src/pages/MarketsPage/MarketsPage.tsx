@@ -1,15 +1,12 @@
 import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-import { Loader } from '@frakt/components/Loader';
-
 import { AppLayout } from '../../components/Layout/AppLayout';
 import { Header } from './components/Header';
 import { useMarketsPreview } from './hooks';
 import styles from './MarketsPage.module.scss';
 import { MarketTable } from './components/MarketTable/MarketTable';
 import { Tab, Tabs, useTabs } from '@frakt/components/Tabs';
-import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -38,6 +35,19 @@ const MarketsPreviewPage: FC = () => {
     defaultValue: MARKET_TABS[0].value,
   });
 
+  // const {
+  //   bonds,
+  //   isLoading: bondsLoanding,
+  //   hideBond,
+  // } = useWalletBonds({
+  //   walletPubkey: wallet.publicKey,
+  //   marketPubkey: new web3.PublicKey(marketPubkey),
+  // });
+
+  // const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
+  //   marketPubkey: marketPubkey,
+  // });
+
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="Lend on your own terms" />
@@ -57,20 +67,20 @@ const MarketsPreviewPage: FC = () => {
               data={marketsPreview}
             />
           )}
-          {tabValue === MarketTabsNames.OFFERS && (
+          {/* {tabValue === MarketTabsNames.OFFERS && (
+            <MarketTable
+              className={styles.table}
+              loading={isLoading}
+              data={marketsPreview}
+            />
+          )} */}
+          {tabValue === MarketTabsNames.BONDS && (
             <MarketTable
               className={styles.table}
               loading={isLoading}
               data={marketsPreview}
             />
           )}
-          {/* {tabValue === MarketTabsNames.BONDS && (
-            <BondsTable
-              // className={styles.table}
-              // loading={isLoading}
-              data={marketsPreview}
-            />
-          )} */}
         </div>
       </div>
     </AppLayout>
