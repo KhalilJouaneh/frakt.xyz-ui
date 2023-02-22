@@ -21,6 +21,14 @@
 .tabContent {
   background: var(--primary-background);
   min-height: 600px;
+
+  @media (max-width: 1024px) {
+    padding: 24px;
+  }
+
+  @media (max-width: 767px) {
+    padding: 16px;
+  }
 }
 
 .table {

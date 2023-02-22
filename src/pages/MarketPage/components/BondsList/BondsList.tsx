@@ -67,6 +67,7 @@ export const BondsList: FC<BondsListProps> = ({
         onRedeem={onRedeem}
         onExit={onExit}
         sortModalMobileVisible={sortModalMobileVisible}
+        mobileBreakpoint={1380}
       />
     </div>
   );

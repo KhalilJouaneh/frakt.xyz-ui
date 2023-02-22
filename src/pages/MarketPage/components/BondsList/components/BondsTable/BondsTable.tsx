@@ -12,6 +12,7 @@ export interface BondsTableProps {
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
   onRedeem: (bond: Bond) => void;
   sortModalMobileVisible: boolean;
+  mobileBreakpoint?: number;
 }
 
 export const BondsTable: FC<BondsTableProps> = ({
@@ -21,10 +22,17 @@ export const BondsTable: FC<BondsTableProps> = ({
   onExit,
   onRedeem,
   sortModalMobileVisible,
+  mobileBreakpoint,
 }) => {
   const COLUMNS = TableList({ market, pairs, onExit, onRedeem });
 
   const { table } = useTable({ data, columns: COLUMNS });
 
-  return <Table {...table} sortModalMobileVisible={sortModalMobileVisible} />;
+  return (
+    <Table
+      {...table}
+      mobileBreakpoint={mobileBreakpoint}
+      sortModalMobileVisible={sortModalMobileVisible}
+    />
+  );
 };

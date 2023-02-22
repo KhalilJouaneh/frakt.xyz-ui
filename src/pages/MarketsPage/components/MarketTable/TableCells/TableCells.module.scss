@@ -4,7 +4,7 @@
   justify-content: flex-end;
   gap: 4px;
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     gap: 8px;
   }
 }
@@ -24,18 +24,13 @@
   font-family: var(--font-family-syne);
   font-weight: 700;
   font-size: 14px;
-  max-width: 128px;
-
-  @media screen and (max-width: 1380px) {
-    max-width: unset;
-  }
 }
 
 .nftImage {
   width: 26px;
   height: 26px;
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     width: 48px;
     height: 48px;
   }
@@ -65,7 +60,7 @@
   flex-direction: column;
   gap: 4px;
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: row-reverse;
     gap: 8px;
   }
@@ -76,7 +71,7 @@
   flex-direction: column;
   gap: 8px;
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     width: 100%;
     flex-direction: row;
     align-items: center;
@@ -87,7 +82,7 @@
   height: 26px;
   width: 72px;
 
-  @media screen and (max-width: 1380px) {
+  @media screen and (max-width: 1024px) {
     height: 40px;
     width: 100%;
   }
@@ -160,4 +155,12 @@
 }
 .receiveIconTooltip {
   min-width: 200px;
+}
+
+.sortIcon {
+  display: flex;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }

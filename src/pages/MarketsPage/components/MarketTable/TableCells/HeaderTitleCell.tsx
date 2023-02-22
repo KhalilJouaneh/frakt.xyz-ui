@@ -37,10 +37,12 @@ export const HeaderTitleCell: FC<HeaderTitleCellProps> = ({
           <QuestionCircleOutlined className={styles.questionIcon} />
         </Tooltip>
       )}
-      {sortedColumn?.order === 'ascend' && <ArrowUpTableSort />}
-      {sortedColumn?.order === 'descend' && <ArrowDownTableSort />}
-      {sortedColumn?.order !== 'descend' &&
-        sortedColumn?.order !== 'ascend' && <ArrowTableSort />}
+      <span className={styles.sortIcon}>
+        {sortedColumn?.order === 'ascend' && <ArrowUpTableSort />}
+        {sortedColumn?.order === 'descend' && <ArrowDownTableSort />}
+        {sortedColumn?.order !== 'descend' &&
+          sortedColumn?.order !== 'ascend' && <ArrowTableSort />}
+      </span>
     </div>
   );
 };

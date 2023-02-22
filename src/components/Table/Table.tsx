@@ -16,6 +16,7 @@ export interface TableProps<T> {
   loading?: boolean;
   noDataMessage?: string;
   className?: string;
+  mobileBreakpoint?: number;
 }
 
 export interface TablePropsWithSortModalMobileProps<T>
@@ -33,9 +34,10 @@ const Table = <T extends unknown>({
   noDataMessage,
   className,
   sortModalMobileVisible,
+  mobileBreakpoint = 1024,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
-  const isMobile = width <= 1380;
+  const isMobile = width <= mobileBreakpoint;
 
   if (loading) return <Loader />;
 
