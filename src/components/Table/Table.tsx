@@ -18,6 +18,7 @@ export interface TableProps<T> {
   rowKeyField?: string;
   loading?: boolean;
   noDataMessage?: string;
+  className?: string;
 }
 
 export interface TablePropsWithSortModalMobileProps<T>
@@ -33,6 +34,7 @@ const Table = <T extends unknown>({
   setSort,
   loading = false,
   noDataMessage,
+  className,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
   const isMobile = width <= 1380;
@@ -77,6 +79,7 @@ const Table = <T extends unknown>({
 
   return (
     <AntdTable
+      className={className}
       rowClassName={() => 'rowClassName'}
       columns={columns as ColumnsType}
       dataSource={data as any}

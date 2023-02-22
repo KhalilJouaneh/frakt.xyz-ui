@@ -1,61 +1,36 @@
-.sortWrapper {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 20px 0;
+.tab {
+  flex-wrap: nowrap;
 
-  @media screen and (max-width: 1023px) {
-    margin: 0;
+  button {
+    border: 0;
+    border-bottom: 1px solid var(--primary-border);
+  }
+
+  button:first-child {
+    border-right: 1px solid var(--primary-border);
+  }
+  button:last-child {
+    border-left: 1px solid var(--primary-border);
   }
 }
 
-.toggle {
-  max-width: 160px;
-
-  @media screen and (max-width: 767px) {
-    justify-content: center;
-    max-width: 100%;
-    margin: 0 auto;
-  }
+.content {
+  border: 1px solid var(--primary-border);
 }
 
-.markets {
-  display: flex;
-  flex-direction: column;
-
-  gap: 24px;
-  padding-top: 32px;
+.tabContent {
+  background: var(--primary-background);
+  min-height: 600px;
 }
 
-.searchInput {
-  max-width: 173px;
-  margin-right: 20px;
-  width: unset;
-}
+.table {
+  :global {
+    .ant-table {
+      border: 0 !important;
+    }
 
-.filtersWrapper {
-  position: relative;
-
-  @media screen and (max-width: 767px) {
-    position: initial;
-  }
-}
-
-.filtersDropdown {
-  position: absolute;
-  top: 45px;
-  right: 0;
-  width: 236px;
-
-  @media screen and (max-width: 767px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: unset;
-    width: 100% !important;
+    .ant-table-tbody > tr > td {
+      padding: 29px 16px !important;
+    }
   }
 }

@@ -28,6 +28,7 @@ export const TableList = () => {
           sortColumns={column?.sortColumns}
           label="Collection Name"
           value="collectionName"
+          left
         />
       ),
       sorter: (a, b) => b?.collectionName.localeCompare(a?.collectionName),

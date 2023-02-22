@@ -1,11 +1,16 @@
 .row {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 4px;
 
   @media screen and (max-width: 1380px) {
     gap: 8px;
   }
+}
+
+.rowLeft {
+  justify-content: flex-start !important;
 }
 
 .title {
@@ -48,6 +53,7 @@
   color: var(--primary-text);
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   font: var(--font-text-8);
   gap: 4px;
   font-size: 14px;

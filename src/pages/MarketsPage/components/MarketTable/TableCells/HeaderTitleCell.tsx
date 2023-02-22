@@ -10,12 +10,14 @@ import {
 
 import styles from './TableCells.module.scss';
 import { SortColumns } from '../columns';
+import classNames from 'classnames';
 
 interface HeaderTitleCellProps {
   sortColumns?: SortColumns;
   label: string;
   value: string;
   tooltipText?: string;
+  left?: boolean;
 }
 
 export const HeaderTitleCell: FC<HeaderTitleCellProps> = ({
@@ -23,11 +25,12 @@ export const HeaderTitleCell: FC<HeaderTitleCellProps> = ({
   label,
   value,
   tooltipText,
+  left,
 }) => {
   const sortedColumn = sortColumns?.find(({ column }) => column.key === value);
 
   return (
-    <div className={styles.row}>
+    <div className={classNames(styles.row, left && styles.rowLeft)}>
       <span className={styles.title}>{label}</span>
       {!!tooltipText && (
         <Tooltip placement="top" overlay={tooltipText}>
