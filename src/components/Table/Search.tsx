@@ -1,8 +1,10 @@
-import { Input } from 'antd';
 import { ChangeEvent, FC } from 'react';
-import styles from './Table.module.scss';
-import { SearchOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
+import { Input } from 'antd';
+
+import { SearchOutlined } from '@ant-design/icons';
+
+import styles from '../../components/SearchInput/styles.module.scss';
 
 interface SearchProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -16,13 +18,11 @@ export const Search: FC<SearchProps> = ({
   className = '',
 }) => {
   return (
-    <div className={classNames(styles.search, className)}>
-      <Input
-        size="large"
-        placeholder={placeHolderText}
-        prefix={<SearchOutlined className={styles.prefix} />}
-        onChange={onChange}
-      />
-    </div>
+    <Input
+      className={classNames(styles.input, className)}
+      placeholder={placeHolderText}
+      prefix={<SearchOutlined className={styles.search} />}
+      onChange={onChange}
+    />
   );
 };

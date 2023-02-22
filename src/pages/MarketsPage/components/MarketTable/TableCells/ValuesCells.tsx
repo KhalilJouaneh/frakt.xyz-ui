@@ -1,5 +1,6 @@
 import styles from './TableCells.module.scss';
 import { Solana } from '@frakt/icons';
+import classNames from 'classnames';
 
 export const createSolValueJSX = (value?: string) => (
   <span className={styles.value}>
@@ -9,13 +10,13 @@ export const createSolValueJSX = (value?: string) => (
 
 export const createOfferTvlJSX = (value?: string) => (
   <span className={styles.value}>
-    {parseFloat(value)?.toFixed(3)} <Solana />
+    {parseFloat(value)?.toFixed(1)} <Solana />
   </span>
 );
 
 export const createBestOfferJSX = (value = 0) => (
   <span className={styles.value}>
-    {(value / 1e9)?.toFixed(3)} <Solana />
+    {(value / 1e9)?.toFixed(2)} <Solana />
   </span>
 );
 
@@ -25,6 +26,14 @@ export const createDurationJSX = (value: number[]) => (
   </span>
 );
 
+export const createHighestLtvJSX = (value = 0) => (
+  <span className={classNames(styles.value, styles.highestLtvColor)}>
+    {value?.toFixed(0)} %
+  </span>
+);
+
 export const createAprJSX = (value) => (
-  <span className={styles.value}>up to {(value || 0).toFixed(2)} %</span>
+  <span className={classNames(styles.value, styles.upToLtvColor)}>
+    up to {(value || 0).toFixed(2)} %
+  </span>
 );

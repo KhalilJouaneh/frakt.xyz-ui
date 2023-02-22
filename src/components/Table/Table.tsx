@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
 import { useWindowSize } from '../../hooks';
 import { MobileTable } from './MobileTable';
-import styles from './Table.module.scss';
+// import styles from './Table.module.scss';
 import { Search } from './Search';
 import { Loader } from '../Loader';
 
@@ -41,8 +41,8 @@ const Table = <T extends unknown>({
 
   if (loading) return <Loader />;
 
-  if (!loading && !data.length)
-    return <p className={styles.noDataMessage}>{noDataMessage}</p>;
+  // if (!loading && !data.length)
+  //   return <p className={styles.noDataMessage}>{noDataMessage}</p>;
 
   if (isMobile) {
     return (

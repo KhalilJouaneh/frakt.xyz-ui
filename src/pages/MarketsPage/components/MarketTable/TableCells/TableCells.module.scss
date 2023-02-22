@@ -164,3 +164,21 @@
     display: none;
   }
 }
+
+.highestLtvColor {
+  color: #b39016;
+}
+
+.upToLtvColor {
+  color: #6db315;
+}
+
+.searchInput {
+  input {
+    font: var(--font-text-4) !important;
+    font-size: 14px !important;
+  }
+
+  height: 25px !important;
+  width: 173px;
+}

@@ -1,6 +1,7 @@
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import { SortOrder } from 'antd/lib/table/interface';
 
+import { Search } from '@frakt/components/Table/Search';
 import { MarketPreview } from '@frakt/api/bonds';
 
 import {
@@ -11,30 +12,28 @@ import {
   createDurationJSX,
   createAprJSX,
   createSolValueJSX,
+  createHighestLtvJSX,
 } from './TableCells';
+import styles from './TableCells/TableCells.module.scss';
 
 export type SortColumns = {
   column: ColumnType<MarketPreview>;
   order: SortOrder;
 }[];
 
-export const TableList = () => {
+export const TableList = ({ onChange }) => {
   const COLUMNS: ColumnsType<MarketPreview> = [
     {
       key: 'collectionName',
       dataIndex: 'collectionName',
-      title: (column) => (
-        <HeaderTitleCell
-          sortColumns={column?.sortColumns}
-          label="Collection Name"
-          value="collectionName"
-          left
+      title: () => (
+        <Search
+          placeHolderText="Search by name"
+          className={styles.searchInput}
+          onChange={onChange}
         />
       ),
-      sorter: (a, b) => b?.collectionName.localeCompare(a?.collectionName),
       render: (_, market: MarketPreview) => <TitleCell market={market} />,
-      defaultSortOrder: 'descend',
-      showSorterTooltip: false,
     },
     {
       key: 'offerTVL',
@@ -42,7 +41,7 @@ export const TableList = () => {
       title: (column) => (
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
-          label="TVL"
+          label="Offer TVL"
           value="offerTVL"
           tooltipText="Total liquidity currently available in active offers"
         />
@@ -94,18 +93,18 @@ export const TableList = () => {
       showSorterTooltip: false,
     },
     {
-      key: 'highestLTV',
-      dataIndex: 'highestLTV',
+      key: 'bestLTV',
+      dataIndex: 'bestLTV',
       title: (column) => (
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
           label="Highest LTV"
-          value="highestLTV"
+          value="bestLTV"
           tooltipText="Interest (in %) for the duration of this loan"
         />
       ),
-      render: (value) => createSolValueJSX(value),
-      sorter: (a, b) => parseFloat(a.offerTVL) - parseFloat(b.offerTVL),
+      render: (value) => createHighestLtvJSX(value),
+      sorter: (a, b) => a.bestLTV - b.bestLTV,
       showSorterTooltip: false,
     },
     {

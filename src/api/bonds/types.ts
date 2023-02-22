@@ -82,6 +82,7 @@ export interface MarketPreview {
   apy: number; //? %
   duration: Array<number>; //? [7], [7, 14], [14]
   bestOffer: number; //? lamports
+  bestLTV: number;
 }
 
 export interface Pair {

@@ -1,11 +1,11 @@
 import { FC, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import Table, { useTable } from '@frakt/components/Table';
+import Table, { useSearch, useTable } from '@frakt/components/Table';
+import { MarketPreview } from '@frakt/api/bonds';
+import { PATHS } from '@frakt/constants';
 
 import { TableList } from './columns';
-import { useHistory } from 'react-router-dom';
-import { PATHS } from '@frakt/constants';
-import { MarketPreview } from '@frakt/api/bonds';
 
 export interface MarketTableProps {
   data: ReadonlyArray<any>;
@@ -28,8 +28,19 @@ export const MarketTable: FC<MarketTableProps> = ({
     [history],
   );
 
-  const COLUMNS = TableList();
-  const { table } = useTable({ data, columns: COLUMNS, onRowClick, loading });
+  const { filteredData, onChange } = useSearch({
+    data,
+    searchField: 'collectionName',
+  });
+
+  const COLUMNS = TableList({ onChange });
+
+  const { table } = useTable({
+    data: filteredData,
+    columns: COLUMNS,
+    onRowClick,
+    loading,
+  });
 
   return <Table className={className} {...table} />;
 };

@@ -1,12 +1,15 @@
 import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-import { AppLayout } from '../../components/Layout/AppLayout';
-import { Header } from './components/Header';
-import { useMarketsPreview } from './hooks';
-import styles from './MarketsPage.module.scss';
+import { AppLayout } from '@frakt/components/Layout/AppLayout';
+import { Tabs } from '@frakt/components/Tabs';
+
 import { MarketTable } from './components/MarketTable/MarketTable';
-import { Tab, Tabs, useTabs } from '@frakt/components/Tabs';
+import { useMarketPage, useMarketsPreview } from './hooks';
+import MyBondsWidgets from './components/MyBondsWidgets';
+import { Header } from './components/Header';
+
+import styles from './MarketsPage.module.scss';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -26,32 +29,11 @@ const MarketsPreviewPage: FC = () => {
     walletPublicKey: wallet?.publicKey,
   });
 
-  const {
-    tabs: marketTabs,
-    value: tabValue,
-    setValue: setTabValue,
-  } = useTabs({
-    tabs: MARKET_TABS,
-    defaultValue: MARKET_TABS[0].value,
-  });
-
-  // const {
-  //   bonds,
-  //   isLoading: bondsLoanding,
-  //   hideBond,
-  // } = useWalletBonds({
-  //   walletPubkey: wallet.publicKey,
-  //   marketPubkey: new web3.PublicKey(marketPubkey),
-  // });
-
-  // const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
-  //   marketPubkey: marketPubkey,
-  // });
+  const { marketTabs, tabValue, setTabValue } = useMarketPage();
 
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="Lend on your own terms" />
-
       <div className={styles.content}>
         <Tabs
           className={styles.tab}
@@ -67,19 +49,15 @@ const MarketsPreviewPage: FC = () => {
               data={marketsPreview}
             />
           )}
-          {/* {tabValue === MarketTabsNames.OFFERS && (
-            <MarketTable
-              className={styles.table}
-              loading={isLoading}
-              data={marketsPreview}
-            />
-          )} */}
           {tabValue === MarketTabsNames.BONDS && (
-            <MarketTable
-              className={styles.table}
-              loading={isLoading}
-              data={marketsPreview}
-            />
+            <>
+              <MyBondsWidgets onClick={null} />
+              <MarketTable
+                className={styles.table}
+                loading={isLoading}
+                data={marketsPreview}
+              />
+            </>
           )}
         </div>
       </div>
@@ -88,14 +66,3 @@ const MarketsPreviewPage: FC = () => {
 };
 
 export default MarketsPreviewPage;
-
-export const MARKET_TABS: Tab[] = [
-  {
-    label: 'Collections',
-    value: 'collections',
-  },
-  {
-    label: 'My Bonds',
-    value: 'bonds',
-  },
-];
