@@ -13,7 +13,7 @@
 .wrapper {
   display: flex;
   align-items: center;
-  padding: 24px;
+  padding: 24px 0;
   gap: 24px;
   justify-content: center;
 
@@ -38,6 +38,10 @@
 .value {
   font: var(--font-text-4);
   font-size: 16px;
+
+  @media (max-width: 1190px) {
+    font-size: 14px;
+  }
 }
 
 .widgetBetween {

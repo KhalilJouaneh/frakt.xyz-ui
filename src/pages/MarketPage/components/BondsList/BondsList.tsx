@@ -1,13 +1,13 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
+import { useFiltersModal } from '@frakt/components/FiltersDropdown';
+import { SearchInput } from '@frakt/components/SearchInput';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
+import Button from '@frakt/components/Button';
+import { useDebounce } from '@frakt/hooks';
 
 import { BondsTable } from './components/BondsTable';
 import styles from './BondsList.module.scss';
-import { SearchInput } from '@frakt/components/SearchInput';
-import { useDebounce, useOnClickOutside } from '@frakt/hooks';
-import Button from '@frakt/components/Button';
-import { useFiltersModal } from '@frakt/components/FiltersDropdown';
 
 interface BondsListProps {
   market: Market;
@@ -44,9 +44,6 @@ export const BondsList: FC<BondsListProps> = ({
     toggle: toggleModalMobile,
   } = useFiltersModal();
 
-  const ref = useRef();
-  useOnClickOutside(ref, closeModalMobile);
-
   return (
     <div className={styles.bondList}>
       <div className={styles.sortWrapper}>
@@ -67,6 +64,7 @@ export const BondsList: FC<BondsListProps> = ({
         onRedeem={onRedeem}
         onExit={onExit}
         sortModalMobileVisible={sortModalMobileVisible}
+        closeModalMobile={closeModalMobile}
         mobileBreakpoint={1380}
       />
     </div>

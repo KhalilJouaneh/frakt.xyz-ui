@@ -2,11 +2,12 @@ import { Table as AntdTable } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
-import { useWindowSize } from '../../hooks';
+import { useOnClickOutside, useWindowSize } from '../../hooks';
 import { MobileTable } from './MobileTable';
 // import styles from './Table.module.scss';
 import { Search } from './Search';
 import { Loader } from '../Loader';
+import { useRef } from 'react';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -34,10 +35,14 @@ const Table = <T extends unknown>({
   noDataMessage,
   className,
   sortModalMobileVisible,
+  closeModalMobile,
   mobileBreakpoint = 1024,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
   const isMobile = width <= mobileBreakpoint;
+
+  const ref = useRef();
+  useOnClickOutside(ref, closeModalMobile);
 
   if (loading) return <Loader />;
 
@@ -47,12 +52,15 @@ const Table = <T extends unknown>({
   if (isMobile) {
     return (
       <>
-        <SortModalMobile
-          columns={columns}
-          setSort={setSort}
-          sort={sort}
-          sortModalMobileVisible={sortModalMobileVisible}
-        />
+        <div ref={ref}>
+          <SortModalMobile
+            columns={columns}
+            setSort={setSort}
+            sort={sort}
+            sortModalMobileVisible={sortModalMobileVisible}
+          />
+        </div>
+
         <MobileTable
           data={data}
           columns={columns}

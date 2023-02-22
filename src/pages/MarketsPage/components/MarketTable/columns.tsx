@@ -1,5 +1,6 @@
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import { SortOrder } from 'antd/lib/table/interface';
+import { map, sum } from 'lodash';
 
 import { Search } from '@frakt/components/Table/Search';
 import { MarketPreview } from '@frakt/api/bonds';
@@ -49,6 +50,7 @@ export const TableList = ({ onChange }) => {
       sorter: (a, b) => parseFloat(a.offerTVL) - parseFloat(b.offerTVL),
       render: (value) => createOfferTvlJSX(value),
       showSorterTooltip: false,
+      defaultSortOrder: 'descend',
     },
     {
       key: 'bestOffer',
@@ -75,6 +77,7 @@ export const TableList = ({ onChange }) => {
           value="duration"
         />
       ),
+      sorter: (a, b) => sum(map(a.duration)) - sum(map(b.duration)),
       render: (value) => createDurationJSX(value),
       showSorterTooltip: false,
     },

@@ -13,6 +13,7 @@ export interface Sort {
 
 export interface SortModalMobileProps<T> {
   sortModalMobileVisible: boolean;
+  closeModalMobile?: () => void;
   sort: Sort;
   setSort: (nextSort: Sort) => void;
   columns: ColumnsType<T>;
