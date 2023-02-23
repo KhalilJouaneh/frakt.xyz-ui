@@ -44,7 +44,7 @@ export const BondsTable: FC<BondsTableProps> = ({
     data,
     columns: COLUMNS,
     searchParams: {
-      searchField: 'collectionName',
+      searchField: ['collateralBox.nft.name'],
     },
     loading,
   });

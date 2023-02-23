@@ -1,5 +1,6 @@
 import { Table as AntdTable } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import classNames from 'classnames';
 
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
 import { useOnClickOutside, useWindowSize } from '../../hooks';
@@ -11,7 +12,6 @@ import { useRef } from 'react';
 import Button from '../Button';
 
 import styles from './Table.module.scss';
-import classNames from 'classnames';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -61,7 +61,7 @@ const Table = <T extends unknown>({
 
   if (loading) return <Loader />;
 
-  if (isMobile && data?.length) {
+  if (isMobile) {
     return (
       <>
         <div className={isMobile && styles.sortWrapper}>

@@ -3,10 +3,11 @@ import { useMemo, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { SortModalMobileProps } from './SortModalMobile';
 import { TableProps, TablePropsWithSortModalMobileProps } from './Table';
+import { flatObject } from '@frakt/utils';
 
 type UseSearch = <T>(props: {
   data: ReadonlyArray<T>;
-  searchField?: string;
+  searchField?: string | string[];
   debounceWait?: number;
 }) => {
   filteredData: ReadonlyArray<T>;
@@ -22,11 +23,20 @@ export const useSearch: UseSearch = ({
 
   const filteredData = useMemo(() => {
     if (!search) return data;
-    return data.filter((dataElement) =>
-      (dataElement[searchField] ?? '')
-        .toUpperCase()
-        .includes(search.toUpperCase()),
-    );
+
+    return data.filter((dataElement) => {
+      if (typeof searchField === 'string') {
+        return (dataElement[searchField] ?? '')
+          .toUpperCase()
+          .includes(search.toUpperCase());
+      } else {
+        const flattedObject = flatObject(dataElement) as any;
+
+        return flattedObject[searchField[0] ?? '']
+          .toUpperCase()
+          .includes(search.toUpperCase());
+      }
+    });
   }, [search, data, searchField]);
 
   return {
@@ -83,7 +93,7 @@ export const useSortModalMobile: UseSortModalMobile = ({ data, columns }) => {
 
 interface UseTableProps<T> extends TableProps<T> {
   searchParams?: {
-    searchField?: string;
+    searchField?: string | string[];
     debounceWait?: number;
     placeHolderText?: string;
   };

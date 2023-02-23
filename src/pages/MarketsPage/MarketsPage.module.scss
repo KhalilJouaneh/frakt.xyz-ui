@@ -21,6 +21,7 @@
 .tabContent {
   background: var(--primary-background);
   min-height: 600px;
+  padding-top: 24px;
 
   @media (max-width: 1190px) {
     padding: 24px;
