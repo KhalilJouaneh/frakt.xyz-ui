@@ -42,7 +42,7 @@ const Table = <T extends unknown>({
   search,
   // noDataMessage,
   className,
-  mobileBreakpoint = 1024,
+  mobileBreakpoint = 1190,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
   const isMobile = width <= mobileBreakpoint;
@@ -61,7 +61,7 @@ const Table = <T extends unknown>({
   if (isMobile) {
     return (
       <>
-        <div className={styles.sortWrapper}>
+        <div className={isMobile && styles.sortWrapper}>
           <Search
             onChange={search?.onChange}
             className={styles.searchInput}

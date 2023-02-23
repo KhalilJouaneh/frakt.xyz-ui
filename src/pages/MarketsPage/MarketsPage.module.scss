@@ -22,7 +22,7 @@
   background: var(--primary-background);
   min-height: 600px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1190px) {
     padding: 24px;
   }
 
@@ -50,16 +50,5 @@
 
   @media screen and (max-width: 468px) {
     margin-bottom: 20px;
-  }
-}
-
-.sortWrapper {
-  display: none;
-
-  @media screen and (max-width: 1024px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 32px;
   }
 }

@@ -9,15 +9,11 @@
 }
 
 .sortWrapper {
-  display: none;
-
-  @media screen and (max-width: 1024px) {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 32px;
-  }
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 32px;
 }
 
 .searchInput {
@@ -61,13 +57,10 @@
 }
 
 .mobileTableView {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 16px;
 
-  @media screen and (max-width: 1380px) {
-    display: flex;
-  }
 }
 
 .mobileCollection {

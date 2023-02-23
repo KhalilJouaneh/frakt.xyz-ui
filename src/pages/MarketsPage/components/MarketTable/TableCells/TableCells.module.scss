@@ -4,7 +4,7 @@
   justify-content: flex-end;
   gap: 4px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1190px) {
     gap: 8px;
   }
 }
@@ -30,7 +30,7 @@
   width: 26px;
   height: 26px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1190px) {
     width: 48px;
     height: 48px;
   }
@@ -60,7 +60,7 @@
   flex-direction: column;
   gap: 4px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1190px) {
     flex-direction: row-reverse;
     gap: 8px;
   }
@@ -71,7 +71,7 @@
   flex-direction: column;
   gap: 8px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1190px) {
     width: 100%;
     flex-direction: row;
     align-items: center;
@@ -82,7 +82,7 @@
   height: 26px;
   width: 72px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1190px) {
     height: 40px;
     width: 100%;
   }
@@ -160,7 +160,7 @@
 .sortIcon {
   display: flex;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1190px) {
     display: none;
   }
 }
