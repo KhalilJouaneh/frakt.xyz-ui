@@ -12,6 +12,7 @@ import {
   HeaderTitleCell,
   PnlProfitCell,
   ButtontsCell,
+  calcEstimateProfit,
 } from './TableCells';
 
 export type SortColumns = {
@@ -23,6 +24,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
   const COLUMNS: ColumnsType<Bond> = [
     {
       key: 'nftName',
+      dataIndex: 'nftName',
       title: (column) => (
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
@@ -30,7 +32,6 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
           value="nftName"
         />
       ),
-      dataIndex: 'nftName',
       sorter: (a, b) =>
         b?.collateralBox.nft.name?.localeCompare(a?.collateralBox.nft.name),
       render: (_, bond: Bond) => <TitleCell bond={bond} />,
@@ -66,9 +67,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
           tooltipText="Interest (in %) for the duration of this loan"
         />
       ),
-      render: (_, bond: Bond) => {
-        return <InterestCell bond={bond} />;
-      },
+      render: (_, bond: Bond) => <InterestCell bond={bond} />,
       showSorterTooltip: false,
     },
     {
@@ -93,12 +92,14 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
       title: (column) => (
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
-          value="Profit"
+          value="profit"
           label="Est. Profit"
           tooltipText="Analyzed profit from repaying the loan"
         />
       ),
+      sorter: (a, b) => calcEstimateProfit(a) - calcEstimateProfit(b),
       render: (_, bond: Bond) => <ProfitCell bond={bond} />,
+      showSorterTooltip: false,
     },
     {
       key: 'pnl',

@@ -230,7 +230,6 @@ const TotalOverview: FC<TotalOverviewProps> = ({
   duration = 7,
 }) => {
   const apr = (interest / duration) * 365;
-
   const estProfit = size * (interest / 1e2);
 
   return (
