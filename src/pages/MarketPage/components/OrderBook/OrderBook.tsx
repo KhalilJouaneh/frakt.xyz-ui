@@ -8,7 +8,7 @@ import Button from '@frakt/components/Button';
 import Toggle from '@frakt/components/Toggle';
 import { Loader } from '@frakt/components/Loader';
 import { PATHS } from '@frakt/constants';
-import { Chevron } from '@frakt/icons';
+import { ArrowDownTableSort, ArrowUpTableSort, Chevron } from '@frakt/icons';
 import PartyHorn from '@frakt/icons/PartyHorn';
 import { Market } from '@frakt/api/bonds';
 import { signAndConfirmTransaction } from '@frakt/utils/transactions';
@@ -90,6 +90,7 @@ const OrderBook: FC<OrderBookProps> = ({
     ltv: syntheticParams?.ltv,
     size: syntheticParams?.offerSize,
     interest: syntheticParams?.interest,
+    duration: syntheticParams?.durationDays,
   });
 
   const bestOffer = useMemo(() => {
@@ -139,14 +140,10 @@ const OrderBook: FC<OrderBookProps> = ({
               <span className={styles.colName}>size</span>
               <span>(SOL)</span>
             </div>
-            <div
-              className={classNames(styles.col, {
-                [styles.sort]: sort === 'desc',
-              })}
-              onClick={toggleSort}
-            >
+            <div onClick={toggleSort} className={styles.col}>
               <span className={styles.colName}>Interest</span>
               <span>(%)</span>
+              {sort === 'desc' ? <ArrowDownTableSort /> : <ArrowUpTableSort />}
             </div>
           </div>
         )}
@@ -183,6 +180,7 @@ const OrderBook: FC<OrderBookProps> = ({
                 interest={offer.interest}
                 order={offer}
                 bestOffer={bestOffer}
+                duration={offer.duration}
                 // editOrder={!hideEditButtons && (() => editOrder(offer))}
                 removeOrder={() => removeOrder(offer)}
                 isOwnOrder={isOwnOrder(offer)}

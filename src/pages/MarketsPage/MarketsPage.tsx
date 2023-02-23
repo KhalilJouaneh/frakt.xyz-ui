@@ -54,8 +54,6 @@ const MarketsPreviewPage: FC = () => {
     marketPubkey: new web3.PublicKey(marketPubkey),
   });
 
-  console.log(bonds);
-
   const { market, isLoading: marketLoading } = useMarket({
     marketPubkey: marketPubkey,
   });

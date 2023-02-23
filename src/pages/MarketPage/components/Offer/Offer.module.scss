@@ -183,6 +183,11 @@
   gap: 4px;
   font: var(--font-text-8);
   position: relative;
+
+  sup {
+    margin-top: 7px;
+    font-size: 12px;
+  }
 }
 
 .loans {

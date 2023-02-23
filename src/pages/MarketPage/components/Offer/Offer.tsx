@@ -16,6 +16,7 @@ interface OfferProps {
   ltv: number;
   size: number;
   interest: number;
+  duration: number;
 }
 
 const Offer: FC<OfferProps> = ({
@@ -27,6 +28,7 @@ const Offer: FC<OfferProps> = ({
   ltv,
   size,
   interest,
+  duration,
 }) => {
   const colorLTV = getColorByPercent(ltv, colorByPercentOffers);
 
@@ -55,8 +57,10 @@ const Offer: FC<OfferProps> = ({
         }}
       ></div>
       <div className={styles.valueWrapper}>
-        <div className={styles.value}>{size?.toFixed(3)}</div>
-        <div className={styles.value}>{(interest * 100)?.toFixed(2)}%</div>
+        <div className={styles.value}>
+          {size?.toFixed(3)} / <sup>{duration}d</sup>
+        </div>
+        <div className={styles.value}>{(interest * 100)?.toFixed(2)}</div>
       </div>
       {isOwnOrder && editOrder && (
         <div

@@ -12,6 +12,7 @@ type UseMarketOrders = (props: {
   ltv: number;
   size: number; //? lamports
   interest: number;
+  duration: number;
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
@@ -26,6 +27,7 @@ export const useMarketOrders: UseMarketOrders = ({
   ltv,
   size,
   interest,
+  duration,
 }) => {
   const { publicKey } = useWallet();
 
@@ -39,6 +41,7 @@ export const useMarketOrders: UseMarketOrders = ({
       ltv,
       size: size / 1e9,
       interest: interest / 1e2,
+      duration: duration ?? 7,
       synthetic: true,
       rawData: {
         publicKey: '',
