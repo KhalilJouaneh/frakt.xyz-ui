@@ -4,6 +4,7 @@ import { web3 } from 'fbonds-core';
 import { parseMarketOrder } from './helpers';
 import { MarketOrder } from './types';
 import { useMarketPairs } from '@frakt/utils/bonds';
+import { compareNumbers } from '@frakt/utils';
 
 type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
@@ -58,15 +59,15 @@ export const useMarketOrders: UseMarketOrders = ({
       .map(parseMarketOrder);
 
     if (ltv) parsedOffers.push(myOffer);
-    const sortOffersByInterest = parsedOffers.sort(
-      (a, b) => b.interest - a.interest,
-    );
+    const sortOffersByInterest = parsedOffers.sort((a, b) => {
+      return compareNumbers(a.interest, b.interest, sortDirection === 'desc');
+    });
 
     const sortedByLtv = (
       sortDirection === 'asc'
         ? sortOffersByInterest
         : sortOffersByInterest.reverse()
-    ).sort((a, b) => b.ltv - a.ltv);
+    ).sort((a, b) => compareNumbers(a.ltv, b.ltv, sortDirection === 'desc'));
 
     return sortedByLtv;
   }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
