@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { filter } from 'lodash';
 
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Tabs } from '@frakt/components/Tabs';
+import { useConnection } from '@frakt/hooks';
 
 import { MarketTable } from './components/MarketTable/MarketTable';
 import { useMarketPage, useMarketsPreview } from './hooks';
@@ -10,6 +12,16 @@ import MyBondsWidgets from './components/MyBondsWidgets';
 import { Header } from './components/Header';
 
 import styles from './MarketsPage.module.scss';
+import {
+  isBondAvailableToRedeem,
+  redeemAllBonds,
+  useMarket,
+  useMarketPairs,
+  useWalletBonds,
+} from '@frakt/utils/bonds';
+import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
+import { web3 } from 'fbonds-core';
+import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -22,6 +34,8 @@ export enum MarketTabsNames {
   BONDS = 'bonds',
 }
 
+const marketPubkey = 'CEKGS2Ez83EP2E5QRYj6457euRAZwVxozRGkZvZNPUHR';
+
 const MarketsPreviewPage: FC = () => {
   const wallet = useWallet();
 
@@ -30,6 +44,35 @@ const MarketsPreviewPage: FC = () => {
   });
 
   const { marketTabs, tabValue, setTabValue } = useMarketPage();
+
+  const {
+    bonds,
+    isLoading: bondsLoanding,
+    hideBond,
+  } = useWalletBonds({
+    walletPubkey: wallet.publicKey,
+    marketPubkey: new web3.PublicKey(marketPubkey),
+  });
+
+  console.log(bonds);
+
+  const { market, isLoading: marketLoading } = useMarket({
+    marketPubkey: marketPubkey,
+  });
+
+  const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
+    marketPubkey,
+  });
+
+  const pairs = rawPairs.filter(
+    ({ assetReceiver }) => assetReceiver !== wallet?.publicKey?.toBase58(),
+  );
+
+  const { onClaimAll, onRedeem, onExit } = useBondsTransactions({
+    bonds,
+    hideBond,
+    market,
+  });
 
   return (
     <AppLayout>
@@ -51,11 +94,15 @@ const MarketsPreviewPage: FC = () => {
           )}
           {tabValue === MarketTabsNames.BONDS && (
             <>
-              <MyBondsWidgets onClick={null} />
-              <MarketTable
+              <MyBondsWidgets onClick={onClaimAll} />
+              <BondsTable
                 className={styles.table}
-                loading={isLoading}
-                data={marketsPreview}
+                loading={isLoading || bondsLoanding}
+                data={bonds}
+                onExit={onExit}
+                onRedeem={onRedeem}
+                market={market}
+                pairs={pairs}
               />
             </>
           )}

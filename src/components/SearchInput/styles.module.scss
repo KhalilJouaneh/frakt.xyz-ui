@@ -11,6 +11,7 @@ html body .input {
 
   &:global(.ant-input-affix-wrapper-focused:hover),
   &:global(.ant-input-affix-wrapper-focused) {
+    box-shadow: none !important;
     border-bottom: 1px solid var(--secondary-border);
 
     :local(.search) {

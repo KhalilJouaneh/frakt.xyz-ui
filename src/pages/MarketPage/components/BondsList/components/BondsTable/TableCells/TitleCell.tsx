@@ -15,7 +15,7 @@ export const TitleCell: FC<{ bond: Bond }> = ({ bond }) => {
     wallet?.publicKey?.toBase58() === bond?.fbond?.bondCollateralOrSolReceiver;
 
   return (
-    <div className={styles.row}>
+    <div className={styles.fixedLeftRow}>
       <div className={styles.imageWrapper}>
         <img src={collateralBox?.nft?.imageUrl} className={styles.nftImage} />
         {isReceiveLiquidatedNfts && (

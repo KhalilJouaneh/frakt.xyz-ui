@@ -12,6 +12,8 @@ export interface BondsTableProps {
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
   onRedeem: (bond: Bond) => void;
   mobileBreakpoint?: number;
+  loading?: boolean;
+  className?: string;
 }
 
 export const BondsTable: FC<BondsTableProps> = ({
@@ -21,6 +23,8 @@ export const BondsTable: FC<BondsTableProps> = ({
   onExit,
   onRedeem,
   mobileBreakpoint,
+  loading,
+  className,
 }) => {
   const COLUMNS = TableList({ market, pairs, onExit, onRedeem });
 
@@ -30,9 +34,15 @@ export const BondsTable: FC<BondsTableProps> = ({
     searchParams: {
       searchField: 'collectionName',
     },
+    loading,
   });
 
   return (
-    <Table search={search} {...table} mobileBreakpoint={mobileBreakpoint} />
+    <Table
+      {...table}
+      className={className}
+      search={search}
+      mobileBreakpoint={mobileBreakpoint}
+    />
   );
 };

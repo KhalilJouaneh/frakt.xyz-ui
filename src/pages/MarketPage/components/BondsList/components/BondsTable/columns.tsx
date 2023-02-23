@@ -13,6 +13,7 @@ import {
   PnlProfitCell,
   ButtontsCell,
   calcEstimateProfit,
+  calcPnlProfit,
 } from './TableCells';
 
 export type SortColumns = {
@@ -30,6 +31,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
           sortColumns={column?.sortColumns}
           label="Collateral"
           value="nftName"
+          fixedLeft
         />
       ),
       sorter: (a, b) =>
@@ -68,6 +70,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
         />
       ),
       render: (_, bond: Bond) => <InterestCell bond={bond} />,
+      sorter: (a, b) => a.interest - b.interest,
       showSorterTooltip: false,
     },
     {
@@ -112,6 +115,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
           tooltipText="Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”)"
         />
       ),
+      sorter: (a, b) =>
+        calcPnlProfit({ bond: a, market, pairs }) -
+        calcPnlProfit({ bond: b, market, pairs }),
       render: (_, bond: Bond) => (
         <PnlProfitCell bond={bond} market={market} pairs={pairs} />
       ),
