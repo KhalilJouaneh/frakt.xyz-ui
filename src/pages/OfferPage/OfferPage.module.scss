@@ -215,3 +215,20 @@
   font: var(--font-text-6);
   text-transform: uppercase;
 }
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: var(--secondary-text);
+
+  span {
+    color: var(--primary-text) !important;
+    font: var(--font-text-8);
+  }
+
+  svg {
+    margin-top: 3px;
+  }
+}

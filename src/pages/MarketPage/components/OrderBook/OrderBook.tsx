@@ -209,7 +209,7 @@ const OrderBook: FC<OrderBookProps> = ({
         {!syntheticParams?.ltv && (
           <NavLink to={`${PATHS.OFFER}/${market?.marketPubkey}`}>
             <Button className={styles.btn} type="secondary">
-              Place offer
+              Place offers
             </Button>
           </NavLink>
         )}

@@ -45,6 +45,8 @@ export const OfferPage = () => {
     toggleReceiveLiquidatedNfts,
   } = useOfferPage();
 
+  const apr = (parseFloat(interest) / duration) * 365;
+
   return (
     <AppLayout>
       <div className={styles.poolsCreation}>
@@ -81,7 +83,6 @@ export const OfferPage = () => {
               </span>
             </div>
           </div>
-          <h5 className={styles.blockTitle}>Loan parameters</h5>
           <SliderGradient value={ltv} setValue={onLtvChange} />
 
           <div className={styles.radio}>
@@ -108,6 +109,17 @@ export const OfferPage = () => {
             value={interest}
             onValueChange={onInterestChange}
             label="Interest"
+            labelRightNode={
+              <div className={styles.labelRow}>
+                APR: <span>{(apr || 0).toFixed(2)} %</span>
+                <Tooltip
+                  placement="bottom"
+                  overlay={'Analyzed profit from repaying the loan'}
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </div>
+            }
             currentToken={{
               ...SOL_TOKEN,
               symbol: '%',
@@ -189,7 +201,7 @@ export const OfferPage = () => {
                 className={styles.btn}
                 type="secondary"
               >
-                Place offer
+                Place
               </Button>
             )}
           </div>

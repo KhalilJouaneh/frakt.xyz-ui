@@ -85,7 +85,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
           sortColumns={column?.sortColumns}
           label="Expiration"
           value="expiration"
-          tooltipText="When the loan is paid back® or liquidated"
+          tooltipText="When the loan is paid back or liquidated"
         />
       ),
       render: (_, bond: Bond) => <ExperationCell bond={bond} />,
