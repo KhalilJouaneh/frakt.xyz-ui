@@ -14,7 +14,7 @@ interface SearchProps {
 
 export const Search: FC<SearchProps> = ({
   onChange,
-  placeHolderText = 'search',
+  placeHolderText = 'Search by name',
   className = '',
 }) => {
   return (

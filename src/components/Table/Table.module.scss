@@ -8,6 +8,28 @@
   }
 }
 
+.sortWrapper {
+  display: none;
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 32px;
+  }
+}
+
+.searchInput {
+  max-width: 173px;
+  margin-right: 20px;
+  width: unset;
+
+  @media screen and (max-width: 468px) {
+    margin-bottom: 20px;
+  }
+}
+
 .search {
   width: 100%;
 
@@ -81,14 +103,12 @@
 .sortModalMobile {
   background: var(--primary-background);
   border: 1px solid var(--secondary-border);
-  padding: 16px;
   box-shadow: rgb(0 0 0 / 1%) 0px 0px 0px,
     var(--secondary-border) 4px 4px 0px 0px;
 
   position: absolute;
-  top: 75px;
+  top: 45px;
   right: 0;
-  width: 308px;
 
   overflow: hidden;
   z-index: 11;

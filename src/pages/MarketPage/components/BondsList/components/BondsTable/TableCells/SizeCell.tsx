@@ -10,7 +10,7 @@ import styles from './TableCells.module.scss';
 export const SizeCell: FC<{ bond: Bond }> = ({ bond }) => {
   const { amountOfUserBonds } = bond;
   const bSolLamports = amountOfUserBonds;
-  console.log(bond);
+
   return (
     <div className={styles.column}>
       <span className={styles.value}>

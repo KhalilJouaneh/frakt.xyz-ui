@@ -42,5 +42,5 @@ export const MarketTable: FC<MarketTableProps> = ({
     loading,
   });
 
-  return <Table className={className} {...table} />;
+  return <Table search={{ onChange }} className={className} {...table} />;
 };

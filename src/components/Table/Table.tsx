@@ -3,11 +3,14 @@ import { ColumnsType } from 'antd/es/table';
 
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
 import { useOnClickOutside, useWindowSize } from '../../hooks';
+import { useFiltersModal } from '../FiltersDropdown';
 import { MobileTable } from './MobileTable';
-// import styles from './Table.module.scss';
-import { Search } from './Search';
 import { Loader } from '../Loader';
+import { Search } from './Search';
 import { useRef } from 'react';
+import Button from '../Button';
+
+import styles from './Table.module.scss';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -18,6 +21,10 @@ export interface TableProps<T> {
   noDataMessage?: string;
   className?: string;
   mobileBreakpoint?: number;
+  search?: {
+    placeHolderText?: string;
+    onChange: any;
+  };
 }
 
 export interface TablePropsWithSortModalMobileProps<T>
@@ -32,33 +39,45 @@ const Table = <T extends unknown>({
   sort,
   setSort,
   loading = false,
-  noDataMessage,
+  search,
+  // noDataMessage,
   className,
-  sortModalMobileVisible,
-  closeModalMobile,
   mobileBreakpoint = 1024,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
   const { width } = useWindowSize();
   const isMobile = width <= mobileBreakpoint;
 
-  const ref = useRef();
+  const {
+    visible: sortModalMobileVisible,
+    close: closeModalMobile,
+    toggle: toggleModalMobile,
+  } = useFiltersModal();
+
+  const ref = useRef(null);
   useOnClickOutside(ref, closeModalMobile);
 
   if (loading) return <Loader />;
 
-  // if (!loading && !data.length)
-  //   return <p className={styles.noDataMessage}>{noDataMessage}</p>;
-
   if (isMobile) {
     return (
       <>
-        <div ref={ref}>
-          <SortModalMobile
-            columns={columns}
-            setSort={setSort}
-            sort={sort}
-            sortModalMobileVisible={sortModalMobileVisible}
+        <div className={styles.sortWrapper}>
+          <Search
+            onChange={search?.onChange}
+            className={styles.searchInput}
+            placeHolderText={search?.placeHolderText}
           />
+          <div ref={ref}>
+            <Button type="tertiary" onClick={toggleModalMobile}>
+              Sorting
+            </Button>
+            <SortModalMobile
+              columns={columns}
+              setSort={setSort}
+              sort={sort}
+              sortModalMobileVisible={sortModalMobileVisible}
+            />
+          </div>
         </div>
 
         <MobileTable

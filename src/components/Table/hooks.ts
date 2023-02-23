@@ -107,7 +107,7 @@ export const useTable: UseTable = ({
   searchParams = {
     debounceWait: 0,
     searchField: 'name',
-    placeHolderText: 'search',
+    placeHolderText: 'Search by name',
   },
 }) => {
   const { filteredData, onChange } = useSearch({
@@ -132,7 +132,7 @@ export const useTable: UseTable = ({
       ...sortModalMobile,
     },
     search: {
-      placeHolderText: searchParams.placeHolderText ?? 'search',
+      placeHolderText: searchParams.placeHolderText ?? 'Search by name',
       onChange,
     },
   };
