@@ -14,6 +14,7 @@ interface ButtontsCellProps {
   pairs: Pair[];
   onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
   onRedeem: (bond: Bond) => void;
+  isMobile?: boolean;
 }
 
 export const ButtontsCell: FC<ButtontsCellProps> = ({
@@ -22,6 +23,7 @@ export const ButtontsCell: FC<ButtontsCellProps> = ({
   pairs,
   onExit,
   onRedeem,
+  isMobile,
 }) => {
   const { exitAvailable, bestPair, redeemAvailable } = useBondCardActions({
     bond,
@@ -30,9 +32,15 @@ export const ButtontsCell: FC<ButtontsCellProps> = ({
   });
 
   return (
-    <div className={styles.btnWrapper}>
+    <div
+      className={classNames(styles.btnWrapper, {
+        [styles.btnWrapperMobile]: isMobile,
+      })}
+    >
       <Button
-        className={styles.btn}
+        className={classNames(styles.btn, {
+          [styles.btnMobile]: isMobile,
+        })}
         disabled={!redeemAvailable}
         type="secondary"
         onClick={() => onRedeem(bond)}
@@ -40,7 +48,13 @@ export const ButtontsCell: FC<ButtontsCellProps> = ({
         Claim
       </Button>
       <Button
-        className={classNames(styles.btn, styles.btnExit)}
+        className={classNames(
+          styles.btn,
+          {
+            [styles.btnMobile]: isMobile,
+          },
+          styles.btnExit,
+        )}
         disabled={!exitAvailable}
         type="primary"
         // onClick={() => setExitModalVisible(true)}

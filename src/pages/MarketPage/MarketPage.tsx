@@ -74,7 +74,6 @@ export const MarketPage: FC = () => {
             onExit={onExit}
             onRedeem={onRedeem}
           />
-
           <OrderBook market={market} />
         </div>
       )}

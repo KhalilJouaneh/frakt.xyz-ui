@@ -22,6 +22,7 @@ import {
 import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
 import { web3 } from 'fbonds-core';
 import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
+import classNames from 'classnames';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -94,7 +95,7 @@ const MarketsPreviewPage: FC = () => {
             <>
               <MyBondsWidgets onClick={onClaimAll} />
               <BondsTable
-                className={styles.table}
+                className={classNames(styles.table, styles.bondsTable)}
                 loading={isLoading || bondsLoanding}
                 data={bonds}
                 onExit={onExit}

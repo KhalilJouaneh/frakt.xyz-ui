@@ -6,8 +6,12 @@ import { ArrowDownLeft } from '@frakt/icons';
 import { Bond } from '@frakt/api/bonds';
 
 import styles from './TableCells.module.scss';
+import classNames from 'classnames';
 
-export const TitleCell: FC<{ bond: Bond }> = ({ bond }) => {
+export const TitleCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
+  bond,
+  isMobile,
+}) => {
   const wallet = useWallet();
   const { collateralBox } = bond;
 
@@ -17,7 +21,12 @@ export const TitleCell: FC<{ bond: Bond }> = ({ bond }) => {
   return (
     <div className={styles.fixedLeftRow}>
       <div className={styles.imageWrapper}>
-        <img src={collateralBox?.nft?.imageUrl} className={styles.nftImage} />
+        <img
+          src={collateralBox?.nft?.imageUrl}
+          className={classNames(styles.nftImage, {
+            [styles.nftImageMobile]: isMobile,
+          })}
+        />
         {isReceiveLiquidatedNfts && (
           <Tooltip
             overlayClassName={styles.receiveIconTooltip}
@@ -30,7 +39,13 @@ export const TitleCell: FC<{ bond: Bond }> = ({ bond }) => {
           </Tooltip>
         )}
       </div>
-      <div className={styles.nftName}>{collateralBox?.nft?.name}</div>
+      <div
+        className={classNames(styles.nftName, {
+          [styles.nftNameMobile]: isMobile,
+        })}
+      >
+        {collateralBox?.nft?.name}
+      </div>
     </div>
   );
 };

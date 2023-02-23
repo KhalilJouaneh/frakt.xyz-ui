@@ -1,10 +1,6 @@
-import { FC, useMemo, useState } from 'react';
+import { FC } from 'react';
 
-import { useFiltersModal } from '@frakt/components/FiltersDropdown';
-import { SearchInput } from '@frakt/components/SearchInput';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
-import Button from '@frakt/components/Button';
-import { useDebounce } from '@frakt/hooks';
 
 import { BondsTable } from './components/BondsTable';
 import styles from './BondsList.module.scss';

@@ -21,13 +21,14 @@ export type SortColumns = {
   order: SortOrder;
 }[];
 
-export const TableList = ({ market, pairs, onExit, onRedeem }) => {
+export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
   const COLUMNS: ColumnsType<Bond> = [
     {
       key: 'nftName',
       dataIndex: 'nftName',
       title: (column) => (
         <HeaderTitleCell
+          isMobile={isMobile}
           sortColumns={column?.sortColumns}
           label="Collateral"
           value="nftName"
@@ -36,7 +37,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
       ),
       sorter: (a, b) =>
         b?.collateralBox.nft.name?.localeCompare(a?.collateralBox.nft.name),
-      render: (_, bond: Bond) => <TitleCell bond={bond} />,
+      render: (_, bond: Bond) => <TitleCell isMobile={isMobile} bond={bond} />,
       defaultSortOrder: 'descend',
       showSorterTooltip: false,
     },
@@ -55,7 +56,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
         { amountOfUserBonds: amountOfUserBondsA = 0 },
         { amountOfUserBonds: amountOfUserBondsB = 0 },
       ) => amountOfUserBondsA - amountOfUserBondsB,
-      render: (_, bond: Bond) => <SizeCell bond={bond} />,
+      render: (_, bond: Bond) => <SizeCell isMobile={isMobile} bond={bond} />,
       showSorterTooltip: false,
     },
     {
@@ -69,7 +70,10 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
           tooltipText="Interest (in %) for the duration of this loan"
         />
       ),
-      render: (_, bond: Bond) => <InterestCell bond={bond} />,
+
+      render: (_, bond: Bond) => (
+        <InterestCell isMobile={isMobile} bond={bond} />
+      ),
       sorter: (a, b) => a.interest - b.interest,
       showSorterTooltip: false,
     },
@@ -119,7 +123,12 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
         calcPnlProfit({ bond: a, market, pairs }) -
         calcPnlProfit({ bond: b, market, pairs }),
       render: (_, bond: Bond) => (
-        <PnlProfitCell bond={bond} market={market} pairs={pairs} />
+        <PnlProfitCell
+          inMobile={isMobile}
+          bond={bond}
+          market={market}
+          pairs={pairs}
+        />
       ),
     },
     {
@@ -131,6 +140,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem }) => {
             bond={bond}
             market={market}
             pairs={pairs}
+            isMobile={isMobile}
           />
         );
       },

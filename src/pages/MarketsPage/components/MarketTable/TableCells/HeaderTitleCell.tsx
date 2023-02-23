@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import classNames from 'classnames';
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import Tooltip from '@frakt/components/Tooltip';
@@ -10,7 +11,6 @@ import {
 
 import styles from './TableCells.module.scss';
 import { SortColumns } from '../columns';
-import classNames from 'classnames';
 
 interface HeaderTitleCellProps {
   sortColumns?: SortColumns;

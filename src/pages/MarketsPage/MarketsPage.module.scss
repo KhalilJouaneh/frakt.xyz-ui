@@ -39,6 +39,15 @@
 
     .ant-table-tbody > tr > td {
       padding: 29px 16px !important;
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.bondsTable {
+  :global {
+    .ant-table-tbody > tr > td:last-child {
+      width: 127px !important;
     }
   }
 }

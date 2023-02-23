@@ -4,6 +4,7 @@ import Table, { useTable } from '@frakt/components/Table';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 
 import { TableList } from './columns';
+import { useWindowSize } from '@frakt/hooks';
 
 export interface BondsTableProps {
   data: ReadonlyArray<any>;
@@ -22,11 +23,21 @@ export const BondsTable: FC<BondsTableProps> = ({
   pairs,
   onExit,
   onRedeem,
-  mobileBreakpoint,
+  mobileBreakpoint = 1190,
   loading,
   className,
 }) => {
-  const COLUMNS = TableList({ market, pairs, onExit, onRedeem });
+  const { width } = useWindowSize();
+  const isMobile = width <= mobileBreakpoint;
+  console.log(isMobile);
+
+  const COLUMNS = TableList({
+    market,
+    pairs,
+    onExit,
+    onRedeem,
+    isMobile,
+  });
 
   const { table, search } = useTable({
     data,

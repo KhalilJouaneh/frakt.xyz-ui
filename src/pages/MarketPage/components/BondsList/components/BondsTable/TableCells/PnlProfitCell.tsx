@@ -16,12 +16,14 @@ interface PnlProfitCellProps {
   bond: Bond;
   market: Market;
   pairs: Pair[];
+  inMobile?: boolean;
 }
 
 export const PnlProfitCell: FC<PnlProfitCellProps> = ({
   bond,
   market,
   pairs,
+  inMobile,
 }) => {
   const { amountOfUserBonds, averageBondPrice } = bond;
 
@@ -41,7 +43,11 @@ export const PnlProfitCell: FC<PnlProfitCellProps> = ({
   return (
     <>
       {exitAvailable && (
-        <div className={classNames(styles.value, styles.column)}>
+        <div
+          className={classNames(styles.value, styles.column, {
+            [styles.columnMobile]: inMobile,
+          })}
+        >
           <span>
             {(pnlLamports / 1e9).toFixed(3)} <Solana />
           </span>
