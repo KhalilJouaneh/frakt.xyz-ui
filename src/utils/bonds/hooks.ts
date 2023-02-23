@@ -1,6 +1,7 @@
 import {
   Bond,
   fetchAllMarkets,
+  fetchAllUserBonds,
   fetchCertainMarket,
   fetchMarketPair,
   fetchMarketPairs,
@@ -143,6 +144,29 @@ export const useWalletBonds: UseWalletBonds = ({
     () => fetchWalletBonds({ walletPubkey, marketPubkey }),
     {
       enabled: !!walletPubkey && !!marketPubkey,
+      staleTime: 60 * 1000, //? 1 min
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  return {
+    bonds:
+      data?.filter(
+        ({ fbond }) => !hiddenBondsPubkeys.includes(fbond?.publicKey),
+      ) || [],
+    isLoading,
+    hideBond,
+  };
+};
+
+export const useFetchAllUserBonds = ({ walletPubkey }) => {
+  const { hiddenBondsPubkeys, hideBond } = useHiddenBondsPubkeys();
+
+  const { data, isLoading } = useQuery(
+    ['useFetchAllUserBonds', walletPubkey?.toBase58()],
+    () => fetchAllUserBonds({ walletPubkey }),
+    {
+      enabled: !!walletPubkey,
       staleTime: 60 * 1000, //? 1 min
       refetchOnWindowFocus: false,
     },

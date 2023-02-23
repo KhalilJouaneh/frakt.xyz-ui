@@ -78,3 +78,17 @@ export const fetchWalletBonds: FetchWalletBonds = async ({
 
   return data ?? [];
 };
+
+type FetchAllUserBonds = (props: {
+  walletPubkey: web3.PublicKey;
+}) => Promise<Bond[]>;
+
+export const fetchAllUserBonds: FetchAllUserBonds = async ({
+  walletPubkey,
+}) => {
+  const { data } = await axios.get<Bond[]>(
+    `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}`,
+  );
+
+  return data ?? [];
+};

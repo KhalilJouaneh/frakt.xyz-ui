@@ -2,9 +2,8 @@ import { FC } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 
-import { Solana } from '@frakt/icons';
-import Tooltip from '@frakt/components/Tooltip';
 import { LoadingModal } from '@frakt/components/LoadingModal';
+import Tooltip from '@frakt/components/Tooltip';
 
 import TokenField from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';

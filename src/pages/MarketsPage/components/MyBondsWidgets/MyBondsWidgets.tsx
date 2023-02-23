@@ -7,19 +7,31 @@ import styles from './MyBondsWidgets.module.scss';
 interface MyBondsWidgetsProps {
   onClick: () => void;
   classNames?: string;
+  activeLoans: number;
+  locked: number;
+  rewards: number;
 }
 
-const MyBondsWidgets: FC<MyBondsWidgetsProps> = ({ onClick }) => {
+const MyBondsWidgets: FC<MyBondsWidgetsProps> = ({
+  onClick,
+  activeLoans,
+  locked,
+  rewards,
+}) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.block}>
-        <WidgetValue label="Active loans" value="22" isSolValue={false} />
+        <WidgetValue
+          label="Active loans"
+          value={(activeLoans || 0).toFixed(2)}
+          isSolValue={false}
+        />
       </div>
       <div className={styles.block}>
-        <WidgetValue label="Locked" value="2.159,99" />
+        <WidgetValue label="Locked" value={(locked || 0).toFixed(2)} />
       </div>
       <div className={classNames(styles.block, styles.widgetBetween)}>
-        <WidgetValue label="Rewards" value="345" />
+        <WidgetValue label="Rewards" value={(rewards || 0).toFixed(2)} />
         <Button onClick={onClick} className={styles.button} type="secondary">
           Claim all
         </Button>

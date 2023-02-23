@@ -60,7 +60,7 @@ export const TableList = ({ onChange }) => {
           sortColumns={column?.sortColumns}
           label="Best offer"
           value="bestOffer"
-          tooltipText="Total liquidity currently available in active offers"
+          tooltipText="Highest loan amount offered for that collection"
         />
       ),
       sorter: (a, b) => a.bestOffer - b.bestOffer,
@@ -103,7 +103,7 @@ export const TableList = ({ onChange }) => {
           sortColumns={column?.sortColumns}
           label="Highest LTV"
           value="bestLTV"
-          tooltipText="Interest (in %) for the duration of this loan"
+          tooltipText="Highest loan amount offered for that collection"
         />
       ),
       render: (value) => createHighestLtvJSX(value),
@@ -122,7 +122,7 @@ export const TableList = ({ onChange }) => {
         />
       ),
       render: (value) => createAprJSX(value),
-      sorter: (a, b) => parseFloat(a.offerTVL) - parseFloat(b.offerTVL),
+      sorter: (a, b) => a.apy - b.apy,
       showSorterTooltip: false,
     },
   ];

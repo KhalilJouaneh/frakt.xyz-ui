@@ -16,6 +16,7 @@ import MyBondsWidgets from './components/MyBondsWidgets';
 import { Header } from './components/Header';
 
 import styles from './MarketsPage.module.scss';
+import { createMyBondsStats } from './helpers';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',
@@ -66,6 +67,8 @@ const MarketsPreviewPage: FC = () => {
     market,
   });
 
+  const { rewards } = createMyBondsStats(bonds);
+
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="Lend on your own terms" />
@@ -89,9 +92,15 @@ const MarketsPreviewPage: FC = () => {
               {!connected && (
                 <ConnectWalletSection text="Connect your wallet to check my bonds" />
               )}
+
               {connected && (
                 <>
-                  <MyBondsWidgets onClick={onClaimAll} />
+                  <MyBondsWidgets
+                    locked={rewards}
+                    activeLoans={rewards}
+                    rewards={rewards}
+                    onClick={onClaimAll}
+                  />
                   <BondsTable
                     className={classNames(styles.table, styles.bondsTable)}
                     loading={isLoading}
