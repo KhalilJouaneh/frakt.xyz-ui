@@ -2,3 +2,11 @@
   padding-top: 24px;
   position: relative;
 }
+
+.noDataMessage {
+  :global {
+    .ant-table {
+      display: none;
+    }
+  }
+}

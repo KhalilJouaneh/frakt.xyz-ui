@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import Button from '../Button';
 
 import styles from './Table.module.scss';
+import classNames from 'classnames';
 
 export interface TableProps<T> {
   data: ReadonlyArray<T>;
@@ -21,6 +22,7 @@ export interface TableProps<T> {
   noDataMessage?: string;
   className?: string;
   mobileBreakpoint?: number;
+  noDataClassName?: string;
   search?: {
     placeHolderText?: string;
     onChange: any;
@@ -41,6 +43,7 @@ const Table = <T extends unknown>({
   loading = false,
   search,
   // noDataMessage,
+  noDataClassName,
   className,
   mobileBreakpoint = 1190,
 }: TablePropsWithSortModalMobileProps<T>): JSX.Element => {
@@ -58,7 +61,7 @@ const Table = <T extends unknown>({
 
   if (loading) return <Loader />;
 
-  if (isMobile) {
+  if (isMobile && data?.length) {
     return (
       <>
         <div className={isMobile && styles.sortWrapper}>
@@ -92,7 +95,9 @@ const Table = <T extends unknown>({
 
   return (
     <AntdTable
-      className={className}
+      className={classNames(className, {
+        [noDataClassName]: !data.length && !loading,
+      })}
       rowClassName={() => 'rowClassName'}
       columns={columns as ColumnsType}
       dataSource={data as any}

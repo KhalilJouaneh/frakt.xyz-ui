@@ -15,6 +15,7 @@ export interface BondsTableProps {
   mobileBreakpoint?: number;
   loading?: boolean;
   className?: string;
+  noDataClassName?: string;
 }
 
 export const BondsTable: FC<BondsTableProps> = ({
@@ -24,12 +25,12 @@ export const BondsTable: FC<BondsTableProps> = ({
   onExit,
   onRedeem,
   mobileBreakpoint = 1190,
+  noDataClassName,
   loading,
   className,
 }) => {
   const { width } = useWindowSize();
   const isMobile = width <= mobileBreakpoint;
-  console.log(isMobile);
 
   const COLUMNS = TableList({
     market,
@@ -51,8 +52,9 @@ export const BondsTable: FC<BondsTableProps> = ({
   return (
     <Table
       {...table}
-      className={className}
       search={search}
+      className={className}
+      noDataClassName={noDataClassName}
       mobileBreakpoint={mobileBreakpoint}
     />
   );

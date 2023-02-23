@@ -29,6 +29,7 @@ export const BondsList: FC<BondsListProps> = ({
         onRedeem={onRedeem}
         onExit={onExit}
         mobileBreakpoint={1380}
+        noDataClassName={styles.noDataMessage}
       />
     </div>
   );
