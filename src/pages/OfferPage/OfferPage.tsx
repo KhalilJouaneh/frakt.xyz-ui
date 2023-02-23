@@ -229,38 +229,14 @@ const TotalOverview: FC<TotalOverviewProps> = ({
   interest = 0,
   duration = 7,
 }) => {
-  const apr = (interest / duration) * 365;
   const estProfit = size * (interest / 1e2);
 
   return (
     <div className={styles.total}>
-      <h5 className={styles.blockTitle}>Your total is {size || 0} SOL</h5>
-      <div className={styles.totalItem}>
-        <div className={styles.totalTitle}>
-          <span>apr</span>
-          <Tooltip
-            placement="bottom"
-            overlay="Analyzed profit from repaying the loan"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </div>
-        <div className={styles.totalValue}>{(apr || 0).toFixed(2)} %</div>
-      </div>
-      <div className={styles.totalItem}>
-        <div className={styles.totalTitle}>
-          <span>estimated profit</span>
-          <Tooltip
-            placement="bottom"
-            overlay="Proportional to the Size and % Interest"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </div>
-        <div className={styles.totalValue}>
-          {(estProfit || 0).toFixed(3)} <Solana />
-        </div>
-      </div>
+      <h5 className={styles.blockTitle}>
+        {(estProfit || 0).toFixed(2)} SOL in {duration} days
+      </h5>
+      <span className={styles.blockSubtitle}>estimated profit</span>
     </div>
   );
 };

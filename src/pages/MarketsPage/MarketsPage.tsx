@@ -3,19 +3,19 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import classNames from 'classnames';
 import { web3 } from 'fbonds-core';
 
+import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
+import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
+import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Tabs } from '@frakt/components/Tabs';
 
+import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
 import { MarketTable } from './components/MarketTable/MarketTable';
 import { useMarketPage, useMarketsPreview } from './hooks';
 import MyBondsWidgets from './components/MyBondsWidgets';
 import { Header } from './components/Header';
 
 import styles from './MarketsPage.module.scss';
-import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
-import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
-import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
-import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 
 export enum InputControlsNames {
   SHOW_STAKED = 'showStaked',

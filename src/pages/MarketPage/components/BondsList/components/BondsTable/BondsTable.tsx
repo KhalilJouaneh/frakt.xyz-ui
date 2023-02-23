@@ -2,9 +2,9 @@ import { FC } from 'react';
 
 import Table, { useTable } from '@frakt/components/Table';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
+import { useWindowSize } from '@frakt/hooks';
 
 import { TableList } from './columns';
-import { useWindowSize } from '@frakt/hooks';
 
 export interface BondsTableProps {
   data: ReadonlyArray<any>;
@@ -45,6 +45,7 @@ export const BondsTable: FC<BondsTableProps> = ({
     columns: COLUMNS,
     searchParams: {
       searchField: ['collateralBox.nft.name'],
+      debounceWait: 300,
     },
     loading,
   });
