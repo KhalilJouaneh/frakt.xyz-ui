@@ -7,34 +7,14 @@ import { PATHS } from '../../../../constants';
 import styles from './GraceList.module.scss';
 import { Timer } from '../../../../icons';
 import Block from '../Block';
-// import { useRaffleSort } from '@frakt/pages/LiquidationsPage/components/Liquidations/hooks';
-// import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
-// import { useIntersection } from '@frakt/hooks/useIntersection';
+import { GraceListItem } from '@frakt/api/raffle';
 
-const GraceList: FC = () => {
-  // const { queryData } = useRaffleSort();
+interface GraceListProps {
+  graceList: GraceListItem[];
+  isLoading: boolean;
+}
 
-  // const { ref, inView } = useIntersection();
-
-  // const {
-  //   data: graceList,
-  //   fetchNextPage,
-  //   isFetchingNextPage,
-  //   isListEnded,
-  // } = useRaffleInfo({
-  //   url: 'liquidation/grace-list',
-  //   id: 'graceDashboardList',
-  //   queryData,
-  // });
-
-  // useEffect(() => {
-  //   if (inView && !isFetchingNextPage && !isListEnded) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
-
-  const graceList = [];
-
+const GraceList: FC<GraceListProps> = ({ isLoading, graceList }) => {
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Grace list</h3>
@@ -42,9 +22,9 @@ const GraceList: FC = () => {
         <p className={styles.headerTitle}>Collections</p>
         <p className={styles.headerTitle}>Grace period</p>
       </div>
-      {graceList?.length ? (
+      {graceList?.length && !isLoading ? (
         <div className={styles.content}>
-          {graceList.map(({ nftName, nftImageUrl, expiredAt }) => (
+          {graceList?.map(({ nftName, nftImageUrl, expiredAt }) => (
             <div key={nftName} className={styles.card}>
               <div className={styles.nftInfo}>
                 <img src={nftImageUrl} className={styles.nftImage} />

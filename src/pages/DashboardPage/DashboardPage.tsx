@@ -18,6 +18,7 @@ import MyDeposit from './components/MyDeposit';
 import Lending from './components/Lending';
 import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
+import { useFetchAllRaffleList } from '@frakt/hooks/useRaffleData';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ const DashboardPage: FC = () => {
   useEffect(() => {
     dispatch(statsActions.fetchStats());
   }, [dispatch]);
+
+  const { data: graceList, loading: isLoadingGraceList } =
+    useFetchAllRaffleList();
 
   return (
     <AppLayout>
@@ -74,7 +78,10 @@ const DashboardPage: FC = () => {
                 <LastLoans lastLoans={lastLoans} />
               </div>
               <div className={cx(styles.row, styles.rowDirection)}>
-                <GraceList />
+                <GraceList
+                  isLoading={isLoadingGraceList}
+                  graceList={graceList}
+                />
               </div>
             </div>
           </div>
