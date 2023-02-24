@@ -43,11 +43,7 @@
   padding-right: 16px !important;
 }
 
-// .ant-table-tbody > tr:last-child > td {
-//   border-bottom: 0 !important;
-// }
-
-// sort icon
+// remove sort icon
 .ant-table-column-sorter {
   display: none;
 }
@@ -74,5 +70,9 @@ td.ant-table-column-sort {
 }
 
 .ant-table-empty .ant-table-tbody > tr.ant-table-placeholder {
+  display: none;
+}
+
+.ant-table-cell::before {
   display: none;
 }

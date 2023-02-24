@@ -27,6 +27,12 @@ export const useMarketsPreview: UseMarketsPreview = ({ walletPublicKey }) => {
   };
 };
 
+export enum MarketTabsNames {
+  COLLECTIONS = 'collections',
+  OFFERS = 'offers',
+  BONDS = 'bonds',
+}
+
 export const useMarketPage = () => {
   const {
     tabs: marketTabs,
@@ -50,7 +56,7 @@ export const MARKET_TABS: Tab[] = [
     value: 'collections',
   },
   {
-    label: 'My Bonds',
+    label: 'My bonds',
     value: 'bonds',
   },
 ];

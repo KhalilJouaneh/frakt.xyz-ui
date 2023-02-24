@@ -130,6 +130,7 @@ export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
           pairs={pairs}
         />
       ),
+      showSorterTooltip: false,
     },
     {
       render: (_, bond: Bond) => {

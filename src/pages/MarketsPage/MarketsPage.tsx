@@ -10,24 +10,14 @@ import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Tabs } from '@frakt/components/Tabs';
 
 import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
+import { MarketTabsNames, useMarketPage, useMarketsPreview } from './hooks';
 import { MarketTable } from './components/MarketTable/MarketTable';
-import { useMarketPage, useMarketsPreview } from './hooks';
 import MyBondsWidgets from './components/MyBondsWidgets';
+import { createMyBondsStats } from './helpers';
 import { Header } from './components/Header';
 
 import styles from './MarketsPage.module.scss';
-import { createMyBondsStats } from './helpers';
-
-export enum InputControlsNames {
-  SHOW_STAKED = 'showStaked',
-  SORT = 'sort',
-}
-
-export enum MarketTabsNames {
-  COLLECTIONS = 'collections',
-  OFFERS = 'offers',
-  BONDS = 'bonds',
-}
+import EmptyList from '@frakt/components/EmptyList';
 
 const marketPubkey = 'CEKGS2Ez83EP2E5QRYj6457euRAZwVxozRGkZvZNPUHR';
 
@@ -79,7 +69,12 @@ const MarketsPreviewPage: FC = () => {
           value={tabValue}
           setValue={setTabValue}
         />
-        <div className={styles.tabContent}>
+        <div
+          className={classNames(styles.tabContent, {
+            [styles.tabContentMinHeight]:
+              tabValue === MarketTabsNames.COLLECTIONS,
+          })}
+        >
           {tabValue === MarketTabsNames.COLLECTIONS && (
             <MarketTable
               className={styles.table}
@@ -90,7 +85,10 @@ const MarketsPreviewPage: FC = () => {
           {tabValue === MarketTabsNames.BONDS && (
             <>
               {!connected && (
-                <ConnectWalletSection text="Connect your wallet to check my bonds" />
+                <ConnectWalletSection
+                  className={styles.emptyList}
+                  text="Connect your wallet to see my bonds"
+                />
               )}
 
               {connected && (
@@ -103,6 +101,7 @@ const MarketsPreviewPage: FC = () => {
                   />
                   <BondsTable
                     className={classNames(styles.table, styles.bondsTable)}
+                    noDataClassName={styles.noDataTableMessage}
                     loading={isLoading}
                     data={bonds}
                     onExit={onExit}
@@ -111,6 +110,13 @@ const MarketsPreviewPage: FC = () => {
                     pairs={pairs}
                   />
                 </>
+              )}
+
+              {connected && !bonds.length && (
+                <EmptyList
+                  className={styles.emptyList}
+                  text="You don't have any bonds"
+                />
               )}
             </>
           )}

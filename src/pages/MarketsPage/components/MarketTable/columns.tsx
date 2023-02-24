@@ -14,6 +14,7 @@ import {
   createAprJSX,
   createSolValueJSX,
   createHighestLtvJSX,
+  createActiveLoansJSX,
 } from './TableCells';
 import styles from './TableCells/TableCells.module.scss';
 
@@ -91,7 +92,7 @@ export const TableList = ({ onChange }) => {
           value="activeLoans"
         />
       ),
-      render: (value) => createSolValueJSX(value),
+      render: (value) => createActiveLoansJSX(value),
       sorter: (a, b) => parseFloat(a.offerTVL) - parseFloat(b.offerTVL),
       showSorterTooltip: false,
     },

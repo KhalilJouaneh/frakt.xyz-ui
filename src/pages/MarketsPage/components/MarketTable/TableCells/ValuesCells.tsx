@@ -8,6 +8,10 @@ export const createSolValueJSX = (value?: string) => (
   </span>
 );
 
+export const createActiveLoansJSX = (value = 0) => (
+  <span className={styles.value}>{value || '--'}</span>
+);
+
 export const createOfferTvlJSX = (value?: string) => (
   <span className={styles.value}>
     {parseFloat(value)?.toFixed(1)} <Solana />

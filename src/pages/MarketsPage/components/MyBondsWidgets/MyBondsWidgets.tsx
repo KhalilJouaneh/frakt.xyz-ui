@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import Button from '@frakt/components/Button';
 import styles from './MyBondsWidgets.module.scss';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 interface MyBondsWidgetsProps {
   onClick: () => void;
@@ -32,7 +33,12 @@ const MyBondsWidgets: FC<MyBondsWidgetsProps> = ({
       </div>
       <div className={classNames(styles.block, styles.widgetBetween)}>
         <WidgetValue label="Rewards" value={(rewards || 0).toFixed(2)} />
-        <Button onClick={onClick} className={styles.button} type="secondary">
+        <Button
+          onClick={onClick}
+          disabled={!rewards}
+          className={styles.button}
+          type="secondary"
+        >
           Claim all
         </Button>
       </div>
