@@ -15,6 +15,7 @@
   --light-red-color: #ffdee433;
   --light-red-color-hover: #ffdee4;
   --orange-color: #ff701f;
+  --yellow-color: #ffe91f;
   --light-green-hover: #8cea15;
   --light-green-color: #9cff1f;
   --light-green-color-1: #f5ffe9;
@@ -63,9 +64,9 @@
   --font-h6: 700 28px var(--font-family-syne);
 
   --font-body-small: 500 16px var(--font-family-syne);
-  --font-body-large: 400 24px var(--font-family-inter);
+  --font-body-large: 400 24px var(--font-family-syne);
 
-  --font-link: 700 18px var(--font-family-inter);
+  --font-link: 700 18px var(--font-family-syne);
 
   --font-title-2: 800 48px var(--font-family-syne);
 
@@ -124,6 +125,7 @@
   --light-red-color: #4a1e2633;
   --light-red-color-hover: #4a1e26;
   --orange-color: #ff701f;
+  --yellow-color: #ffe91f;
   --light-green-hover: #8cea15;
   --light-green-color: #a4ff31;
   --light-green-color-1: #48691e;
@@ -145,8 +147,6 @@
 
   --transition-1: 0.2s ease-in;
 
-  --transition-1: 0.2s ease-in;
-
   --font-family-syne: 'Syne', sans-serif;
   --font-family-chakra: 'Chakra Petch', sans-serif;
 
@@ -160,9 +160,9 @@
   --font-h6: 700 28px var(--font-family-syne);
 
   --font-body-small: 500 16px var(--font-family-syne);
-  --font-body-large: 400 24px var(--font-family-inter);
+  --font-body-large: 400 24px var(--font-family-syne);
 
-  --font-link: 700 18px var(--font-family-inter);
+  --font-link: 700 18px var(--font-family-syne);
 
   --font-title-2: 800 48px var(--font-family-syne);
 

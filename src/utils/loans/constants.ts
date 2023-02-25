@@ -1,0 +1,1 @@
+export const MAX_TIME_BASED_LOAN_DURATION = 14;

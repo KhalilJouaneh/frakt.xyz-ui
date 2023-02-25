@@ -2,10 +2,10 @@ import React, { FC, useState } from 'react';
 import classNames from 'classnames';
 import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 
+import Tooltip from '@frakt/components/Tooltip';
 import { ChevronDown, Solana } from '@frakt/icons';
 import NumericInput from '../NumericInput';
 import styles from './styles.module.scss';
-import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 export interface TokenFieldProps {
@@ -118,11 +118,7 @@ const TokenField: FC<TokenFieldProps> = ({
               [styles.disabledTokens]: !tokensList || !onTokenChange,
             })}
           >
-            {currentToken ? (
-              <Solana width={16} />
-            ) : (
-              <div className={styles.noTokenImg} />
-            )}
+            {currentToken.name === 'SOL' ? <Solana width={16} /> : null}
             <span
               className={classNames(styles.tokenName, {
                 [styles.tokenName_empty]: !currentToken,

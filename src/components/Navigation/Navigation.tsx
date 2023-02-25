@@ -43,7 +43,10 @@ export const MenuItem: FC<MenuItem> = ({
     return (
       <NavLink
         to={to}
-        className={cx(styles.link, className, { [styles.active]: isActive })}
+        className={cx(styles.link, className, {
+          [styles.active]: isActive,
+          [styles.bonds]: label === 'Bonds',
+        })}
       >
         {icon && (
           <span className={cx(styles.icon, fillIcon && styles.fillIcon)}>
@@ -59,7 +62,10 @@ export const MenuItem: FC<MenuItem> = ({
       return (
         <NavLink
           to={to(param)}
-          className={cx(styles.link, className, { [styles.active]: isActive })}
+          className={cx(styles.link, className, {
+            [styles.active]: isActive,
+            [styles.bonds]: label === 'Bonds',
+          })}
         >
           {icon && (
             <span className={cx(styles.icon, fillIcon && styles.fillIcon)}>

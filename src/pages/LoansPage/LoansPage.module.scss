@@ -1,29 +1,11 @@
-.sortingSelectContainer {
-  svg {
-    path {
-      stroke: var(--accent-color-1) !important;
-    }
-  }
-
-  .sortName {
-    color: var(--accent-color-1);
-  }
+.content {
+  display: block;
 }
 
-.sortWrapper {
-  flex-shrink: 0;
+.contentSidebarVisible {
+  padding-right: 343px;
 
-  .arrowDown,
-  .arrowUp {
-    margin-top: 2px;
-    margin-left: 3px;
-
-    path {
-      stroke: var(--white-color);
-    }
-  }
-
-  .arrowDown {
-    transform: rotate(180deg);
+  @media (max-width: 767px) {
+    padding-right: 0;
   }
 }

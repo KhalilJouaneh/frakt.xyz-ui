@@ -21,14 +21,6 @@
   gap: 8px;
 }
 
-.headerActive {
-  padding-right: 334px;
-
-  @media (max-width: 767px) {
-    padding-right: 0;
-  }
-}
-
 .stats {
   display: flex;
   align-items: center;
@@ -37,16 +29,6 @@
 
   @media (max-width: 500px) {
     flex-direction: column;
-  }
-}
-
-.statsActive {
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    width: 100%;
-  }
-  @media (max-width: 767px) {
-    flex-direction: row;
   }
 }
 

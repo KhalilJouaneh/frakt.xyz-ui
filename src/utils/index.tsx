@@ -232,6 +232,8 @@ export const compareNumbers = (
 export const sendTxnPlaceHolder = async (): Promise<null> =>
   await Promise.resolve(null);
 
+export const PUBKEY_PLACEHOLDER = '11111111111111111111111111111111';
+
 export const calcWeightedAverage = (nums: number[], weights: number[]) => {
   const [sum, weightSum] = weights.reduce(
     (acc, weight, i) => {

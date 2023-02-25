@@ -1,53 +1,38 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
-import classNames from 'classnames';
 
-import { selectUserLoansPending } from '@frakt/state/loans/selectors';
-import LoanCard from '@frakt/components/LoanCard';
-import { Loan } from '@frakt/state/loans/types';
+import { LoanCard } from '@frakt/pages/LoansPage/components/LoanCard';
 import styles from './LoansList.module.scss';
-import {
-  useSelectableNfts,
-  useSelectableNftsState,
-} from '@frakt/pages/LoansPage/hooks';
 import InfinityScroll, {
   useFakeInfinityScroll,
 } from '@frakt/components/InfinityScroll';
+import { Loan } from '@frakt/api/loans';
+import { useSelectedLoans } from '../../loansState';
 
 interface LoansListProps {
-  className?: string;
   loans: Loan[];
+  isLoading: boolean;
 }
 
-export const LoansList: FC<LoansListProps> = ({ className, loans }) => {
+export const LoansList: FC<LoansListProps> = ({ loans, isLoading }) => {
   const { itemsToShow, next } = useFakeInfinityScroll(48);
-  const loading: boolean = useSelector(selectUserLoansPending);
 
-  const { setCurrentSelectedIdx, selectedNfts } = useSelectableNftsState();
-  const { onNftClick, isNftSelected } = useSelectableNfts();
-
-  const currentNftIdx = selectedNfts.length - 1 < 0 ? 0 : selectedNfts.length;
+  const { findLoanInSelection, toggleLoanInSelection } = useSelectedLoans();
 
   return (
     <InfinityScroll
       itemsToShow={itemsToShow}
-      isLoading={loading}
+      isLoading={isLoading}
       next={next}
-      wrapperClassName={classNames(
-        styles.loansList,
-        { [styles.loansListCollapsed]: !!selectedNfts.length },
-        className,
-      )}
+      wrapperClassName={styles.loansList}
       emptyMessage="No loans taken"
     >
       {loans.map((loan) => (
         <LoanCard
-          selected={isNftSelected(loan)}
-          onClick={() => {
-            setCurrentSelectedIdx(currentNftIdx);
-            onNftClick(loan);
+          selected={!!findLoanInSelection(loan.pubkey)}
+          onSelect={() => {
+            toggleLoanInSelection(loan);
           }}
-          key={loan.mint}
+          key={loan.pubkey}
           loan={loan}
         />
       ))}

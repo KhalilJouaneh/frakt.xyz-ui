@@ -1,4 +1,5 @@
-import { CollectionsListItem, LotteryTickets } from './types';
+import axios from 'axios';
+import { CollectionsListItem, GraceListItem, LotteryTickets } from './types';
 
 export const fetchRaffleCollections = async (): Promise<
   CollectionsListItem[]
@@ -45,6 +46,14 @@ export const fetchAllRaffleCollections = async (): Promise<any> => {
     ]);
 
   return { raffleCollections, graceCollections, historyCollections };
+};
+
+export const fetchAllRaffleList = async (): Promise<GraceListItem[]> => {
+  const { data } = await axios.get<GraceListItem[]>(
+    `https://${process.env.BACKEND_DOMAIN}/liquidation/grace-list`,
+  );
+
+  return data ?? [];
 };
 
 export const fetchUserTickets = async (

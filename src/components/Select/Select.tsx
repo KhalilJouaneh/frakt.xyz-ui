@@ -1,42 +1,38 @@
-import ReactSelect from 'react-select';
-import { find, propEq } from 'ramda';
+import ReactSelect, { ValueContainerProps } from 'react-select';
 import classNames from 'classnames';
 
 import styles from './styles.module.scss';
-import { FC } from 'react';
 
-export interface SelectOptions {
+export interface SelectOption<T> {
   label: string;
-  value: string;
-  disabled?: boolean;
-  event?: string;
+  value: T;
 }
 
-interface SelectProps {
-  options: SelectOptions[];
+interface SelectProps<T> {
+  options: SelectOption<T>[];
   className?: string;
   onChange?: (value: any) => void;
-  value?: any;
+  value?: SelectOption<T>;
   disabled?: boolean;
   name?: string;
-  defaultValue?: SelectOptions;
+  defaultValue?: SelectOption<T>;
 }
 
-export const Select: FC<SelectProps> = ({
+export const Select = <T extends unknown>({
   className = '',
   disabled,
   defaultValue,
   value,
   options,
   ...props
-}) => {
-  const ValueContainer = (valueContainerProps: any) => {
-    const label = find(propEq('value', value))(options) as SelectOptions;
+}: SelectProps<T>) => {
+  const ValueContainer = (props: ValueContainerProps<SelectOption<T>>) => {
+    const option = options.find((o) => o.label === value.label);
 
     return (
       <span className={styles.valueContainer}>
-        <span>{label?.label}</span>
-        <div className={styles.input}>{valueContainerProps.children[1]}</div>
+        <span>{option?.label}</span>
+        <div className={styles.input}>{props.children[1]}</div>
       </span>
     );
   };
@@ -44,7 +40,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <ReactSelect
       {...props}
-      value={options.filter((option) => option.value === value)}
+      value={value}
       isSearchable={false}
       components={{ ValueContainer }}
       className={classNames(styles.select, className)}

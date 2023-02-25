@@ -2,11 +2,14 @@ import { chunk } from 'lodash';
 import { web3, loans, BN } from '@frakt-protocol/frakt-sdk';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 
-import { IxnsData, showSolscanLinkNotification } from '../transactions/helpers';
-import { mergeIxsIntoTxn } from '../transactions/helpers/createTransactions';
-import { captureSentryError } from '../sentry';
 import { NotifyType } from '../solanaUtils';
 import { notify, SOL_TOKEN } from '../';
+import { captureSentryError } from '../sentry';
+import {
+  mergeIxsIntoTxn,
+  showSolscanLinkNotification,
+  IxnsData,
+} from '../transactions';
 
 type ProposeLoan = (props: {
   connection: web3.Connection;
@@ -67,7 +70,7 @@ export const proposeBulkLoan: ProposeLoan = async ({
       transaction.feePayer = wallet.publicKey;
     });
 
-    const txn = await txnData.map(({ transaction, signers }) => {
+    const txn = txnData.map(({ transaction, signers }) => {
       if (signers) {
         transaction.sign(...signers);
       }

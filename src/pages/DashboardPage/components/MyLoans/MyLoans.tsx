@@ -1,56 +1,53 @@
 import { FC } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { sum, map, filter } from 'ramda';
 
-import {
-  selectLiquidityPools,
-  selectLoanNfts,
-  selectTotalDebt,
-} from '../../../../state/loans/selectors';
-import { ChartPie, defaultColors } from '../ChartPie';
-import { Loan } from '../../../../state/loans/types';
+import { selectLiquidityPools } from '@frakt/state/loans/selectors';
+import { useWalletLoans } from '@frakt/pages/LoansPage';
+import Button from '@frakt/components/Button';
+import { PATHS } from '@frakt/constants';
 import { Solana } from '@frakt/icons';
-import styles from './MyLoans.module.scss';
+
+import { ChartPie, defaultColors } from '../ChartPie';
 import Block from '../Block';
-import Button from '../../../../components/Button';
-import { PATHS } from '../../../../constants';
+import {
+  calcLoansAmounts,
+  calcTotalLoansAmout,
+  getFilteredPools,
+  getPoolsInfoForView,
+} from './helpers';
+
+import styles from './MyLoans.module.scss';
 
 const MyLoans: FC = () => {
-  const userLoans: Loan[] = useSelector(selectLoanNfts);
+  const { publicKey: walletPublicKey } = useWallet();
+
+  const { loans: userLoans } = useWalletLoans({ walletPublicKey });
   const liquidityPools = useSelector(selectLiquidityPools);
 
-  const loanToValue = ({ loanValue }) => loanValue;
-  const repayValue = ({ repayValue }) => repayValue;
-  const isPriceBased = ({ isPriceBased }) => isPriceBased;
-  const isTimeBased = (loan) => !loan?.isPriceBased;
-  const isGracePeriod = (loan) => loan?.isGracePeriod;
-  const imageUrl = ({ imageUrl }) => imageUrl[0];
+  const { totalBorrowed, totalDebt, totalLoans } =
+    calcTotalLoansAmout(userLoans);
 
-  const totalDebt = useSelector(selectTotalDebt);
+  const {
+    flipRepayValue,
+    perpetualRepayValue,
+    bondRepayValue,
+    graceLoansValue,
+    graceLoans,
+  } = calcLoansAmounts(userLoans);
 
-  const perpetualLoans = filter(isPriceBased, userLoans);
-  const flipLoans = filter(isTimeBased, userLoans);
-  const graceLoans = filter(isGracePeriod, userLoans);
-
-  const perpetuaRepayValue = sum(map(repayValue, perpetualLoans));
-  const flipRepayValue = sum(map(repayValue, flipLoans));
-  const graceRepayValue = sum(map(repayValue, graceLoans));
-
-  const countLoans = userLoans.length;
-  const totalBorrowed = sum(map(loanToValue, userLoans));
-
-  const perpLiquidityPools = filter(isPriceBased, liquidityPools).splice(0, 8);
-  const poolsImages = map(imageUrl, perpLiquidityPools);
-  const flipPool = filter(isTimeBased, liquidityPools);
-
-  const otherPoolsCount = flipPool[0]?.collectionsAmount - 7;
+  const { perpetualPools, flipPools } = getFilteredPools(liquidityPools);
+  const { poolsImages, restFlipPoolImages } = getPoolsInfoForView(
+    perpetualPools,
+    flipPools,
+  );
 
   const loansInfo = [
     { name: 'Flip', value: flipRepayValue?.toFixed(3) },
-    { name: 'Perpetual', value: perpetuaRepayValue?.toFixed(3) },
-    { name: 'On grace', value: graceRepayValue?.toFixed(3) },
-    { name: 'Bond', value: 0 },
+    { name: 'Perpetual', value: perpetualRepayValue?.toFixed(3) },
+    { name: 'On grace', value: graceLoansValue?.toFixed(3) },
+    { name: 'Bond', value: bondRepayValue?.toFixed(3) },
   ];
 
   return (
@@ -67,13 +64,13 @@ const MyLoans: FC = () => {
             <div className={styles.loansInfoWrapper}>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalBorrowed.toFixed(3)} <Solana className={styles.icon} />
+                  {totalBorrowed?.toFixed(3)} <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total borrowed</p>
               </div>
               <div className={styles.loansInfo}>
                 <div className={styles.loansValue}>
-                  {totalDebt.toFixed(3)} <Solana className={styles.icon} />
+                  {totalDebt?.toFixed(3)} <Solana className={styles.icon} />
                 </div>
                 <p className={styles.subtitle}>Total debt</p>
               </div>
@@ -85,7 +82,7 @@ const MyLoans: FC = () => {
                   width={192}
                   label={
                     <div className={styles.labelWrapper}>
-                      <p className={styles.labelValue}>{countLoans}</p>
+                      <p className={styles.labelValue}>{totalLoans}</p>
                       <p className={styles.label}>Loans</p>
                     </div>
                   }
@@ -122,7 +119,9 @@ const MyLoans: FC = () => {
                 <div key={url} className={styles.poolImageEmpty}>
                   <img src={url} />
                   <div className={styles.otherImage}>
-                    <p className={styles.otherImageCount}>+{otherPoolsCount}</p>
+                    <p className={styles.otherImageCount}>
+                      +{restFlipPoolImages}
+                    </p>
                     <p className={styles.otherImageTitle}>collections</p>
                   </div>
                 </div>
@@ -134,7 +133,7 @@ const MyLoans: FC = () => {
 
       <NavLink
         style={{ width: '100%' }}
-        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW}
+        to={userLoans.length ? PATHS.LOANS : PATHS.BORROW_ROOT}
       >
         <Button className={styles.btn} type="secondary">
           {userLoans.length ? 'Repay' : 'Borrow SOL'}

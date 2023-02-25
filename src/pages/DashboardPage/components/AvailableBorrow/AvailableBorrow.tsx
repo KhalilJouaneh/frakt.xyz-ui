@@ -8,13 +8,14 @@ import { Solana } from '@frakt/icons';
 import Block from '../Block';
 import { PATHS } from '../../../../constants';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { fetchWalletBorrowNfts } from '@frakt/api/nft';
+import { BorrowNft, fetchWalletBorrowNfts } from '@frakt/api/nft';
 
 const AvailableBorrow: FC = () => {
   const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
   const { publicKey } = useWallet();
 
-  const maxLoanValue = ({ maxLoanValue }) => maxLoanValue;
+  const maxLoanValue = ({ classicParams }: BorrowNft) =>
+    classicParams.maxLoanValue;
 
   useEffect(() => {
     (async () => {
@@ -35,10 +36,12 @@ const AvailableBorrow: FC = () => {
     <Block className={styles.block}>
       <h3 className={styles.title}>Available to borrow</h3>
       <div className={styles.valueWrapper}>
-        <p className={styles.value}>{availableBorrowValue}</p>
+        <p className={styles.value}>
+          {(Number(availableBorrowValue) / 1e9)?.toFixed(2)}
+        </p>
         <Solana className={styles.icon} />
       </div>
-      <NavLink style={{ width: '100%' }} to={PATHS.BORROW}>
+      <NavLink style={{ width: '100%' }} to={PATHS.BORROW_ROOT}>
         <Button className={styles.btn} type="secondary">
           Borrow
         </Button>

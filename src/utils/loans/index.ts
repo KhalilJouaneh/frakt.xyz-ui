@@ -4,4 +4,7 @@ export * from './proposeBulkLoan';
 export * from './depositLiquidity';
 export * from './unstakeLiquidity';
 export * from './harvestLiquidity';
-export * from './loans';
+
+export * from './constants';
+
+export * from './makeProposeTransaction';

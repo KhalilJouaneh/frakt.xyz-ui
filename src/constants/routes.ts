@@ -7,11 +7,15 @@ import {
   LendPage,
   LiquidationsPage,
   LoansPage,
-  BorrowPage,
   MarketsPage,
   MarketPage,
-  PoolsCreationPage,
-} from '../pages';
+  OfferPage,
+  BorrowRootPage,
+  BorrowManualPage,
+  BorrowBulkSuggestionPage,
+  BorrowBulkOverviewPage,
+  BorrowSuccessPage,
+} from '@frakt/pages';
 
 interface Route {
   path: string;
@@ -47,13 +51,38 @@ export const routes: Route[] = [
   },
   {
     exact: true,
-    path: PATHS.POOLS_CREATION,
-    component: PoolsCreationPage,
+    path: `${PATHS.OFFER}/:marketPubkey`,
+    component: OfferPage,
   },
   {
     exact: true,
-    path: PATHS.BORROW,
-    component: BorrowPage,
+    path: `${PATHS.OFFER}/:marketPubkey/:pairPubkey`,
+    component: OfferPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_ROOT,
+    component: BorrowRootPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_MANUAL,
+    component: BorrowManualPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_BULK_SUGGESTION,
+    component: BorrowBulkSuggestionPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_BULK_OVERVIEW,
+    component: BorrowBulkOverviewPage,
+  },
+  {
+    exact: true,
+    path: PATHS.BORROW_SUCCESS,
+    component: BorrowSuccessPage,
   },
   {
     exact: true,
