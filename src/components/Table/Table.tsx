@@ -97,9 +97,13 @@ const Table = <T extends unknown>({
 
   return (
     <AntdTable
-      className={classNames(className, {
-        [noDataClassName]: !data.length && !loading,
-      })}
+      className={classNames(
+        className,
+        {
+          [noDataClassName]: !data.length && !loading,
+        },
+        styles.table,
+      )}
       rowClassName={() => 'rowClassName'}
       columns={columns as ColumnsType}
       dataSource={data as any}
