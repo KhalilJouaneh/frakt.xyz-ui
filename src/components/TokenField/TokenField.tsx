@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import classNames from 'classnames';
 import { TokenInfo } from '@frakt-protocol/frakt-sdk';
 
@@ -24,8 +24,9 @@ export interface TokenFieldProps {
   amountMaxLength?: number;
   disabled?: boolean;
   labelRight?: boolean;
-  lpBalance?: number;
+  lpBalance?: number | string;
   toolTipText?: string;
+  labelRightNode?: ReactNode;
 }
 
 const TokenField: FC<TokenFieldProps> = ({
@@ -45,6 +46,7 @@ const TokenField: FC<TokenFieldProps> = ({
   disabled = false,
   lpBalance,
   toolTipText,
+  labelRightNode,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -67,14 +69,18 @@ const TokenField: FC<TokenFieldProps> = ({
             className={classNames(
               styles.label,
               !labelRight && styles.labelFlex,
+              !!labelRightNode && styles.labelSeparete,
             )}
           >
-            {label}
-            {toolTipText && (
-              <Tooltip placement="bottom" overlay={toolTipText}>
-                <QuestionCircleOutlined className={styles.questionIcon} />
-              </Tooltip>
-            )}
+            <div className={styles.labelRow}>
+              {label}
+              {toolTipText && (
+                <Tooltip placement="bottom" overlay={toolTipText}>
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              )}
+            </div>
+            {labelRightNode}
             {!!lpBalance && (
               <span>
                 {lpBalance} {currentToken?.symbol}

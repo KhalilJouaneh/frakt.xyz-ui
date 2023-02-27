@@ -1,20 +1,24 @@
+import { FC } from 'react';
+import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 
-import Button from '../../components/Button';
 import { commonActions } from '../../state/common/actions';
+import Button from '../../components/Button';
 import styles from './styles.module.scss';
 
 interface ConnectWalletSectionProps {
   text: string;
+  className?: string;
 }
 
-export const ConnectWalletSection = ({
+export const ConnectWalletSection: FC<ConnectWalletSectionProps> = ({
   text,
-}: ConnectWalletSectionProps): JSX.Element => {
+  className,
+}) => {
   const dispatch = useDispatch();
 
   return (
-    <div className={styles.connectWallet}>
+    <div className={classNames(styles.connectWallet, className)}>
       <p className={styles.connectWalletText}>{text}</p>
       <Button
         type="secondary"

@@ -4,6 +4,7 @@ import { web3 } from 'fbonds-core';
 import { parseMarketOrder } from './helpers';
 import { MarketOrder } from './types';
 import { useMarketPairs } from '@frakt/utils/bonds';
+import { compareNumbers } from '@frakt/utils';
 
 type UseMarketOrders = (props: {
   marketPubkey: web3.PublicKey;
@@ -12,6 +13,7 @@ type UseMarketOrders = (props: {
   ltv: number;
   size: number; //? lamports
   interest: number;
+  duration: number;
 }) => {
   offers: MarketOrder[];
   isLoading: boolean;
@@ -26,6 +28,7 @@ export const useMarketOrders: UseMarketOrders = ({
   ltv,
   size,
   interest,
+  duration,
 }) => {
   const { publicKey } = useWallet();
 
@@ -39,6 +42,7 @@ export const useMarketOrders: UseMarketOrders = ({
       ltv,
       size: size / 1e9,
       interest: interest / 1e2,
+      duration: duration ?? 7,
       synthetic: true,
       rawData: {
         publicKey: '',
@@ -55,18 +59,27 @@ export const useMarketOrders: UseMarketOrders = ({
       .map(parseMarketOrder);
 
     if (ltv) parsedOffers.push(myOffer);
-    const sortOffersByInterest = parsedOffers.sort(
-      (a, b) => b.interest - a.interest,
-    );
+    const sortOffersByInterest = parsedOffers.sort((a, b) => {
+      return compareNumbers(a.interest, b.interest, sortDirection === 'desc');
+    });
 
     const sortedByLtv = (
       sortDirection === 'asc'
         ? sortOffersByInterest
         : sortOffersByInterest.reverse()
-    ).sort((a, b) => b.ltv - a.ltv);
+    ).sort((a, b) => compareNumbers(a.ltv, b.ltv, sortDirection === 'desc'));
 
     return sortedByLtv;
-  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
+  }, [
+    pairs,
+    sortDirection,
+    walletOwned,
+    publicKey,
+    ltv,
+    size,
+    interest,
+    duration,
+  ]);
 
   const offersExist = Boolean(offers.length);
 

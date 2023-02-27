@@ -1,0 +1,89 @@
+@import './abstracts/_variables.scss';
+
+@primary-background: var(--primary-background);
+@primary-border: var(--primary-border);
+@tabel-row-hover: var(--gray-table-hover);
+
+// Table styles
+.ant-table {
+  overflow: hidden;
+  background: @primary-background;
+  border: 1px solid @primary-border;
+  border-bottom: 0;
+  border-radius: 0;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid @primary-border;
+  padding: 0;
+  vertical-align: middle;
+  transition: unset;
+}
+
+.ant-table-tbody > tr > td:first-child {
+  border-bottom: 1px solid @primary-border;
+  vertical-align: middle;
+  padding: 0 16px;
+}
+
+.ant-table-tbody > tr > td:last-child {
+  padding: 16px !important;
+}
+
+.ant-table-thead > tr > th {
+  padding: 16px 0;
+  background: @primary-background;
+  border-bottom: 1px solid @primary-border;
+  white-space: nowrap;
+  transition: unset;
+}
+
+.ant-table-thead > tr > th:first-child {
+  padding-left: 16px;
+}
+
+.ant-table-thead > tr > th:last-child {
+  padding-right: 16px !important;
+}
+
+// remove sort icon
+.ant-table-column-sorter {
+  display: none;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background: @tabel-row-hover !important;
+}
+
+.ant-table-thead th.ant-table-column-sort {
+  padding: 0;
+  background: @primary-background;
+}
+
+td.ant-table-column-sort {
+  background: @primary-background;
+}
+
+.ant-table-thead th.ant-table-column-has-sorters:hover {
+  background: @primary-background;
+}
+
+.ant-table-thead th.ant-table-column-has-sorters {
+  padding: 16px 0;
+}
+
+.ant-table-empty .ant-table-tbody > tr.ant-table-placeholder {
+  display: none;
+}
+
+.ant-table-cell::before {
+  display: none;
+}
+
+.ant-table-thead th.ant-table-column-sort {
+  background: @primary-background;
+}
+
+.ant-table-thead th.ant-table-column-has-sorters {
+  transition: unset;
+}

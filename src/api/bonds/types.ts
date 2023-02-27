@@ -82,6 +82,8 @@ export interface MarketPreview {
   apy: number; //? %
   duration: Array<number>; //? [7], [7, 14], [14]
   bestOffer: number; //? lamports
+  bestLTV: number;
+  activeBondsAmount: number;
 }
 
 export interface Pair {
@@ -152,6 +154,8 @@ interface FBond {
   returnTokenMint: string;
   bondCollateralOrSolReceiver: string;
   fbondTokenName: string;
+  marketPubkey: string;
+  ltvPercent: string;
 }
 
 interface CollateralBox {

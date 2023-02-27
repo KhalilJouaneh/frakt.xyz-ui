@@ -170,6 +170,17 @@ body input.valueInput {
   }
 }
 
+.labelSeparete {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .labelFlex {
   width: 100%;
 }
@@ -177,6 +188,7 @@ body input.valueInput {
 .labelWrapper {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .labelPositionRight {

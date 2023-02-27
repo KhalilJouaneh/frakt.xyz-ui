@@ -120,32 +120,10 @@
   align-items: center;
   padding-right: 16px;
   gap: 2px;
-
-  &:last-child {
-    cursor: pointer;
-    &::after {
-      transition: transform 0.1s ease-in;
-      content: '';
-      margin-left: 4px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 9.3px 4.53px 0 4.53px;
-      border-color: var(--gray-color-2) transparent transparent transparent;
-    }
-  }
-  transition: transform 0.1s ease-in;
-
-  &.sort {
-    &:last-child {
-      &::after {
-        transform: rotateX(180deg);
-      }
-    }
-  }
 }
 
 .colName {
+  font: var(--font-text-7);
   text-transform: uppercase;
 }
 

@@ -13,6 +13,7 @@ export const parseMarketOrder = (pair: Pair): MarketOrder => {
     interest: calcInterest({
       spotPrice: pair?.currentSpotPrice,
     }),
+    duration: pair?.validation?.durationFilter / 24 / 60 / 60,
     rawData: {
       publicKey: pair?.publicKey || '',
       assetReceiver: pair?.assetReceiver || '',

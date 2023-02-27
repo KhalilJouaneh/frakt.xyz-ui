@@ -2,9 +2,8 @@ import { FC } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 
-import { Solana } from '@frakt/icons';
-import Tooltip from '@frakt/components/Tooltip';
 import { LoadingModal } from '@frakt/components/LoadingModal';
+import Tooltip from '@frakt/components/Tooltip';
 
 import TokenField from '../../components/TokenField';
 import { AppLayout } from '../../components/Layout/AppLayout';
@@ -46,6 +45,8 @@ export const OfferPage = () => {
     toggleReceiveLiquidatedNfts,
   } = useOfferPage();
 
+  const apr = (parseFloat(interest) / duration) * 365;
+
   return (
     <AppLayout>
       <div className={styles.poolsCreation}>
@@ -82,7 +83,6 @@ export const OfferPage = () => {
               </span>
             </div>
           </div>
-          <h5 className={styles.blockTitle}>Loan parameters</h5>
           <SliderGradient value={ltv} setValue={onLtvChange} />
 
           <div className={styles.radio}>
@@ -109,6 +109,17 @@ export const OfferPage = () => {
             value={interest}
             onValueChange={onInterestChange}
             label="Interest"
+            labelRightNode={
+              <div className={styles.labelRow}>
+                APR: <span>{(apr || 0).toFixed(2)} %</span>
+                <Tooltip
+                  placement="bottom"
+                  overlay={'Analyzed profit from repaying the loan'}
+                >
+                  <QuestionCircleOutlined className={styles.questionIcon} />
+                </Tooltip>
+              </div>
+            }
             currentToken={{
               ...SOL_TOKEN,
               symbol: '%',
@@ -190,7 +201,7 @@ export const OfferPage = () => {
                 className={styles.btn}
                 type="secondary"
               >
-                Place offer
+                Place
               </Button>
             )}
           </div>
@@ -229,39 +240,14 @@ const TotalOverview: FC<TotalOverviewProps> = ({
   interest = 0,
   duration = 7,
 }) => {
-  const apr = (interest / duration) * 365;
-
   const estProfit = size * (interest / 1e2);
 
   return (
     <div className={styles.total}>
-      <h5 className={styles.blockTitle}>Your total is {size || 0} SOL</h5>
-      <div className={styles.totalItem}>
-        <div className={styles.totalTitle}>
-          <span>apr</span>
-          <Tooltip
-            placement="bottom"
-            overlay="Analyzed profit from repaying the loan"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </div>
-        <div className={styles.totalValue}>{(apr || 0).toFixed(2)} %</div>
-      </div>
-      <div className={styles.totalItem}>
-        <div className={styles.totalTitle}>
-          <span>estimated profit</span>
-          <Tooltip
-            placement="bottom"
-            overlay="Proportional to the Size and % Interest"
-          >
-            <QuestionCircleOutlined className={styles.questionIcon} />
-          </Tooltip>
-        </div>
-        <div className={styles.totalValue}>
-          {(estProfit || 0).toFixed(3)} <Solana />
-        </div>
-      </div>
+      <h5 className={styles.blockTitle}>
+        {(estProfit || 0).toFixed(2)} SOL in {duration} days
+      </h5>
+      <span className={styles.blockSubtitle}>estimated profit</span>
     </div>
   );
 };

@@ -1,120 +1,115 @@
 import { FC } from 'react';
-// import { Controller } from 'react-hook-form';
-
-import { AppLayout } from '../../components/Layout/AppLayout';
-// import { SearchInput } from '../../components/SearchInput';
-// import Button from '../../components/Button';
-import { Header } from './components/Header';
-// import { useFiltersModal } from '../../components/FiltersDropdown';
-import MarketPreviewCard from './components/MarketCard';
-// import SortControl from '@frakt/components/SortControl';
-// import {
-//   SORT_VALUES,
-//   useLendingPoolsFiltering,
-// } from '../LendPage/hooks/useLendingPoolsFiltering';
-// import { useOnClickOutside } from '@frakt/hooks';
-import { useMarketsPreview } from './hooks';
-import { Loader } from '@frakt/components/Loader';
-// import Toggle from '@frakt/components/Toggle';
-// import FilterCollections from '@frakt/components/FilterCollections';
-import styles from './MarketsPage.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
+import classNames from 'classnames';
 
-export enum InputControlsNames {
-  SHOW_STAKED = 'showStaked',
-  SORT = 'sort',
-}
+import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
+import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
+import { AppLayout } from '@frakt/components/Layout/AppLayout';
+import { useFetchAllUserBonds } from '@frakt/utils/bonds';
+import EmptyList from '@frakt/components/EmptyList';
+import { Tabs, useTabs } from '@frakt/components/Tabs';
 
-// const collectionsMock = [
-//   { value: 'Frakt' },
-//   { value: 'Pawnshop gnomies' },
-//   { value: 'Solpunks' },
-// ];
+import { MarketTabsNames, MARKET_TABS, useMarketsPreview } from './hooks';
+import { MarketTable } from './components/MarketTable/MarketTable';
+import { BondsTable } from '../MarketPage/components/BondsTable';
+import MyBondsWidgets from './components/MyBondsWidgets';
+import { createMyBondsStats } from './helpers';
+import { Header } from './components/Header';
 
-//TODO: Implemet normal filters
+import styles from './MarketsPage.module.scss';
+
 const MarketsPreviewPage: FC = () => {
-  const wallet = useWallet();
-  // const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  // const {
-  // control,
-  // sort,
-  // /* setSearch, pools, */ setValue,
-  // showStakedOnlyToggle,
-  // } = useLendingPoolsFiltering();
-  // const {
-  //   // visible: filtersModalVisible,
-  //   close: closeFiltersModal,
-  //   // toggle: toggleFiltersModal,
-  // } = useFiltersModal();
+  const { publicKey, connected } = useWallet();
 
-  const { marketsPreview, isLoading } = useMarketsPreview({
-    walletPublicKey: wallet?.publicKey,
+  const { marketsPreview, isLoading } = useMarketsPreview();
+
+  const {
+    tabs: marketTabs,
+    value: tabValue,
+    setValue: setTabValue,
+  } = useTabs({
+    tabs: MARKET_TABS,
+    defaultValue: MARKET_TABS[0].value,
   });
 
-  // const ref = useRef();
-  // useOnClickOutside(ref, closeFiltersModal);
+  const {
+    bonds,
+    isLoading: bondsLoanding,
+    hideBond,
+  } = useFetchAllUserBonds({
+    walletPubkey: publicKey,
+  });
+
+  const { onClaimAll } = useBondsTransactions({
+    bonds,
+    hideBond,
+  });
+
+  const { rewards, locked, activeLoans } = createMyBondsStats(bonds);
+
+  const loading = isLoading || bondsLoanding;
 
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="Lend on your own terms" />
-      {/* <div className={styles.sortWrapper}>
-        <SearchInput
-          className={styles.searchInput}
-          placeholder="Search by name"
-        /> */}
-      {/* <div ref={ref}> */}
-      {/* <div className={styles.filtersWrapper}>
-            <Button type="tertiary" onClick={toggleFiltersModal}>
-              Filters
-            </Button>
-
-            {filtersModalVisible && (
-              <FiltersDropdown
-                onCancel={closeFiltersModal}
-                className={styles.filtersDropdown}
-              >
-                <div>
-                  {showStakedOnlyToggle && (
-                    <Controller
-                      control={control}
-                      name={InputControlsNames.SHOW_STAKED}
-                      render={({ field: { ref, ...field } }) => (
-                        <Toggle
-                          label="My bag only"
-                          className={styles.toggle}
-                          name={InputControlsNames.SHOW_STAKED}
-                          {...field}
-                        />
-                      )}
-                    />
-                  )}
-                  <FilterCollections
-                    options={collectionsMock}
-                    selectedCollections={selectedCollections}
-                    setSelectedCollections={setSelectedCollections}
-                  />
-                  <SortControl
-                    control={control}
-                    name={InputControlsNames.SORT}
-                    options={SORT_VALUES}
-                    sort={sort}
-                    setValue={setValue}
-                  />
-                </div>
-              </FiltersDropdown>
-            )}
-          </div> */}
-      {/* </div> */}
-      {/* </div> */}
-      <div className={styles.markets}>
-        {isLoading && <Loader size="large" />}
-        {!isLoading &&
-          marketsPreview.map((marketPreview) => (
-            <MarketPreviewCard
-              key={marketPreview.marketPubkey}
-              marketPreview={marketPreview}
+      <div className={styles.content}>
+        <Tabs
+          className={styles.tab}
+          tabs={marketTabs}
+          value={tabValue}
+          setValue={setTabValue}
+        />
+        <div
+          className={classNames(styles.tabContent, {
+            [styles.tabContentMinHeight]:
+              tabValue === MarketTabsNames.COLLECTIONS,
+          })}
+        >
+          {tabValue === MarketTabsNames.COLLECTIONS && (
+            <MarketTable
+              className={classNames(styles.table, styles.marketTable)}
+              loading={isLoading}
+              data={marketsPreview}
             />
-          ))}
+          )}
+          {tabValue === MarketTabsNames.BONDS && (
+            <>
+              {!connected && (
+                <ConnectWalletSection
+                  className={styles.emptyList}
+                  text="Connect your wallet to see my bonds"
+                />
+              )}
+
+              {connected && (
+                <>
+                  <MyBondsWidgets
+                    locked={locked}
+                    activeLoans={activeLoans}
+                    rewards={rewards}
+                    onClick={onClaimAll}
+                  />
+                  <BondsTable
+                    className={classNames(styles.table, styles.bondsTable)}
+                    noDataClassName={styles.noDataTableMessage}
+                    loading={loading}
+                    data={bonds}
+                    haderTitleCellClassName={styles.haderTitleCell}
+                    mobileBreakpoint={1190}
+                    hideBond={hideBond}
+                  />
+                </>
+              )}
+
+              {connected && !bonds.length && !loading && (
+                <EmptyList
+                  className={styles.emptyList}
+                  text="You don't have any bonds"
+                />
+              )}
+            </>
+          )}
+        </div>
       </div>
     </AppLayout>
   );

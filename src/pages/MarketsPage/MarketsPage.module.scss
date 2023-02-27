@@ -1,61 +1,138 @@
-.sortWrapper {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 20px 0;
+.tab {
+  flex-wrap: nowrap;
 
-  @media screen and (max-width: 1023px) {
-    margin: 0;
+  button {
+    border: 0;
+    border-bottom: 1px solid var(--primary-border);
+  }
+
+  button:first-child {
+    border-right: 1px solid var(--primary-border);
+  }
+  // button:last-child {
+  //   border-left: 1px solid var(--primary-border);
+  // }
+}
+
+.content {
+  border: 1px solid var(--primary-border);
+}
+
+.tabContent {
+  background: var(--primary-background);
+  padding-top: 24px;
+
+  @media (max-width: 1190px) {
+    padding: 24px;
+  }
+
+  @media (max-width: 767px) {
+    padding: 16px;
   }
 }
 
-.toggle {
-  max-width: 160px;
+.tabContentMinHeight {
+  min-height: 600px;
+}
 
-  @media screen and (max-width: 767px) {
-    justify-content: center;
-    max-width: 100%;
-    margin: 0 auto;
+.table {
+  :global {
+    .ant-table {
+      border: 0 !important;
+    }
+
+    .ant-table-tbody > tr > td {
+      padding: 29px 16px !important;
+      padding-right: 0 !important;
+    }
+
+    .ant-table-tbody > tr:last-child > td {
+      border-bottom: 0 !important;
+    }
   }
 }
 
-.markets {
-  display: flex;
-  flex-direction: column;
+.marketTable {
+  :global {
+    .ant-table-tbody > tr:last-child > td {
+      border-bottom: 0;
+    }
+    .ant-table-tbody > tr > td {
+      padding: 29px 0 !important;
+      padding-left: 0;
+    }
+    .ant-table-tbody > tr > td:first-child {
+      padding-left: 16px !important;
+    }
 
-  gap: 24px;
-  padding-top: 32px;
+    .ant-table-tbody > tr > td:last-child {
+      padding: 16px !important;
+      padding-left: 0 !important;
+
+      @media screen and (max-width: 1240px) {
+        padding: 12px !important;
+        padding-left: 0 !important;
+      }
+    }
+
+    .ant-table-thead > tr > th {
+      padding: 16px !important;
+      width: 100%;
+
+      @media screen and (max-width: 1340px) {
+        padding: 8px !important;
+      }
+
+      @media screen and (max-width: 1250px) {
+        padding: 4px !important;
+      }
+    }
+    .ant-table-thead > tr > th:first-child {
+      padding: 16px !important;
+      max-width: 300px;
+    }
+    .ant-table-thead > tr > th:last-child {
+      padding: 16px !important;
+
+      @media screen and (max-width: 1240px) {
+        padding: 12px !important;
+      }
+    }
+  }
+}
+
+.bondsTable {
+  :global {
+    .ant-table-tbody > tr > td:last-child {
+      width: 127px !important;
+    }
+  }
 }
 
 .searchInput {
   max-width: 173px;
   margin-right: 20px;
   width: unset;
-}
 
-.filtersWrapper {
-  position: relative;
-
-  @media screen and (max-width: 767px) {
-    position: initial;
+  @media screen and (max-width: 468px) {
+    margin-bottom: 20px;
   }
 }
 
-.filtersDropdown {
-  position: absolute;
-  top: 45px;
-  right: 0;
-  width: 236px;
+.emptyList {
+  padding: 120px 0 160px !important;
+}
 
-  @media screen and (max-width: 767px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: unset;
-    width: 100% !important;
+.noDataTableMessage {
+  :global {
+    display: none;
+  }
+}
+
+.haderTitleCell {
+  opacity: 1 !important;
+
+  @media screen and (max-width: 1190px) {
+    opacity: 0 !important;
   }
 }

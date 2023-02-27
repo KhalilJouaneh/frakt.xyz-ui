@@ -3,6 +3,7 @@ export interface MarketOrder {
   size: number;
   interest: number;
   synthetic?: boolean;
+  duration: number;
   rawData: {
     publicKey: string;
     assetReceiver: string;

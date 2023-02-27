@@ -1,0 +1,186 @@
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.rowLeft {
+  justify-content: flex-start !important;
+}
+
+.title {
+  color: var(--secondary-text);
+  font: var(--font-text-7);
+  text-transform: uppercase;
+}
+
+.nftName {
+  color: var(--primary-text);
+  font-family: var(--font-family-syne);
+  font-weight: 700;
+  font-size: 14px;
+  width: 190px;
+}
+
+.nftImage {
+  width: 26px;
+  height: 26px;
+
+  @media screen and (max-width: 1190px) {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.questionIcon {
+  svg {
+    fill: var(--blue-color);
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.value {
+  color: var(--primary-text);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font: var(--font-text-8);
+  gap: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  @media screen and (max-width: 1190px) {
+    flex-direction: row-reverse;
+    gap: 8px;
+  }
+}
+
+.btnWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media screen and (max-width: 1190px) {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.btn {
+  height: 26px;
+  width: 72px;
+
+  @media screen and (max-width: 1190px) {
+    height: 40px;
+    width: 100%;
+  }
+}
+
+.btnExit {
+  border-color: var(--red-color);
+  background: var(--light-red-color);
+  color: var(--red-color-2);
+
+  &:hover {
+    background: var(--light-red-color-hover);
+  }
+}
+
+.tooltip {
+  width: 100%;
+}
+
+.timer {
+  width: 12px;
+  height: 12px;
+
+  path {
+    fill: var(--gray-color-2);
+  }
+}
+
+.countdown {
+  display: block;
+}
+
+.infoValueSpan {
+  color: var(--light-green-hover);
+  font: var(--font-text-9);
+  line-height: 16px;
+  vertical-align: sub;
+
+  &.negative {
+    color: var(--red-error-color);
+  }
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+    line-height: 16px;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.receiveIcon {
+  background: var(--primary-background);
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  inset: -10px 0 0 -10px;
+
+  border: 7px solid var(--primary-background);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    fill: var(--black-color);
+    width: 10px;
+    height: 10px;
+  }
+}
+.receiveIconTooltip {
+  min-width: 200px;
+}
+
+.sortIcon {
+  display: flex;
+
+  @media (max-width: 1190px) {
+    display: none;
+  }
+}
+
+.highestLtvColor {
+  padding-right: 16px;
+  color: #b39016;
+
+  @media (max-width: 1190px) {
+    padding-right: 0;
+  }
+}
+
+.upToLtvColor {
+  color: #6db315;
+}
+
+.searchInput {
+  input {
+    font: var(--font-text-4) !important;
+    font-size: 14px !important;
+  }
+
+  height: 25px !important;
+  width: 173px;
+}

@@ -28,14 +28,10 @@ export const fetchCertainMarket: FetchCertainMarket = async ({
   return data;
 };
 
-type FetchMarketsPreview = (props: {
-  walletPubkey?: web3.PublicKey;
-}) => Promise<MarketPreview[]>;
-export const fetchMarketsPreview: FetchMarketsPreview = async ({
-  walletPubkey,
-}) => {
+type FetchMarketsPreview = () => Promise<MarketPreview[]>;
+export const fetchMarketsPreview: FetchMarketsPreview = async () => {
   const { data } = await axios.get<MarketPreview[]>(
-    `https://${BACKEND_DOMAIN}/bonds/preview/${walletPubkey?.toBase58() ?? ''}`,
+    `https://${BACKEND_DOMAIN}/bonds/preview`,
   );
 
   return data;
@@ -74,6 +70,20 @@ export const fetchWalletBonds: FetchWalletBonds = async ({
 }) => {
   const { data } = await axios.get<Bond[]>(
     `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}/${marketPubkey.toBase58()}`,
+  );
+
+  return data ?? [];
+};
+
+type FetchAllUserBonds = (props: {
+  walletPubkey: web3.PublicKey;
+}) => Promise<Bond[]>;
+
+export const fetchAllUserBonds: FetchAllUserBonds = async ({
+  walletPubkey,
+}) => {
+  const { data } = await axios.get<Bond[]>(
+    `https://${BACKEND_DOMAIN}/bonds/${walletPubkey.toBase58()}`,
   );
 
   return data ?? [];
