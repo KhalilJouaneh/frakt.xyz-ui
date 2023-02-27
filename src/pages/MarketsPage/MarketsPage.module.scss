@@ -57,6 +57,47 @@
     .ant-table-tbody > tr:last-child > td {
       border-bottom: 0;
     }
+    .ant-table-tbody > tr > td {
+      padding: 29px 0 !important;
+      padding-left: 0;
+    }
+    .ant-table-tbody > tr > td:first-child {
+      padding-left: 16px !important;
+    }
+
+    .ant-table-tbody > tr > td:last-child {
+      padding: 16px !important;
+      padding-left: 0 !important;
+
+      @media screen and (max-width: 1240px) {
+        padding: 12px !important;
+        padding-left: 0 !important;
+      }
+    }
+
+    .ant-table-thead > tr > th {
+      padding: 16px !important;
+      width: 100%;
+
+      @media screen and (max-width: 1340px) {
+        padding: 8px !important;
+      }
+
+      @media screen and (max-width: 1250px) {
+        padding: 4px !important;
+      }
+    }
+    .ant-table-thead > tr > th:first-child {
+      padding: 16px !important;
+      max-width: 300px;
+    }
+    .ant-table-thead > tr > th:last-child {
+      padding: 16px !important;
+
+      @media screen and (max-width: 1240px) {
+        padding: 12px !important;
+      }
+    }
   }
 }
 

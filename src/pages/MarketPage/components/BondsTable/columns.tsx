@@ -87,6 +87,22 @@ export const TableList = ({ data, isMobile, hideBond, className }) => {
       showSorterTooltip: false,
     },
     {
+      key: 'profit',
+      dataIndex: 'profit',
+      title: (column) => (
+        <HeaderTitleCell
+          className={className}
+          sortColumns={column?.sortColumns}
+          value="profit"
+          label="Est. Profit"
+          tooltipText="Analyzed profit from repaying the loan"
+        />
+      ),
+      sorter: (a, b) => calcEstimateProfit(a) - calcEstimateProfit(b),
+      render: (_, bond: Bond) => <ProfitCell bond={bond} />,
+      showSorterTooltip: false,
+    },
+    {
       key: 'expiration',
       dataIndex: 'expiration',
       title: (column) => (
@@ -101,22 +117,6 @@ export const TableList = ({ data, isMobile, hideBond, className }) => {
       render: (_, bond: Bond) => <ExperationCell bond={bond} />,
       sorter: ({ fbond: fbondA }, { fbond: fbondB }) =>
         fbondA.liquidatingAt - fbondB.liquidatingAt,
-      showSorterTooltip: false,
-    },
-    {
-      key: 'profit',
-      dataIndex: 'profit',
-      title: (column) => (
-        <HeaderTitleCell
-          className={className}
-          sortColumns={column?.sortColumns}
-          value="profit"
-          label="Est. Profit"
-          tooltipText="Analyzed profit from repaying the loan"
-        />
-      ),
-      sorter: (a, b) => calcEstimateProfit(a) - calcEstimateProfit(b),
-      render: (_, bond: Bond) => <ProfitCell bond={bond} />,
       showSorterTooltip: false,
     },
     {

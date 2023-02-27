@@ -163,7 +163,12 @@
 }
 
 .highestLtvColor {
+  padding-right: 16px;
   color: #b39016;
+
+  @media (max-width: 1190px) {
+    padding-right: 0;
+  }
 }
 
 .upToLtvColor {

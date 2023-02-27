@@ -67,7 +67,7 @@ const MarketsPreviewPage: FC = () => {
         >
           {tabValue === MarketTabsNames.COLLECTIONS && (
             <MarketTable
-              className={styles.table}
+              className={classNames(styles.table, styles.marketTable)}
               loading={isLoading}
               data={marketsPreview}
             />
