@@ -5,7 +5,7 @@ import { Bond } from '@frakt/api/bonds';
 import { Solana } from '@frakt/icons';
 import {
   BOND_SOL_DECIMAIL_DELTA,
-  colorByPercentSlider,
+  colorByPercentOffers,
   getColorByPercent,
 } from '@frakt/utils/bonds';
 
@@ -20,8 +20,8 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
 
   const ltvValue = parseFloat(fbond.ltvPercent);
   const colorLTV =
-    getColorByPercent(ltvValue, colorByPercentSlider) ||
-    colorByPercentSlider[100];
+    getColorByPercent(ltvValue, colorByPercentOffers) ||
+    colorByPercentOffers[100];
 
   return (
     <div
