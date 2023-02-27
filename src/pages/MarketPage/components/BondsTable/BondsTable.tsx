@@ -1,43 +1,34 @@
 import { FC } from 'react';
 
 import Table, { useTable } from '@frakt/components/Table';
-import { Bond, Market, Pair } from '@frakt/api/bonds';
 import { useWindowSize } from '@frakt/hooks';
 
 import { TableList } from './columns';
 
 export interface BondsTableProps {
   data: ReadonlyArray<any>;
-  market: Market;
-  pairs: Pair[];
-  onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
-  onRedeem: (bond: Bond) => void;
   mobileBreakpoint?: number;
   loading?: boolean;
   className?: string;
   noDataClassName?: string;
+  hideBond?: (bondPubkey: string) => void;
 }
 
 export const BondsTable: FC<BondsTableProps> = ({
   data,
-  market,
-  pairs,
-  onExit,
-  onRedeem,
   mobileBreakpoint = 1190,
   noDataClassName,
   loading,
   className,
+  hideBond,
 }) => {
   const { width } = useWindowSize();
   const isMobile = width <= mobileBreakpoint;
 
   const COLUMNS = TableList({
-    market,
-    pairs,
-    onExit,
-    onRedeem,
+    data,
     isMobile,
+    hideBond,
   });
 
   const { table, search } = useTable({

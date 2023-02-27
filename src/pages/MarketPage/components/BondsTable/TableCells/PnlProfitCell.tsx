@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { Bond, Market, Pair } from '@frakt/api/bonds';
+import { Bond } from '@frakt/api/bonds';
 import { Solana } from '@frakt/icons';
 import {
   BOND_SOL_DECIMAIL_DELTA,
@@ -9,22 +9,17 @@ import {
 } from '@frakt/utils/bonds';
 
 import { useBondCardActions } from '../../BondCard/hooks/useBondCard';
-
+import { getMarketAndPairsByBond } from '../helpers';
 import styles from './TableCells.module.scss';
 
 interface PnlProfitCellProps {
   bond: Bond;
-  market: Market;
-  pairs: Pair[];
   inMobile?: boolean;
 }
 
-export const PnlProfitCell: FC<PnlProfitCellProps> = ({
-  bond,
-  market,
-  pairs,
-  inMobile,
-}) => {
+export const PnlProfitCell: FC<PnlProfitCellProps> = ({ bond, inMobile }) => {
+  const { market, pairs } = getMarketAndPairsByBond(bond);
+
   const { amountOfUserBonds, averageBondPrice } = bond;
 
   const { exitAvailable, bestPair } = useBondCardActions({

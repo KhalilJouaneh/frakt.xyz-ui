@@ -21,7 +21,7 @@ export type SortColumns = {
   order: SortOrder;
 }[];
 
-export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
+export const TableList = ({ data, isMobile, hideBond }) => {
   const COLUMNS: ColumnsType<Bond> = [
     {
       key: 'nftName',
@@ -119,16 +119,11 @@ export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
           tooltipText="Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”)"
         />
       ),
-      sorter: (a, b) =>
-        calcPnlProfit({ bond: a, market, pairs }) -
-        calcPnlProfit({ bond: b, market, pairs }),
+      // sorter: (a, b) =>
+      //   calcPnlProfit({ bond: a, market, pairs }) -
+      //   calcPnlProfit({ bond: b, market, pairs }),
       render: (_, bond: Bond) => (
-        <PnlProfitCell
-          inMobile={isMobile}
-          bond={bond}
-          market={market}
-          pairs={pairs}
-        />
+        <PnlProfitCell inMobile={isMobile} bond={bond} />
       ),
       showSorterTooltip: false,
     },
@@ -136,11 +131,9 @@ export const TableList = ({ market, pairs, onExit, onRedeem, isMobile }) => {
       render: (_, bond: Bond) => {
         return (
           <ButtontsCell
-            onExit={onExit}
-            onRedeem={onRedeem}
+            bonds={data}
+            hideBond={hideBond}
             bond={bond}
-            market={market}
-            pairs={pairs}
             isMobile={isMobile}
           />
         );

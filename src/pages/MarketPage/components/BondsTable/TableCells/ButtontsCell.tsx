@@ -1,34 +1,40 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { Bond, Market, Pair } from '@frakt/api/bonds';
+import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import Button from '@frakt/components/Button';
+import { Bond } from '@frakt/api/bonds';
 
 import { useBondCardActions } from '../../BondCard/hooks/useBondCard';
-
 import styles from './TableCells.module.scss';
+
+import { getMarketAndPairsByBond } from '../helpers';
 
 interface ButtontsCellProps {
   bond: Bond;
-  market: Market;
-  pairs: Pair[];
-  onExit: ({ bond, pair }: { bond: Bond; pair: Pair }) => void;
-  onRedeem: (bond: Bond) => void;
   isMobile?: boolean;
+  bonds: Bond[];
+  hideBond: (bondPubkey: string) => void;
 }
 
 export const ButtontsCell: FC<ButtontsCellProps> = ({
   bond,
-  market,
-  pairs,
-  onExit,
-  onRedeem,
+  bonds,
   isMobile,
+  hideBond,
 }) => {
+  const { market, pairs } = getMarketAndPairsByBond(bond);
+
   const { exitAvailable, bestPair, redeemAvailable } = useBondCardActions({
     bond,
     market,
     pairs,
+  });
+
+  const { onRedeem, onExit } = useBondsTransactions({
+    bonds,
+    hideBond,
+    market,
   });
 
   return (

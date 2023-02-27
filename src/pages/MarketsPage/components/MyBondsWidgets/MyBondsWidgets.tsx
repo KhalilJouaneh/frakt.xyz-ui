@@ -24,7 +24,7 @@ const MyBondsWidgets: FC<MyBondsWidgetsProps> = ({
       <div className={styles.block}>
         <WidgetValue
           label="Active loans"
-          value={(activeLoans || 0).toFixed(2)}
+          value={(activeLoans || 0).toFixed(0)}
           isSolValue={false}
         />
       </div>

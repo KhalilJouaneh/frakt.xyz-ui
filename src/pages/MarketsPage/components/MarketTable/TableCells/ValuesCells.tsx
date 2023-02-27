@@ -9,7 +9,7 @@ export const createSolValueJSX = (value?: string) => (
 );
 
 export const createActiveLoansJSX = (value = 0) => (
-  <span className={styles.value}>{value || '--'}</span>
+  <span className={styles.value}>{value || 0}</span>
 );
 
 export const createOfferTvlJSX = (value?: string) => (

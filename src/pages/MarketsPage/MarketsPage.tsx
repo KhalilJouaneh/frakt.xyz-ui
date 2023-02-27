@@ -1,25 +1,22 @@
 import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import classNames from 'classnames';
-import { web3 } from 'fbonds-core';
 
-import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
-import { Tabs } from '@frakt/components/Tabs';
+import { useFetchAllUserBonds } from '@frakt/utils/bonds';
+import EmptyList from '@frakt/components/EmptyList';
+import { Tabs, useTabs } from '@frakt/components/Tabs';
 
-import { BondsTable } from '../MarketPage/components/BondsTable';
-import { MarketTabsNames, useMarketPage, useMarketsPreview } from './hooks';
+import { MarketTabsNames, MARKET_TABS, useMarketsPreview } from './hooks';
 import { MarketTable } from './components/MarketTable/MarketTable';
+import { BondsTable } from '../MarketPage/components/BondsTable';
 import MyBondsWidgets from './components/MyBondsWidgets';
 import { createMyBondsStats } from './helpers';
 import { Header } from './components/Header';
 
 import styles from './MarketsPage.module.scss';
-import EmptyList from '@frakt/components/EmptyList';
-
-const marketPubkey = 'CEKGS2Ez83EP2E5QRYj6457euRAZwVxozRGkZvZNPUHR';
 
 const MarketsPreviewPage: FC = () => {
   const { publicKey, connected } = useWallet();
@@ -28,36 +25,29 @@ const MarketsPreviewPage: FC = () => {
     walletPublicKey: publicKey,
   });
 
-  const { marketTabs, tabValue, setTabValue } = useMarketPage();
+  const {
+    tabs: marketTabs,
+    value: tabValue,
+    setValue: setTabValue,
+  } = useTabs({
+    tabs: MARKET_TABS,
+    defaultValue: MARKET_TABS[0].value,
+  });
 
   const {
     bonds,
     isLoading: bondsLoanding,
     hideBond,
-  } = useWalletBonds({
+  } = useFetchAllUserBonds({
     walletPubkey: publicKey,
-    marketPubkey: new web3.PublicKey(marketPubkey),
   });
 
-  const { market, isLoading: marketLoading } = useMarket({
-    marketPubkey: marketPubkey,
-  });
-
-  const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
-    marketPubkey,
-  });
-
-  const pairs = rawPairs.filter(
-    ({ assetReceiver }) => assetReceiver !== publicKey?.toBase58(),
-  );
-
-  const { onClaimAll, onRedeem, onExit } = useBondsTransactions({
+  const { onClaimAll } = useBondsTransactions({
     bonds,
     hideBond,
-    market,
   });
 
-  const { rewards } = createMyBondsStats(bonds);
+  const { rewards, locked, activeLoans } = createMyBondsStats(bonds);
 
   return (
     <AppLayout>
@@ -94,25 +84,21 @@ const MarketsPreviewPage: FC = () => {
               {connected && (
                 <>
                   <MyBondsWidgets
-                    locked={rewards}
-                    activeLoans={rewards}
+                    locked={locked}
+                    activeLoans={activeLoans}
                     rewards={rewards}
                     onClick={onClaimAll}
                   />
                   <BondsTable
                     className={classNames(styles.table, styles.bondsTable)}
                     noDataClassName={styles.noDataTableMessage}
-                    loading={isLoading}
+                    loading={isLoading || bondsLoanding}
                     data={bonds}
-                    onExit={onExit}
-                    onRedeem={onRedeem}
-                    market={market}
-                    pairs={pairs}
                   />
                 </>
               )}
 
-              {connected && !bonds.length && (
+              {connected && !bonds.length && (isLoading || bondsLoanding) && (
                 <EmptyList
                   className={styles.emptyList}
                   text="You don't have any bonds"

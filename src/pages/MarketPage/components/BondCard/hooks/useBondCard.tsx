@@ -16,7 +16,6 @@ export const useBondCardActions = ({
   pairs: Pair[];
 }) => {
   const redeemAvailable = isBondAvailableToRedeem(bond);
-
   const bestPair = useMemo(() => {
     const { fbond, amountOfUserBonds } = bond;
 

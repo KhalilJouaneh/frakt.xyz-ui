@@ -4,7 +4,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { web3 } from 'fbonds-core';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
-import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
+import { useMarket, useWalletBonds } from '@frakt/utils/bonds';
 import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Loader } from '@frakt/components/Loader';
@@ -34,17 +34,7 @@ export const MarketPage: FC = () => {
     marketPubkey: new web3.PublicKey(marketPubkey),
   });
 
-  const { pairs: rawPairs, isLoading: pairsLoading } = useMarketPairs({
-    marketPubkey: marketPubkey,
-  });
-
-  //? Filter wallet pairs (to prevent selling to yourself)
-  const pairs = rawPairs.filter(
-    ({ assetReceiver }) => assetReceiver !== wallet?.publicKey?.toBase58(),
-  );
-
-  const loading =
-    marketLoading || pairsLoading || (wallet.connected && bondsLoanding);
+  const loading = marketLoading || (wallet.connected && bondsLoanding);
 
   const { onClaimAll, onRedeem, onExit } = useBondsTransactions({
     bonds,
@@ -67,13 +57,7 @@ export const MarketPage: FC = () => {
           {!wallet.connected && (
             <ConnectWalletSection text="Connect your wallet to see your bonds" />
           )}
-          <BondsList
-            market={market}
-            bonds={bonds}
-            pairs={pairs}
-            onExit={onExit}
-            onRedeem={onRedeem}
-          />
+          <BondsList bonds={bonds} hideBond={hideBond} />
           <OrderBook market={market} />
         </div>
       )}

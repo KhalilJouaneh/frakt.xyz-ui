@@ -82,8 +82,8 @@ export const TableList = ({ onChange }) => {
       showSorterTooltip: false,
     },
     {
-      key: 'activeLoans',
-      dataIndex: 'activeLoans',
+      key: 'activeBondsAmount',
+      dataIndex: 'activeBondsAmount',
       title: (column) => (
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
@@ -92,7 +92,7 @@ export const TableList = ({ onChange }) => {
         />
       ),
       render: (value) => createActiveLoansJSX(value),
-      sorter: (a, b) => parseFloat(a.offerTVL) - parseFloat(b.offerTVL),
+      sorter: (a, b) => a.activeBondsAmount - b.activeBondsAmount,
       showSorterTooltip: false,
     },
     {
