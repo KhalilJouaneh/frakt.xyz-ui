@@ -36,7 +36,7 @@ export const MarketPage: FC = () => {
 
   const loading = marketLoading || (wallet.connected && bondsLoanding);
 
-  const { onClaimAll, onRedeem, onExit } = useBondsTransactions({
+  const { onClaimAll } = useBondsTransactions({
     bonds,
     hideBond,
     market,
@@ -54,10 +54,10 @@ export const MarketPage: FC = () => {
 
             <MarketInfo market={market} bonds={bonds} onClaimAll={onClaimAll} />
           </div>
+          <BondsList bonds={bonds} hideBond={hideBond} />
           {!wallet.connected && (
             <ConnectWalletSection text="Connect your wallet to see your bonds" />
           )}
-          <BondsList bonds={bonds} hideBond={hideBond} />
           <OrderBook market={market} />
         </div>
       )}
