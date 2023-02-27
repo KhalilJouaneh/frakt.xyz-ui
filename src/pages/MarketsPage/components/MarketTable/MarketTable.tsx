@@ -40,6 +40,7 @@ export const MarketTable: FC<MarketTableProps> = ({
     columns: COLUMNS,
     onRowClick,
     loading,
+    defaultField: 'offerTVL',
   });
 
   return <Table search={{ onChange }} className={className} {...table} />;

@@ -155,6 +155,7 @@ interface FBond {
   bondCollateralOrSolReceiver: string;
   fbondTokenName: string;
   marketPubkey: string;
+  ltvPercent: string;
 }
 
 interface CollateralBox {

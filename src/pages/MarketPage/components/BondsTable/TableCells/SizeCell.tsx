@@ -11,7 +11,6 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
   bond,
   isMobile,
 }) => {
-  console.log(bond);
   const { amountOfUserBonds } = bond;
   const bSolLamports = amountOfUserBonds;
 
@@ -26,7 +25,7 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
         <Solana />
       </span>
       <span className={classNames(styles.value, styles.highestLtvColor)}>
-        50% LTV
+        {parseFloat(bond.fbond.ltvPercent || '0').toFixed(0)} %
       </span>
     </div>
   );

@@ -18,7 +18,7 @@ export const InterestCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
       })}
     >
       <span className={styles.value}> {(interest / 100 || 0).toFixed(0)}%</span>
-      <span className={styles.value}>{apy.toFixed(0)}% APR</span>
+      <span className={styles.value}>{apy?.toFixed(0)}% APR</span>
     </div>
   );
 };

@@ -51,18 +51,23 @@ export const useSearch: UseSearch = ({
 type UseSortModalMobile = <T>(props: {
   data: ReadonlyArray<T>;
   columns: ColumnsType<T>;
+  defaultField?: string;
 }) => {
   modal: SortModalMobileProps<T>;
   sortedData: T[];
 };
 
-export const useSortModalMobile: UseSortModalMobile = ({ data, columns }) => {
+export const useSortModalMobile: UseSortModalMobile = ({
+  data,
+  columns,
+  defaultField,
+}) => {
   const [sortModalMobileVisible, setSortModalMobileVisible] = useState(false);
   const [sort, setSort] = useState<{
     field: string | null;
     direction: 'desc' | 'asc';
   }>({
-    field: null,
+    field: defaultField || null,
     direction: 'desc',
   });
 
@@ -114,6 +119,7 @@ export const useTable: UseTable = ({
   rowKeyField = 'id',
   loading,
   noDataMessage,
+  defaultField,
   searchParams = {
     debounceWait: 0,
     searchField: 'name',
@@ -129,6 +135,7 @@ export const useTable: UseTable = ({
   const { modal: sortModalMobile, sortedData } = useSortModalMobile({
     data: filteredData,
     columns,
+    defaultField,
   });
 
   return {

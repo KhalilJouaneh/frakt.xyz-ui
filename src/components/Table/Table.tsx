@@ -23,6 +23,7 @@ export interface TableProps<T> {
   noDataMessage?: string;
   className?: string;
   mobileBreakpoint?: number;
+  defaultField?: string;
   noDataClassName?: string;
   search?: {
     placeHolderText?: string;
