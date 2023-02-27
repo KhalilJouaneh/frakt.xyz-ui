@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 import Button from '@frakt/components/Button';
 
-import { useBondCardActions } from '../../../hooks/useBondCard';
+import { useBondCardActions } from '../../BondCard/hooks/useBondCard';
 
 import styles from './TableCells.module.scss';
 

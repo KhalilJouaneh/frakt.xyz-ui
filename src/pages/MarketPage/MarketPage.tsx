@@ -3,18 +3,18 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { NavLink, useParams } from 'react-router-dom';
 import { web3 } from 'fbonds-core';
 
+import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
+import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
+import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Loader } from '@frakt/components/Loader';
 import { PATHS } from '@frakt/constants';
 import { Arrow } from '@frakt/icons';
-import { useMarket, useMarketPairs, useWalletBonds } from '@frakt/utils/bonds';
 
-import styles from './MarketPage.module.scss';
 import OrderBook from './components/OrderBook/OrderBook';
-import { BondsList } from './components/BondsList';
 import { MarketInfo } from './components/MarketInfo';
-import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
-import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
+import { BondsList } from './components/BondsList';
+import styles from './MarketPage.module.scss';
 
 export const MarketPage: FC = () => {
   const wallet = useWallet();

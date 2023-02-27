@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Bond, Market, Pair } from '@frakt/api/bonds';
 
-import { BondsTable } from './components/BondsTable';
+import { BondsTable } from '../BondsTable';
 import styles from './BondsList.module.scss';
 
 interface BondsListProps {

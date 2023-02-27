@@ -70,7 +70,16 @@ export const useMarketOrders: UseMarketOrders = ({
     ).sort((a, b) => compareNumbers(a.ltv, b.ltv, sortDirection === 'desc'));
 
     return sortedByLtv;
-  }, [pairs, sortDirection, walletOwned, publicKey, ltv, size, interest]);
+  }, [
+    pairs,
+    sortDirection,
+    walletOwned,
+    publicKey,
+    ltv,
+    size,
+    interest,
+    duration,
+  ]);
 
   const offersExist = Boolean(offers.length);
 

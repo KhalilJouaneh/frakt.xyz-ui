@@ -1,5 +1,6 @@
 import { Table as AntdTable } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { DebouncedFunc } from 'lodash';
 import classNames from 'classnames';
 
 import { SortModalMobile, SortModalMobileProps } from './SortModalMobile';
@@ -25,7 +26,7 @@ export interface TableProps<T> {
   noDataClassName?: string;
   search?: {
     placeHolderText?: string;
-    onChange: any;
+    onChange: DebouncedFunc<(event: any) => void>;
   };
 }
 

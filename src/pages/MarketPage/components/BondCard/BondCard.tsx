@@ -16,7 +16,7 @@ import {
 
 import styles from './BondCard.module.scss';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useBondCardActions } from '../BondsList/hooks/useBondCard';
+import { useBondCardActions } from './hooks/useBondCard';
 
 interface BondCardProps {
   bond: Bond;

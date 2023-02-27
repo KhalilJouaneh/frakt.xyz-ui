@@ -2,8 +2,8 @@ import { FC } from 'react';
 import classNames from 'classnames';
 
 import Button from '@frakt/components/Button';
+
 import styles from './MyBondsWidgets.module.scss';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 interface MyBondsWidgetsProps {
   onClick: () => void;

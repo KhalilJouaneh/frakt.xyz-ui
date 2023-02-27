@@ -8,7 +8,7 @@ import {
   getBestPairForExit,
 } from '@frakt/utils/bonds';
 
-import { useBondCardActions } from '../../../hooks/useBondCard';
+import { useBondCardActions } from '../../BondCard/hooks/useBondCard';
 
 import styles from './TableCells.module.scss';
 

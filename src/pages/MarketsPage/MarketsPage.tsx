@@ -9,7 +9,7 @@ import { useBondsTransactions } from '@frakt/hooks/useBondTransactions';
 import { AppLayout } from '@frakt/components/Layout/AppLayout';
 import { Tabs } from '@frakt/components/Tabs';
 
-import { BondsTable } from '../MarketPage/components/BondsList/components/BondsTable';
+import { BondsTable } from '../MarketPage/components/BondsTable';
 import { MarketTabsNames, useMarketPage, useMarketsPreview } from './hooks';
 import { MarketTable } from './components/MarketTable/MarketTable';
 import MyBondsWidgets from './components/MyBondsWidgets';

@@ -12,7 +12,6 @@ import {
   createBestOfferJSX,
   createDurationJSX,
   createAprJSX,
-  createSolValueJSX,
   createHighestLtvJSX,
   createActiveLoansJSX,
 } from './TableCells';
