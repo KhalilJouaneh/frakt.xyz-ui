@@ -1,7 +1,7 @@
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import { SortOrder } from 'antd/lib/table/interface';
 
-import { Bond } from '@frakt/api/bonds';
+import { Bond, Market, Pair } from '@frakt/api/bonds';
 
 import {
   ExperationCell,
@@ -15,6 +15,7 @@ import {
   calcEstimateProfit,
   calcPnlProfit,
 } from './TableCells';
+import { useState } from 'react';
 
 export type SortColumns = {
   column: ColumnType<Bond>;
@@ -22,6 +23,11 @@ export type SortColumns = {
 }[];
 
 export const TableList = ({ data, isMobile, hideBond }) => {
+  const [currentMarketAndPairs, setCurrentMarketAndPairs] = useState<{
+    market: Market;
+    pairs: Pair[];
+  }>(null);
+
   const COLUMNS: ColumnsType<Bond> = [
     {
       key: 'nftName',
@@ -119,11 +125,26 @@ export const TableList = ({ data, isMobile, hideBond }) => {
           tooltipText="Gain/loss if you decide to sell your bond tokens (instantly) to other lenders (“exit”)"
         />
       ),
-      // sorter: (a, b) =>
-      //   calcPnlProfit({ bond: a, market, pairs }) -
-      //   calcPnlProfit({ bond: b, market, pairs }),
+      sorter: (a, b) => {
+        return (
+          calcPnlProfit({
+            bond: a,
+            market: currentMarketAndPairs?.market,
+            pairs: currentMarketAndPairs?.pairs,
+          }) -
+          calcPnlProfit({
+            bond: b,
+            market: currentMarketAndPairs?.market,
+            pairs: currentMarketAndPairs?.pairs,
+          })
+        );
+      },
       render: (_, bond: Bond) => (
-        <PnlProfitCell inMobile={isMobile} bond={bond} />
+        <PnlProfitCell
+          inMobile={isMobile}
+          setCurrentMarketAndPairs={setCurrentMarketAndPairs}
+          bond={bond}
+        />
       ),
       showSorterTooltip: false,
     },

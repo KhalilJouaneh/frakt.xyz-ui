@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Bond } from '@frakt/api/bonds';
+import { Bond, Market, Pair } from '@frakt/api/bonds';
 import { Solana } from '@frakt/icons';
 import {
   BOND_SOL_DECIMAIL_DELTA,
@@ -15,9 +15,20 @@ import styles from './TableCells.module.scss';
 interface PnlProfitCellProps {
   bond: Bond;
   inMobile?: boolean;
+  setCurrentMarketAndPairs?: ({
+    market,
+    pairs,
+  }: {
+    market: Market;
+    pairs: Pair[];
+  }) => void;
 }
 
-export const PnlProfitCell: FC<PnlProfitCellProps> = ({ bond, inMobile }) => {
+export const PnlProfitCell: FC<PnlProfitCellProps> = ({
+  bond,
+  inMobile,
+  setCurrentMarketAndPairs,
+}) => {
   const { market, pairs } = getMarketAndPairsByBond(bond);
 
   const { amountOfUserBonds, averageBondPrice } = bond;
@@ -27,6 +38,10 @@ export const PnlProfitCell: FC<PnlProfitCellProps> = ({ bond, inMobile }) => {
     market,
     pairs,
   });
+
+  useEffect(() => {
+    setCurrentMarketAndPairs({ market, pairs });
+  }, [market]);
 
   const pnlLamports =
     (bestPair?.currentSpotPrice - averageBondPrice) * amountOfUserBonds;
