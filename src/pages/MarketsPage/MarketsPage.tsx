@@ -94,6 +94,7 @@ const MarketsPreviewPage: FC = () => {
                     data={bonds}
                     haderTitleCellClassName={styles.haderTitleCell}
                     mobileBreakpoint={1190}
+                    hideBond={hideBond}
                   />
                 </>
               )}
