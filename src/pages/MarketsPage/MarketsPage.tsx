@@ -21,9 +21,7 @@ import styles from './MarketsPage.module.scss';
 const MarketsPreviewPage: FC = () => {
   const { publicKey, connected } = useWallet();
 
-  const { marketsPreview, isLoading } = useMarketsPreview({
-    walletPublicKey: publicKey,
-  });
+  const { marketsPreview, isLoading } = useMarketsPreview();
 
   const {
     tabs: marketTabs,
@@ -100,7 +98,7 @@ const MarketsPreviewPage: FC = () => {
                 </>
               )}
 
-              {connected && !bonds.length && (isLoading || bondsLoanding) && (
+              {connected && !bonds.length && (!isLoading || !bondsLoanding) && (
                 <EmptyList
                   className={styles.emptyList}
                   text="You don't have any bonds"

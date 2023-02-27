@@ -4,18 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { MarketPreview, fetchMarketsPreview } from '@frakt/api/bonds';
 import { Tab } from '@frakt/components/Tabs';
 
-type UseMarketsPreview = (props: { walletPublicKey?: web3.PublicKey }) => {
+type UseMarketsPreview = () => {
   marketsPreview: MarketPreview[];
   isLoading: boolean;
 };
 
-export const useMarketsPreview: UseMarketsPreview = ({ walletPublicKey }) => {
+export const useMarketsPreview: UseMarketsPreview = () => {
   const { data, isLoading } = useQuery(
-    ['marketsPreview', walletPublicKey],
-    () =>
-      fetchMarketsPreview({
-        walletPubkey: walletPublicKey,
-      }),
+    ['marketsPreview'],
+    () => fetchMarketsPreview(),
     {
       staleTime: 5000,
       refetchOnWindowFocus: false,

@@ -11,6 +11,7 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
   bond,
   isMobile,
 }) => {
+  console.log(bond);
   const { amountOfUserBonds } = bond;
   const bSolLamports = amountOfUserBonds;
 
