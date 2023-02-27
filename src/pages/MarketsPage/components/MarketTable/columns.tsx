@@ -88,7 +88,7 @@ export const TableList = ({ onChange }) => {
         <HeaderTitleCell
           sortColumns={column?.sortColumns}
           label="Active loans"
-          value="activeLoans"
+          value="activeBondsAmount"
         />
       ),
       render: (value) => createActiveLoansJSX(value),
