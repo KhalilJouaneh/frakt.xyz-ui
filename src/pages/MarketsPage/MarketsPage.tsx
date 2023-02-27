@@ -47,6 +47,8 @@ const MarketsPreviewPage: FC = () => {
 
   const { rewards, locked, activeLoans } = createMyBondsStats(bonds);
 
+  const loading = isLoading || bondsLoanding;
+
   return (
     <AppLayout>
       <Header title="Bonds" subtitle="Lend on your own terms" />
@@ -90,7 +92,7 @@ const MarketsPreviewPage: FC = () => {
                   <BondsTable
                     className={classNames(styles.table, styles.bondsTable)}
                     noDataClassName={styles.noDataTableMessage}
-                    loading={isLoading || bondsLoanding}
+                    loading={loading}
                     data={bonds}
                     haderTitleCellClassName={styles.haderTitleCell}
                     mobileBreakpoint={1190}
@@ -99,7 +101,7 @@ const MarketsPreviewPage: FC = () => {
                 </>
               )}
 
-              {connected && !bonds.length && (!isLoading || !bondsLoanding) && (
+              {connected && !bonds.length && !loading && (
                 <EmptyList
                   className={styles.emptyList}
                   text="You don't have any bonds"
