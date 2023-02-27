@@ -9,12 +9,14 @@
   background: @primary-background;
   border: 1px solid @primary-border;
   border-bottom: 0;
+  border-radius: 0;
 }
 
 .ant-table-tbody > tr > td {
   border-bottom: 1px solid @primary-border;
   padding: 0;
   vertical-align: middle;
+  transition: unset;
 }
 
 .ant-table-tbody > tr > td:first-child {
@@ -32,6 +34,7 @@
   background: @primary-background;
   border-bottom: 1px solid @primary-border;
   white-space: nowrap;
+  transition: unset;
 }
 
 .ant-table-thead > tr > th:first-child {
@@ -74,4 +77,12 @@ td.ant-table-column-sort {
 
 .ant-table-cell::before {
   display: none;
+}
+
+.ant-table-thead th.ant-table-column-sort {
+  background: @primary-background;
+}
+
+.ant-table-thead th.ant-table-column-has-sorters {
+  transition: unset;
 }

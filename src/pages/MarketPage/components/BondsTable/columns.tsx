@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import { SortOrder } from 'antd/lib/table/interface';
 
@@ -15,7 +16,6 @@ import {
   calcEstimateProfit,
   calcPnlProfit,
 } from './TableCells';
-import { useState } from 'react';
 
 export type SortColumns = {
   column: ColumnType<Bond>;

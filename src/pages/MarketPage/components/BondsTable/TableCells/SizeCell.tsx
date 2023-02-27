@@ -1,9 +1,13 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { BOND_SOL_DECIMAIL_DELTA } from '@frakt/utils/bonds';
 import { Bond } from '@frakt/api/bonds';
 import { Solana } from '@frakt/icons';
+import {
+  BOND_SOL_DECIMAIL_DELTA,
+  colorByPercentSlider,
+  getColorByPercent,
+} from '@frakt/utils/bonds';
 
 import styles from './TableCells.module.scss';
 
@@ -11,8 +15,13 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
   bond,
   isMobile,
 }) => {
-  const { amountOfUserBonds } = bond;
+  const { amountOfUserBonds, fbond } = bond;
   const bSolLamports = amountOfUserBonds;
+
+  const ltvValue = parseFloat(fbond.ltvPercent);
+  const colorLTV =
+    getColorByPercent(ltvValue, colorByPercentSlider) ||
+    colorByPercentSlider[100];
 
   return (
     <div
@@ -24,8 +33,11 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
         {(bSolLamports / BOND_SOL_DECIMAIL_DELTA || 0).toFixed(2)}
         <Solana />
       </span>
-      <span className={classNames(styles.value, styles.highestLtvColor)}>
-        {parseFloat(bond.fbond.ltvPercent || '0').toFixed(0)} %
+      <span
+        style={{ color: colorLTV }}
+        className={classNames(styles.value, styles.highestLtvColor)}
+      >
+        {(ltvValue || 0)?.toFixed(0)}% LTV
       </span>
     </div>
   );

@@ -24,11 +24,14 @@ export const createBestOfferJSX = (value = 0) => (
   </span>
 );
 
-export const createDurationJSX = (value: number[]) => (
-  <span className={styles.value}>
-    {value?.length ? `${value?.join(' / ')} days` : '--'}
-  </span>
-);
+export const createDurationJSX = (value: number[]) => {
+  const durations = value.sort((a, b) => b - a);
+  return (
+    <span className={styles.value}>
+      {durations?.length ? `${durations?.join(' / ')} days` : '--'}
+    </span>
+  );
+};
 
 export const createHighestLtvJSX = (value = 0) => (
   <span className={classNames(styles.value, styles.highestLtvColor)}>
