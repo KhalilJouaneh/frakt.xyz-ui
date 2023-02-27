@@ -22,7 +22,7 @@ export type SortColumns = {
   order: SortOrder;
 }[];
 
-export const TableList = ({ data, isMobile, hideBond }) => {
+export const TableList = ({ data, isMobile, hideBond, className }) => {
   const [currentMarketAndPairs, setCurrentMarketAndPairs] = useState<{
     market: Market;
     pairs: Pair[];
@@ -34,6 +34,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'nftName',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           isMobile={isMobile}
           sortColumns={column?.sortColumns}
           label="Collateral"
@@ -52,6 +53,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'size',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           sortColumns={column?.sortColumns}
           label="Size"
           value="size"
@@ -70,6 +72,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'interest',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           sortColumns={column?.sortColumns}
           label="Interest"
           value="interest"
@@ -88,6 +91,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'expiration',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           sortColumns={column?.sortColumns}
           label="Expiration"
           value="expiration"
@@ -104,6 +108,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'profit',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           sortColumns={column?.sortColumns}
           value="profit"
           label="Est. Profit"
@@ -119,6 +124,7 @@ export const TableList = ({ data, isMobile, hideBond }) => {
       dataIndex: 'pnl',
       title: (column) => (
         <HeaderTitleCell
+          className={className}
           sortColumns={column?.sortColumns}
           value="pnl"
           label="PNL"

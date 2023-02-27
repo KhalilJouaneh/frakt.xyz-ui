@@ -162,11 +162,8 @@
   display: flex;
 
   @media screen and (max-width: 1380px) {
-    display: none;
+    opacity: 0;
   }
-}
-.sortIconMobile {
-  display: none;
 }
 
 .highestLtvColor {

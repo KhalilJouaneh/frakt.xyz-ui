@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Bond, Market, Pair } from '@frakt/api/bonds';
+import { Bond } from '@frakt/api/bonds';
 
 import { BondsTable } from '../BondsTable';
 import styles from './BondsList.module.scss';

@@ -94,6 +94,8 @@ const MarketsPreviewPage: FC = () => {
                     noDataClassName={styles.noDataTableMessage}
                     loading={isLoading || bondsLoanding}
                     data={bonds}
+                    haderTitleCellClassName={styles.haderTitleCell}
+                    mobileBreakpoint={1190}
                   />
                 </>
               )}

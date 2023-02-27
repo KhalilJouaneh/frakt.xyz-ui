@@ -87,3 +87,11 @@
     display: none;
   }
 }
+
+.haderTitleCell {
+  opacity: 1 !important;
+
+  @media screen and (max-width: 1190px) {
+    opacity: 0 !important;
+  }
+}
