@@ -1,5 +1,5 @@
 .content {
-  max-width: 638px;
+  max-width: 580px;
   width: 100%;
 
   @media screen and (max-width: 1024px) {
@@ -16,6 +16,9 @@
 .blockWrapper {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  row-gap: 17px;
+
+  @media screen and (max-width: 1024px) {
+    flex-wrap: wrap;
+    row-gap: 24px;
+  }
 }

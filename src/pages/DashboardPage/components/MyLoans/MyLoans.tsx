@@ -7,9 +7,10 @@ import { selectLiquidityPools } from '@frakt/state/loans/selectors';
 import { useWalletLoans } from '@frakt/pages/LoansPage';
 import Button from '@frakt/components/Button';
 import { PATHS } from '@frakt/constants';
-import { Solana } from '@frakt/icons';
 
-import { ChartPie, defaultColors } from '../ChartPie';
+import { ChartPie, defaultColors } from './components/ChartPie';
+import NoConnectedMyLoans from './components/NoConnectedState';
+import { DashboardStatsValues } from '../DashboardStatsValues';
 import Block from '../Block';
 import {
   calcLoansAmounts,
@@ -52,29 +53,24 @@ const MyLoans: FC = () => {
 
   return (
     <Block className={styles.block}>
-      {!!graceLoans?.length && (
-        <div className={styles.badge}>
-          Soon liquidate: {graceLoans?.length} NFTs
-        </div>
-      )}
+      {!!graceLoans?.length && <LiquidationBadge amount={graceLoans?.length} />}
       <div className={styles.poolsConainer}>
         <h3 className={styles.title}>My loans</h3>
         {userLoans.length ? (
           <>
             <div className={styles.loansInfoWrapper}>
-              <div className={styles.loansInfo}>
-                <div className={styles.loansValue}>
-                  {totalBorrowed?.toFixed(3)} <Solana className={styles.icon} />
-                </div>
-                <p className={styles.subtitle}>Total borrowed</p>
-              </div>
-              <div className={styles.loansInfo}>
-                <div className={styles.loansValue}>
-                  {totalDebt?.toFixed(3)} <Solana className={styles.icon} />
-                </div>
-                <p className={styles.subtitle}>Total debt</p>
-              </div>
+              <DashboardStatsValues
+                label="Total borrowed"
+                value={totalBorrowed}
+                type="solana"
+              />
+              <DashboardStatsValues
+                label="Total debt"
+                value={totalDebt}
+                type="solana"
+              />
             </div>
+
             <div className={styles.chartWrapper}>
               <div className={styles.chart}>
                 <ChartPie
@@ -105,38 +101,18 @@ const MyLoans: FC = () => {
             </div>
           </>
         ) : (
-          <div className={styles.emptyContent}>
-            <p className={styles.emptyMessage}>
-              You have no loans... <br />
-              But we whitelist enough collections for you to collateralizate
-              your loans
-            </p>
-            <p className={styles.emptyMessage}>
-              ...and for DeGods we allow you to claim $DUST
-            </p>
-            <div className={styles.poolsImagesEmpty}>
-              {poolsImages.map((url) => (
-                <div key={url} className={styles.poolImageEmpty}>
-                  <img src={url} />
-                  <div className={styles.otherImage}>
-                    <p className={styles.otherImageCount}>
-                      +{restFlipPoolImages}
-                    </p>
-                    <p className={styles.otherImageTitle}>collections</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <NoConnectedMyLoans
+            poolsImages={poolsImages}
+            restFlipPoolImages={restFlipPoolImages}
+          />
         )}
       </div>
-
       <NavLink
         style={{ width: '100%' }}
         to={userLoans.length ? PATHS.LOANS : PATHS.BORROW_ROOT}
       >
         <Button className={styles.btn} type="secondary">
-          {userLoans.length ? 'Repay' : 'Borrow SOL'}
+          {userLoans.length ? 'Repay' : 'Jump to borrowing'}
         </Button>
       </NavLink>
     </Block>
@@ -144,3 +120,7 @@ const MyLoans: FC = () => {
 };
 
 export default MyLoans;
+
+const LiquidationBadge = ({ amount }: { amount: number }) => (
+  <div className={styles.badge}>Soon liquidate: {amount} NFTs</div>
+);

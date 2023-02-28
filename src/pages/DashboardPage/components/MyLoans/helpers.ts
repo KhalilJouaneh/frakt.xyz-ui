@@ -56,7 +56,7 @@ export const getPoolsInfoForView = (
   perpetualPools: LiquidityPool[],
   flipPools: LiquidityPool[],
 ) => {
-  const COUNT_IMAGE_FOR_VIEW = 7;
+  const COUNT_IMAGE_FOR_VIEW = 9;
 
   const splicedPerpetualPools = perpetualPools.splice(0, 8);
   const poolsImages = map(splicedPerpetualPools, 'imageUrl')?.flat();

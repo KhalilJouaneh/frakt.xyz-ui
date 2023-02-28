@@ -1,6 +1,7 @@
 .block {
-  width: 100%;
+  max-width: 1184px;
   height: 100%;
+  width: 100%;
 
   @media screen and (max-width: 1024px) {
     max-width: unset;

@@ -21,12 +21,14 @@ const TotalStats: FC<TotalStatsProps> = ({ totalStats }) => {
         <DashboardStatsValues
           label="Total value locked"
           value={loansTvl}
-          isSolValue
+          type="solana"
+          toFixed="0"
         />
         <DashboardStatsValues
           label="Loans volume all time"
           value={loansVolumeAllTime}
-          isSolValue
+          type="solana"
+          toFixed="0"
         />
         <DashboardStatsValues label="Active loans" value={activeLoansCount} />
       </div>

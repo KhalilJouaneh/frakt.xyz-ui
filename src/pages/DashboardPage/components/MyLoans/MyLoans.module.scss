@@ -2,24 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 415px;
+  max-width: 420px;
   width: 100%;
-  height: 100%;
   position: relative;
 
-  @media screen and (max-width: 1430px) {
+  @media screen and (max-width: 1290px) {
     max-width: unset;
   }
 }
 
 .chartWrapper {
-  @media screen and (max-width: 1430px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-  }
-
   @media screen and (max-width: 767px) {
     flex-direction: column;
     gap: 8px;
@@ -32,7 +24,7 @@
 
 .title {
   font: var(--font-h6);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   text-align: center;
 }
 
@@ -41,38 +33,19 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 55px;
 
   @media screen and (max-width: 1024px) {
     margin-bottom: 24px;
   }
 }
 
-.loansInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.loansValue {
-  color: var(--secondary-text);
-  font: var(--font-subtitle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
 .chart {
   height: 192px;
   width: 192px;
   margin: 0 auto;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
   position: relative;
-
-  @media screen and (max-width: 1430px) {
-    margin: 0;
-  }
 
   @media screen and (max-width: 767px) {
     height: 139px;
@@ -96,11 +69,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  @media screen and (max-width: 1430px) {
-    max-width: 210px;
-    width: 100%;
-  }
 }
 
 .dot {
@@ -165,91 +133,6 @@
   color: var(--secondary-text);
   font: var(--font-text-7);
   text-transform: uppercase;
-}
-
-.emptyContent {
-  display: flex;
-  flex-direction: column;
-}
-
-.emptyMessage {
-  font: var(--font-text-1);
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.poolImageEmpty {
-  img {
-    width: 77px;
-    height: 77px;
-  }
-
-  @media screen and (max-width: 767px) {
-    img {
-      width: 67px;
-      height: 67px;
-    }
-  }
-}
-
-.poolsImagesEmpty {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 13px;
-  margin-top: 12px;
-
-  @media screen and (max-width: 767px) {
-    gap: 8px;
-  }
-}
-
-.otherImage {
-  display: none;
-}
-
-.poolImageEmpty:last-child {
-  position: relative;
-
-  .otherImage {
-    display: block;
-    background: rgba(0, 0, 0, 0.72);
-    width: 100%;
-    height: 77px;
-    position: absolute;
-    top: 0px;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    align-items: center;
-    text-align: center;
-    z-index: 1;
-
-    @media screen and (max-width: 767px) {
-      height: 67px;
-      width: 67px;
-    }
-  }
-
-  .otherImageCount {
-    font: var(--font-subtitle-2);
-    font-size: 28px;
-
-    @media screen and (max-width: 767px) {
-      font-size: 20px;
-    }
-  }
-
-  .otherImageTitle {
-    font: var(--font-text-6);
-
-    @media screen and (max-width: 767px) {
-      font-size: 10px;
-    }
-  }
 }
 
 .badge {
