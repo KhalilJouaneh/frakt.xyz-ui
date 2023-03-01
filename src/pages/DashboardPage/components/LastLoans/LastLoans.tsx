@@ -4,8 +4,9 @@ import { LastLoans } from '@frakt/state/stats/types';
 import { Loader } from '@frakt/components/Loader';
 import { Solana } from '@frakt/icons';
 
-import Block from '../Block';
 import styles from './LastLoans.module.scss';
+import NftCard from '../NftCard';
+import Block from '../Block';
 
 interface LastLoansProps {
   lastLoans: LastLoans[];
@@ -25,15 +26,16 @@ const LastLoans: FC<LastLoansProps> = ({ lastLoans, loading }) => {
           <Loader />
         ) : (
           lastLoans.map(({ nftName, loanValue, image }) => (
-            <div key={nftName} className={styles.card}>
-              <div className={styles.nftInfo}>
-                <img src={image} className={styles.nftImage} />
-                <p className={styles.nftName}>{nftName}</p>
-              </div>
+            <NftCard
+              key={nftName}
+              nftName={nftName}
+              nftImageUrl={image}
+              className={styles.card}
+            >
               <div className={styles.nftValue}>
                 {loanValue} <Solana className={styles.icon} />
               </div>
-            </div>
+            </NftCard>
           ))
         )}
       </div>

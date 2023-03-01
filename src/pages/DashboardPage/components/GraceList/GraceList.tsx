@@ -2,12 +2,14 @@ import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { createTimerJSX } from '@frakt/components/Timer';
-import Button from '../../../../components/Button';
-import { PATHS } from '../../../../constants';
-import styles from './GraceList.module.scss';
-import { Timer } from '../../../../icons';
-import Block from '../Block';
 import { GraceListItem } from '@frakt/api/raffle';
+import Button from '@frakt/components/Button';
+import { PATHS } from '@frakt/constants';
+import { Timer } from '@frakt/icons';
+
+import styles from './GraceList.module.scss';
+import NftCard from '../NftCard';
+import Block from '../Block';
 
 interface GraceListProps {
   graceList: GraceListItem[];
@@ -25,18 +27,14 @@ const GraceList: FC<GraceListProps> = ({ isLoading, graceList }) => {
       {graceList?.length && !isLoading ? (
         <div className={styles.content}>
           {graceList?.map(({ nftName, nftImageUrl, expiredAt }) => (
-            <div key={nftName} className={styles.card}>
-              <div className={styles.nftInfo}>
-                <img src={nftImageUrl} className={styles.nftImage} />
-                <p className={styles.nftName}>{nftName}</p>
-              </div>
+            <NftCard key={nftName} nftName={nftName} nftImageUrl={nftImageUrl}>
               <div className={styles.wrapper}>
                 <Timer className={styles.icon} />
                 <div className={styles.countdown}>
                   {createTimerJSX(expiredAt)}
                 </div>
               </div>
-            </div>
+            </NftCard>
           ))}
         </div>
       ) : (
