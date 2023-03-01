@@ -11,10 +11,15 @@ import styles from './MyDeposit.module.scss';
 import Block from '../Block';
 import { DashboardStatsValues } from '../DashboardStatsValues';
 import { BadgeJSX, NavigationButtonJSX, NoConnectedJSX } from './components';
+import { useFetchAllUserBonds } from '@frakt/utils/bonds';
+import { createMyBondsStats } from '@frakt/pages/MarketsPage/helpers';
 
 const MyDeposit: FC = () => {
-  const { connected } = useWallet();
+  const { connected, publicKey } = useWallet();
   const liquidityPools = useSelector(selectLiquidityPools);
+
+  const { bonds } = useFetchAllUserBonds({ walletPubkey: publicKey });
+  const { locked, activeLoans } = createMyBondsStats(bonds);
 
   const depositAmount = (pool) => pool?.userDeposit?.depositAmount;
   const depositApr = ({ depositApr }) => depositApr;
@@ -38,15 +43,9 @@ const MyDeposit: FC = () => {
           weightedAvarageApy={weightedAvarageApy}
           totalLiquidity={totalLiquidity}
         />
-        <StrategiesInfoJSX
-          weightedAvarageApy={weightedAvarageApy}
-          totalLiquidity={totalLiquidity}
-        />
+        <StrategiesInfoJSX />
       </div>
-      <BondsInfoJSX
-        weightedAvarageApy={weightedAvarageApy}
-        totalLiquidity={totalLiquidity}
-      />
+      <BondsInfoJSX activeBonds={activeLoans} locked={locked} />
     </Block>
   );
 };
@@ -101,7 +100,7 @@ const PoolsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
   );
 };
 
-const StrategiesInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
+const StrategiesInfoJSX = () => {
   const { connected } = useWallet();
 
   return (
@@ -110,18 +109,18 @@ const StrategiesInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
       {connected && (
         <Fragment>
           <div className={styles.badges}>
-            <BadgeJSX label="Risk: Moderate" />
+            <BadgeJSX label="Risk: High" />
             <BadgeJSX label="APR: 8%-20%" />
           </div>
           <div className={styles.content}>
             <DashboardStatsValues
               label="Weighted APY"
-              value={weightedAvarageApy}
+              value={0}
               type="percent"
             />
             <DashboardStatsValues
               label="Total liquidity"
-              value={totalLiquidity}
+              value={0}
               type="solana"
             />
           </div>
@@ -142,6 +141,7 @@ const StrategiesInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
         />
       )}
       <NavigationButtonJSX
+        disabled={true}
         path={PATHS.LEND}
         label={connected ? 'Manage' : 'Jump to strategies'}
       />
@@ -149,7 +149,7 @@ const StrategiesInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
   );
 };
 
-const BondsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
+const BondsInfoJSX = ({ activeBonds, locked }) => {
   const { connected } = useWallet();
 
   return (
@@ -158,25 +158,19 @@ const BondsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
       {connected && (
         <Fragment>
           <div className={styles.badges}>
-            <BadgeJSX label="Risk: Moderate" />
+            <BadgeJSX label="Risk: High" />
             <BadgeJSX label="APR: 8%-20%" />
           </div>
           <div className={styles.content}>
             <div className={styles.values}>
-              <DashboardStatsValues
-                label="Weighted APY"
-                value={weightedAvarageApy}
-                type="percent"
-              />
-              <span className={styles.value}>2.159,99 SOL</span>
+              <DashboardStatsValues label="Offers" value={0} />
+              <span className={styles.value}>0 SOL</span>
             </div>
             <div className={styles.values}>
-              <DashboardStatsValues
-                label="Total liquidity"
-                value={totalLiquidity}
-                type="solana"
-              />
-              <span className={styles.value}>2.159,99 SOL</span>
+              <DashboardStatsValues label="Bonds" value={activeBonds} />
+              <span className={styles.value}>
+                {locked?.toFixed(2) || '--'} SOL
+              </span>
             </div>
           </div>
         </Fragment>

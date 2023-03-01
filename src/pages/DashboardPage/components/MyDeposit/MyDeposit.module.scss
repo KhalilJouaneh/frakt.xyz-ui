@@ -52,7 +52,6 @@
   font: var(--font-text-2);
   font-size: 22px;
   text-align: center;
-  margin-bottom: 16px;
 }
 
 .values {
@@ -60,6 +59,11 @@
   align-items: center;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+
+  @media (max-width: 1290px) {
+    width: 135px;
+  }
 }
 
 .value {
@@ -83,6 +87,7 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+  width: 100%;
 }
 
 .badges {
@@ -110,6 +115,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  margin-top: 16px;
 }
 .notConntectedContent {
   display: flex;
@@ -135,4 +141,8 @@
   @media (max-width: 1290px) {
     width: 135px;
   }
+}
+
+.disabledLink {
+  pointer-events: none;
 }

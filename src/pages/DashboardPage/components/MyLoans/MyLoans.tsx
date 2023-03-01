@@ -38,10 +38,7 @@ const MyLoans: FC<{ userLoans: Loan[] }> = ({ userLoans }) => {
   } = calcLoansAmounts(userLoans);
 
   const { perpetualPools, flipPools } = getFilteredPools(liquidityPools);
-  const { poolsImages, restFlipPoolImages } = getPoolsInfoForView(
-    perpetualPools,
-    flipPools,
-  );
+  const { restFlipPoolImages } = getPoolsInfoForView(perpetualPools, flipPools);
 
   const loansInfo = [
     { name: 'Flip', value: flipRepayValue?.toFixed(3) },
@@ -100,10 +97,7 @@ const MyLoans: FC<{ userLoans: Loan[] }> = ({ userLoans }) => {
             </div>
           </>
         ) : (
-          <NoConnectedMyLoans
-            poolsImages={poolsImages}
-            restFlipPoolImages={restFlipPoolImages}
-          />
+          <NoConnectedMyLoans restFlipPoolImages={restFlipPoolImages} />
         )}
       </div>
       <NavLink

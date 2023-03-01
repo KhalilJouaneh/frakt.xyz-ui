@@ -4,7 +4,6 @@ import { MOCK_IMAGES } from '../../mock';
 import styles from './NoConnectedMyLoans.module.scss';
 
 interface NoConnectedMyLoansProps {
-  poolsImages: string[];
   restFlipPoolImages: number;
 }
 

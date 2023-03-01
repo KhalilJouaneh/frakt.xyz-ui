@@ -7,13 +7,19 @@ import styles from './MyDeposit.module.scss';
 export const NavigationButtonJSX = ({
   path,
   label,
+  disabled,
 }: {
   path: string;
   label: string;
+  disabled?: boolean;
 }) => {
   return (
-    <NavLink style={{ width: '100%' }} to={path}>
-      <Button className={styles.btn} type="secondary">
+    <NavLink
+      className={disabled && styles.disabledLink}
+      style={{ width: '100%' }}
+      to={path}
+    >
+      <Button disabled={disabled} className={styles.btn} type="secondary">
         {label}
       </Button>
     </NavLink>
