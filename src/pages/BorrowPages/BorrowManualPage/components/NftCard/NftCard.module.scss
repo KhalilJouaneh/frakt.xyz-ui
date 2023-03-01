@@ -27,6 +27,9 @@
     z-index: 1;
   }
 }
+.rootDisabled {
+  pointer-events: none;
+}
 
 .imageWrapper {
   position: relative;
@@ -63,6 +66,30 @@
     height: 5px;
     width: 34px;
     border-radius: 5px;
+  }
+}
+
+.imageDisabledOverlay {
+  background: rgba(0, 0, 0, 0.64);
+  color: #fff;
+  font: var(--font-text-4);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+
+  &::after {
+    content: 'Collection limit is exceeded';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 133px;
+    width: 100%;
   }
 }
 
@@ -109,6 +136,12 @@
 
   @media screen and (max-width: 550px) {
     padding: 16px;
+  }
+}
+
+.rootContentDisabled {
+  p {
+    color: var(--secondary-text);
   }
 }
 
