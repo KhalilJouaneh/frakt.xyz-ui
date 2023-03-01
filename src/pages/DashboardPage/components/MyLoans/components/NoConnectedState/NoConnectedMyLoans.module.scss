@@ -3,11 +3,16 @@
   flex-direction: column;
 }
 
-.row {
+.row,
+.columm {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
+}
+
+.columm {
+  flex-direction: column;
 }
 
 .wrapper {
@@ -33,12 +38,11 @@
 
 .images {
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
 
-  @media (max-width: 1390px) {
-    max-width: 145px;
-  }
+  // @media (max-width: 1390px) {
+  //   max-width: 145px;
+  // }
 
   @media (max-width: 1290px) {
     max-width: 234px;
@@ -58,34 +62,6 @@
   }
 }
 
-.poolImageEmpty {
-  img {
-    width: 166px;
-    height: 166px;
-  }
-
-  @media (max-width: 1390px) {
-    img {
-      height: 140px;
-      width: 140px;
-    }
-  }
-
-  @media (max-width: 1290px) {
-    img {
-      height: 234px;
-      width: 234px;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    img {
-      width: 67px;
-      height: 67px;
-    }
-  }
-}
-
 .poolsImagesEmpty {
   display: flex;
   flex-wrap: wrap;
@@ -102,37 +78,18 @@
   display: none;
 }
 
-.poolImageEmpty:last-child {
+.poolImageEmpty {
   position: relative;
+}
+
+.poolImageEmpty,
+.poolImage {
   height: 166px;
   width: 166px;
 
-  .otherImage {
-    display: block;
-    background: rgba(0, 0, 0, 0.72);
-    width: 100%;
-    height: 100%;
-
-    position: absolute;
-    top: 0px;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    align-items: center;
-    text-align: center;
-    z-index: 1;
-
-    @media screen and (max-width: 767px) {
-      height: 67px;
-      width: 67px;
-    }
-  }
-
   @media (max-width: 1390px) {
-    height: 140px;
-    width: 140px;
+    height: 144px;
+    width: 144px;
   }
 
   @media (max-width: 1290px) {
@@ -140,20 +97,42 @@
     width: 234px;
   }
 
-  .otherImageCount {
-    font: var(--font-subtitle-2);
-    font-size: 28px;
-
-    @media screen and (max-width: 767px) {
-      font-size: 20px;
-    }
+  @media screen and (max-width: 767px) {
+    height: 142px;
+    width: 142px;
   }
+}
 
-  .otherImageTitle {
-    font: var(--font-text-6);
+.otherImage {
+  display: block;
+  background: rgba(0, 0, 0, 0.72);
+  width: 100%;
+  height: 100%;
 
-    @media screen and (max-width: 767px) {
-      font-size: 10px;
-    }
+  position: absolute;
+  top: 0px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+.otherImageCount {
+  font: var(--font-subtitle-2);
+  font-size: 28px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+  }
+}
+
+.otherImageTitle {
+  font: var(--font-text-6);
+
+  @media screen and (max-width: 767px) {
+    font-size: 10px;
   }
 }

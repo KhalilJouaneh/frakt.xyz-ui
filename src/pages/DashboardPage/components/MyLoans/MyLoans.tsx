@@ -22,7 +22,7 @@ import {
 import styles from './MyLoans.module.scss';
 
 const MyLoans: FC = () => {
-  const { publicKey: walletPublicKey } = useWallet();
+  const { publicKey: walletPublicKey, connected } = useWallet();
 
   const { loans: userLoans } = useWalletLoans({ walletPublicKey });
   const liquidityPools = useSelector(selectLiquidityPools);
@@ -55,7 +55,7 @@ const MyLoans: FC = () => {
     <Block className={styles.block}>
       {!!graceLoans?.length && <LiquidationBadge amount={graceLoans?.length} />}
       <div className={styles.poolsConainer}>
-        <h3 className={styles.title}>My loans</h3>
+        <h3 className={styles.title}>{connected ? 'My loans' : 'Borrowing'}</h3>
         {userLoans.length ? (
           <>
             <div className={styles.loansInfoWrapper}>

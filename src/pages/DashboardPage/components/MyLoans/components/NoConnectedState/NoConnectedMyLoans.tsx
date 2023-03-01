@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { MOCK_IMAGES } from '../../mock';
 
 import styles from './NoConnectedMyLoans.module.scss';
 
@@ -8,12 +9,12 @@ interface NoConnectedMyLoansProps {
 }
 
 const NoConnectedMyLoans: FC<NoConnectedMyLoansProps> = ({
-  poolsImages,
   restFlipPoolImages,
 }) => {
-  const [firstRowImages, secondRowImages] = [
-    poolsImages.slice(0, 4),
-    poolsImages.slice(4, 8),
+  const [firstRowImages, secondRowImages, lastImage] = [
+    MOCK_IMAGES.slice(0, 4),
+    MOCK_IMAGES.slice(4, 8),
+    MOCK_IMAGES.at(-1),
   ];
 
   return (
@@ -30,14 +31,23 @@ const NoConnectedMyLoans: FC<NoConnectedMyLoansProps> = ({
         </div>
         <div className={styles.row}>
           <div className={styles.images}>
-            {secondRowImages.map((image, idx) => (
-              <img key={idx} className={styles.image} src={image} />
-            ))}
+            <div className={styles.columm}>
+              {secondRowImages.slice(0, 2).map((image, idx) => (
+                <img key={idx} className={styles.image} src={image} />
+              ))}
+            </div>
+            <div className={styles.columm}>
+              {secondRowImages.slice(2, 4).map((image, idx) => (
+                <img key={idx} className={styles.image} src={image} />
+              ))}
+            </div>
           </div>
           <div className={styles.poolImageEmpty}>
-            <img src={firstRowImages[0]} />
+            <img className={styles.poolImage} src={lastImage} />
             <div className={styles.otherImage}>
-              <p className={styles.otherImageCount}>+{restFlipPoolImages}</p>
+              <p className={styles.otherImageCount}>
+                +{restFlipPoolImages || 0}
+              </p>
               <p className={styles.otherImageTitle}>collections</p>
             </div>
           </div>

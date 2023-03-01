@@ -13,6 +13,7 @@ import { DashboardStatsValues } from '../DashboardStatsValues';
 import { BadgeJSX, NavigationButtonJSX, NoConnectedJSX } from './components';
 
 const MyDeposit: FC = () => {
+  const { connected } = useWallet();
   const liquidityPools = useSelector(selectLiquidityPools);
 
   const depositAmount = (pool) => pool?.userDeposit?.depositAmount;
@@ -31,7 +32,7 @@ const MyDeposit: FC = () => {
 
   return (
     <Block className={styles.block}>
-      <h3 className={styles.title}>My deposits</h3>
+      <h3 className={styles.title}>{connected ? 'My deposits' : 'Lending'}</h3>
       <div className={styles.container}>
         <PoolsInfoJSX
           weightedAvarageApy={weightedAvarageApy}
