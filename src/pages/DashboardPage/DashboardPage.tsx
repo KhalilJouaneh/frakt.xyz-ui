@@ -41,7 +41,7 @@ const DashboardPage: FC = () => {
   return (
     <AppLayout>
       <div className={styles.header}>
-        <h1 className={styles.title}>Dashboard</h1>
+        <h1 className={styles.title}>{connected ? 'Dashboard' : 'Welcome'}</h1>
       </div>
       {!connected || !isLoading ? (
         <>

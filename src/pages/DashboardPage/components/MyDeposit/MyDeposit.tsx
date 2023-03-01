@@ -187,11 +187,11 @@ const BondsInfoJSX = ({ activeBonds, locked }) => {
               value: '40%+',
             },
           ]}
-          className={styles.containerFullWidth}
+          className={styles.bondsContainer}
         />
       )}
       <NavigationButtonJSX
-        path={PATHS.LEND}
+        path={PATHS.BONDS}
         label={connected ? 'Manage' : 'Jump to bonds'}
       />
     </Block>
