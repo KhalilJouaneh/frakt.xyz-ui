@@ -92,7 +92,7 @@ export const BorrowManualPage: FC = () => {
               highlighted={currentNft?.mint === nft.mint}
               disabled={
                 nft?.classicParams?.isLimitExceeded &&
-                !!nft?.bondParams.marketPubkey
+                !nft?.bondParams.marketPubkey
               }
             />
           ))}
