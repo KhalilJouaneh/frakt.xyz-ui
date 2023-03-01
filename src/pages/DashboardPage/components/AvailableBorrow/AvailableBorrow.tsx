@@ -10,6 +10,7 @@ import { Solana } from '@frakt/icons';
 
 import styles from './AvailableBorrow.module.scss';
 import Block from '../Block';
+import classNames from 'classnames';
 
 const AvailableBorrow: FC = () => {
   const [availableBorrowValue, setAvailableBorrowValue] = useState<string>('');
@@ -34,7 +35,11 @@ const AvailableBorrow: FC = () => {
   }, [publicKey]);
 
   return (
-    <Block className={styles.block}>
+    <Block
+      className={classNames(styles.block, {
+        [styles.noConnectedBlock]: !connected,
+      })}
+    >
       <h3 className={styles.title}>Available to borrow</h3>
       {connected ? (
         <>

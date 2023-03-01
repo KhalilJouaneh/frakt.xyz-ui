@@ -1,4 +1,5 @@
 import Button from '@frakt/components/Button';
+import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
 import styles from './MyDeposit.module.scss';
@@ -19,10 +20,13 @@ export const NavigationButtonJSX = ({
   );
 };
 
-export const NoConnectedJSX = ({ values }) => (
+export const NoConnectedJSX = ({ values, className = '' }) => (
   <div className={styles.notConnetedWrapper}>
-    {values.map(({ value, label }, idx) => (
-      <div key={idx} className={styles.notConntectedContent}>
+    {values.map(({ value, label }, idx: number) => (
+      <div
+        key={idx}
+        className={classNames(styles.notConntectedContent, className)}
+      >
         <span className={styles.notConnectedLabel}>{label}</span>
         <span className={styles.notConnectedValue}>{value}</span>
       </div>

@@ -1,6 +1,7 @@
 .block {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   max-width: 580px;
   height: 252px;
@@ -10,6 +11,9 @@
     height: 230px;
     max-width: unset;
   }
+}
+.noConnectedBlock {
+  justify-content: unset;
 }
 
 .title {
@@ -53,4 +57,12 @@
   font-size: 22px;
   max-width: 516px;
   text-align: center;
+
+  @media screen and (max-width: 1290px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+    max-width: 300px;
+  }
 }

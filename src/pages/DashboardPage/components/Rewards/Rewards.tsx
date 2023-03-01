@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import classNames from 'classnames';
 
 import Button from '@frakt/components/Button';
 
@@ -10,7 +11,11 @@ const Rewards: FC = () => {
   const { connected } = useWallet();
 
   return (
-    <Block className={styles.block}>
+    <Block
+      className={classNames(styles.block, {
+        [styles.noConnectedBlock]: !connected,
+      })}
+    >
       <h3 className={styles.title}>My rewards</h3>
       {connected ? (
         <>

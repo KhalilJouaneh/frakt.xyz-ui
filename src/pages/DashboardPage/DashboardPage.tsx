@@ -18,12 +18,18 @@ import Rewards from './components/Rewards';
 import MyLoans from './components/MyLoans';
 
 import styles from './DashboardPage.module.scss';
+import { useWalletLoans } from '../LoansPage';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Loader } from '@frakt/components/Loader';
 
 const DashboardPage: FC = () => {
   const dispatch = useDispatch();
+  const { publicKey: walletPublicKey, connected } = useWallet();
 
   const { totalStats, lastLoans, lendingPools, dailyActivity, loading } =
     useSelector(selectStats);
+
+  const { loans, isLoading } = useWalletLoans({ walletPublicKey });
 
   useEffect(() => {
     dispatch(statsActions.fetchStats());
@@ -37,36 +43,43 @@ const DashboardPage: FC = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>Dashboard</h1>
       </div>
-      <>
-        <div className={styles.statsWrapper}>
-          <div className={styles.statsContainer}>
-            <div className={styles.row}>
-              <MyLoans />
-              <MyDeposit />
-            </div>
-            <div className={cx(styles.row, styles.rowDirection)}>
-              <Rewards />
-              <AvailableBorrow />
-            </div>
-          </div>
-        </div>
-        <div className={styles.statsWrapper}>
-          <h2 className={styles.subtitle}>Protocol overview</h2>
-          <div className={styles.statsContainer}>
-            <div className={cx(styles.row, styles.rowDirection)}>
-              <TotalStats totalStats={totalStats} />
-              <DailyActive dailyStats={dailyActivity} />
-            </div>
-            <div className={cx(styles.row, styles.rowDirection)}>
-              <Lending loading={loading} lendingPools={lendingPools} />
-              <LastLoans loading={loading} lastLoans={lastLoans} />
-            </div>
-            <div className={cx(styles.row, styles.rowDirection)}>
-              <GraceList isLoading={isLoadingGraceList} graceList={graceList} />
+      {!connected || !isLoading ? (
+        <>
+          <div className={styles.statsWrapper}>
+            <div className={styles.statsContainer}>
+              <div className={styles.row}>
+                <MyLoans userLoans={loans} />
+                <MyDeposit />
+              </div>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <Rewards />
+                <AvailableBorrow />
+              </div>
             </div>
           </div>
-        </div>
-      </>
+          <div className={styles.statsWrapper}>
+            <h2 className={styles.subtitle}>Protocol overview</h2>
+            <div className={styles.statsContainer}>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <TotalStats totalStats={totalStats} />
+                <DailyActive dailyStats={dailyActivity} />
+              </div>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <Lending loading={loading} lendingPools={lendingPools} />
+                <LastLoans loading={loading} lastLoans={lastLoans} />
+              </div>
+              <div className={cx(styles.row, styles.rowDirection)}>
+                <GraceList
+                  isLoading={isLoadingGraceList}
+                  graceList={graceList}
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Loader />
+      )}
     </AppLayout>
   );
 };

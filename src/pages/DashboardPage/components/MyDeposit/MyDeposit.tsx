@@ -162,16 +162,22 @@ const BondsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
             <BadgeJSX label="APR: 8%-20%" />
           </div>
           <div className={styles.content}>
-            <DashboardStatsValues
-              label="Weighted APY"
-              value={weightedAvarageApy}
-              type="percent"
-            />
-            <DashboardStatsValues
-              label="Total liquidity"
-              value={totalLiquidity}
-              type="solana"
-            />
+            <div className={styles.values}>
+              <DashboardStatsValues
+                label="Weighted APY"
+                value={weightedAvarageApy}
+                type="percent"
+              />
+              <span className={styles.value}>2.159,99 SOL</span>
+            </div>
+            <div className={styles.values}>
+              <DashboardStatsValues
+                label="Total liquidity"
+                value={totalLiquidity}
+                type="solana"
+              />
+              <span className={styles.value}>2.159,99 SOL</span>
+            </div>
           </div>
         </Fragment>
       )}
@@ -187,6 +193,7 @@ const BondsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
               value: '40%+',
             },
           ]}
+          className={styles.containerFullWidth}
         />
       )}
       <NavigationButtonJSX

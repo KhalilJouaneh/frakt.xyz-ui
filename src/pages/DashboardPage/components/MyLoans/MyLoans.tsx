@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { selectLiquidityPools } from '@frakt/state/loans/selectors';
-import { useWalletLoans } from '@frakt/pages/LoansPage';
+import { Loan } from '@frakt/api/loans';
 import Button from '@frakt/components/Button';
 import { PATHS } from '@frakt/constants';
 
@@ -21,10 +21,9 @@ import {
 
 import styles from './MyLoans.module.scss';
 
-const MyLoans: FC = () => {
-  const { publicKey: walletPublicKey, connected } = useWallet();
+const MyLoans: FC<{ userLoans: Loan[] }> = ({ userLoans }) => {
+  const { connected } = useWallet();
 
-  const { loans: userLoans } = useWalletLoans({ walletPublicKey });
   const liquidityPools = useSelector(selectLiquidityPools);
 
   const { totalBorrowed, totalDebt, totalLoans } =

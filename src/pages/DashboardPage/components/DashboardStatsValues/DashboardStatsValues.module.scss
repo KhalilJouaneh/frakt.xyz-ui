@@ -16,6 +16,7 @@
 .value {
   color: var(--secondary-text);
   font: var(--font-text-1);
+  font-size: 32px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -24,12 +25,4 @@
 
 .icon {
   width: 20px;
-
-  @media screen and (max-width: 1024px) {
-    width: 16px;
-  }
-
-  @media screen and (max-width: 767px) {
-    width: 12px;
-  }
 }
