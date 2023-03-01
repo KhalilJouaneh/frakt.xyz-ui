@@ -42,7 +42,7 @@ const MyDeposit: FC = () => {
           totalLiquidity={totalLiquidity}
         />
       </div>
-      <StrategiesInfoJSX
+      <BondsInfoJSX
         weightedAvarageApy={weightedAvarageApy}
         totalLiquidity={totalLiquidity}
       />
@@ -92,7 +92,10 @@ const PoolsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
           ]}
         />
       )}
-      <NavigationButtonJSX path={PATHS.LEND} label="Lend" />
+      <NavigationButtonJSX
+        path={PATHS.LEND}
+        label={connected ? 'Manage' : 'Jump to pools'}
+      />
     </Block>
   );
 };
@@ -137,7 +140,58 @@ const StrategiesInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
           ]}
         />
       )}
-      <NavigationButtonJSX path={PATHS.LEND} label={'Lend'} />
+      <NavigationButtonJSX
+        path={PATHS.LEND}
+        label={connected ? 'Manage' : 'Jump to strategies'}
+      />
+    </Block>
+  );
+};
+
+const BondsInfoJSX = ({ weightedAvarageApy, totalLiquidity }) => {
+  const { connected } = useWallet();
+
+  return (
+    <Block className={styles.wrapper}>
+      <h4 className={styles.subtitle}>Bonds</h4>
+      {connected && (
+        <Fragment>
+          <div className={styles.badges}>
+            <BadgeJSX label="Risk: Moderate" />
+            <BadgeJSX label="APR: 8%-20%" />
+          </div>
+          <div className={styles.content}>
+            <DashboardStatsValues
+              label="Weighted APY"
+              value={weightedAvarageApy}
+              type="percent"
+            />
+            <DashboardStatsValues
+              label="Total liquidity"
+              value={totalLiquidity}
+              type="solana"
+            />
+          </div>
+        </Fragment>
+      )}
+      {!connected && (
+        <NoConnectedJSX
+          values={[
+            {
+              label: 'Risk',
+              value: 'High',
+            },
+            {
+              label: 'Apr',
+              value: '40%+',
+            },
+          ]}
+        />
+      )}
+      <NavigationButtonJSX
+        path={PATHS.LEND}
+        label={connected ? 'Manage' : 'Jump to bonds'}
+      />
     </Block>
   );
 };

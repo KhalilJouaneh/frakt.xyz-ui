@@ -9,13 +9,15 @@ export const NavigationButtonJSX = ({
 }: {
   path: string;
   label: string;
-}) => (
-  <NavLink style={{ width: '100%' }} to={path}>
-    <Button className={styles.btn} type="secondary">
-      {label}
-    </Button>
-  </NavLink>
-);
+}) => {
+  return (
+    <NavLink style={{ width: '100%' }} to={path}>
+      <Button className={styles.btn} type="secondary">
+        {label}
+      </Button>
+    </NavLink>
+  );
+};
 
 export const NoConnectedJSX = ({ values }) => (
   <div className={styles.notConnetedWrapper}>
