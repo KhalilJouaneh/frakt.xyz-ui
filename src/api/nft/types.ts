@@ -12,6 +12,7 @@ export interface BorrowNft {
   stakingAvailable: boolean;
 
   classicParams?: {
+    isLimitExceeded: boolean;
     maxLoanValue: number; // lamports
     timeBased: {
       liquidityPoolPubkey: string;
