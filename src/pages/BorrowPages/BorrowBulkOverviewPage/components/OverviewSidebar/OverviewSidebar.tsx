@@ -7,12 +7,15 @@ import { Order, useBorrow } from '@frakt/pages/BorrowPages/cartState';
 import styles from './OverviewSidebar.module.scss';
 import { Pair } from '@frakt/api/bonds';
 import { calcCartFees, isBulkHasDifferentDurations } from './helpers';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
 
 interface OverviewSidebarProps {
   orders: Order[];
   pairs: Pair[];
   onChangeAssets: () => void;
   onBorrow: () => void;
+  isSupportSignAllTxns: boolean;
+  setIsSupportSignAllTxns?: (value: boolean) => void;
 }
 
 export const OverviewSidebar: FC<OverviewSidebarProps> = ({
@@ -20,6 +23,8 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
   pairs,
   onChangeAssets,
   onBorrow,
+  isSupportSignAllTxns,
+  setIsSupportSignAllTxns,
 }) => {
   const { totalBorrowValue } = useBorrow();
 
@@ -49,6 +54,9 @@ export const OverviewSidebar: FC<OverviewSidebarProps> = ({
           ) : null,
         )}
       </div>
+      <Checkbox
+        onChange={() => setIsSupportSignAllTxns(!isSupportSignAllTxns)}
+      />
       {isDifferentDurations && (
         <div className={styles.differentDurationsMsg}>
           <Alert />

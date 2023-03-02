@@ -1,8 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { web3 } from 'fbonds-core';
 import { useWallet, WalletContextState } from '@solana/wallet-adapter-react';
 
+import {
+  signAndSendAllTransactions,
+  signAndSendTransactionsInSeries,
+} from '@frakt/utils/transactions/helpers';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
 import { PATHS } from '@frakt/constants';
@@ -30,6 +34,13 @@ export const useBorrowBulkOverviewPage = () => {
     clearCart,
     clearCurrentNftState,
   } = useBorrow();
+
+  const [isSupportSignAllTxns, setIsSupportSignAllTxns] =
+    useState<boolean>(true);
+
+  const [transactionsLeft, setTransactionsLeft] = useState<number>(null);
+  const [signedTransactionsCount, setSignedTransactionsCount] =
+    useState<number>(null);
 
   //? Go to borrow root page if bulk selection doesn't exist
   useEffect(() => {
@@ -60,6 +71,10 @@ export const useBorrowBulkOverviewPage = () => {
         pairs: cartPairs,
         wallet,
         connection,
+        setTransactionsLeft,
+        isSupportSignAllTxns,
+        signedTransactionsCount,
+        setSignedTransactionsCount,
       });
 
       if (!result) {
@@ -100,6 +115,9 @@ export const useBorrowBulkOverviewPage = () => {
     loadingModalVisible,
     closeLoadingModal,
     onBulkEdit,
+    transactionsLeft,
+    isSupportSignAllTxns,
+    setIsSupportSignAllTxns,
   };
 };
 
@@ -108,6 +126,10 @@ type BorrowBulk = (props: {
   pairs: Pair[];
   connection: web3.Connection;
   wallet: WalletContextState;
+  setTransactionsLeft?: (value: number) => void;
+  isSupportSignAllTxns?: boolean;
+  signedTransactionsCount: number;
+  setSignedTransactionsCount?: (value: number) => void;
 }) => Promise<boolean>;
 
 const borrowBulk: BorrowBulk = async ({
@@ -115,6 +137,10 @@ const borrowBulk: BorrowBulk = async ({
   pairs,
   connection,
   wallet,
+  setTransactionsLeft,
+  isSupportSignAllTxns,
+  signedTransactionsCount,
+  setSignedTransactionsCount,
 }): Promise<boolean> => {
   try {
     const transactionsAndSigners = await Promise.all(
@@ -145,49 +171,38 @@ const borrowBulk: BorrowBulk = async ({
       }),
     );
 
-    const { blockhash, lastValidBlockHeight } =
-      await connection.getLatestBlockhash();
+    if (isSupportSignAllTxns) {
+      const isSuccess = await signAndSendAllTransactions({
+        transactionsAndSigners,
+        connection,
+        wallet,
+      });
 
-    const transactions = transactionsAndSigners.map(
-      ({ transaction, signers }) => {
-        transaction.recentBlockhash = blockhash;
-        transaction.feePayer = wallet?.publicKey;
-        if (signers.length) {
-          transaction.sign(...signers);
-        }
+      if (isSuccess) {
+        notify({
+          message: 'Borrowed successfully!',
+          type: NotifyType.SUCCESS,
+        });
+        return true;
+      }
+    } else {
+      const isSuccess = await signAndSendTransactionsInSeries({
+        transactionsAndSigners,
+        connection,
+        setTransactionsLeft,
+        wallet,
+        onSuccess: () =>
+          setSignedTransactionsCount(signedTransactionsCount + 1),
+      });
 
-        return transaction;
-      },
-    );
-
-    const signedTransactions = await wallet?.signAllTransactions(transactions);
-
-    const txids = await Promise.all(
-      signedTransactions.map((signedTransaction) =>
-        connection.sendRawTransaction(signedTransaction.serialize()),
-      ),
-    );
-
-    notify({
-      message: 'Transactions sent',
-      type: NotifyType.INFO,
-    });
-
-    await Promise.all(
-      txids.map((txid) =>
-        connection.confirmTransaction(
-          { signature: txid, blockhash, lastValidBlockHeight },
-          'confirmed',
-        ),
-      ),
-    );
-
-    notify({
-      message: 'Borrowed successfully!',
-      type: NotifyType.SUCCESS,
-    });
-
-    return true;
+      if (isSuccess && !!signedTransactionsCount) {
+        notify({
+          message: 'Borrowed successfully!',
+          type: NotifyType.SUCCESS,
+        });
+        return true;
+      }
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.warn(error?.logs);
