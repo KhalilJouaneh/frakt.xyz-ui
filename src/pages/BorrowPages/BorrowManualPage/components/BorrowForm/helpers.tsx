@@ -92,7 +92,9 @@ export const generateSelectOptions: GenerateSelectOptions = ({
 
   const bondsAvailable = !!nft?.bondParams?.marketPubkey;
 
-  if (!bondsAvailable || timeBasedDiscountAvailable) {
+  const nftHasLimit = nft?.classicParams?.isLimitExceeded;
+
+  if (!nftHasLimit && (!bondsAvailable || timeBasedDiscountAvailable)) {
     options.push({
       label: `${nft?.classicParams?.timeBased.returnPeriodDays} days (flip)`,
       value: {
@@ -120,7 +122,7 @@ export const generateSelectOptions: GenerateSelectOptions = ({
     });
   }
 
-  if (nft?.classicParams?.priceBased) {
+  if (!nftHasLimit && nft?.classicParams?.priceBased) {
     options.push({
       label: 'Perpetual',
       value: {
