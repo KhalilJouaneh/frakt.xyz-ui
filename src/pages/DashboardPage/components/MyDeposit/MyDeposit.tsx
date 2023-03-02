@@ -110,7 +110,7 @@ const StrategiesInfoJSX = () => {
         <Fragment>
           <div className={styles.badges}>
             <BadgeJSX label="Risk: High" />
-            <BadgeJSX label="APR: 8%-20%" />
+            <BadgeJSX label="APR: 18%-40%" />
           </div>
           <div className={styles.content}>
             <DashboardStatsValues
@@ -135,7 +135,7 @@ const StrategiesInfoJSX = () => {
             },
             {
               label: 'Apr',
-              value: '8%-20%',
+              value: '18%-40%',
             },
           ]}
         />
@@ -159,7 +159,7 @@ const BondsInfoJSX = ({ activeBonds, locked }) => {
         <Fragment>
           <div className={styles.badges}>
             <BadgeJSX label="Risk: High" />
-            <BadgeJSX label="APR: 8%-20%" />
+            <BadgeJSX label="APR: 40%+" />
           </div>
           <div className={styles.content}>
             <div className={styles.values}>
