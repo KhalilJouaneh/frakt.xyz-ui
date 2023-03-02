@@ -172,6 +172,8 @@ const borrowBulk: BorrowBulk = async ({
     );
 
     if (isSupportSignAllTxns) {
+      setTransactionsLeft(null);
+
       const isSuccess = await signAndSendAllTransactions({
         transactionsAndSigners,
         connection,
@@ -186,6 +188,7 @@ const borrowBulk: BorrowBulk = async ({
         return true;
       }
     } else {
+      setSignedTransactionsCount(null);
       const isSuccess = await signAndSendTransactionsInSeries({
         transactionsAndSigners,
         connection,
