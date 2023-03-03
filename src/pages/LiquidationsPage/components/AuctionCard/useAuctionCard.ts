@@ -1,11 +1,13 @@
-import { useConfirmModal } from '@frakt/components/ConfirmModal';
-import { useLoadingModal } from '@frakt/components/LoadingModal';
-import { buyAuction } from '@frakt/utils/raffles';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
-export const useAuctionCard = () => {
+import { buyAuction, buyAuctionBond } from '@frakt/utils/raffles';
+import { useLoadingModal } from '@frakt/components/LoadingModal';
+import { useConfirmModal } from '@frakt/components/ConfirmModal';
+import { AuctionListItem } from '@frakt/api/raffle';
+
+export const useAuctionCard = (auction: AuctionListItem) => {
   const wallet = useWallet();
-  const connection = useConnection();
+  const { connection } = useConnection();
 
   const {
     visible: loadingModalVisible,
@@ -19,16 +21,27 @@ export const useAuctionCard = () => {
     close: closeConfirmModal,
   } = useConfirmModal();
 
-  const onSubmit = () => {
+  const onSubmit = async (): Promise<void> => {
     openLoadingModal();
-
-    const params = {
-      connection,
-      wallet,
-    };
-
+    const isBondType = true;
     try {
-      // await buyAuction({});
+      if (!isBondType) {
+        await buyAuction({
+          connection,
+          wallet,
+          nftMint: auction?.nftMint,
+          raffleAddress: auction.pubkey,
+        });
+      } else {
+        await buyAuctionBond({
+          connection,
+          wallet,
+          nftMint: auction?.nftMint,
+          raffleAddress: auction.pubkey,
+          fbond: '',
+        });
+      }
+
       closeConfirmModal();
     } catch (error) {
       console.error(error);

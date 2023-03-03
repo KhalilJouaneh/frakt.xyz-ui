@@ -31,7 +31,7 @@ export const buyAuction: BuyAuction = async ({
         auction: new web3.PublicKey(raffleAddress),
         user: wallet.publicKey,
         nftMint: new web3.PublicKey(nftMint),
-        receiver: new web3.PublicKey(''),
+        receiver: new web3.PublicKey(process.env.AUCTION_RECEIVER_PUBKEY),
       },
     });
 

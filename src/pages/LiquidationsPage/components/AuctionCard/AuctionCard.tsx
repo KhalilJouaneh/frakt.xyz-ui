@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { AuctionListItem, WonRaffleListItem } from '@frakt/api/raffle';
+import { AuctionListItem } from '@frakt/api/raffle';
 import { LoadingModal } from '@frakt/components/LoadingModal';
 import { ConfirmModal } from '@frakt/components/ConfirmModal';
 import { createTimerJSX } from '@frakt/components/Timer';
@@ -12,7 +12,7 @@ import { useAuctionCard } from './useAuctionCard';
 import styles from './AuctionCard.module.scss';
 
 interface AuctionCardProps {
-  auction: WonRaffleListItem | AuctionListItem;
+  auction: AuctionListItem;
 }
 
 const AuctionCard: FC<AuctionCardProps> = ({ auction }) => {
@@ -23,7 +23,7 @@ const AuctionCard: FC<AuctionCardProps> = ({ auction }) => {
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
-  } = useAuctionCard();
+  } = useAuctionCard(auction);
 
   return (
     <>
