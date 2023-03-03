@@ -23,6 +23,11 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
     getColorByPercent(ltvValue, colorByPercentOffers) ||
     colorByPercentOffers[100];
 
+  const sizeAmount =
+    fbond.actualReturnedAmount > 0
+      ? fbond.actualReturnedAmount / 1e9
+      : bSolLamports / BOND_SOL_DECIMAIL_DELTA;
+
   return (
     <div
       className={classNames(styles.column, {
@@ -30,7 +35,7 @@ export const SizeCell: FC<{ bond: Bond; isMobile?: boolean }> = ({
       })}
     >
       <span className={styles.value}>
-        {(bSolLamports / BOND_SOL_DECIMAIL_DELTA || 0).toFixed(2)}
+        {(sizeAmount || 0).toFixed(2)}
         <Solana />
       </span>
       <span
