@@ -38,7 +38,7 @@ const CurrentUserTable = ({
   useEffect(() => {
     (async () => {
       const data = await networkRequest({
-        url: process.env.REWARDS_ENDPOINT,
+        url: `${process.env.REWARDS_ENDPOINT}/${publicKey?.toBase58()}`,
       });
 
       setUsersRewars(data);
