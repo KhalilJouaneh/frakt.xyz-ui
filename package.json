@@ -7,7 +7,7 @@
     "@ant-design/icons": "^4.7.0",
     "@bonfida/spl-name-service": "0.1.24",
     "@frakt-protocol/frakt-sdk": "^0.8.21",
-    "@frakters/raffle-sdk": "^0.0.10",
+    "@frakters/raffle-sdk": "^0.0.11",
     "@sentre/connector": "^0.1.0",
     "@sentry/react": "^7.1.1",
     "@sentry/tracing": "^7.1.1",

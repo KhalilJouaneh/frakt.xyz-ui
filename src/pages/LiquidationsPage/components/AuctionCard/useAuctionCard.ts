@@ -1,5 +1,6 @@
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { useLoadingModal } from '@frakt/components/LoadingModal';
+import { buyAuction } from '@frakt/utils/raffles';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 export const useAuctionCard = () => {
@@ -27,7 +28,7 @@ export const useAuctionCard = () => {
     };
 
     try {
-      //? await({})
+      // await buyAuction({});
       closeConfirmModal();
     } catch (error) {
       console.error(error);
