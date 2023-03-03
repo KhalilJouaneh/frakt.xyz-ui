@@ -52,6 +52,20 @@ export interface WonRaffleListItem {
   winnerTickets: number;
 }
 
+export interface AuctionListItem {
+  bondPubKey?: string;
+  nftName: string;
+  nftImageUrl: string;
+  nftCollectionName: string;
+  auctionPubkey: string;
+  nftMint: string;
+  timeToNextRound: number;
+  floorPrice: number;
+  startPrice: number;
+  nextPrice: number;
+  buyPrice: number;
+}
+
 export interface CollectionsListItem {
   name: string;
 }

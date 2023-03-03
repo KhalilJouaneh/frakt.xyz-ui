@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { CollectionsListItem, GraceListItem, LotteryTickets } from './types';
+import {
+  AuctionListItem,
+  CollectionsListItem,
+  GraceListItem,
+  LotteryTickets,
+} from './types';
 
 export const fetchRaffleCollections = async (): Promise<
   CollectionsListItem[]
@@ -66,4 +71,12 @@ export const fetchUserTickets = async (
     throw new Error('Network response was not ok');
   }
   return await response.json();
+};
+
+export const fetchAuctionsList = async (): Promise<AuctionListItem[]> => {
+  const { data } = await axios.get<AuctionListItem[]>(
+    `https://${process.env.BACKEND_DOMAIN}/liquidation/auctions`,
+  );
+
+  return data ?? [];
 };

@@ -36,6 +36,8 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
+    onMaxTickets,
+    onResetTickets,
   } = useLiquidationsRaffle(raffle);
 
   const isParticipationExists =
@@ -92,11 +94,6 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
             >
               <Minus />
             </Button>
-            <input
-              value={ticketCount}
-              className={cx(styles.input, ticketCount && styles.activeInput)}
-              onChange={handleChange}
-            />
             <Button
               type="tertiary"
               className={styles.counter}
@@ -104,6 +101,18 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
               disabled={isDisabledIncrement}
             >
               <Plus />
+            </Button>
+            <input
+              value={ticketCount}
+              className={cx(styles.input, ticketCount && styles.activeInput)}
+              onChange={handleChange}
+            />
+            <Button
+              type="tertiary"
+              className={styles.useMaxButton}
+              onClick={ticketCount ? onResetTickets : onMaxTickets}
+            >
+              {ticketCount ? 'Reset' : 'Use max'}
             </Button>
           </div>
         </div>

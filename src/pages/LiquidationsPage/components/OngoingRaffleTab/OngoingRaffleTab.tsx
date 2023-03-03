@@ -3,21 +3,24 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 import { ConnectWalletSection } from '@frakt/components/ConnectWalletSection';
 import { useIntersection } from '@frakt/hooks/useIntersection';
-import LiquidationRaffleCard from '../LiquidationRaffleCard';
-import { useRaffleInfo } from '@frakt/hooks/useRaffleData';
+import {
+  useFetchAuctionsList,
+  useRaffleInfo,
+} from '@frakt/hooks/useRaffleData';
+import { Loader } from '@frakt/components/Loader';
 import EmptyList from '@frakt/components/EmptyList';
+
+import LiquidationRaffleCard from '../LiquidationRaffleCard';
 import { useRaffleSort } from '../Liquidations/hooks';
 import styles from './OngoingRaffleTab.module.scss';
-import { RaffleListItem } from '@frakt/api/raffle';
-import { useLiquidationRaffles } from './hooks';
 import { useFetchUserTickets } from '../../hooks';
 import RafflesList from '../RafflesList';
+import AuctionCard from '../AuctionCard';
 
 const OngoingRaffleTab: FC = () => {
+  const { publicKey, connected } = useWallet();
+
   const { lotteryTickets } = useFetchUserTickets();
-
-  const { publicKey } = useWallet();
-
   const { ref, inView } = useIntersection();
   const { queryData } = useRaffleSort();
 
@@ -40,35 +43,45 @@ const OngoingRaffleTab: FC = () => {
     }
   }, [inView, fetchNextPage, isFetchingNextPage, isListEnded]);
 
-  const { setRaffles } = useLiquidationRaffles();
+  const { data: auctionList, loading, hideAuction } = useFetchAuctionsList();
 
-  useEffect(() => {
-    setRaffles(raffleList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  if (!connected) {
+    return (
+      <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
+    );
+  }
+
+  if (loading) return <Loader />;
+
+  const raffleListWithAuctions = [...auctionList, ...(raffleList || [])];
 
   return (
-    <>
-      {publicKey ? (
-        <RafflesList withRafflesInfo>
-          {raffleList?.length ? (
-            <div className={styles.rafflesList} ref={ref}>
-              {raffleList.map((raffle: RaffleListItem) => (
+    <RafflesList withRafflesInfo>
+      {raffleListWithAuctions?.length ? (
+        <div className={styles.rafflesList} ref={ref}>
+          {raffleListWithAuctions.map((raffle: any) => {
+            if (!raffle?.buyPrice) {
+              return (
                 <LiquidationRaffleCard
                   key={raffle.rafflePubKey}
                   raffle={raffle}
                   disabled={lotteryTickets?.currentTickets < 1}
                 />
-              ))}
-            </div>
-          ) : (
-            <EmptyList text="No ongoing raffles at the moment" />
-          )}
-        </RafflesList>
+              );
+            }
+            return (
+              <AuctionCard
+                key={raffle.rafflePubKey}
+                hideAuction={hideAuction}
+                auction={raffle}
+              />
+            );
+          })}
+        </div>
       ) : (
-        <ConnectWalletSection text="Connect your wallet to check liquidations raffle" />
+        <EmptyList text="No ongoing raffles at the moment" />
       )}
-    </>
+    </RafflesList>
   );
 };
 

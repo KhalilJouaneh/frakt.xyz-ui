@@ -1,7 +1,5 @@
-import { FC, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, useMemo } from 'react';
 
-import { useLiquidationRaffles } from '../OngoingRaffleTab/hooks';
 import { useFetchAllRaffleCollections } from '../../hooks';
 import { Tabs, useTabs } from '@frakt/components/Tabs';
 import UpcomingRaffleTab from '../UpcomingRaffleTab';
@@ -10,10 +8,6 @@ import styles from './Liquidations.module.scss';
 import { RafflesTabsNames } from '../../model';
 import WonRaffleTab from '../WonRaffleTab';
 import { RAFFLES_TABS } from '.';
-import {
-  selectSocket,
-  selectWalletPublicKey,
-} from '../../../../state/common/selectors';
 
 const Liquidations: FC = () => {
   const {
@@ -25,29 +19,20 @@ const Liquidations: FC = () => {
     defaultValue: RAFFLES_TABS[0].value,
   });
 
-  const socket = useSelector(selectSocket);
-  const publicKey = useSelector(selectWalletPublicKey);
-
-  useFetchAllRaffleCollections();
-
-  useEffect(() => {
-    if (publicKey && socket) {
-      socket.emit('lottery-tickets-subscribe', publicKey);
-    }
-  }, [socket, publicKey]);
-
-  const { raffles } = useLiquidationRaffles();
+  const { data } = useFetchAllRaffleCollections();
 
   const renderTip = useMemo(() => {
-    return raffles?.length
+    const totalRaffles = data?.raffleCollections?.length;
+
+    return totalRaffles
       ? {
           renderTip: {
             tabValue: RafflesTabsNames.ONGOING,
-            value: raffles?.length.toString(),
+            value: totalRaffles.toString(),
           },
         }
       : {};
-  }, [raffles]);
+  }, [data]);
 
   return (
     <div className={styles.content}>
