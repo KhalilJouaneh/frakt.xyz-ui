@@ -20,7 +20,7 @@ export const useAuctionCard = (
   const onSubmit = async (): Promise<void> => {
     openLoadingModal();
     try {
-      if (!auction.bondPubKey) {
+      if (!auction?.bondPubKey) {
         const result = await buyAuction({
           connection,
           wallet,
