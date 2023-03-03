@@ -94,21 +94,7 @@ export const useLoanCard = (loan: Loan) => {
     try {
       const { pubkey, nft } = loan;
 
-      setTransactionsLeft(2);
       openLoadingModal();
-
-      const result = await claimCardinal({
-        connection,
-        wallet,
-        nftMint: nft.mint,
-        loan: pubkey,
-      });
-
-      if (!result) {
-        throw new Error('Unstake failed');
-      }
-
-      setTransactionsLeft(1);
 
       await unstakeCardinal({
         connection,
@@ -189,37 +175,11 @@ export const useLoanCard = (loan: Loan) => {
     }
   };
 
-  const onCardinalClaim = async (): Promise<void> => {
-    try {
-      const { pubkey, nft } = loan;
-
-      openLoadingModal();
-
-      const result = await claimCardinal({
-        connection,
-        wallet,
-        nftMint: nft.mint,
-        loan: pubkey,
-      });
-
-      if (!result) {
-        throw new Error('Claim failed');
-      }
-    } catch (error) {
-      console.error(error);
-      // eslint-disable-next-line no-console
-      console.warn(error?.logs?.join('\n'));
-    } finally {
-      closeLoadingModal();
-    }
-  };
-
   return {
     onPartialPayback,
     closePartialRepayModal,
     partialRepayModalVisible,
     onPayback,
-    onCardinalClaim,
     onCardinalStake,
     onCardinalUnstake,
     closeLoadingModal,
