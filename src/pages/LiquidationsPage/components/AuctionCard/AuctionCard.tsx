@@ -17,14 +17,10 @@ interface AuctionCardProps {
 }
 
 const AuctionCard: FC<AuctionCardProps> = ({ auction, hideAuction }) => {
-  const {
-    onSubmit,
-    closeLoadingModal,
-    loadingModalVisible,
-    confirmModalVisible,
-    openConfirmModal,
-    closeConfirmModal,
-  } = useAuctionCard(auction, hideAuction);
+  const { onSubmit, closeLoadingModal, loadingModalVisible } = useAuctionCard(
+    auction,
+    hideAuction,
+  );
 
   return (
     <>
@@ -54,22 +50,10 @@ const AuctionCard: FC<AuctionCardProps> = ({ auction, hideAuction }) => {
           />
           <StatsRaffleValues label="Buy price" value={auction.buyPrice} />
         </div>
-        <Button
-          type="secondary"
-          className={styles.button}
-          onClick={openConfirmModal}
-        >
+        <Button onClick={onSubmit} type="secondary" className={styles.button}>
           Liquidate
         </Button>
       </div>
-      <ConfirmModal
-        visible={confirmModalVisible}
-        onCancel={closeConfirmModal}
-        onSubmit={onSubmit}
-        title="Ready?"
-        subtitle={'Confirm text'}
-        btnAgree="Let's go"
-      />
       <LoadingModal
         title="Please approve transaction"
         visible={loadingModalVisible}

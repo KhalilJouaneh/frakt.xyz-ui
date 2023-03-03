@@ -53,6 +53,7 @@ export interface WonRaffleListItem {
 }
 
 export interface AuctionListItem {
+  bondPubKey?: string;
   nftName: string;
   nftImageUrl: string;
   nftCollectionName: string;
