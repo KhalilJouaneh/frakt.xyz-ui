@@ -53,18 +53,16 @@ export interface WonRaffleListItem {
 }
 
 export interface AuctionListItem {
-  pubkey: string;
-  nftMint: string;
   nftName: string;
   nftImageUrl: string;
   nftCollectionName: string;
-  isPriceBased: boolean;
-  loanValue: number;
-  liquidationPrice: number;
-  liquidationPriceLamports: string;
-  valuation: number;
-  startedAt: string;
-  expiredAt: string;
+  auctionPubkey: string;
+  nftMint: string;
+  timeToNextRound: number;
+  floorPrice: number;
+  startPrice: number;
+  nextPrice: number;
+  buyPrice: number;
 }
 
 export interface CollectionsListItem {

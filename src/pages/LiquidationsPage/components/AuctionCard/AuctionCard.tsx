@@ -13,9 +13,10 @@ import styles from './AuctionCard.module.scss';
 
 interface AuctionCardProps {
   auction: AuctionListItem;
+  hideAuction: (value: string) => void;
 }
 
-const AuctionCard: FC<AuctionCardProps> = ({ auction }) => {
+const AuctionCard: FC<AuctionCardProps> = ({ auction, hideAuction }) => {
   const {
     onSubmit,
     closeLoadingModal,
@@ -23,7 +24,7 @@ const AuctionCard: FC<AuctionCardProps> = ({ auction }) => {
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
-  } = useAuctionCard(auction);
+  } = useAuctionCard(auction, hideAuction);
 
   return (
     <>
@@ -37,28 +38,21 @@ const AuctionCard: FC<AuctionCardProps> = ({ auction }) => {
           <StatsRaffleValues
             className={styles.opacity}
             label="Floor price"
-            value={auction.liquidationPrice}
-          />
-          <StatsRaffleValues
-            label="liquidation price"
-            value={auction.liquidationPrice}
+            value={auction.floorPrice}
           />
           <StatsRaffleValues label="Next round start">
             <div className={styles.wrapper}>
               <Timer />
               <div className={styles.countdown}>
-                {createTimerJSX(auction.expiredAt)}
+                {createTimerJSX(auction.timeToNextRound)}
               </div>
             </div>
           </StatsRaffleValues>
           <StatsRaffleValues
             label="Next round price"
-            value={auction.liquidationPrice}
+            value={auction.nextPrice}
           />
-          <StatsRaffleValues
-            label="Highest bit"
-            value={auction.liquidationPrice}
-          />
+          <StatsRaffleValues label="Buy price" value={auction.buyPrice} />
         </div>
         <Button
           type="secondary"

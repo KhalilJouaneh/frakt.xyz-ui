@@ -5,7 +5,10 @@ import { useLoadingModal } from '@frakt/components/LoadingModal';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
 import { AuctionListItem } from '@frakt/api/raffle';
 
-export const useAuctionCard = (auction: AuctionListItem) => {
+export const useAuctionCard = (
+  auction: AuctionListItem,
+  hideAuction: (value: string) => void,
+) => {
   const wallet = useWallet();
   const { connection } = useConnection();
 
@@ -23,24 +26,28 @@ export const useAuctionCard = (auction: AuctionListItem) => {
 
   const onSubmit = async (): Promise<void> => {
     openLoadingModal();
-    const isBondType = true;
+
     try {
-      if (!isBondType) {
-        await buyAuction({
-          connection,
-          wallet,
-          nftMint: auction?.nftMint,
-          raffleAddress: auction.pubkey,
-        });
-      } else {
-        await buyAuctionBond({
-          connection,
-          wallet,
-          nftMint: auction?.nftMint,
-          raffleAddress: auction.pubkey,
-          fbond: '',
-        });
+      // if (!auction.fbond) {
+      const result = await buyAuction({
+        connection,
+        wallet,
+        nftMint: auction?.nftMint,
+        raffleAddress: auction.auctionPubkey,
+      });
+
+      if (result) {
+        hideAuction(auction.auctionPubkey);
       }
+      // } else {
+      //   await buyAuctionBond({
+      //     connection,
+      //     wallet,
+      //     nftMint: auction?.nftMint,
+      //     raffleAddress: auction.auctionPubkey,
+      //     fbond: '',
+      //   });
+      // }
 
       closeConfirmModal();
     } catch (error) {
