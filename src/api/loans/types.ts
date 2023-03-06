@@ -32,6 +32,7 @@ export interface Loan {
   };
 
   classicParams?: {
+    nftUserTokenAccount: string;
     liquidityPool: string;
     collectionInfo: string;
     royaltyAddress: string;
