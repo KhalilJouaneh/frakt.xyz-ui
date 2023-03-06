@@ -2,7 +2,6 @@ import { FC } from 'react';
 
 import { AuctionListItem } from '@frakt/api/raffle';
 import { LoadingModal } from '@frakt/components/LoadingModal';
-import { ConfirmModal } from '@frakt/components/ConfirmModal';
 import { createTimerJSX } from '@frakt/components/Timer';
 import Button from '@frakt/components/Button';
 import { Timer } from '@frakt/icons';
@@ -40,7 +39,10 @@ const AuctionCard: FC<AuctionCardProps> = ({ auction, hideAuction }) => {
             <div className={styles.wrapper}>
               <Timer />
               <div className={styles.countdown}>
-                {createTimerJSX(auction.timeToNextRound)}
+                {createTimerJSX({
+                  expiredAt: auction.timeToNextRound,
+                  isSecondType: true,
+                })}
               </div>
             </div>
           </StatsRaffleValues>

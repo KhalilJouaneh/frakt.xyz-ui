@@ -75,7 +75,10 @@ const LiquidationRaffleCard: FC<LiquidationRaffleCard> = ({
             <div className={styles.wrapper}>
               <Timer />
               <div className={styles.countdown}>
-                {createTimerJSX(raffle.expiredAt)}
+                {createTimerJSX({
+                  expiredAt: raffle.expiredAt,
+                  isSecondType: true,
+                })}
               </div>
             </div>
           </StatsRaffleValues>

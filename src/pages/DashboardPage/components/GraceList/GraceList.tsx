@@ -33,7 +33,7 @@ const GraceList: FC<GraceListProps> = ({ isLoading, graceList }) => {
               <div className={styles.wrapper}>
                 <Timer className={styles.icon} />
                 <div className={styles.countdown}>
-                  {createTimerJSX(expiredAt)}
+                  {createTimerJSX({ expiredAt })}
                 </div>
               </div>
             </div>

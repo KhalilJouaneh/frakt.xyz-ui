@@ -3,8 +3,9 @@ import { FC } from 'react';
 import { GeneralCardInfo, StatsRaffleValues } from '../StatsRaffleValues';
 import { createTimerJSX } from '@frakt/components/Timer';
 import { GraceListItem } from '@frakt/api/raffle';
-import styles from './GraceCard.module.scss';
 import { Timer } from '@frakt/icons';
+
+import styles from './GraceCard.module.scss';
 
 interface GraceCardProps {
   raffle: GraceListItem;
@@ -32,7 +33,7 @@ const GraceCard: FC<GraceCardProps> = ({ raffle }) => {
           <div className={styles.wrapper}>
             <Timer />
             <div className={styles.countdown}>
-              {createTimerJSX(raffle.expiredAt)}
+              {createTimerJSX({ expiredAt: raffle.expiredAt })}
             </div>
           </div>
         </StatsRaffleValues>
