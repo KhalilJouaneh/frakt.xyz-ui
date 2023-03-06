@@ -23,12 +23,12 @@ export const BorrowBulkOverviewPage: FC = () => {
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
-    loadingModalVisible,
-    closeLoadingModal,
     onBulkEdit,
-    transactionsLeft,
     isSupportSignAllTxns,
     setIsSupportSignAllTxns,
+    loadingModalVisible,
+    setLoadingModalVisible,
+    loadingModalTextStatus,
   } = useBorrowBulkOverviewPage();
 
   return (
@@ -68,12 +68,12 @@ export const BorrowBulkOverviewPage: FC = () => {
       <LoadingModal
         title="Please approve transaction"
         subtitle={
-          transactionsLeft
-            ? `Time gap between transactions can be up to 1 minute.\nTransactions left: ${transactionsLeft}`
+          loadingModalTextStatus
+            ? loadingModalTextStatus
             : 'In order to transfer the NFT/s approval is needed'
         }
         visible={loadingModalVisible}
-        onCancel={closeLoadingModal}
+        onCancel={() => setLoadingModalVisible(false)}
       />
       <ConfirmModal
         visible={confirmModalVisible}

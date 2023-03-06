@@ -11,6 +11,7 @@ interface SignAndConfirmTransactionProps {
   wallet: WalletContextState;
   commitment?: web3.Commitment;
   onAfterSend?: () => void;
+  onBeforeApprove?: () => void;
 }
 
 type SignAndConfirmTransaction = (
@@ -24,7 +25,10 @@ export const signAndConfirmTransaction: SignAndConfirmTransaction = async ({
   wallet,
   onAfterSend,
   commitment = 'finalized',
+  onBeforeApprove,
 }) => {
+  onBeforeApprove?.();
+
   const { blockhash, lastValidBlockHeight } =
     await connection.getLatestBlockhash();
 

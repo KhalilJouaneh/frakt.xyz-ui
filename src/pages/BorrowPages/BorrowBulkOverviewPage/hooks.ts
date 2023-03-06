@@ -4,11 +4,14 @@ import { web3 } from 'fbonds-core';
 import { useWallet, WalletContextState } from '@solana/wallet-adapter-react';
 
 import {
+  signAndConfirmTransaction,
   signAndSendAllTransactions,
-  signAndSendTransactionsInSeries,
 } from '@frakt/utils/transactions/helpers';
 import { useConfirmModal } from '@frakt/components/ConfirmModal';
-import { useLoadingModal } from '@frakt/components/LoadingModal';
+import {
+  TxsLoadingModalState,
+  useLoadingModalState,
+} from '@frakt/components/LoadingModal';
 import { PATHS } from '@frakt/constants';
 import { showSolscanLinkNotification } from '@frakt/utils/transactions';
 import { makeCreateBondTransaction } from '@frakt/utils/bonds';
@@ -38,9 +41,15 @@ export const useBorrowBulkOverviewPage = () => {
   const [isSupportSignAllTxns, setIsSupportSignAllTxns] =
     useState<boolean>(true);
 
-  const [transactionsLeft, setTransactionsLeft] = useState<number>(null);
-  const [signedTransactionsCount, setSignedTransactionsCount] =
-    useState<number>(null);
+  const {
+    visible: loadingModalVisible,
+    setVisible: setLoadingModalVisible,
+    textStatus: loadingModalTextStatus,
+    clearState: clearLoadingModalState,
+    isConfirmedTxns,
+    setIsConfirmedTxns,
+    setState,
+  } = useLoadingModalState();
 
   //? Go to borrow root page if bulk selection doesn't exist
   useEffect(() => {
@@ -48,12 +57,6 @@ export const useBorrowBulkOverviewPage = () => {
       history.replace(PATHS.BORROW_ROOT);
     }
   }, [history, cartOrders]);
-
-  const {
-    visible: loadingModalVisible,
-    close: closeLoadingModal,
-    open: openLoadingModal,
-  } = useLoadingModal();
 
   const {
     visible: confirmModalVisible,
@@ -64,22 +67,30 @@ export const useBorrowBulkOverviewPage = () => {
   const onBorrow = async () => {
     try {
       closeConfirmModal();
-      openLoadingModal();
+      setLoadingModalVisible(true);
 
       const result = await borrowBulk({
         orders: cartOrders,
         pairs: cartPairs,
         wallet,
         connection,
-        setTransactionsLeft,
         isSupportSignAllTxns,
-        signedTransactionsCount,
-        setSignedTransactionsCount,
+        setState,
+        setIsConfirmedTxns,
       });
 
       if (!result) {
         throw new Error('Loan proposing failed');
       }
+
+      if (!isSupportSignAllTxns && !isConfirmedTxns) {
+        throw new Error('Loan proposing failed');
+      }
+
+      notify({
+        message: 'Borrowed successfully!',
+        type: NotifyType.SUCCESS,
+      });
 
       history.push(PATHS.BORROW_SUCCESS);
       clearCurrentNftState();
@@ -89,7 +100,7 @@ export const useBorrowBulkOverviewPage = () => {
       console.warn(error?.logs);
       console.error(error);
     } finally {
-      closeLoadingModal();
+      clearLoadingModalState();
     }
   };
 
@@ -113,11 +124,11 @@ export const useBorrowBulkOverviewPage = () => {
     openConfirmModal,
     closeConfirmModal,
     loadingModalVisible,
-    closeLoadingModal,
     onBulkEdit,
-    transactionsLeft,
     isSupportSignAllTxns,
     setIsSupportSignAllTxns,
+    setLoadingModalVisible,
+    loadingModalTextStatus,
   };
 };
 
@@ -126,10 +137,9 @@ type BorrowBulk = (props: {
   pairs: Pair[];
   connection: web3.Connection;
   wallet: WalletContextState;
-  setTransactionsLeft?: (value: number) => void;
   isSupportSignAllTxns?: boolean;
-  signedTransactionsCount: number;
-  setSignedTransactionsCount?: (value: number) => void;
+  setState?: (nextState: TxsLoadingModalState) => void;
+  setIsConfirmedTxns?: (value: boolean) => void;
 }) => Promise<boolean>;
 
 const borrowBulk: BorrowBulk = async ({
@@ -137,10 +147,9 @@ const borrowBulk: BorrowBulk = async ({
   pairs,
   connection,
   wallet,
-  setTransactionsLeft,
   isSupportSignAllTxns,
-  signedTransactionsCount,
-  setSignedTransactionsCount,
+  setState,
+  setIsConfirmedTxns,
 }): Promise<boolean> => {
   try {
     const transactionsAndSigners = await Promise.all(
@@ -172,39 +181,44 @@ const borrowBulk: BorrowBulk = async ({
     );
 
     if (isSupportSignAllTxns) {
-      setTransactionsLeft(null);
-
       const isSuccess = await signAndSendAllTransactions({
         transactionsAndSigners,
         connection,
         wallet,
       });
 
-      if (isSuccess) {
-        notify({
-          message: 'Borrowed successfully!',
-          type: NotifyType.SUCCESS,
-        });
-        return true;
-      }
+      if (isSuccess) return true;
     } else {
-      setSignedTransactionsCount(null);
-      const isSuccess = await signAndSendTransactionsInSeries({
-        transactionsAndSigners,
-        connection,
-        setTransactionsLeft,
-        wallet,
-        onSuccess: () =>
-          setSignedTransactionsCount(signedTransactionsCount + 1),
-      });
+      for (let i = 0; i < transactionsAndSigners.length; ++i) {
+        const { transaction, signers } = transactionsAndSigners[i];
 
-      if (isSuccess && !!signedTransactionsCount) {
-        notify({
-          message: 'Borrowed successfully!',
-          type: NotifyType.SUCCESS,
-        });
-        return true;
+        try {
+          await signAndConfirmTransaction({
+            connection,
+            wallet,
+            transaction,
+            signers,
+            commitment: 'confirmed',
+            onBeforeApprove: () =>
+              setState({
+                visible: true,
+                currentTxNumber: i + 1,
+                amountOfTxs: transactionsAndSigners.length,
+                textStatus: `Time gap between transactions can be up to 1 minute.\nTransactions left: ${
+                  transactionsAndSigners.length - i
+                }`,
+              }),
+            onAfterSend: () => {
+              setIsConfirmedTxns(true);
+            },
+          });
+        } catch (error) {
+          console.warn(error?.logs);
+          console.error(error);
+        }
       }
+
+      return true;
     }
   } catch (error) {
     // eslint-disable-next-line no-console

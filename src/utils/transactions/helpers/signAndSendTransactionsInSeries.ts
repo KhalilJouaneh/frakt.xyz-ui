@@ -15,6 +15,7 @@ type SignTransactionsInSeries = (params: {
   onAfterSend?: () => void;
   onSuccess?: () => void;
   onError?: () => void;
+  onBeforeApprove?: () => void;
   setTransactionsLeft?: (value: number) => void;
 }) => Promise<boolean>;
 
@@ -27,11 +28,14 @@ export const signAndSendTransactionsInSeries: SignTransactionsInSeries =
     onSuccess,
     onError,
     setTransactionsLeft,
+    onBeforeApprove,
   }) => {
+    onBeforeApprove();
+
     for (let i = 0; i < transactionsAndSigners.length; ++i) {
       const { transaction, signers } = transactionsAndSigners[i];
 
-      setTransactionsLeft?.(transactionsAndSigners.length - i);
+      // setTransactionsLeft?.(transactionsAndSigners.length - i);
 
       try {
         await signAndConfirmTransaction({
@@ -41,6 +45,7 @@ export const signAndSendTransactionsInSeries: SignTransactionsInSeries =
           wallet,
           commitment: 'confirmed',
           onAfterSend,
+          onBeforeApprove,
         });
         onSuccess?.();
       } catch (error) {
