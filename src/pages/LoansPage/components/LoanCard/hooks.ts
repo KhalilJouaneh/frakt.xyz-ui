@@ -9,11 +9,7 @@ import { usePartialRepayModal } from '../../../../components/PartialRepayModal';
 import { paybackLoan } from '../../../../utils/loans';
 import { commonActions } from '../../../../state/common/actions';
 import { useLoadingModal } from '../../../../components/LoadingModal';
-import {
-  stakeCardinal,
-  unstakeCardinal,
-  claimCardinal,
-} from '../../../../utils/stake';
+import { stakeCardinal, unstakeCardinal } from '../../../../utils/stake';
 import { useConnection } from '../../../../hooks';
 import { useHiddenLoansPubkeys } from '../../loansState';
 
