@@ -30,6 +30,9 @@ export const makePaybackLoanTransaction: MakePaybackLoanTransaction = async ({
         liquidityPool: new web3.PublicKey(loan.classicParams.liquidityPool),
         collectionInfo: new web3.PublicKey(loan.classicParams.collectionInfo),
         royaltyAddress: new web3.PublicKey(loan.classicParams.royaltyAddress),
+        nftUserTokenAccount: new web3.PublicKey(
+          loan.classicParams.nftUserTokenAccount,
+        ),
         paybackAmount,
       });
       return instructions;
