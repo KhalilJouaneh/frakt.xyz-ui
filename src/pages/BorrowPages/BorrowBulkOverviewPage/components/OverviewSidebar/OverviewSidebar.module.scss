@@ -113,3 +113,16 @@
     fill: var(--red-color);
   }
 }
+
+.checkboxWrapper {
+  width: 100%;
+
+  @media (max-width: 1240px) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.checkboxMarginTop {
+  margin-top: 24px;
+}

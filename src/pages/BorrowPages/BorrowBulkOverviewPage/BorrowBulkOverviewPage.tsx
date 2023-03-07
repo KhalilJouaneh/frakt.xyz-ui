@@ -23,9 +23,12 @@ export const BorrowBulkOverviewPage: FC = () => {
     confirmModalVisible,
     openConfirmModal,
     closeConfirmModal,
-    loadingModalVisible,
-    closeLoadingModal,
     onBulkEdit,
+    isSupportSignAllTxns,
+    setIsSupportSignAllTxns,
+    loadingModalVisible,
+    setLoadingModalVisible,
+    loadingModalTextStatus,
   } = useBorrowBulkOverviewPage();
 
   return (
@@ -35,6 +38,8 @@ export const BorrowBulkOverviewPage: FC = () => {
         pairs={cartPairs}
         onChangeAssets={() => onBulkEdit()}
         onBorrow={openConfirmModal}
+        isSupportSignAllTxns={isSupportSignAllTxns}
+        setIsSupportSignAllTxns={setIsSupportSignAllTxns}
       />
 
       <div
@@ -62,9 +67,13 @@ export const BorrowBulkOverviewPage: FC = () => {
       </div>
       <LoadingModal
         title="Please approve transaction"
-        subtitle="In order to transfer the NFT/s approval is needed"
+        subtitle={
+          loadingModalTextStatus
+            ? loadingModalTextStatus
+            : 'In order to transfer the NFT/s approval is needed'
+        }
         visible={loadingModalVisible}
-        onCancel={closeLoadingModal}
+        onCancel={() => setLoadingModalVisible(false)}
       />
       <ConfirmModal
         visible={confirmModalVisible}
