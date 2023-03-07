@@ -46,8 +46,6 @@ export const useBorrowBulkOverviewPage = () => {
     setVisible: setLoadingModalVisible,
     textStatus: loadingModalTextStatus,
     clearState: clearLoadingModalState,
-    isConfirmedTxns,
-    setIsConfirmedTxns,
     setState,
   } = useLoadingModalState();
 
@@ -76,14 +74,9 @@ export const useBorrowBulkOverviewPage = () => {
         connection,
         isSupportSignAllTxns,
         setState,
-        setIsConfirmedTxns,
       });
 
       if (!result) {
-        throw new Error('Loan proposing failed');
-      }
-
-      if (!isSupportSignAllTxns && !isConfirmedTxns) {
         throw new Error('Loan proposing failed');
       }
 
@@ -149,7 +142,6 @@ const borrowBulk: BorrowBulk = async ({
   wallet,
   isSupportSignAllTxns,
   setState,
-  setIsConfirmedTxns,
 }): Promise<boolean> => {
   try {
     const transactionsAndSigners = await Promise.all(
@@ -189,6 +181,8 @@ const borrowBulk: BorrowBulk = async ({
 
       if (isSuccess) return true;
     } else {
+      let signedTxnsCount = 0;
+
       for (let i = 0; i < transactionsAndSigners.length; ++i) {
         const { transaction, signers } = transactionsAndSigners[i];
 
@@ -208,17 +202,16 @@ const borrowBulk: BorrowBulk = async ({
                   transactionsAndSigners.length - i
                 }`,
               }),
-            onAfterSend: () => {
-              setIsConfirmedTxns(true);
-            },
           });
+
+          signedTxnsCount += 1;
         } catch (error) {
           console.warn(error?.logs);
           console.error(error);
         }
       }
 
-      return true;
+      return signedTxnsCount ? true : false;
     }
   } catch (error) {
     // eslint-disable-next-line no-console
