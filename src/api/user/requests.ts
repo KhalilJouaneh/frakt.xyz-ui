@@ -128,7 +128,9 @@ type FetchAllUserStats = (props: {
 }) => Promise<UserStats>;
 export const fetchAllUserStats: FetchAllUserStats = async ({ publicKey }) => {
   const { data } = await axios.get<UserStats>(
-    `https://${process.env.BACKEND_DOMAIN}/stats/all/${publicKey?.toBase58()}`,
+    `https://${process.env.BACKEND_DOMAIN}/stats/all/${
+      publicKey?.toBase58() || ''
+    }`,
   );
 
   return data;
