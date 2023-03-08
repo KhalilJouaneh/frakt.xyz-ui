@@ -5,21 +5,21 @@ import { sum, map, filter } from 'ramda';
 
 import { selectLiquidityPools } from '@frakt/state/loans/selectors';
 import { calcWeightedAverage } from '@frakt/utils';
+import { BondsUserStats } from '@frakt/api/user';
 import { PATHS } from '@frakt/constants';
 
-import styles from './MyDeposit.module.scss';
-import Block from '../Block';
-import { DashboardStatsValues } from '../DashboardStatsValues';
 import { BadgeJSX, NavigationButtonJSX, NoConnectedJSX } from './components';
-import { useFetchAllUserBonds } from '@frakt/utils/bonds';
-import { createMyBondsStats } from '@frakt/pages/MarketsPage/helpers';
+import { DashboardStatsValues } from '../DashboardStatsValues';
+import Block from '../Block';
+import styles from './MyDeposit.module.scss';
 
-const MyDeposit: FC = () => {
-  const { connected, publicKey } = useWallet();
+interface MyDepositProps {
+  data: BondsUserStats;
+}
+
+const MyDeposit: FC<MyDepositProps> = ({ data }) => {
+  const { connected } = useWallet();
   const liquidityPools = useSelector(selectLiquidityPools);
-
-  const { bonds } = useFetchAllUserBonds({ walletPubkey: publicKey });
-  const { locked, activeLoans } = createMyBondsStats(bonds);
 
   const depositAmount = (pool) => pool?.userDeposit?.depositAmount;
   const depositApr = ({ depositApr }) => depositApr;
@@ -45,7 +45,12 @@ const MyDeposit: FC = () => {
         />
         <StrategiesInfoJSX />
       </div>
-      <BondsInfoJSX activeBonds={activeLoans} locked={locked} />
+      <BondsInfoJSX
+        activeUserLoans={data?.activeUserLoans}
+        bondUserAmount={data?.bondUserAmount}
+        userOffers={data?.userOffers}
+        userOffersAmount={data?.userOffersAmount}
+      />
     </Block>
   );
 };
@@ -149,7 +154,12 @@ const StrategiesInfoJSX = () => {
   );
 };
 
-const BondsInfoJSX = ({ activeBonds, locked }) => {
+const BondsInfoJSX = ({
+  activeUserLoans,
+  bondUserAmount,
+  userOffers,
+  userOffersAmount,
+}) => {
   const { connected } = useWallet();
 
   return (
@@ -163,13 +173,15 @@ const BondsInfoJSX = ({ activeBonds, locked }) => {
           </div>
           <div className={styles.content}>
             <div className={styles.values}>
-              <DashboardStatsValues label="Offers" value={0} />
-              <span className={styles.value}>0 SOL</span>
+              <DashboardStatsValues label="Offers" value={userOffers} />
+              <span className={styles.value}>
+                {userOffersAmount?.toFixed(2) || '--'} SOL
+              </span>
             </div>
             <div className={styles.values}>
-              <DashboardStatsValues label="Bonds" value={activeBonds} />
+              <DashboardStatsValues label="Bonds" value={activeUserLoans} />
               <span className={styles.value}>
-                {locked?.toFixed(2) || '--'} SOL
+                {bondUserAmount?.toFixed(2) || '--'} SOL
               </span>
             </div>
           </div>

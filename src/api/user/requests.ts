@@ -6,6 +6,7 @@ import {
   UserInfoRaw,
   Notification,
   NotificationsSettings,
+  UserStats,
 } from './types';
 
 type FetchUser = (props: {
@@ -121,3 +122,14 @@ export const setUserNotificationsSettings: SetUserNotificationsSettings =
       settings,
     );
   };
+
+type FetchAllUserStats = (props: {
+  publicKey: web3.PublicKey;
+}) => Promise<UserStats>;
+export const fetchAllUserStats: FetchAllUserStats = async ({ publicKey }) => {
+  const { data } = await axios.get<UserStats>(
+    `https://${process.env.BACKEND_DOMAIN}/stats/all/${publicKey?.toBase58()}`,
+  );
+
+  return data;
+};

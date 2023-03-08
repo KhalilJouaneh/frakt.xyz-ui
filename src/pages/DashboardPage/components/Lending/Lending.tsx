@@ -3,24 +3,22 @@ import { NavLink } from 'react-router-dom';
 import { descend, sort, prop } from 'ramda';
 import classNames from 'classnames';
 
-import { LedningPools } from '../../../../state/stats/types';
-import Button from '../../../../components/Button';
-import { PATHS } from '../../../../constants';
+import { Loader } from '@frakt/components/Loader';
+import { LedningPools } from '@frakt/api/user';
+import Button from '@frakt/components/Button';
+import { PATHS } from '@frakt/constants';
+
 import styles from './Lending.module.scss';
 import Block from '../Block';
-import { Loader } from '@frakt/components/Loader';
 
 interface LendingProps {
-  lendingPools: LedningPools[];
+  data: LedningPools[];
   loading: boolean;
 }
 
-const Lending: FC<LendingProps> = ({ lendingPools, loading }) => {
+const Lending: FC<LendingProps> = ({ data = [], loading }) => {
   const sortByApr = descend(prop('apr') as any);
-  const highestAprPools = sort(sortByApr, lendingPools).slice(
-    0,
-    3,
-  ) as LedningPools[];
+  const highestAprPools = sort(sortByApr, data).slice(0, 3) as LedningPools[];
 
   return (
     <Block className={styles.block}>

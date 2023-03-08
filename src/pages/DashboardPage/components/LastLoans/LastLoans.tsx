@@ -9,11 +9,11 @@ import NftCard from '../NftCard';
 import Block from '../Block';
 
 interface LastLoansProps {
-  lastLoans: LastLoans[];
+  data: LastLoans[];
   loading: boolean;
 }
 
-const LastLoans: FC<LastLoansProps> = ({ lastLoans, loading }) => {
+const LastLoans: FC<LastLoansProps> = ({ data, loading }) => {
   return (
     <Block className={styles.block}>
       <h3 className={styles.subtitle}>Last loans</h3>
@@ -22,10 +22,10 @@ const LastLoans: FC<LastLoansProps> = ({ lastLoans, loading }) => {
         <p className={styles.headerTitle}>Borrowed</p>
       </div>
       <div className={styles.cards}>
-        {loading || !lastLoans.length ? (
+        {loading || !data.length ? (
           <Loader />
         ) : (
-          lastLoans.map(({ nftName, loanValue, image }) => (
+          data.map(({ nftName, loanValue, image }) => (
             <NftCard
               key={nftName}
               nftName={nftName}
