@@ -67,7 +67,7 @@ export const PnlProfitCell: FC<PnlProfitCellProps> = ({
                 [styles.negative]: pnlProfit < 0,
               })}
             >
-              {pnlProfit < 0 ? '-' : '+'}
+              {pnlProfit > 0 && '+'}
               {pnlProfit?.toFixed(3)} %
             </span>
           )}
