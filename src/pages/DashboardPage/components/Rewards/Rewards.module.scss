@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  max-width: 638px;
+  max-width: 580px;
   height: 252px;
   width: 100%;
 
@@ -12,8 +12,12 @@
     max-width: unset;
   }
 }
+.noConnectedBlock {
+  justify-content: unset;
+}
 
 .btnWrapper {
+  margin-top: 12px;
   display: flex;
   gap: 24px;
   width: 100%;
@@ -58,12 +62,27 @@
   color: var(--secondary-border);
   font: var(--font-text-6);
   text-transform: uppercase;
-  line-height: 14px;
+  line-height: 18px;
 }
 
 .value {
   color: var(--secondary-text);
   font: var(--font-subtitle);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   line-height: 42px;
+}
+
+.noConnectedMessage {
+  font: var(--font-text-4);
+  font-size: 22px;
+  max-width: 516px;
+  text-align: center;
+
+  @media screen and (max-width: 1290px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+    max-width: 300px;
+  }
 }

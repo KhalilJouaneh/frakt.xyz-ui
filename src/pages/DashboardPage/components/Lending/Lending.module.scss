@@ -6,8 +6,7 @@
 .block {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  max-width: 638px;
+  max-width: 580px;
   width: 100%;
 
   @media screen and (max-width: 1024px) {
@@ -35,7 +34,7 @@
 
 .subtitle {
   font: var(--font-h6);
-  margin-bottom: 5px;
+  margin-bottom: 70px;
   text-align: center;
 
   @media screen and (max-width: 767px) {
@@ -45,7 +44,12 @@
 
 .nftName {
   font: var(--font-text-2);
+  font-size: 20px;
   max-width: 200px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+  }
 }
 
 .tableInfo {

@@ -1,0 +1,146 @@
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.row,
+.columm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.columm {
+  flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.image {
+  width: 75px;
+  height: 75px;
+
+  @media (max-width: 1390px) {
+    width: 64px;
+    height: 64px;
+  }
+
+  @media (max-width: 1290px) {
+    width: 108px;
+    height: 108px;
+  }
+  @media (max-width: 767px) {
+    width: 67px;
+    height: 67px;
+  }
+}
+
+.images {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.emptyMessage {
+  font: var(--font-text-1);
+  font-size: 22px;
+  text-align: center;
+  letter-spacing: -0.1px;
+  margin-bottom: 96px;
+
+  @media (max-width: 1290px) {
+    margin-bottom: 24px;
+    font-size: 20px;
+  }
+}
+
+.poolsImagesEmpty {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 13px;
+  margin-top: 12px;
+
+  @media screen and (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.otherImage {
+  display: none;
+}
+
+.poolImageEmpty {
+  position: relative;
+}
+
+.poolImageEmpty,
+.poolImage {
+  height: 166px;
+  width: 166px;
+
+  @media (max-width: 1390px) {
+    height: 144px;
+    width: 144px;
+  }
+
+  @media (max-width: 1290px) {
+    height: 234px;
+    width: 234px;
+  }
+
+  @media screen and (max-width: 767px) {
+    height: 142px;
+    width: 142px;
+  }
+}
+
+.otherImage {
+  display: block;
+  background: rgba(0, 0, 0, 0.72);
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+.otherImageCount {
+  font: var(--font-subtitle-2);
+  font-size: 28px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+  }
+}
+
+.otherImageTitle {
+  font: var(--font-text-6);
+
+  @media screen and (max-width: 767px) {
+    font-size: 10px;
+  }
+}

@@ -1,44 +1,35 @@
 import { FC } from 'react';
 
-import { DailyActivity } from '../../../../state/stats/types';
+import { DailyActivity } from '@frakt/api/user';
+
+import { DashboardStatsValues } from '../DashboardStatsValues';
 import styles from './DailyActive.module.scss';
-import { Solana } from '@frakt/icons';
 import Block from '../Block';
 
 interface DailyStatsProps {
-  dailyStats: DailyActivity;
+  data: DailyActivity;
 }
 
-const DailyActive: FC<DailyStatsProps> = ({ dailyStats }) => {
-  const {
-    dailyVolume,
-    issuedIn24Hours,
-    paidBackIn24Hours,
-    liquidatedIn24Hours,
-  } = dailyStats;
-
+const DailyActive: FC<DailyStatsProps> = ({ data }) => {
   return (
     <Block className={styles.content}>
       <h2 className={styles.title}>Daily Stats</h2>
       <div className={styles.blockWrapper}>
-        <div className={styles.block}>
-          <h3 className={styles.subtitle}>Volume</h3>
-          <p className={styles.value}>
-            {dailyVolume?.toFixed(0)} <Solana className={styles.icon} />
-          </p>
-        </div>
-        <div className={styles.block}>
-          <h3 className={styles.subtitle}>Issued</h3>
-          <p className={styles.value}>{issuedIn24Hours}</p>
-        </div>
-        <div className={styles.block}>
-          <h3 className={styles.subtitle}>Paid back</h3>
-          <p className={styles.value}>{paidBackIn24Hours}</p>
-        </div>
-        <div className={styles.block}>
-          <h3 className={styles.subtitle}>Graced</h3>
-          <p className={styles.value}>{liquidatedIn24Hours}</p>
-        </div>
+        <DashboardStatsValues
+          label="Volume"
+          value={data?.dailyVolume}
+          type="solana"
+          toFixed="0"
+        />
+        <DashboardStatsValues label="Issued" value={data?.issuedIn24Hours} />
+        <DashboardStatsValues
+          label="Paid back"
+          value={data?.paidBackIn24Hours}
+        />
+        <DashboardStatsValues
+          label="Graced"
+          value={data?.liquidatedIn24Hours}
+        />
       </div>
     </Block>
   );
