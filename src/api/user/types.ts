@@ -44,3 +44,50 @@ export interface NotificationsSettings {
   [NotificationEvents.GRACES]: boolean;
   [NotificationEvents.LIQUIDATIONS_IN_24H]: boolean;
 }
+
+export interface UserStats {
+  bonds: BondsUserStats;
+  totalStats: TotalStats;
+  dailyActivity: DailyActivity;
+  lastLoans: LastLoans[];
+  lendingPools: LedningPools[];
+}
+
+export interface BondsUserStats {
+  activeUserLoans: number;
+  bondUserAmount: number;
+  userOffers: number;
+  userOffersAmount: number;
+}
+
+export interface TotalStats {
+  lockedNftsInPools: number;
+  poolsTvl: number;
+  poolsVolumeAllTime: number;
+  totalIssued: number;
+  loansTvl: number;
+  loansVolumeAllTime: number;
+  activeLoansCount: number;
+}
+
+export interface DailyActivity {
+  lockedNftsInLoans: number;
+  issuedIn24Hours: number;
+  paidBackIn24Hours: number;
+  liquidatedIn24Hours: number;
+  dailyVolume: number;
+}
+
+export interface LastLoans {
+  image: string;
+  loanValue: number;
+  nftName: string;
+}
+
+export interface LedningPools {
+  collectionsCount?: number;
+  apr: number;
+  image: string;
+  nftName: string;
+  tvl: number;
+}

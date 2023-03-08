@@ -1,0 +1,28 @@
+.block {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  min-width: 132px;
+}
+
+.subtitle {
+  color: var(--black-color);
+  font: var(--font-text-6);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.value {
+  color: var(--secondary-text);
+  font: var(--font-text-1);
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon {
+  width: 20px;
+}

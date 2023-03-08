@@ -12,6 +12,10 @@
   font: var(--font-title-2);
   margin-bottom: 16px;
   text-align: center;
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 0;
+  }
 }
 
 .subtitle {
@@ -36,7 +40,7 @@
 }
 
 .rowDirection {
-  @media screen and (max-width: 1430px) {
+  @media screen and (max-width: 1290px) {
     flex-direction: row !important;
   }
   @media screen and (max-width: 1024px) {
@@ -46,9 +50,10 @@
 
 .row {
   display: flex;
+  justify-content: center;
   gap: 24px;
 
-  @media screen and (max-width: 1430px) {
+  @media screen and (max-width: 1290px) {
     flex-direction: column;
   }
 

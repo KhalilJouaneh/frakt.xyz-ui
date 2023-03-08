@@ -1,5 +1,5 @@
 .content {
-  max-width: 638px;
+  max-width: 580px;
   width: 100%;
 
   @media screen and (max-width: 1024px) {
@@ -16,42 +16,9 @@
 .blockWrapper {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  row-gap: 17px;
-}
 
-.icon {
-  width: 20px;
-
-  @media screen and (max-width: 1024px) {
-    width: 16px;
+  @media screen and (max-width: 1390px) {
+    flex-wrap: wrap;
+    row-gap: 24px;
   }
-
-  @media screen and (max-width: 767px) {
-    width: 12px;
-  }
-}
-
-.block {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 4px;
-  min-width: 132px;
-}
-
-.subtitle {
-  color: var(--black-color);
-  font: var(--font-text-6);
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.value {
-  color: var(--secondary-text);
-  font: var(--font-text-1);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
